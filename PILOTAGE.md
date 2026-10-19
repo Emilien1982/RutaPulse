@@ -23,7 +23,7 @@
 |---|---|---|
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
-| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | ⏳ cadrage à valider |
+| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage validé, étude d'architecture en cours |
 | 4+ | Développement par petites phases | — |
 
 ## Décisions prises
@@ -35,17 +35,19 @@
 - 2026-10-19 — Session principale : Opus 5.5, effort `high`.
 - 2026-10-19 — Nom de l'app : RutaPulse. Dépôt public : github.com/Emilien1982/RutaPulse.
 - 2026-10-19 — Pas de relecture sur GitHub (PR) pour l'instant : trop lourd pour le gain.
-- 2026-10-19 — v1 : création d'itinéraires VTT, Android + iOS, cartes hors ligne, test interne (voir docs/03).
+- 2026-10-19 — v1 : création d'itinéraires VTT (aussi hors ligne), suivi avec indications écrites et notification téléphone verrouillé, Android + iOS, test interne (voir docs/03).
+- 2026-10-19 — V2 : guidage vocal, économiseur d'écran.
+- 2026-10-19 — Préférences de stack d'Émilien : React Native (qu'il connaît bien) ; bibliothèques TanStack quand elles conviennent (il veut les découvrir).
 - 2026-10-19 — Une session par phase d'exécution ; la session de pilotage reste avec Émilien.
 
 ## Décisions en attente
 
-- Valider le cadrage produit de la v1 (docs/03).
+- Valider la stack proposée par l'architecte (étape 3b).
 
 ## Prochaine étape
 
-Après validation du cadrage : lancer l'`architecte` sur les 5 risques
-techniques et la proposition de stack (étape 3b).
+Étape 3b : l'`architecte` étudie les 6 risques techniques et propose la stack,
+dans une session ouverte dans `vtt-nav`.
 
 ## Épreuve de la configuration (phase 2) : bilan
 - Les 5 garde-fous testés marchent (développeur, testeur, relecteur) :

@@ -33,4 +33,5 @@ toute phase coûteuse avant son lancement.
 - Messages de commit en français, à l'impératif, une ligne de titre courte.
 
 ## Stack et règles de code
-À définir en phase 3 (ADR à venir).
+À définir en phase 3 (ADR à venir). Préférences d'Émilien : React Native ;
+bibliothèques TanStack quand elles conviennent au besoin.
