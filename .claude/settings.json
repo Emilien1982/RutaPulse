@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git blame:*)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(git config user.email:*)"
+    ]
+  }
+}
