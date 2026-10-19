@@ -22,7 +22,7 @@
 | # | Phase | État |
 |---|---|---|
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
-| 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ⏳ proposition à valider |
+| 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | 🔧 config créée, épreuve à lancer |
 | 3 | Cadrage produit, design, architecture, stack, découpage | — |
 | 4+ | Développement par petites phases | — |
 
@@ -30,12 +30,15 @@
 
 - 2026-10-19 — Dossier du projet : `~/dev_ai/vtt-nav` (nom provisoire).
 - 2026-10-19 — Style : phrases simples et concrètes ; tout terme anglais ou sigle est traduit entre parenthèses.
+- 2026-10-19 — Config validée : 5 sous-agents (architecte, designer et relecteur sur Opus 5.5 ; développeur et testeur sur Sonnet 5.5), circuit `/phase`, épreuve.
+- 2026-10-19 — Dépôt public sur GitHub : e-mail noreply en config locale git.
+- 2026-10-19 — Session principale : Opus 5.5.
 
 ## Décisions en attente
 
-- Phase 2 : valider les 5 agents et leurs modèles, le circuit d'une phase, l'épreuve.
+- Effort de la session principale : `high` recommandé (actuellement `medium`), à régler par Émilien dans l'app.
 
 ## Prochaine étape
 
-Après validation : créer les agents, CLAUDE.md, les skills `/phase` et `/verif`,
-le dépôt git, puis lancer l'épreuve.
+Lancer l'épreuve : fonction de distance GPS jetable, passée par développeur,
+testeur et relecteur ; puis bug volontaire et test des restrictions.
