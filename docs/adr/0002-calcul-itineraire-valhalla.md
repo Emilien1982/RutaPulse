@@ -1,6 +1,6 @@
 # ADR 0002 — Calculer les itinéraires sur le téléphone avec Valhalla
 
-- Statut : Proposé (dépend du résultat de l'essai 1)
+- Statut : Accepté le 2026-10-19 (dépend du résultat de l'essai 1)
 - Date : 2026-10-19
 - Détail des recherches : [docs/04-architecture-annexe-recherches.md](../04-architecture-annexe-recherches.md), risque 1
 

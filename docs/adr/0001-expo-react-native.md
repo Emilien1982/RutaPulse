@@ -1,6 +1,6 @@
 # ADR 0001 — Construire l'app avec React Native et Expo
 
-- Statut : Proposé
+- Statut : Accepté le 2026-10-19
 - Date : 2026-10-19
 - Détail des recherches : [docs/04-architecture-annexe-recherches.md](../04-architecture-annexe-recherches.md)
 

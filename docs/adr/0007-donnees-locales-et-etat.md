@@ -1,6 +1,6 @@
 # ADR 0007 — Données locales et gestion de l'état, avec TanStack
 
-- Statut : Proposé (révisé le 2026-10-19 : TanStack DB retiré, à la demande d'Émilien)
+- Statut : Accepté le 2026-10-19 (révisé le 2026-10-19 : TanStack DB retiré, à la demande d'Émilien)
 - Date : 2026-10-19
 - Détail des recherches : [docs/04-architecture-annexe-recherches.md](../04-architecture-annexe-recherches.md), section TanStack
 

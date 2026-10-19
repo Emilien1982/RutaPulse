@@ -23,7 +23,7 @@
 |---|---|---|
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
-| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage validé, architecture proposée → [docs/04](docs/04-architecture.md) |
+| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 à lancer |
 | 4+ | Développement par petites phases | — |
 
 ## Décisions prises
@@ -40,11 +40,12 @@
 - 2026-10-19 — Préférences de stack d'Émilien : React Native (qu'il connaît bien) ; bibliothèques TanStack quand elles conviennent (il veut les découvrir).
 - 2026-10-19 — TanStack DB retiré de la v1 : Query, qui lit SQLite, suffit.
 - 2026-10-19 — Essais sur simulateurs iOS et Android, pour limiter les manipulations d'Émilien.
+- 2026-10-19 — Stack validée : Expo + React Native, MapLibre, Valhalla sur le téléphone, TanStack Query/Store/Pacer (ADR 0001 à 0010 acceptés).
 - 2026-10-19 — Une session par phase d'exécution ; la session de pilotage reste avec Émilien.
 
 ## Décisions en attente
 
-- Valider la stack proposée par l'architecte (étape 3b).
+- Zone test de l'essai 1.
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 

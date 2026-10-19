@@ -1,6 +1,6 @@
 # ADR 0006 — Suivi en arrière-plan et notification unique
 
-- Statut : Proposé (à confirmer par l'essai 2)
+- Statut : Accepté le 2026-10-19 (à confirmer par l'essai 2)
 - Date : 2026-10-19
 - Détail des recherches : [docs/04-architecture-annexe-recherches.md](../04-architecture-annexe-recherches.md), risques 5 et 6
 

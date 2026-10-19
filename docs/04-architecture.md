@@ -1,6 +1,6 @@
 # Étape 3b — Architecture de la v1 : synthèse
 
-> 19 octobre 2026. Proposition de l'architecte, **à valider par Émilien**.
+> 19 octobre 2026. Proposition de l'architecte, **validée par Émilien le 19 octobre 2026**.
 > Détail des recherches et sources : [annexe](04-architecture-annexe-recherches.md).
 > Décisions : ADR (fiches de décision d'architecture) dans [docs/adr/](adr/).
 

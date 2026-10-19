@@ -1,6 +1,6 @@
 # ADR 0010 — Distribution en test interne, sans les stores
 
-- Statut : Proposé (choix iOS à trancher par Émilien)
+- Statut : Accepté le 2026-10-19 (choix iOS à trancher par Émilien)
 - Date : 2026-10-19
 
 ADR veut dire « Architecture Decision Record » (fiche de décision

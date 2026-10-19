@@ -1,6 +1,6 @@
 # ADR 0008 — Navigation entre écrans avec Expo Router
 
-- Statut : Proposé
+- Statut : Accepté le 2026-10-19
 - Date : 2026-10-19
 
 ADR veut dire « Architecture Decision Record » (fiche de décision

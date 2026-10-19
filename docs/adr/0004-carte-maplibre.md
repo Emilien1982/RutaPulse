@@ -1,6 +1,6 @@
 # ADR 0004 — Afficher la carte avec MapLibre React Native
 
-- Statut : Proposé (à confirmer par l'essai 3)
+- Statut : Accepté le 2026-10-19 (à confirmer par l'essai 3)
 - Date : 2026-10-19
 - Détail des recherches : [docs/04-architecture-annexe-recherches.md](../04-architecture-annexe-recherches.md), risque 2
 

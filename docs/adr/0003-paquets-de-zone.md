@@ -1,6 +1,6 @@
 # ADR 0003 — Préparer les zones sur l'ordinateur et les héberger sur GitHub Releases
 
-- Statut : Proposé
+- Statut : Accepté le 2026-10-19
 - Date : 2026-10-19
 - Détail des recherches : [docs/04-architecture-annexe-recherches.md](../04-architecture-annexe-recherches.md), risques 1 à 4
 
