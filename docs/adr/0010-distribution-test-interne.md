@@ -1,6 +1,6 @@
 # ADR 0010 — Distribution en test interne, sans les stores
 
-- Statut : Accepté le 2026-10-19 (choix iOS à trancher par Émilien)
+- Statut : Accepté le 2026-10-19 (iOS : compte Apple gratuit d'abord, TestFlight quand un proche avec un iPhone voudra l'app)
 - Date : 2026-10-19
 
 ADR veut dire « Architecture Decision Record » (fiche de décision
