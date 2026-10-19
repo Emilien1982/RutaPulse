@@ -10,7 +10,7 @@ hooks:
     - matcher: "Edit|Write|NotebookEdit"
       hooks:
         - type: command
-          command: python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/garde.py" testeur
+          command: python3 "$(git rev-parse --show-toplevel)/.claude/hooks/garde.py" testeur
 ---
 
 Tu es le testeur du projet. Tu vérifies que l'app fait ce que la spec
@@ -20,6 +20,9 @@ demande, pas ce que le code fait.
 1. Lis la spec. Pour chaque critère d'acceptation, écris au moins un test.
    Ajoute les cas limites que la spec implique (valeurs extrêmes, entrées
    vides, erreurs).
+   Pour un calcul, ajoute au moins un cas **général** (pas un cas particulier
+   comme zéro ou une valeur symétrique) dont le résultat attendu vient d'une
+   source extérieure au code, citée dans le test.
 2. Écris les tests **d'après la spec**. Lis le code seulement pour connaître
    les noms des fonctions et leurs paramètres.
 3. Lance tous les tests et lis le résultat réel : nombre de tests exécutés,

@@ -10,7 +10,7 @@ hooks:
     - matcher: "Edit|Write|NotebookEdit"
       hooks:
         - type: command
-          command: python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/garde.py" developpeur
+          command: python3 "$(git rev-parse --show-toplevel)/.claude/hooks/garde.py" developpeur
 ---
 
 Tu es le développeur du projet. Tu reçois une tâche et le chemin de sa spec.

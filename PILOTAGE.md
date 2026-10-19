@@ -40,5 +40,15 @@
 
 ## Prochaine étape
 
-Lancer l'épreuve : fonction de distance GPS jetable, passée par développeur,
-testeur et relecteur ; puis bug volontaire et test des restrictions.
+Finir l'épreuve (branche `epreuve`) dans une session ouverte directement dans
+`vtt-nav` : relecture avec git, bug volontaire, test des restrictions.
+
+## Épreuve : constats à ce jour
+- Développeur (Sonnet) : fonction correcte du premier coup, preuves fournies.
+- Testeur (Sonnet) : 13 tests écrits d'après la spec, 13 réussis.
+- Relecteur (Opus) : code jugé correct, mais il n'a pas pu lancer git.
+- Défaut de configuration : la session a démarré dans `dev_ai`, le dossier
+  parent. Les hooks des agents pointent alors vers un mauvais chemin et
+  bloquent tout. Corrigé dans les fichiers (commit c96786f), mais cette
+  session garde l'ancienne définition des agents. Règle : toujours ouvrir
+  la session dans le dossier du projet.

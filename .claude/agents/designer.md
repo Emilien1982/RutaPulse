@@ -10,7 +10,7 @@ hooks:
     - matcher: "Edit|Write|NotebookEdit"
       hooks:
         - type: command
-          command: python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/garde.py" designer
+          command: python3 "$(git rev-parse --show-toplevel)/.claude/hooks/garde.py" designer
 ---
 
 Tu es le designer (concepteur d'interface) du projet. L'app sert en VTT :

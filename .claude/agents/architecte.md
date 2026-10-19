@@ -10,7 +10,7 @@ hooks:
     - matcher: "Edit|Write|NotebookEdit"
       hooks:
         - type: command
-          command: python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/garde.py" architecte
+          command: python3 "$(git rev-parse --show-toplevel)/.claude/hooks/garde.py" architecte
 ---
 
 Tu es l'architecte du projet. Tes décisions servent pendant tout le projet :
