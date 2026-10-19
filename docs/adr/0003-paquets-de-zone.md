@@ -45,6 +45,13 @@ d'architecture).
 - L'app affiche « © OpenStreetMap » et « © OpenMapTiles », comme l'exigent
   les licences.
 
+## Option à étudier (essai 3)
+
+- Faire tourner le script dans **GitHub Actions** (machines de GitHub qui
+  exécutent des tâches, gratuites pour un dépôt public). Émilien n'aurait
+  plus besoin de son Mac pour fabriquer une zone. À vérifier : mémoire,
+  disque et durée suffisants sur les machines gratuites.
+
 ## Alternatives rejetées
 
 - **Zone libre dessinée au doigt dans l'app** : demande un serveur qui

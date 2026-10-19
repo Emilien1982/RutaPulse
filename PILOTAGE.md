@@ -23,7 +23,7 @@
 |---|---|---|
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
-| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage validé, étude d'architecture en cours |
+| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage validé, architecture proposée → [docs/04](docs/04-architecture.md) |
 | 4+ | Développement par petites phases | — |
 
 ## Décisions prises
@@ -38,11 +38,20 @@
 - 2026-10-19 — v1 : création d'itinéraires VTT (aussi hors ligne), suivi avec indications écrites et notification téléphone verrouillé, Android + iOS, test interne (voir docs/03).
 - 2026-10-19 — V2 : guidage vocal, économiseur d'écran.
 - 2026-10-19 — Préférences de stack d'Émilien : React Native (qu'il connaît bien) ; bibliothèques TanStack quand elles conviennent (il veut les découvrir).
+- 2026-10-19 — TanStack DB retiré de la v1 : Query, qui lit SQLite, suffit.
+- 2026-10-19 — Essais sur simulateurs iOS et Android, pour limiter les manipulations d'Émilien.
 - 2026-10-19 — Une session par phase d'exécution ; la session de pilotage reste avec Émilien.
 
 ## Décisions en attente
 
 - Valider la stack proposée par l'architecte (étape 3b).
+
+## À vérifier sur un vrai téléphone (plus tard, en une fois)
+
+- Temps de calcul d'un itinéraire.
+- Consommation de batterie (écran allumé et verrouillé).
+- Précision du GPS en forêt.
+- Live Activity iOS avec un compte Apple gratuit.
 
 ## Prochaine étape
 
