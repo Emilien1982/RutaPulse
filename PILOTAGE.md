@@ -1,4 +1,4 @@
-# Pilotage — app de navigation VTT
+# Pilotage — RutaPulse, app de navigation VTT
 
 > Tableau de bord du projet. Relu au début de chaque session, mis à jour à la
 > fin de chaque étape. Si une décision n'est pas ici ou dans un ADR, elle
@@ -23,7 +23,7 @@
 |---|---|---|
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
-| 3 | Cadrage produit, design, architecture, stack, découpage | ⏳ prochaine |
+| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | ⏳ cadrage à valider |
 | 4+ | Développement par petites phases | — |
 
 ## Décisions prises
@@ -33,16 +33,19 @@
 - 2026-10-19 — Config validée : 5 sous-agents (architecte, designer et relecteur sur Opus 5.5 ; développeur et testeur sur Sonnet 5.5), circuit `/phase`, épreuve.
 - 2026-10-19 — Dépôt public sur GitHub : e-mail noreply en config locale git.
 - 2026-10-19 — Session principale : Opus 5.5, effort `high`.
+- 2026-10-19 — Nom de l'app : RutaPulse. Dépôt public : github.com/Emilien1982/RutaPulse.
+- 2026-10-19 — Pas de relecture sur GitHub (PR) pour l'instant : trop lourd pour le gain.
+- 2026-10-19 — v1 : création d'itinéraires VTT, Android + iOS, cartes hors ligne, test interne (voir docs/03).
 - 2026-10-19 — Une session par phase d'exécution ; la session de pilotage reste avec Émilien.
 
 ## Décisions en attente
 
-- Lancer la phase 3 (cadrage produit).
+- Valider le cadrage produit de la v1 (docs/03).
 
 ## Prochaine étape
 
-Phase 3 : cadrage produit. Interviewer Émilien sur l'usage de l'app (qui,
-quand, quoi), puis proposer le périmètre de la première version.
+Après validation du cadrage : lancer l'`architecte` sur les 5 risques
+techniques et la proposition de stack (étape 3b).
 
 ## Épreuve de la configuration (phase 2) : bilan
 - Les 5 garde-fous testés marchent (développeur, testeur, relecteur) :
