@@ -29,10 +29,14 @@ def bloquer(message):
 
 
 def chemin_relatif(entree):
-    racine = os.environ.get("CLAUDE_PROJECT_DIR") or entree.get("cwd") or os.getcwd()
+    # Project root = two levels above this script (.claude/hooks/garde.py).
+    # CLAUDE_PROJECT_DIR is not used: it points to the folder where the
+    # session started, which can be a parent folder.
+    racine = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     params = entree.get("tool_input", {})
     chemin = params.get("file_path") or params.get("notebook_path") or ""
-    absolu = os.path.abspath(os.path.join(racine, chemin))
+    base = entree.get("cwd") or os.getcwd()
+    absolu = os.path.abspath(os.path.join(base, chemin))
     return os.path.relpath(absolu, racine), absolu
 
 

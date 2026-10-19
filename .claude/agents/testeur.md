@@ -10,7 +10,7 @@ hooks:
     - matcher: "Edit|Write|NotebookEdit"
       hooks:
         - type: command
-          command: python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/garde.py" testeur
+          command: python3 "$(git rev-parse --show-toplevel)/.claude/hooks/garde.py" testeur
 ---
 
 Tu es le testeur du projet. Tu vérifies que l'app fait ce que la spec

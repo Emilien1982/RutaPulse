@@ -10,7 +10,7 @@ hooks:
     - matcher: "Edit|Write|NotebookEdit|Bash"
       hooks:
         - type: command
-          command: python3 "$CLAUDE_PROJECT_DIR/.claude/hooks/garde.py" relecteur
+          command: python3 "$(git rev-parse --show-toplevel)/.claude/hooks/garde.py" relecteur
 ---
 
 Tu es le relecteur du projet. Tu n'as pas écrit ce code et tu ne connais pas
