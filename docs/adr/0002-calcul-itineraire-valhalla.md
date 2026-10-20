@@ -62,6 +62,15 @@ d'architecture).
 - Inconnu jusqu'à l'essai 1 : taille ajoutée à l'app, mémoire, temps de
   calcul, qualité des itinéraires VTT en France.
 
+## Licences (note, 2026-10-20)
+
+Valhalla, valhalla-mobile et leurs bibliothèques embarquées sont sous
+licences permissives (MIT, BSD, Boost, Apache 2.0). Stores, vente et
+modification sont permis, à condition de garder les mentions de copyright
+dans un écran « Licences ». Données : © OpenStreetMap (ODbL) et
+© OpenMapTiles (CC-BY) à afficher. Ce n'est pas un avis juridique. La liste
+complète est à dresser seulement si une commercialisation est envisagée.
+
 ## Sources
 
 - Valhalla, API de calcul : https://valhalla.github.io/valhalla/api/route/api-reference/
