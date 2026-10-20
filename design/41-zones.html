@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse – Zones hors ligne</title>
+<!--
+  Écran 41 (direction B). Fonction 6 du cadrage, ADR 0003.
+  La liste vient du catalogue publié (catalogue.json). Trois états
+  montrés : zone prête, téléchargement en cours, zone à télécharger.
+  Les noms des deux zones à télécharger sont des exemples.
+  Valeurs : design/tokens.md.
+-->
+<style>
+:root{
+  --fond:#FFFFFF; --surface:#F2F2F2; --texte:#111111; --texte-2:#4A4A4A; --separateur:#D0D0D0;
+  --action:#0A47A8; --sur-action:#FFFFFF; --danger:#B3261E; --succes:#146C2E;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:#fff}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--texte);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden}
+.barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20}
+.barre-etat .icones{display:flex;gap:6px;align-items:center}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#111;z-index:30}
+
+.entete{position:absolute;top:95px;left:16px;right:16px}
+.entete h1{font-size:28px;font-weight:700;line-height:1.2}
+.espace{font-size:15px;color:var(--texte-2);margin-top:4px}
+
+.section{position:absolute;left:16px;right:16px;font-size:13px;font-weight:700;color:var(--texte-2)}
+.zone{position:absolute;left:0;right:0;padding:0 4px 0 16px;display:flex;gap:12px;align-items:flex-start}
+.vignette{width:56px;height:56px;border-radius:8px;flex:none;background:#EEEBE4;overflow:hidden;margin-top:2px}
+.texte{flex:1;min-width:0}
+.nom{font-size:17px;font-weight:600}
+.meta{font-size:15px;color:var(--texte-2);margin-top:2px}
+.etat{display:flex;align-items:center;gap:6px;font-size:15px;font-weight:600;color:var(--succes);margin-top:4px}
+.plus{width:48px;height:48px;border-radius:24px;display:flex;align-items:center;justify-content:center;flex:none}
+.barre{height:8px;border-radius:4px;background:#DADADA;margin-top:10px;overflow:hidden}
+.barre i{display:block;height:100%;width:42%;background:var(--action)}
+.progres{display:flex;justify-content:space-between;align-items:center;margin-top:4px;font-size:15px}
+.annuler{height:48px;display:flex;align-items:center;padding:0 12px;font-size:17px;font-weight:600;color:var(--action);margin-right:-8px}
+.telecharger{height:48px;padding:0 16px;border-radius:24px;border:2px solid var(--action);color:var(--action);font-size:17px;font-weight:600;display:flex;align-items:center;gap:6px;flex:none;margin:4px 12px 0 0}
+.filet{position:absolute;left:84px;right:0;height:1px;background:var(--separateur)}
+.pied{position:absolute;left:16px;right:16px;top:640px;font-size:15px;line-height:1.4;color:var(--texte-2)}
+
+.onglets{position:absolute;left:0;right:0;bottom:0;height:83px;background:var(--fond);border-top:1px solid var(--separateur);display:flex;padding-top:6px}
+.onglet{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:13px;font-weight:500;color:var(--texte-2)}
+.onglet.actif{color:var(--action);font-weight:700}
+</style>
+</head>
+<body>
+<div class="ecran">
+
+<div class="barre-etat"><span>09:47</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12" fill="#111"><path d="M8 11.5L.5 3.2C2.6 1.5 5.2.5 8 .5s5.4 1 7.5 2.7z"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="#111"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<div class="entete">
+  <h1>Zones hors ligne</h1>
+  <div class="espace">Sur ce téléphone : 106 Mo utilisés · 23,4 Go libres</div>
+</div>
+
+<div class="section" style="top:178px">Sur le téléphone</div>
+<div class="zone" style="top:202px">
+  <svg class="vignette" viewBox="0 0 56 56"><path d="M0 14 C14 10 30 18 56 12 V36 C40 42 16 34 0 40 Z" fill="#D3E4C0"/><path d="M44 0 C38 18 50 34 42 56" fill="none" stroke="#A8CCDD" stroke-width="5"/><rect x="6" y="6" width="44" height="44" fill="none" stroke="#111" stroke-width="2" stroke-dasharray="4 3"/></svg>
+  <div class="texte">
+    <div class="nom">Nancy et forêt de Haye</div>
+    <div class="meta">106 Mo · carte du 18 oct. 2026</div>
+    <div class="etat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Prête sans réseau</div>
+  </div>
+  <div class="plus" aria-label="Actions : supprimer la zone"><svg width="24" height="24" viewBox="0 0 24 24" fill="#111"><circle cx="12" cy="5" r="2.2"/><circle cx="12" cy="12" r="2.2"/><circle cx="12" cy="19" r="2.2"/></svg></div>
+</div>
+
+<div class="section" style="top:318px">Disponibles</div>
+<div class="zone" style="top:342px">
+  <svg class="vignette" viewBox="0 0 56 56"><path d="M0 30 C20 24 36 36 56 28 V56 H0 Z" fill="#D3E4C0"/><path d="M20 0 C26 20 14 36 24 56" fill="none" stroke="#A8CCDD" stroke-width="6"/><rect x="6" y="6" width="44" height="44" fill="none" stroke="#111" stroke-width="2" stroke-dasharray="4 3"/></svg>
+  <div class="texte" style="padding-right:12px">
+    <div class="nom">Metz et vallée de la Moselle</div>
+    <div class="meta">95 Mo · carte du 18 oct. 2026</div>
+    <div class="barre" role="progressbar" aria-valuenow="42"><i></i></div>
+    <div class="progres"><span>Téléchargement : 40 Mo sur 95</span><span class="annuler">Annuler</span></div>
+  </div>
+</div>
+<div class="filet" style="top:466px"></div>
+<div class="zone" style="top:482px">
+  <svg class="vignette" viewBox="0 0 56 56"><path d="M0 0 H56 V56 H0 Z" fill="#D3E4C0"/><ellipse cx="30" cy="30" rx="12" ry="7" fill="#A8CCDD"/><rect x="6" y="6" width="44" height="44" fill="none" stroke="#111" stroke-width="2" stroke-dasharray="4 3"/></svg>
+  <div class="texte">
+    <div class="nom">Gérardmer et lacs</div>
+    <div class="meta">118 Mo · carte du 18 oct. 2026</div>
+  </div>
+  <div class="telecharger"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Télécharger</div>
+</div>
+
+<div class="pied">Une zone contient la carte, le calcul d'itinéraire et l'altitude d'un carré d'environ 50 km de côté. Une fois téléchargée, tout marche sans réseau : carte, création et suivi.</div>
+
+<div class="onglets">
+  <div class="onglet"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg>Carte</div>
+  <div class="onglet"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.4" fill="currentColor"/><circle cx="4.5" cy="12" r="1.4" fill="currentColor"/><circle cx="4.5" cy="18" r="1.4" fill="currentColor"/></svg>Itinéraires</div>
+  <div class="onglet actif"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Zones</div>
+</div>
+
+<div class="indicateur"></div>
+</div>
+</body>
+</html>

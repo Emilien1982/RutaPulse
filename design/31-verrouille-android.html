@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse – Téléphone verrouillé, Android : notification du suivi</title>
+<!--
+  Écran 31. Fonction 8 du cadrage, Android.
+  La notification est celle du service de premier plan (ADR 0006) : une
+  seule, mise à jour à chaque nouvelle indication. Son apparence est celle
+  du système ; l'app ne choisit que l'icône, le titre et le texte.
+  Titre = la consigne, dans la forme du cadrage (« À gauche dans 200 m »).
+  Valeurs : design/tokens.md. Fond d'écran et horloge : imitation d'Android 14.
+-->
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:#000}
+body{font-family:Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden;background:linear-gradient(170deg,#2E3B4E 0%,#1B2430 55%,#10161E 100%);color:#fff}
+.barre-etat{position:absolute;top:0;left:0;right:0;height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:14px;font-weight:500}
+.barre-etat .icones{display:flex;gap:6px;align-items:center}
+.horloge{position:absolute;top:92px;left:0;right:0;text-align:center;font-size:92px;font-weight:300;line-height:1;letter-spacing:-2px}
+.date{position:absolute;top:196px;left:0;right:0;text-align:center;font-size:17px;font-weight:500;opacity:.9}
+
+.notif{position:absolute;top:262px;left:12px;right:12px;background:#F1EEF4;color:#1C1B1F;border-radius:24px;padding:14px 16px 16px}
+.notif .entete{display:flex;align-items:center;gap:8px;font-size:13px;color:#49454F}
+.notif .icone{width:22px;height:22px;border-radius:11px;background:#C2007A;display:flex;align-items:center;justify-content:center}
+.notif .titre{font-size:17px;font-weight:600;margin-top:10px;padding-left:30px}
+.notif .texte{font-size:15px;color:#49454F;margin-top:2px;padding-left:30px}
+.notif .ouvrir{position:absolute;right:14px;top:12px;width:28px;height:28px;border-radius:14px;background:#E6E0EC;display:flex;align-items:center;justify-content:center}
+
+.cadenas{position:absolute;top:46px;left:50%;margin-left:-10px}
+.raccourci{position:absolute;bottom:52px;width:56px;height:56px;border-radius:28px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center}
+.empreinte{position:absolute;bottom:150px;left:50%;margin-left:-24px;width:48px;height:48px;opacity:.55}
+.barre-gestes{position:absolute;bottom:10px;left:50%;margin-left:-54px;width:108px;height:4px;border-radius:2px;background:rgba(255,255,255,.85)}
+.note{position:absolute;bottom:224px;left:24px;right:24px;text-align:center;font-size:13px;opacity:.65}
+</style>
+</head>
+<body>
+<div class="ecran">
+
+<div class="barre-etat"><span>Free</span>
+  <span class="icones">
+    <svg width="16" height="14" viewBox="0 0 16 14" fill="#fff"><path d="M8 13.5L0 3.5C2.2 1.6 5 .5 8 .5s5.8 1.1 8 3z" opacity=".9"/></svg>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="#fff"><path d="M14 0v14H0z"/></svg>
+    <svg width="9" height="15" viewBox="0 0 9 15" fill="#fff"><rect x="2.5" y="0" width="4" height="2" rx=".5"/><rect x="0" y="1.5" width="9" height="13.5" rx="1.5" opacity=".4"/><rect x="0" y="6" width="9" height="9" rx="1.5"/></svg>
+    <span>64 %</span>
+  </span>
+</div>
+
+<svg class="cadenas" width="20" height="22" viewBox="0 0 20 22" fill="none" stroke="#fff" stroke-width="2"><rect x="2" y="9" width="16" height="12" rx="3" fill="#fff" stroke="none"/><path d="M5.5 9V6a4.5 4.5 0 0 1 9 0v3"/></svg>
+<div class="horloge">10:31</div>
+<div class="date">mardi 21 octobre</div>
+
+<div class="notif">
+  <div class="entete">
+    <div class="icone"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18c0-7 12-5 12-12"/></svg></div>
+    <span>RutaPulse · suivi en cours</span>
+  </div>
+  <div class="ouvrir"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1B1F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>
+  <div class="titre">À gauche dans 200 m</div>
+  <div class="texte">Reste 21,3 km</div>
+</div>
+
+
+<svg class="empreinte" viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M14 18a10 10 0 0 1 20 0v6"/><path d="M19 30v-12a5 5 0 0 1 10 0v12"/><path d="M24 18v18"/><path d="M10 26v-8a14 14 0 0 1 28 0v10"/></svg>
+
+<div class="raccourci" style="left:28px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M9 3h6l-1 6h-4z"/><path d="M10 9h4v12h-4z"/></svg></div>
+<div class="raccourci" style="right:28px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M3 8h4l2-3h6l2 3h4v11H3z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+<div class="barre-gestes"></div>
+</div>
+</body>
+</html>

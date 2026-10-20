@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse – Suivi sur le vélo : direction imminente</title>
+<!--
+  Écran 30 (direction B, recommandée). Fonction 7 du cadrage.
+  Instant montré : la prochaine direction est à 50 m. Sous 100 m, le
+  panneau passe au jaune : on le remarque du coin de l'œil sans lire.
+  Carte orientée dans le sens de la marche, zoom rapproché à l'approche
+  d'une direction. Partie déjà roulée en gris.
+  Valeurs : design/tokens.md. Carte : dessin simplifié en SVG.
+-->
+<style>
+:root{
+  --fond:#FFFFFF; --texte:#111111; --texte-2:#4A4A4A;
+  --contour-flottant:rgba(17,17,17,.35); --ombre:0 2px 8px rgba(0,0,0,.25);
+  --danger:#B3261E; --imminent:#FFD400; --itineraire:#C2007A; --position:#1A73E8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:#fff}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--texte);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden}
+.barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20}
+.barre-etat .icones{display:flex;gap:6px;align-items:center}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#111;z-index:30}
+
+.guidage{position:absolute;top:0;left:0;right:0;height:262px;background:var(--imminent);border-bottom:3px solid #111;padding:51px 16px 0 16px;z-index:10}
+.guidage .ligne{display:flex;align-items:center;gap:12px;height:124px}
+.guidage .dist{font-size:72px;font-weight:800;line-height:1;letter-spacing:-1px}
+.guidage .unite{font-size:40px;font-weight:800;letter-spacing:0}
+.guidage .consigne{font-size:28px;font-weight:700;line-height:1.2;margin-top:12px;padding-left:4px}
+
+svg.carte{position:absolute;left:0;top:262px;width:390px;height:438px}
+svg.carte *{vector-effect:non-scaling-stroke}
+.etiquettes,.relief{display:none}
+.courbes{opacity:.5}
+.position{position:absolute;left:175px;top:549px;width:40px;height:40px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.halo{position:absolute;left:165px;top:539px;width:60px;height:60px;border-radius:50%;background:rgba(26,115,232,.16)}
+.boussole{position:absolute;right:16px;top:280px;width:64px;height:64px;border-radius:32px;background:var(--fond);border:1px solid var(--contour-flottant);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
+.attribution{position:absolute;left:8px;top:682px;font-size:11px;color:#4A4A4A;background:rgba(255,255,255,.75);padding:1px 4px;border-radius:4px}
+
+.bas{position:absolute;left:0;right:0;top:700px;bottom:0;background:var(--fond);border-top:3px solid #111;display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px 0 20px}
+.bas .etiquette{font-size:20px;color:var(--texte-2);font-weight:600;line-height:1.1}
+.bas .valeur{font-size:36px;font-weight:800;line-height:1.1}
+.terminer{height:64px;min-width:150px;border-radius:32px;border:2px solid var(--danger);color:var(--danger);font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:4px}
+</style>
+</head>
+<body>
+<div class="ecran">
+
+<div class="guidage">
+  <div class="ligne">
+    <svg width="124" height="124" viewBox="0 0 96 96" aria-hidden="true"><path d="M62 88 V50 C62 38 54 32 42 32 H24" fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 14 L16 32 L36 50" fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div class="dist">50<span class="unite"> m</span></div>
+  </div>
+  <div class="consigne">Tournez à gauche</div>
+</div>
+
+<div class="barre-etat"><span>10:41</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1" opacity=".3"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="#111"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="13" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<svg class="carte" viewBox="11.4 99.6 177.3 199.1" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<g transform="rotate(110 100 239)">
+  <rect x="-400" y="-400" width="1200" height="1700" fill="#EEEBE4"/>
+  <path d="M-60 140 C60 120 120 160 170 150 C230 140 280 170 300 220 C310 280 290 340 250 360 C200 380 160 360 120 380 C80 395 30 380 -60 390 Z" fill="#D3E4C0"/>
+  <path d="M-60 -60 L120 -60 C110 20 60 60 -60 70 Z" fill="#D3E4C0"/>
+  <g class="courbes" fill="none" stroke="#C9B293" stroke-width="1">
+    <path d="M-60 190 C40 170 110 215 175 195 S265 150 330 170"/>
+    <path d="M-60 230 C40 210 110 260 180 235 S270 195 320 210"/>
+    <path d="M-60 300 C50 285 110 320 185 290 S275 260 300 280"/>
+    <path d="M-60 90 C30 70 100 110 160 95 S250 60 330 80"/>
+  </g>
+  <g class="courbes" fill="none" stroke="#B89C78" stroke-width="1.8">
+    <path d="M-60 265 C45 248 110 290 182 262 S272 228 310 245"/>
+  </g>
+  <g fill="none" stroke-linecap="round">
+    <path d="M138 -60 C148 120 128 260 150 400 S160 640 190 900" stroke="#BFB7AA" stroke-width="8"/>
+    <path d="M138 -60 C148 120 128 260 150 400 S160 640 190 900" stroke="#FFFFFF" stroke-width="5.5"/>
+  </g>
+  <g class="pistes" fill="none" stroke="#7A4A1E" stroke-width="2.5" stroke-linecap="round">
+    <path d="M250 300 C235 270 215 240 190 215"/>
+    <path d="M70 250 C66 280 62 305 60 330"/>
+    <path d="M60 330 C90 360 120 385 150 400"/>
+    <path d="M190 215 C200 170 215 120 210 60 C208 20 200 -20 205 -60"/>
+    <path d="M60 330 C40 360 20 400 -60 440"/>
+  </g>
+  <g class="sentiers" fill="none" stroke="#C62828" stroke-width="2.5" stroke-dasharray="5 4">
+    <path d="M190 215 C150 220 110 235 70 250"/>
+    <path d="M70 250 C40 220 20 180 -60 160"/>
+    <path d="M150 400 C175 385 195 360 205 330 S215 280 230 262"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C160 219 128 229 100 239" stroke="#8C8C8C" stroke-opacity=".7" stroke-width="8"/>
+    <path d="M100 239 C90 243 80 247 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="16"/>
+    <path d="M100 239 C90 243 80 247 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#C2007A" stroke-width="10"/>
+  </g>
+</g>
+</svg>
+
+<div class="halo"></div>
+<svg class="position" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#1A73E8" stroke="#fff" stroke-width="3"/><path d="M20 8 L28.5 28 L20 23.5 L11.5 28 Z" fill="#fff"/></svg>
+
+<div class="boussole" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut">
+  <svg width="36" height="36" viewBox="0 0 36 36" style="transform:rotate(110deg)"><path d="M18 3 L24 18 L12 18 Z" fill="#B3261E"/><path d="M18 33 L24 18 L12 18 Z" fill="#4A4A4A"/><text x="18" y="15" font-size="8" font-weight="800" fill="#fff" text-anchor="middle" font-family="-apple-system,Roboto,sans-serif">N</text></svg>
+</div>
+
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn</div>
+
+<div class="bas">
+  <div>
+    <div class="etiquette">Reste</div>
+    <div class="valeur">17,8 km</div>
+  </div>
+  <div class="terminer">Terminer</div>
+</div>
+
+<div class="indicateur"></div>
+</div>
+</body>
+</html>

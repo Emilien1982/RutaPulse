@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse – Téléphone verrouillé, iOS : Live Activity du suivi</title>
+<!--
+  Écran 32. Fonction 8 du cadrage, iOS.
+  Live Activity (bandeau en direct sur l'écran verrouillé), faite avec
+  expo-widgets (ADR 0006). Contrairement à la notification Android, sa mise
+  en page est à nous : on reprend le panneau de guidage de l'écran de suivi
+  (flèche, distance en gros, consigne), sur fond blanc pour le soleil.
+  Hauteur limitée par Apple à 160 points.
+  Valeurs : design/tokens.md. Fond d'écran et horloge : imitation d'iOS 26.
+-->
+<style>
+:root{--texte:#111111;--texte-2:#4A4A4A;--itineraire:#C2007A}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:#000}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden;background:linear-gradient(165deg,#3B5A4A 0%,#203A33 50%,#0F1D1A 100%);color:#fff}
+.barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600}
+.barre-etat .icones{display:flex;gap:6px;align-items:center}
+.ilot{position:absolute;top:11px;left:50%;margin-left:-62px;width:124px;height:36px;border-radius:18px;background:#000}
+.cadenas{position:absolute;top:58px;left:50%;margin-left:-8px}
+.date{position:absolute;top:86px;left:0;right:0;text-align:center;font-size:20px;font-weight:600;opacity:.92}
+.horloge{position:absolute;top:108px;left:0;right:0;text-align:center;font-size:100px;font-weight:700;line-height:1;letter-spacing:-2px;opacity:.95}
+
+.activite{position:absolute;left:12px;right:12px;top:556px;height:156px;background:#FFFFFF;color:var(--texte);border-radius:24px;padding:14px 18px}
+.activite .haut{display:flex;align-items:center;gap:12px}
+.activite .dist{font-size:52px;font-weight:800;line-height:1;letter-spacing:-1px}
+.activite .unite{font-size:30px;font-weight:800;letter-spacing:0}
+.activite .consigne{font-size:22px;font-weight:700;margin-top:4px}
+.activite .bas{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:15px;color:var(--texte-2)}
+.activite .bas b{color:var(--texte);font-size:17px;font-weight:700}
+.activite .app{display:flex;align-items:center;gap:6px}
+.activite .app i{width:18px;height:18px;border-radius:5px;background:var(--itineraire);display:flex;align-items:center;justify-content:center}
+
+.raccourci{position:absolute;bottom:46px;width:50px;height:50px;border-radius:25px;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#fff}
+</style>
+</head>
+<body>
+<div class="ecran">
+
+<div class="barre-etat"><span></span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="#fff"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="#fff"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="#fff" opacity=".5"/><rect x="2" y="2" width="14" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+<div class="ilot"></div>
+<svg class="cadenas" width="16" height="20" viewBox="0 0 16 20" fill="none" stroke="#fff" stroke-width="2"><rect x="1" y="8" width="14" height="11" rx="2.5" fill="#fff" stroke="none"/><path d="M4 8V5.5a4 4 0 0 1 8 0V8"/></svg>
+<div class="date">mardi 21 octobre</div>
+<div class="horloge">10:31</div>
+
+<div class="activite">
+  <div class="haut">
+    <svg width="72" height="72" viewBox="0 0 96 96" aria-hidden="true"><path d="M62 88 V50 C62 38 54 32 42 32 H24" fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 14 L16 32 L36 50" fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <div>
+      <div class="dist">200<span class="unite"> m</span></div>
+      <div class="consigne">Tournez à gauche</div>
+    </div>
+  </div>
+  <div class="bas">
+    <span class="app"><i><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"><path d="M6 18c0-7 12-5 12-12"/></svg></i>RutaPulse</span>
+    <span>Reste <b>21,3 km</b></span>
+  </div>
+</div>
+
+<div class="raccourci" style="left:46px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M9 3h6l-1 6h-4z"/><path d="M10 9h4v12h-4z"/></svg></div>
+<div class="raccourci" style="right:46px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M3 8h4l2-3h6l2 3h4v11H3z"/><circle cx="12" cy="13" r="3.5"/></svg></div>
+<div class="indicateur"></div>
+</div>
+</body>
+</html>
