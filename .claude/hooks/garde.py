@@ -28,15 +28,34 @@ def bloquer(message):
     sys.exit(2)
 
 
+def racine_git(chemin):
+    # Nearest folder holding a ".git" entry: a folder in the main checkout,
+    # a file in a git worktree. A worktree under .claude/worktrees/ is thus
+    # its own root, and its files are not seen as protected .claude/ files.
+    dossier = os.path.dirname(chemin)
+    while True:
+        if os.path.exists(os.path.join(dossier, ".git")):
+            return dossier
+        parent = os.path.dirname(dossier)
+        if parent == dossier:
+            return None
+        dossier = parent
+
+
 def chemin_relatif(entree):
-    # Project root = two levels above this script (.claude/hooks/garde.py).
     # CLAUDE_PROJECT_DIR is not used: it points to the folder where the
     # session started, which can be a parent folder.
-    racine = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     params = entree.get("tool_input", {})
     chemin = params.get("file_path") or params.get("notebook_path") or ""
     base = entree.get("cwd") or os.getcwd()
     absolu = os.path.abspath(os.path.join(base, chemin))
+    projet = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    racine = racine_git(absolu)
+    worktrees = os.path.join(projet, ".claude", "worktrees") + os.sep
+    # Only this project and its own worktrees count; another repository on
+    # the disk stays "outside the project".
+    if racine is None or not (racine == projet or racine.startswith(worktrees)):
+        racine = projet
     return os.path.relpath(absolu, racine), absolu
 
 
