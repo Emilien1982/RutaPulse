@@ -1,0 +1,93 @@
+{
+  "name": "Nancy",
+  "bbox": {
+    "lonMin": 5.84,
+    "latMin": 48.47,
+    "lonMax": 6.52,
+    "latMax": 48.92
+  },
+  "osmDate": "2026-10-18T20:25:06Z",
+  "files": {
+    "carte.pmtiles": {
+      "bytes": 17599345,
+      "zoom": [
+        0,
+        14
+      ],
+      "schema": "OpenMapTiles"
+    },
+    "relief.pmtiles": {
+      "bytes": 8775665,
+      "zoom": [
+        0,
+        12
+      ],
+      "encoding": "terrarium",
+      "tileSize": 512
+    },
+    "courbes.pmtiles": {
+      "bytes": 3810038,
+      "zoom": [
+        11,
+        14
+      ],
+      "layer": "contour",
+      "attributes": [
+        "ele",
+        "major"
+      ]
+    },
+    "circuits.geojson": {
+      "bytes": 55994
+    }
+  },
+  "totalBytes": 30185048,
+  "attributions": {
+    "map": [
+      "© OpenStreetMap",
+      "© OpenMapTiles"
+    ],
+    "relief": "© Mapterhorn (https://mapterhorn.com/attribution)",
+    "reliefSources": [
+      {
+        "source": "frhd2154b",
+        "name": "MNT LiDAR HD",
+        "producer": "Institut national de l'information géographique et forestière IGN",
+        "license": "Licence Ouverte / Open Licence version 2.0",
+        "resolution": 0.5,
+        "website": "https://www.data.gouv.fr/datasets/mnt-lidar-hd"
+      },
+      {
+        "source": "frrgealti1metro",
+        "name": "RGE ALTI® 1m Metropolitan France",
+        "producer": "Institut national de l'information géographique et forestière IGN",
+        "license": "Licence Ouverte / Open Licence version 2.0",
+        "resolution": 1.0,
+        "website": "https://geoservices.ign.fr/rgealti"
+      },
+      {
+        "source": "frrgealti5metro",
+        "name": "RGE ALTI® 5m Metropolitan France",
+        "producer": "Institut national de l'information géographique et forestière IGN",
+        "license": "Licence Ouverte / Open Licence version 2.0",
+        "resolution": 5.0,
+        "website": "https://geoservices.ign.fr/rgealti"
+      },
+      {
+        "source": "glo30",
+        "name": "COPERNICUS GLO-30",
+        "producer": "DLR e.V. 2010-2014, Airbus Defence and Space GmbH 2014-2018, provided under COPERNICUS by the European Union and ESA. All rights reserved. Accessed via OpenTopography and AWS Open Data.",
+        "license": "COPERNICUS full, free and open license",
+        "resolution": 30.0,
+        "website": "https://dataspace.copernicus.eu/explore-data/data-collections/copernicus-contributing-missions/collections-description/COP-DEM"
+      }
+    ],
+    "contours": "SRTM 1 arc-second (NASA), via AWS Terrain Tiles (skadi)"
+  },
+  "tools": {
+    "planetiler": "0.10.2",
+    "gdal": "3.10.3",
+    "tippecanoe": "tippecanoe v2.79.0",
+    "pmtiles": "pmtiles 1.31.2"
+  }
+}

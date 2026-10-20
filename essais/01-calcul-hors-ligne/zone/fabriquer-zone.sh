@@ -3,16 +3,19 @@
 # skadi elevation tiles, zone.json and timing measures.
 # Re-runnable: downloads and extracts are skipped when the file already exists
 # (set FORCE=1 to rebuild everything except the Geofabrik download).
+# Optional: OUT_DIR changes the output folder (default: ./sortie). STEP_HOOK
+# (path of a script called with "start|end <step>") and TIME_LOG (file filled by
+# /usr/bin/time) are used by essais/03-carte-hors-ligne/zone/fabriquer-paquet.sh.
 set -euo pipefail
 
 HERE="$(cd "$(dirname "$0")" && pwd)"
-OUT="$HERE/sortie"
+OUT="${OUT_DIR:-$HERE/sortie}"
 WORK="$OUT/travail"
 PKG="$OUT/nancy"
 PBF_URL="https://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf"
-BBOX="5.84,48.47,6.52,48.92"   # lon_min,lat_min,lon_max,lat_max
+BBOX="${BBOX:-5.84,48.47,6.52,48.92}"   # lon_min,lat_min,lon_max,lat_max
 IMAGE="ghcr.io/valhalla/valhalla:3.9.1"
-ZONE_NAME="Nancy"
+ZONE_NAME="${ZONE_NAME:-Nancy}"
 
 mkdir -p "$WORK" "$PKG"
 MES="$OUT/mesures.txt"
@@ -23,14 +26,28 @@ step() { # step "name" command...
   local name="$1"; shift
   local t0 t1
   echo "== $name"
+  if [ -n "${STEP_HOOK:-}" ]; then "$STEP_HOOK" start "$name"; fi
   t0=$(now)
   "$@"
   t1=$(now)
+  if [ -n "${STEP_HOOK:-}" ]; then "$STEP_HOOK" end "$name"; fi
   python3 -c "print('%-24s %8.1f s' % ('$name', $t1 - $t0))" | tee -a "$MES"
 }
 mb() { python3 -c "print('%.1f' % ($1 / 1048576))"; }
-size_of_file() { stat -f %z "$1"; }
-size_of_dir() { find "$1" -type f -exec stat -f %z {} + | awk '{s += $1} END {print s + 0}'; }   # sum of exact file sizes (bytes)
+# exact size in bytes: BSD stat on macOS, GNU stat on Linux
+if [ "$(uname)" = Darwin ]; then STAT_SIZE=(stat -f %z); TIME_FLAG=-l; else STAT_SIZE=(stat -c %s); TIME_FLAG=-v; fi
+size_of_file() { "${STAT_SIZE[@]}" "$1"; }
+size_of_dir() { find "$1" -type f -exec "${STAT_SIZE[@]}" {} + | awk '{s += $1} END {print s + 0}'; }   # sum of exact file sizes (bytes)
+
+# Run a command under /usr/bin/time (peak memory) when TIME_LOG is set.
+tm() {
+  if [ -n "${TIME_LOG:-}" ]; then
+    echo "CMD $1" >> "$TIME_LOG"
+    /usr/bin/time "$TIME_FLAG" -o "$TIME_LOG" -a "$@"
+  else
+    "$@"
+  fi
+}
 
 # Run a Valhalla tool in Docker; the whole work dir is mounted on /data.
 vdocker() { docker run --rm -v "$WORK:/data" -w /data "$IMAGE" "$@"; }
@@ -43,7 +60,7 @@ do_download() {
 
 do_extract() {
   rm -f "$WORK/nancy.osm.pbf"
-  osmium extract -b "$BBOX" --strategy=smart -o "$WORK/nancy.osm.pbf" "$WORK/lorraine.osm.pbf"
+  tm osmium extract -b "$BBOX" --strategy=smart -o "$WORK/nancy.osm.pbf" "$WORK/lorraine.osm.pbf"
 }
 
 do_config() {

@@ -52,6 +52,21 @@ d'architecture).
   plus besoin de son Mac pour fabriquer une zone. À vérifier : mémoire,
   disque et durée suffisants sur les machines gratuites.
 
+## Résultat des essais 1 et 3 (2026-10-20)
+
+- Paquet complet de la zone de Nancy : environ 106 Mo (calcul et altitude
+  77 Mo, carte, relief et courbes 29 Mo, circuits 56 Ko). Fabrication :
+  environ 2 minutes sur le Mac, avec 2,7 Go de mémoire au plus.
+- **Circuits VTT balisés** (relations `route=mtb`) : extraits en GeoJSON
+  dans le paquet. Il n'y en a que 2 dans la zone de Nancy, contre 314 dans
+  toute la Lorraine : l'intérêt de la fonction 9 dépend de la zone.
+- **GitHub Actions** : jugé faisable sur une machine gratuite (mesures très
+  en dessous des limites). Workflow écrit mais inactif, dans
+  `essais/03-carte-hors-ligne/actions/`. Pas encore prouvé par un vrai
+  lancement.
+- Planetiler télécharge 1,38 Go d'annexes (eau, Natural Earth) une seule
+  fois, même pour une zone sans mer.
+
 ## Alternatives rejetées
 
 - **Zone libre dessinée au doigt dans l'app** : demande un serveur qui

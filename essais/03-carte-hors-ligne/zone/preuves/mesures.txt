@@ -1,0 +1,36 @@
+1-extrait-lorraine                9.2 s
+2-altitudes-hgt                   2.3 s
+3-annexes-planetiler             13.3 s
+4-carte                          61.6 s
+5-relief                          3.8 s
+dry-run zoom 13 to 13 (https://download.mapterhorn.com/6-33-22.pmtiles)
+2026/10/20 19:12:22 extract.go:612: Extract transferred 21 MB (overfetch 0.05) for an archive size of 20 MB
+dry-run zoom 13 to 14 (https://download.mapterhorn.com/6-33-22.pmtiles)
+2026/10/20 19:12:23 extract.go:612: Extract transferred 99 MB (overfetch 0.05) for an archive size of 95 MB
+dry-run zoom 13 to 15 (https://download.mapterhorn.com/6-33-22.pmtiles)
+2026/10/20 19:12:24 extract.go:612: Extract transferred 406 MB (overfetch 0.05) for an archive size of 387 MB
+relief-z13-seul (mesure)         20045883 B      19.1 Mo
+5b-relief-z13-mesure              4.7 s
+6-courbes                         5.7 s
+7-circuits                       14.8 s
+
+Tailles (octets / Mo)
+extrait-lorraine.osm.pbf        171198930 B     163.3 Mo
+annexes-planetiler             1446715663 B    1379.7 Mo
+  annexe lake_centerline.shp.zip     80906805 B      77.2 Mo
+  annexe natural_earth_vector.sqlite.zip    434210731 B     414.1 Mo
+  annexe water-polygons-split-3857.zip    931598127 B     888.4 Mo
+carte.pmtiles                    17599345 B      16.8 Mo
+relief.pmtiles                    8775665 B       8.4 Mo
+courbes.pmtiles                   3810038 B       3.6 Mo
+total carte+relief+courbes       30185048 B      28.8 Mo
+circuits.geojson                    55994 B       0.1 Mo
+date OSM: 2026-10-18T20:25:06Z
+
+Circuits
+Zone 5.84,48.47,6.52,48.92: 2 circuits, 2 continus, 0 discontinus, 0 sont aussi sous-relation d'un autre circuit
+Lorraine (information): 314 circuits, 282 continus, 32 discontinus, 98 sont aussi sous-relation d'un autre circuit
+Lorraine : 14 circuits avec un écart max > 100 m
+Circuits de la zone (id | nom | longueur m | morceaux | plus grand écart m)
+11656724 | - | 22455 | 1 | 0
+15712020 | Petite Suisse Lorraine à VTT | 35043 | 1 | 0

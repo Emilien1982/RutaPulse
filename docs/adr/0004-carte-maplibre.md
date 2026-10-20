@@ -61,6 +61,21 @@ d'architecture).
   mais je ne l'ai pas vu documenté pour React Native.
 - À éprouver (essai 3) : la fabrication des courbes de niveau et leur poids.
 
+## Résultat de l'essai 3 (2026-10-20)
+
+Détail : [docs/essais/03-carte-hors-ligne.md](../essais/03-carte-hors-ligne.md).
+
+- **Décision confirmée** : MapLibre React Native 11.5.0 lit les PMTiles
+  locaux du premier coup, sur Android et iOS. Pas de tuile vide du zoom 8
+  au zoom 16 ; courbes visibles dès le zoom 13 ; attributions affichées.
+- Zone de Nancy : carte 16,8 Mo, relief 8,4 Mo (zoom 12 au plus), courbes
+  3,6 Mo, soit 28,8 Mo au total.
+- À reprendre pendant le développement : les trottoirs sont dessinés comme
+  des sentiers ; les courbes, faites à partir du SRTM (maille de 30 m), sont
+  anguleuses de près.
+- Mode avion : prouvé sur Android. Sur iOS, aucune connexion de l'app (le
+  simulateur n'a pas de vrai mode avion).
+
 ## Sources
 
 - MapLibre React Native : https://github.com/maplibre/maplibre-react-native/releases

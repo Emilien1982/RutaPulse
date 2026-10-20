@@ -1,0 +1,23 @@
+pmtiles spec version: 3
+tile type: mvt
+bounds: (long: 5.829861, lat: 48.460139) (long: 6.529861, lat: 48.930139)
+min zoom: 11
+max zoom: 14
+center: (long: 6.119385, lat: 48.785151)
+center zoom: 14
+addressed tiles count: 1489
+tile entries count: 1489
+tile contents count: 1489
+clustered: true
+internal compression: gzip
+tile compression: gzip
+description Nancy contour lines
+generator_options tippecanoe -o /Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-3-0d590d/essais/03-carte-hors-ligne/zone/sortie/travail/courbes.pmtiles -n courbes -N 'Nancy contour lines' -l contour -Z11 -z14 --drop-densest-as-needed '--simplification=4' --force -q /Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-3-0d590d/essais/03-carte-hors-ligne/zone/sortie/travail/contours.geojsonl
+vector_layers <object, use --metadata to view full JSON metadata>
+name courbes
+type overlay
+version 2
+generator tippecanoe v2.79.0
+antimeridian_adjusted_bounds 5.829861,48.460139,6.529861,48.930139
+tilestats <object, use --metadata to view full JSON metadata>
+format pbf

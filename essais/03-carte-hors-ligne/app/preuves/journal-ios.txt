@@ -1,0 +1,16 @@
+# iOS: lancement 19:39:31 (nettop demarre 3 s avant, par nom de process). Lignes du journal systeme mentionnant demotiles : 0
+# URLs vues dans le journal (hote:port) :
+   7 http://localhost:8082
+# erreurs/avertissements MapLibre :
+2026-10-20 19:39:34.224 Df vttnavessai3[49564:2f4655f] (MapLibre) MLRNMapView WARNING UIViewController.automaticallyAdjustsScrollViewInsets is deprecated use MLNMapView.automaticallyAdjustContentInset instead.
+# journal JS
+   2  LOG  VTT_ESSAI3 commande circuits
+   1  LOG  VTT_ESSAI3 commande z10
+   1  LOG  VTT_ESSAI3 commande z12
+   1  LOG  VTT_ESSAI3 commande z13
+   1  LOG  VTT_ESSAI3 commande z14
+   1  LOG  VTT_ESSAI3 commande z16
+   1  LOG  VTT_ESSAI3 commande z8
+   6  LOG  VTT_ESSAI3 onDidFinishLoadingMap
+   6  LOG  VTT_ESSAI3 onDidFinishLoadingStyle
+   6  LOG  VTT_ESSAI3 onDidFinishRenderingMapFully

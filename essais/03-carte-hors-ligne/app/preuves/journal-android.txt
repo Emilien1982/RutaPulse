@@ -1,0 +1,9 @@
+# Android: lignes MapLibre/Mbgl/glyph/pmtiles (hors setters au demarrage) + callbacks
+10-20 19:37:15.790  7316  7362 I ReactNativeJS: VTT_ESSAI3 onDidFinishLoadingStyle
+10-20 19:37:16.034  7316  7362 I ReactNativeJS: VTT_ESSAI3 onDidFinishRenderingMapFully
+10-20 19:37:16.035  7316  7362 I ReactNativeJS: VTT_ESSAI3 onDidFinishLoadingMap
+10-20 19:38:56.860  7316  7362 I ReactNativeJS: VTT_ESSAI3 onDidFinishLoadingStyle
+10-20 19:38:56.934  7316  7362 I ReactNativeJS: VTT_ESSAI3 onDidFinishRenderingMapFully
+10-20 19:38:56.934  7316  7362 I ReactNativeJS: VTT_ESSAI3 onDidFinishLoadingMap
+10-20 19:39:02.425  7316  7362 I ReactNativeJS: VTT_ESSAI3 onDidFinishLoadingStyle
+# fin

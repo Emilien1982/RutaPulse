@@ -1,0 +1,38 @@
+Machine : Darwin arm64, 10 coeurs logiques
+
+Memoire : Docker = max de MemUsage (docker stats, 1 s) ; Mac/Linux = maximum resident set size (/usr/bin/time)
+Disque pic = dossier de sortie complet (du, toutes les 5 s). Reseau = octets recus par l'interface (indicatif).
+
+etape                                duree s  disque Mo  reseau Mo  memoire pic (Mo)
+paquet/0a-images-docker                    2          0          0  -
+paquet/0b-extrait-lorraine                 1        163          0  -
+valhalla/1-telechargement                  1        327          0  -
+valhalla/2-decoupe                         3        355          0  hote: 2704 (osmium)
+valhalla/3a-admins                         2        361          0  -
+valhalla/3b-altitude                       3        411         16  -
+valhalla/4-tuiles                          6        438          0  docker: 396 (valhalla:3.9.1)
+valhalla/5-archive                         2        465          0  -
+carte/1-extrait-lorraine                   1        515          0  -
+carte/2-altitudes-hgt                      4        565         16  -
+carte/3-annexes-planetiler                19       1951       1452  docker: 180 (planetiler:0.10.2)
+carte/4-carte                             55       2767          1  docker: 2391 (planetiler:0.10.2)
+carte/5-relief                             4       1976          9  hote: 48 (pmtiles)
+carte/6-courbes                            6       2041          0  docker: 28 (gdal:alpine-small-3.10.3); hote: 159 (tippecanoe), 23 (python3)
+carte/7-circuits                          17       2041          0  hote: 1588 (python3)
+TOTAL                                    126  (2.1 min)
+Disque pic de tout le pipeline : 2767 Mo (dossier de sortie, hors images Docker)
+
+Volume TELECHARGE (octets exacts de fichiers ; images = taille decompressee locale)
+  extrait Geofabrik Lorraine                                                  163.3 Mo
+  annexes Planetiler (sources/)                                              1379.7 Mo
+  altitude Valhalla (tuiles .hgt.gz, Content-Length)                           15.3 Mo
+  altitude carte (memes .hgt.gz, 2e telechargement par fabriquer-carte.sh)     15.3 Mo
+  relief Mapterhorn (relief.pmtiles, sans les en-tetes)                         8.4 Mo
+  sous-total donnees (sans images)                                           1581.9 Mo
+  image ghcr.io/valhalla/valhalla:3.9.1                                       224.7 Mo
+  image ghcr.io/onthegomap/planetiler:0.10.2                                  290.1 Mo
+  image ghcr.io/osgeo/gdal:alpine-small-3.10.3                                 33.5 Mo
+  sous-total images (taille decompressee)                                     548.3 Mo
+
+Paquets produits
+  carte : 28.8 Mo ; valhalla+altitude : 76.8 Mo

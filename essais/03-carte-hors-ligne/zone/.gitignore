@@ -1,0 +1,6 @@
+sortie/
+*.pbf
+*.pmtiles
+*.geojson
+*.geojsonl
+sortie-paquet/

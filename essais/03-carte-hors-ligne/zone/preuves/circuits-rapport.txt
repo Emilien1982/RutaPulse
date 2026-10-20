@@ -1,0 +1,6 @@
+Zone 5.84,48.47,6.52,48.92: 2 circuits, 2 continus, 0 discontinus, 0 sont aussi sous-relation d'un autre circuit
+Lorraine (information): 314 circuits, 282 continus, 32 discontinus, 98 sont aussi sous-relation d'un autre circuit
+Lorraine : 14 circuits avec un écart max > 100 m (dont 1 sans voisin à moins de 50 km)
+Circuits de la zone (id | nom | longueur m | morceaux | plus grand écart m)
+11656724 | - | 22455 | 1 | 0
+15712020 | Petite Suisse Lorraine à VTT | 35043 | 1 | 0

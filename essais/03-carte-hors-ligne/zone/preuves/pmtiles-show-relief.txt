@@ -1,0 +1,14 @@
+pmtiles spec version: 3
+tile type: webp
+bounds: (long: 5.840000, lat: 48.470000) (long: 6.520000, lat: 48.920000)
+min zoom: 0
+max zoom: 12
+center: (long: 6.180000, lat: 48.695000)
+center zoom: 6
+addressed tiles count: 109
+tile entries count: 109
+tile contents count: 109
+clustered: true
+internal compression: gzip
+tile compression: none
+attribution <a href="https://mapterhorn.com/attribution">© Mapterhorn</a>

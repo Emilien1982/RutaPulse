@@ -1,0 +1,75 @@
+# NOT ACTIVE: this file is outside .github/workflows/ on purpose (see LISEZMOI.md).
+# Builds a complete zone package on a free GitHub machine and publishes it as a release.
+name: Fabriquer une zone
+
+on:
+  workflow_dispatch:
+    inputs:
+      nom:
+        description: "Nom de la zone"
+        required: true
+        default: "Nancy"
+      limites:
+        description: "Limites lon_min,lat_min,lon_max,lat_max"
+        required: true
+        default: "5.84,48.47,6.52,48.92"
+
+permissions:
+  contents: write   # create the release
+
+jobs:
+  fabriquer:
+    # ubuntu-24.04 rather than ubuntu-latest: the apt versions below are those of Ubuntu 24.04 (noble)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60   # Mac (10 cores): 2 min of work; x4 for 4 cores and slow downloads, with margin
+    env:
+      PMTILES_VERSION: "1.31.2"
+      ZONE_NAME: ${{ inputs.nom }}
+      BBOX: ${{ inputs.limites }}
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      # osmium-tool 1.16.0 and tippecanoe 2.49.0 are the Ubuntu 24.04 (noble, universe) packages:
+      # http://archive.ubuntu.com/ubuntu/dists/noble/universe/binary-amd64/Packages.gz
+      # "time" provides /usr/bin/time, used for the memory measures.
+      - name: Installer osmium, tippecanoe, time
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y osmium-tool=1.16.0-1build1 tippecanoe=2.49.0-1build1 time
+
+      # Release asset of go-pmtiles v1.31.2 (checked on 2026-10-20):
+      # https://github.com/protomaps/go-pmtiles/releases/download/v1.31.2/go-pmtiles_1.31.2_Linux_x86_64.tar.gz
+      - name: Installer pmtiles
+        run: |
+          mkdir -p "$RUNNER_TEMP/pmtiles" "$HOME/bin"
+          curl -fL -o "$RUNNER_TEMP/pmtiles.tar.gz" \
+            "https://github.com/protomaps/go-pmtiles/releases/download/v${PMTILES_VERSION}/go-pmtiles_${PMTILES_VERSION}_Linux_x86_64.tar.gz"
+          tar -xzf "$RUNNER_TEMP/pmtiles.tar.gz" -C "$RUNNER_TEMP/pmtiles" pmtiles
+          install "$RUNNER_TEMP/pmtiles/pmtiles" "$HOME/bin/pmtiles"
+          echo "$HOME/bin" >> "$GITHUB_PATH"
+
+      - name: Tirer les images Docker
+        run: |
+          docker pull ghcr.io/valhalla/valhalla:3.9.1
+          docker pull ghcr.io/onthegomap/planetiler:0.10.2
+          docker pull ghcr.io/osgeo/gdal:alpine-small-3.10.3
+
+      - name: Fabriquer le paquet
+        run: essais/03-carte-hors-ligne/zone/fabriquer-paquet.sh
+
+      - name: Publier en release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          slug=$(echo "$ZONE_NAME" | tr '[:upper:]' '[:lower:]' | tr -c 'a-z0-9\n' '-')
+          tag="zone-${slug}-$(date +%Y%m%d)"
+          out=essais/03-carte-hors-ligne/zone/sortie-paquet
+          tar -czf "$out/elevation.tar.gz" -C "$out/valhalla/nancy" elevation
+          gh release create "$tag" --title "Zone $ZONE_NAME" \
+            --notes "Paquet de zone $ZONE_NAME, limites $BBOX. Fabriqué par GitHub Actions." \
+            "$out"/carte/nancy-carte/* \
+            "$out/valhalla/nancy/valhalla_tiles.tar" \
+            "$out/valhalla/nancy/zone.json" \
+            "$out/elevation.tar.gz" \
+            "$out/mesures-paquet.txt"
