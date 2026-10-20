@@ -23,7 +23,7 @@
 |---|---|---|
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
-| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 à lancer |
+| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 fait (branche `claude/essai-1-9fd65c`), essai 1-bis proposé |
 | 4+ | Développement par petites phases | — |
 
 ## Décisions prises
@@ -41,11 +41,14 @@
 - 2026-10-19 — TanStack DB retiré de la v1 : Query, qui lit SQLite, suffit.
 - 2026-10-19 — Essais sur simulateurs iOS et Android, pour limiter les manipulations d'Émilien.
 - 2026-10-19 — Stack validée : Expo + React Native, MapLibre, Valhalla sur le téléphone, TanStack Query/Store/Pacer (ADR 0001 à 0010 acceptés).
+- 2026-10-19 — Zone test : autour de Nancy (forêt de Haye, Petite Suisse lorraine).
+- 2026-10-20 — Essai 1 : calcul hors ligne prouvé sur simulateurs Android et iOS. Émilien juge les itinéraires praticables (C3), mais peu intéressants en VTT : trop de ville, de laies et de petites boucles, et les pistes sont évitées. La création hors ligne reste en v1.
+- 2026-10-20 — Le dénivelé reste en v1 : il est fourni par Valhalla, son calcul n'est pas le problème.
 - 2026-10-19 — Une session par phase d'exécution ; la session de pilotage reste avec Émilien.
 
 ## Décisions en attente
 
-- Zone test de l'essai 1.
+- Lancer l'essai 1-bis (qualité du choix des chemins VTT).
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
