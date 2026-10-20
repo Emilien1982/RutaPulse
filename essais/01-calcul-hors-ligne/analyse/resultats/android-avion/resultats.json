@@ -1,0 +1,111 @@
+{
+  "plateforme": "android",
+  "modele_simulateur": "Pixel_6_API_34_arm64 (emulateur, Android 14) mode avion",
+  "note": null,
+  "build": "release",
+  "horodatage": "2026-10-19T21:22:21.377Z",
+  "cible_open": "/data/user/0/fr.vttnav.essai1/files/zones/nancy/valhalla_tiles.tar",
+  "open_ms": 1082.1,
+  "r_2km": {
+    "R1": {
+      "ok": true,
+      "ms": 208.3,
+      "points": 12
+    },
+    "R2": {
+      "ok": true,
+      "ms": 50.6,
+      "points": 19
+    },
+    "R3": {
+      "ok": true,
+      "ms": 36.8,
+      "points": 14
+    },
+    "R4": {
+      "ok": true,
+      "ms": 100.4,
+      "points": 22
+    },
+    "R5": {
+      "ok": true,
+      "ms": 44.7,
+      "points": 24
+    }
+  },
+  "premier_calcul_ms": 208.3,
+  "c2": {
+    "ms": [
+      55,
+      39.3,
+      46.1,
+      20.9,
+      33.6,
+      32.8,
+      27.7,
+      33.6,
+      34.3,
+      35.9
+    ],
+    "mediane_ms": 33.95,
+    "reussites": 10
+  },
+  "c9": {
+    "calculs": 50,
+    "reussites": 50,
+    "erreurs": 0,
+    "duree_totale_ms": 2256.9,
+    "ms": [
+      22.8,
+      44.3,
+      36.1,
+      89.5,
+      36.7,
+      15.5,
+      45.3,
+      20.3,
+      81.4,
+      39,
+      21.1,
+      43.4,
+      29.2,
+      85.6,
+      45.9,
+      22.5,
+      46.8,
+      35.9,
+      89.5,
+      48.4,
+      20.8,
+      45.2,
+      37.8,
+      81,
+      29.8,
+      30,
+      42.3,
+      20.4,
+      81.8,
+      54.9,
+      21.7,
+      49.3,
+      26.9,
+      75.4,
+      47.1,
+      20,
+      47.3,
+      28,
+      89.5,
+      46.6,
+      25.3,
+      47.4,
+      20.2,
+      84.4,
+      52.4,
+      21.1,
+      46.3,
+      22.4,
+      83.9,
+      46.7
+    ]
+  }
+}

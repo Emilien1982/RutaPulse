@@ -1,0 +1,111 @@
+{
+  "plateforme": "ios",
+  "modele_simulateur": "iPhone 17 simulateur, iOS 26.5",
+  "note": null,
+  "build": "release",
+  "horodatage": "2026-10-19T21:24:37.358Z",
+  "cible_open": "/Users/utilisateur/Library/Developer/CoreSimulator/Devices/DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D/data/Containers/Data/Application/D5BF0B8D-50B1-4080-A0D5-BE08EB31D25D/Documents/zones/nancy/valhalla_tiles.tar",
+  "open_ms": 38,
+  "r_2km": {
+    "R1": {
+      "ok": true,
+      "ms": 123.3,
+      "points": 12
+    },
+    "R2": {
+      "ok": true,
+      "ms": 14,
+      "points": 19
+    },
+    "R3": {
+      "ok": true,
+      "ms": 16.2,
+      "points": 14
+    },
+    "R4": {
+      "ok": true,
+      "ms": 37.3,
+      "points": 22
+    },
+    "R5": {
+      "ok": true,
+      "ms": 11.1,
+      "points": 24
+    }
+  },
+  "premier_calcul_ms": 123.3,
+  "c2": {
+    "ms": [
+      6.9,
+      6.8,
+      6.1,
+      5.6,
+      5.5,
+      5.6,
+      6.1,
+      5.9,
+      5.7,
+      5.9
+    ],
+    "mediane_ms": 5.9,
+    "reussites": 10
+  },
+  "c9": {
+    "calculs": 50,
+    "reussites": 50,
+    "erreurs": 0,
+    "duree_totale_ms": 503.2,
+    "ms": [
+      4.5,
+      8.8,
+      7.7,
+      19.2,
+      9.9,
+      4.8,
+      8.7,
+      7.3,
+      19.3,
+      9.7,
+      5.1,
+      7.7,
+      7.4,
+      19.1,
+      10,
+      4.9,
+      8.2,
+      7.9,
+      19.7,
+      10.5,
+      4.9,
+      8.8,
+      7.6,
+      19.2,
+      10,
+      4.6,
+      8.1,
+      7.1,
+      19.3,
+      9.4,
+      4.4,
+      8.2,
+      7.6,
+      20.2,
+      9.7,
+      4.9,
+      8.4,
+      7.2,
+      20,
+      9.4,
+      4.5,
+      8,
+      8.2,
+      19.2,
+      9.9,
+      4.8,
+      8.7,
+      7.6,
+      20,
+      10.5
+    ]
+  }
+}

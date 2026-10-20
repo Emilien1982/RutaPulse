@@ -1,0 +1,18 @@
+--- graph.lua	2026-10-20 17:57:53
++++ graph-5-lua-piste.lua	2026-10-20 17:57:53
+@@ -1579,7 +1579,14 @@
+      if kv["highway"] == "construction" then
+         use = 43
+      elseif kv["highway"] == "track" then
+-        use = 3
++        -- 1BIS-5: a track open to bicycles gets use=path (27) instead of track (3).
++        -- bicyclecost.cc: a track costs 1.0 + 0.5 (track_factor_ = 0.5 + use_roads), a path 1.0 + 0.2
++        -- (path_cyclelane_factor_[shared]); so a track is 25 % dearer than a path. Now they cost the same.
++        if kv["bike_forward"] == "true" or kv["bike_backward"] == "true" then
++          use = 27
++        else
++          use = 3
++        end
+      elseif kv["highway"] == "living_street" then
+         use = 10
+      elseif use == nil and kv["highway"] == "service" then

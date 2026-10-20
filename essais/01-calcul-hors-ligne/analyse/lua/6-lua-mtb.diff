@@ -1,0 +1,35 @@
+--- graph.lua	2026-10-20 17:57:53
++++ graph-6-lua-mtb.lua	2026-10-20 17:57:53
+@@ -1579,7 +1579,14 @@
+      if kv["highway"] == "construction" then
+         use = 43
+      elseif kv["highway"] == "track" then
+-        use = 3
++        -- 1BIS-5: a track open to bicycles gets use=path (27) instead of track (3).
++        -- bicyclecost.cc: a track costs 1.0 + 0.5 (track_factor_ = 0.5 + use_roads), a path 1.0 + 0.2
++        -- (path_cyclelane_factor_[shared]); so a track is 25 % dearer than a path. Now they cost the same.
++        if kv["bike_forward"] == "true" or kv["bike_backward"] == "true" then
++          use = 27
++        else
++          use = 3
++        end
+      elseif kv["highway"] == "living_street" then
+         use = 10
+      elseif use == nil and kv["highway"] == "service" then
+@@ -1726,6 +1733,16 @@
+     end
+   end
+ 
++  -- 1BIS-6: a path (or a track made path by 1BIS-5) open to bicycles that is rated mtb:scale 0 to 2, or is a
++  -- member of a relation route=mtb (tag mtb_route=yes added by the osmium preprocessing), is given the
++  -- "separated" cycle lane (3). bicyclecost.cc: path_cyclelane_factor_[3] = use_roads * 0.8 = 0 against
++  -- 0.2 for the shared lane (1), so these ways cost 1.0 instead of 1.2 per unit (17 % less).
++  if use == 27 and (kv["bike_forward"] == "true" or kv["bike_backward"] == "true") and
++     (kv["mtb_route"] == "yes" or string.match(kv["mtb:scale"] or "", "^[012]")) then
++    cycle_lane_right = 3
++    cycle_lane_left = 3
++  end
++
+   kv["cycle_lane_right"] = cycle_lane_right
+   kv["cycle_lane_left"] = cycle_lane_left
+ 

@@ -1,0 +1,8 @@
+{
+  "locations": [],
+  "costing": "bicycle",
+  "costing_options": {"bicycle": {"bicycle_type": "mountain", "use_roads": 0}},
+  "directions_type": "instructions",
+  "directions_options": {"language": "fr-FR", "units": "kilometers"},
+  "elevation_interval": 30
+}

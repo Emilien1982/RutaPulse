@@ -62,6 +62,28 @@ d'architecture).
 - Inconnu jusqu'à l'essai 1 : taille ajoutée à l'app, mémoire, temps de
   calcul, qualité des itinéraires VTT en France.
 
+## Résultat des essais 1 et 1-bis (2026-10-20)
+
+Détail : [docs/essais/01-calcul-hors-ligne.md](../essais/01-calcul-hors-ligne.md).
+
+- **Décision confirmée** : Valhalla marche hors ligne dans l'app Expo, sur
+  les simulateurs Android et iOS. Le calcul prend moins de 0,1 s, la zone
+  de Nancy pèse 77 Mo et l'app 8 Mo de plus (Android). Aucune erreur sur
+  50 calculs. Émilien juge les itinéraires praticables.
+- Réglage retenu : `bicycle_type: mountain`, `use_roads: 0`, points
+  intermédiaires `through`. Aucun autre réglage (requête ou fabrication
+  des tuiles) n'a apporté de gain net.
+- **Limite connue** : Valhalla cherche le chemin le moins coûteux entre les
+  points. Il ne cherche pas une boucle intéressante. Dans son code, une
+  piste coûte plus qu'un sentier, et ce coût ne se règle pas sans
+  maintenir notre propre version de Valhalla.
+- **Parade, décidée par Émilien** : elle passe par l'interface. Recalcul en
+  direct quand on déplace un point, tracé à la main par tronçon, circuits
+  VTT balisés d'OSM transformés en itinéraire d'un geste. La génération
+  automatique de boucles est remise à plus tard.
+- Conséquence pour l'ADR 0003 : le paquet de zone doit aussi contenir les
+  circuits VTT balisés (relations `route=mtb`).
+
 ## Licences (note, 2026-10-20)
 
 Valhalla, valhalla-mobile et leurs bibliothèques embarquées sont sous

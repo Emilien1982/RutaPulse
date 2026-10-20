@@ -23,7 +23,7 @@
 |---|---|---|
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
-| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 fait (branche `claude/essai-1-9fd65c`), essai 1-bis proposé |
+| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 2 et 3 à lancer |
 | 4+ | Développement par petites phases | — |
 
 ## Décisions prises
@@ -43,12 +43,14 @@
 - 2026-10-19 — Stack validée : Expo + React Native, MapLibre, Valhalla sur le téléphone, TanStack Query/Store/Pacer (ADR 0001 à 0010 acceptés).
 - 2026-10-19 — Zone test : autour de Nancy (forêt de Haye, Petite Suisse lorraine).
 - 2026-10-20 — Essai 1 : calcul hors ligne prouvé sur simulateurs Android et iOS. Émilien juge les itinéraires praticables (C3), mais peu intéressants en VTT : trop de ville, de laies et de petites boucles, et les pistes sont évitées. La création hors ligne reste en v1.
+- 2026-10-20 — Essai 1-bis : aucun réglage ne rend les itinéraires plus « VTT ». Valhalla cherche le chemin le moins coûteux entre les points, pas une belle boucle. On garde Valhalla et son réglage de l'essai 1.
+- 2026-10-20 — Cadrage modifié : recalcul en direct, tracé à la main par tronçon, circuits VTT balisés d'OSM (fonction 9). Génération de boucles : plus tard.
 - 2026-10-20 — Le dénivelé reste en v1 : il est fourni par Valhalla, son calcul n'est pas le problème.
 - 2026-10-19 — Une session par phase d'exécution ; la session de pilotage reste avec Émilien.
 
 ## Décisions en attente
 
-- Lancer l'essai 1-bis (qualité du choix des chemins VTT).
+- Lancer les essais 2 (suivi verrouillé) et 3 (carte hors ligne).
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
@@ -59,8 +61,8 @@
 
 ## Prochaine étape
 
-Étape 3b : l'`architecte` étudie les 6 risques techniques et propose la stack,
-dans une session ouverte dans `vtt-nav`.
+Étape 3c, suite : essais 2 (suivi téléphone verrouillé et notification) et 3
+(carte hors ligne, avec les circuits balisés dans le paquet de zone).
 
 ## Épreuve de la configuration (phase 2) : bilan
 - Les 5 garde-fous testés marchent (développeur, testeur, relecteur) :

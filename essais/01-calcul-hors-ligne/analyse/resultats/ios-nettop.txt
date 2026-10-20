@@ -1,0 +1,4 @@
+Lignes nettop -P (cumul par processus) contenant vttnavessai1 : 0
+témoin curl pid 60819 :
+time,,interface,state,bytes_in,bytes_out
+23:25:10.747929,curl.60819,,,976901,519

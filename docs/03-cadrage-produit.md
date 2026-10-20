@@ -1,7 +1,8 @@
 # Phase 3a — Cadrage produit de la v1
 
 > 19 octobre 2026. Rédigé à partir de l'interview d'Émilien, puis corrigé
-> selon ses remarques. Validé le 19 octobre 2026.
+> selon ses remarques. Validé le 19 octobre 2026. Modifié le 20 octobre
+> après l'essai 1 : recalcul en direct, tracé à la main, circuits balisés.
 
 ## L'app en une phrase
 RutaPulse permet de préparer un itinéraire VTT sur son téléphone, calculé
@@ -21,13 +22,14 @@ de direction.
 | # | Fonction | Détail |
 |---|---|---|
 | 1 | Carte des sentiers | Fond de carte adapté au VTT (sentiers, pistes, courbes de niveau), avec la position GPS. |
-| 2 | Créer un itinéraire | Toucher un départ, des points de passage et une arrivée. L'app calcule le chemin par les voies adaptées au VTT. On peut déplacer ou supprimer un point, et annuler. Marche aussi sans réseau, si la zone a été téléchargée. |
+| 2 | Créer un itinéraire | Toucher un départ, des points de passage et une arrivée. L'app calcule le chemin par les voies adaptées au VTT. L'itinéraire se recalcule **en direct** quand on déplace un point. On peut ajouter, déplacer ou supprimer un point, et annuler. Un tronçon peut aussi être **tracé à la main**, pour un passage que le calcul ne prend pas. Marche aussi sans réseau, si la zone a été téléchargée. |
 | 3 | Infos de l'itinéraire | Distance, dénivelé positif et négatif, profil d'altitude, part de route, de piste et de sentier, difficulté quand la carte la connaît, durée estimée. |
 | 4 | Mes itinéraires | Enregistrés sur le téléphone : liste, renommer, supprimer. |
 | 5 | GPX | Importer et exporter un itinéraire au format GPX (format standard d'échange de traces GPS). |
 | 6 | Hors ligne | Télécharger à l'avance la carte et les données de calcul d'une zone. Sans réseau, tout marche : carte, création d'itinéraire, suivi. |
 | 7 | Suivi sur le vélo | L'itinéraire, la position dessus, la distance restante et des indications de direction écrites (exemple : « À droite dans 200 m »). L'écran reste allumé. |
 | 8 | Téléphone verrouillé | Le suivi continue. La prochaine indication s'affiche dans **une seule** notification, mise à jour : la plus récente remplace la précédente. |
+| 9 | Circuits VTT balisés | Les circuits VTT balisés connus d'OpenStreetMap s'affichent sur la carte. Un geste transforme un circuit en itinéraire, qu'on peut ensuite modifier. |
 
 ## V2 (prévue)
 - Guidage par la voix.
@@ -35,6 +37,7 @@ de direction.
   s'assombrit ou se simplifie entre deux indications.
 
 ## Plus tard (idées non planifiées)
+- Générer automatiquement une boucle d'une distance donnée.
 - Alerte en cas d'écart avec l'itinéraire.
 - Enregistrement des sorties (trace réelle, vitesse, statistiques).
 - Comptes utilisateurs, synchronisation, sauvegarde en ligne.

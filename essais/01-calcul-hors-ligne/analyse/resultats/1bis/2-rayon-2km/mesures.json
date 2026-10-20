@@ -1,0 +1,280 @@
+{
+ "combinaison": "2-rayon",
+ "cas": "2km",
+ "desc": "radius 50 m à chaque point",
+ "lignes": [
+  {
+   "id": "R1",
+   "points": 12,
+   "d_ref": 21.36,
+   "d": 20.532,
+   "g_d": -3.87640449438202,
+   "a_ref": 257,
+   "a": 242.0,
+   "g_a": -5.836575875486381,
+   "near": 66.34250777503627,
+   "uturns": 0,
+   "back_km": 1.41,
+   "route_ville": 15.836134249111012,
+   "piste": 53.616834721613316,
+   "sentier": 30.54703102927567,
+   "laies": 27.317453358663347,
+   "nature": 56.84641239222565,
+   "coverage": 0.999853886616014,
+   "detail": {
+    "par_road_class": {
+     "residential": 1.03,
+     "secondary": 0.128,
+     "service_other": 18.048,
+     "unclassified": 1.323
+    },
+    "par_use": {
+     "living_street": 0.77,
+     "path": 6.271,
+     "road": 2.481,
+     "track": 11.007
+    },
+    "par_use_density": {
+     "living_street|1": 0.77,
+     "path|0": 0.591,
+     "path|1": 5.638,
+     "path|2": 0.042,
+     "road|1": 1.096,
+     "road|2": 1.385,
+     "track|1": 11.007
+    }
+   }
+  },
+  {
+   "id": "R2",
+   "points": 19,
+   "d_ref": 34.89,
+   "d": 35.172,
+   "g_d": 0.8082545141874361,
+   "a_ref": 478,
+   "a": 454.0,
+   "g_a": -5.02092050209205,
+   "near": 86.36116105388119,
+   "uturns": 0,
+   "back_km": 0.63,
+   "route_ville": 41.71192947533057,
+   "piste": 56.30314232902034,
+   "sentier": 1.9849281956490832,
+   "laies": 40.01137494667994,
+   "nature": 18.276695577989475,
+   "coverage": 0.9998009780507222,
+   "detail": {
+    "par_road_class": {
+     "primary": 1.677,
+     "residential": 4.349,
+     "secondary": 4.384,
+     "service_other": 20.578,
+     "tertiary": 1.041,
+     "unclassified": 3.136
+    },
+    "par_use": {
+     "parking_aisle": 0.027,
+     "path": 0.752,
+     "road": 14.587,
+     "track": 19.799
+    },
+    "par_use_density": {
+     "parking_aisle|6": 0.027,
+     "path|0": 0.169,
+     "path|1": 0.321,
+     "path|5": 0.208,
+     "path|6": 0.054,
+     "road|1": 5.769,
+     "road|2": 1.586,
+     "road|3": 1.056,
+     "road|4": 1.576,
+     "road|5": 2.633,
+     "road|6": 1.967,
+     "track|0": 2.644,
+     "track|1": 13.614,
+     "track|2": 3.541
+    }
+   }
+  },
+  {
+   "id": "R3",
+   "points": 14,
+   "d_ref": 25.1,
+   "d": 26.981,
+   "g_d": 7.49402390438247,
+   "a_ref": 421,
+   "a": 480.0,
+   "g_a": 14.014251781472684,
+   "near": 63.12066551952138,
+   "uturns": 2,
+   "back_km": 1.32,
+   "route_ville": 11.805915931499742,
+   "piste": 39.83986952331528,
+   "sentier": 48.35421454518497,
+   "laies": 11.828156275483728,
+   "nature": 76.36592779301655,
+   "coverage": 0.9998888106445276,
+   "detail": {
+    "par_road_class": {
+     "residential": 1.193,
+     "service_other": 24.427,
+     "tertiary": 0.704,
+     "unclassified": 0.654
+    },
+    "par_use": {
+     "path": 13.679,
+     "road": 2.551,
+     "track": 10.748
+    },
+    "par_use_density": {
+     "path|0": 1.95,
+     "path|1": 5.044,
+     "path|2": 1.524,
+     "path|3": 1.344,
+     "path|4": 3.183,
+     "path|6": 0.254,
+     "path|7": 0.38,
+     "road|0": 0.654,
+     "road|5": 0.423,
+     "road|6": 0.812,
+     "road|7": 0.662,
+     "track|0": 3.397,
+     "track|1": 2.398,
+     "track|2": 1.79,
+     "track|3": 0.72,
+     "track|4": 0.128,
+     "track|5": 0.946,
+     "track|6": 0.949,
+     "track|7": 0.42
+    }
+   }
+  },
+  {
+   "id": "R4",
+   "points": 22,
+   "d_ref": 40.91,
+   "d": 42.123,
+   "g_d": 2.965045221217309,
+   "a_ref": 601,
+   "a": 668.0,
+   "g_a": 11.148086522462561,
+   "near": 52.90497839525018,
+   "uturns": 4,
+   "back_km": 5.01,
+   "route_ville": 25.27085330776606,
+   "piste": 12.54554170661554,
+   "sentier": 62.18360498561844,
+   "laies": 2.4976030680728667,
+   "nature": 72.3825503355705,
+   "coverage": 0.9904327801913444,
+   "detail": {
+    "par_road_class": {
+     "residential": 3.908,
+     "secondary": 1.046,
+     "service_other": 34.304,
+     "tertiary": 2.342,
+     "unclassified": 0.12
+    },
+    "par_use": {
+     "cycleway": 0.903,
+     "driveway": 0.035,
+     "footway": 0.054,
+     "living_street": 0.776,
+     "parking_aisle": 0.003,
+     "path": 26.726,
+     "road": 7.416,
+     "service_road": 0.573,
+     "track": 5.234
+    },
+    "par_use_density": {
+     "cycleway|5": 0.442,
+     "cycleway|6": 0.461,
+     "driveway|9": 0.035,
+     "footway|5": 0.054,
+     "living_street|2": 0.172,
+     "living_street|3": 0.202,
+     "living_street|6": 0.053,
+     "living_street|7": 0.349,
+     "parking_aisle|7": 0.003,
+     "path|1": 1.576,
+     "path|2": 8.107,
+     "path|3": 5.812,
+     "path|4": 6.86,
+     "path|5": 3.092,
+     "path|6": 0.758,
+     "path|7": 0.077,
+     "path|8": 0.414,
+     "path|9": 0.03,
+     "road|2": 0.293,
+     "road|3": 0.269,
+     "road|4": 0.325,
+     "road|5": 1.372,
+     "road|6": 1.545,
+     "road|7": 1.503,
+     "road|8": 1.169,
+     "road|9": 0.94,
+     "service_road|4": 0.367,
+     "service_road|5": 0.192,
+     "service_road|7": 0.014,
+     "track|1": 0.311,
+     "track|2": 0.59,
+     "track|3": 2.604,
+     "track|4": 0.71,
+     "track|5": 0.202,
+     "track|6": 0.621,
+     "track|7": 0.196
+    }
+   }
+  },
+  {
+   "id": "R5",
+   "points": 24,
+   "d_ref": 44.46,
+   "d": 40.353,
+   "g_d": -9.237516869095815,
+   "a_ref": 783,
+   "a": 706.0,
+   "g_a": -9.83397190293742,
+   "near": 57.517325145963326,
+   "uturns": 1,
+   "back_km": 6.48,
+   "route_ville": 2.9941010261240275,
+   "piste": 67.04010310811482,
+   "sentier": 29.96579586576117,
+   "laies": 24.317156595449365,
+   "nature": 72.77797055470182,
+   "coverage": 0.9998265308651154,
+   "detail": {
+    "par_road_class": {
+     "residential": 0.879,
+     "secondary": 0.126,
+     "service_other": 39.302,
+     "unclassified": 0.039
+    },
+    "par_use": {
+     "footway": 0.128,
+     "path": 11.962,
+     "road": 1.044,
+     "service_road": 0.164,
+     "track": 27.048
+    },
+    "par_use_density": {
+     "footway|2": 0.128,
+     "path|0": 3.119,
+     "path|1": 6.084,
+     "path|2": 2.166,
+     "path|3": 0.593,
+     "road|1": 0.372,
+     "road|2": 0.208,
+     "road|3": 0.464,
+     "service_road|1": 0.068,
+     "service_road|3": 0.096,
+     "track|0": 4.039,
+     "track|1": 16.395,
+     "track|2": 4.509,
+     "track|3": 2.105
+    }
+   }
+  }
+ ]
+}
