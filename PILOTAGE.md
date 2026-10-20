@@ -51,7 +51,8 @@
 
 ## Décisions en attente
 
-- Lancer les essais 2 (suivi verrouillé) et 3 (carte hors ligne).
+- Valider les maquettes (design/, proposition du designer).
+- Valider le découpage de la v1 en 11 phases ([docs/05](docs/05-decoupage-v1.md)).
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
