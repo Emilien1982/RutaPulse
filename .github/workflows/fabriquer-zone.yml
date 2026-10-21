@@ -17,10 +17,16 @@ on:
     branches:
       - claude/phase-1-zones-73115d
     paths:
-      - "zones/**"
+      # exactly what changes the package (not the tests nor the LISEZMOI)
+      - "zones/zonefactory/**"
+      - "zones/zones.json"
+      - "zones/schemas/**"
+      - "zones/templates/**"
+      - "zones/requirements.txt"
       - ".github/workflows/fabriquer-zone.yml"
 
 # The automatic GITHUB_TOKEN is the only credential (no secret): it creates releases.
+# It is given (as GH_TOKEN) only to the steps that call `gh`, not to the build tools.
 permissions:
   contents: write
 
@@ -36,7 +42,6 @@ jobs:
     timeout-minutes: 60
     env:
       ZONE: ${{ inputs.zone || 'nancy' }}
-      GH_TOKEN: ${{ github.token }}
       TIMES: ${{ github.workspace }}/times.md
     steps:
       - uses: actions/checkout@v7
@@ -117,6 +122,7 @@ jobs:
 
       - name: Publier la release de la zone
         env:
+          GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.version.outputs.version }}
         run: |
           name=$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["name"])' "$RUNNER_TEMP/package/zone.json")
@@ -129,6 +135,8 @@ jobs:
       # The catalogue lives in the release "catalogue". Only a missing release is created
       # (with an explicit empty catalogue); any other error stops the workflow.
       - name: Récupérer le catalogue actuel
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p "$RUNNER_TEMP/current"
           if gh release view catalogue > /dev/null 2> "$RUNNER_TEMP/view-error.txt"; then
@@ -160,6 +168,8 @@ jobs:
           printf '| %s | %s s |\n' "Contrôler la release publiée" "$SECONDS" >> "$TIMES"
 
       - name: Publier le catalogue
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: gh release upload catalogue "$RUNNER_TEMP/new/catalogue.json" --clobber
 
       - name: Résumé
