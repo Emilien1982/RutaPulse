@@ -181,18 +181,35 @@ def build_routing(work: Path, cache: Path, bbox: dict, pbf: Path) -> None:
     valhalla(work, "valhalla_build_extract", "-c", "/data/valhalla.json", "-v")
 
 
+def retry(action, attempts: int = 3, wait_seconds: float = 30):
+    """Call `action()`; if a command fails, wait and try again (up to `attempts` calls in all)."""
+    for attempt in range(1, attempts + 1):
+        try:
+            return action()
+        except subprocess.CalledProcessError:
+            if attempt == attempts:
+                raise
+            print(f"  échec (essai {attempt} sur {attempts}), nouvel essai dans {wait_seconds:g} s", flush=True)
+            time.sleep(wait_seconds)
+
+
 def build_map(work: Path, cache: Path, bbox: dict, pbf: Path) -> None:
     """OpenMapTiles map with Planetiler, default profile, zooms 0 to 14."""
     sources = cache / "planetiler" / "sources"
     sources.mkdir(parents=True, exist_ok=True)
     (work / "planetiler").mkdir()
-    run(
-        ["docker", "run", "--rm", *DOCKER_USER, "-e", f"JAVA_TOOL_OPTIONS=-Xmx{PLANETILER_XMX}",
-         "-v", f"{work / 'planetiler'}:/data", "-v", f"{sources}:/sources", "-v", f"{pbf}:/input/extract.osm.pbf:ro",
-         PLANETILER_IMAGE, "--osm-path=/input/extract.osm.pbf", "--download-dir=/sources", "--tmpdir=/data/tmp",
-         "--download", f"--bounds={bbox_arg(bbox)}", "--minzoom=0", f"--maxzoom={MAP_MAXZOOM}",
-         "--output=/data/map.pmtiles", "--force"]
-    )  # fmt: skip
+
+    def planetiler(*args):
+        run(
+            ["docker", "run", "--rm", *DOCKER_USER, "-e", f"JAVA_TOOL_OPTIONS=-Xmx{PLANETILER_XMX}",
+             "-v", f"{work / 'planetiler'}:/data", "-v", f"{sources}:/sources", "-v", f"{pbf}:/input/extract.osm.pbf:ro",
+             PLANETILER_IMAGE, "--osm-path=/input/extract.osm.pbf", "--download-dir=/sources", "--tmpdir=/data/tmp",
+             "--download", f"--bounds={bbox_arg(bbox)}", *args]
+        )  # fmt: skip
+
+    # The annexes come from third-party servers that are sometimes slow or down: try again a few times.
+    retry(lambda: planetiler("--only-download"))
+    planetiler("--minzoom=0", f"--maxzoom={MAP_MAXZOOM}", "--output=/data/map.pmtiles", "--force")
 
 
 def build_terrain(work: Path, bbox: dict) -> None:

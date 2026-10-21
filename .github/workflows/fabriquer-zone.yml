@@ -108,29 +108,39 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          # memory sampled every 5 s (MB used), to report the peak (risk 3)
-          ( while true; do free -m | awk '/^Mem:/ {print $3}'; sleep 5; done > "$RUNNER_TEMP/mem.txt" ) &
-          sampler=$!
-          python -m zonefactory build "$ZONE" --version "$VERSION" --out "$RUNNER_TEMP/package"
-          kill "$sampler" || true
-          printf '| %s | %s s |\n' "Fabriquer le paquet" "$SECONDS" >> "$TIMES"
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
           {
-            echo "peak_memory_mb=$(sort -n "$RUNNER_TEMP/mem.txt" | tail -1)"
-            echo "disk_used=$(df -h / | awk 'NR==2 {print $3 " sur " $2}')"
-            echo "work_size=$(du -sh work | cut -f1)"
-          } > "$RUNNER_TEMP/measures.txt"
+            # memory sampled every 5 s (MB used), to report the peak (risk 3)
+            # (stderr to /dev/null: a sampler left running must not keep the log pipe open)
+            ( while true; do free -m | awk '/^Mem:/ {print $3}'; sleep 5; done > "$RUNNER_TEMP/mem.txt" 2> /dev/null ) &
+            sampler=$!
+            trap 'kill "$sampler" 2> /dev/null || true' EXIT
+            python -m zonefactory build "$ZONE" --version "$VERSION" --out "$RUNNER_TEMP/package"
+            kill "$sampler" || true
+            printf '| %s | %s s |\n' "Fabriquer le paquet" "$SECONDS" >> "$TIMES"
+            {
+              echo "peak_memory_mb=$(sort -n "$RUNNER_TEMP/mem.txt" | tail -1)"
+              echo "disk_used=$(df -h / | awk 'NR==2 {print $3 " sur " $2}')"
+              echo "work_size=$(du -sh work | cut -f1)"
+            } > "$RUNNER_TEMP/measures.txt"
+          } 2>&1 | tee "$RUNNER_TEMP/logs/1-fabriquer.log"
 
       - name: Publier la release de la zone
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          name=$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["name"])' "$RUNNER_TEMP/package/zone.json")
-          gh release create "zone-$ZONE-v$VERSION" --target "$GITHUB_SHA" \
-            --title "Zone $name (v$VERSION)" \
-            --notes "Paquet de la zone $name, version $VERSION. Fabriqué par GitHub Actions. Contrôle : sha256sum -c SHA256SUMS" \
-            "$RUNNER_TEMP"/package/*
-          printf '| %s | %s s |\n' "Publier la release" "$SECONDS" >> "$TIMES"
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
+          {
+            name=$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["name"])' "$RUNNER_TEMP/package/zone.json")
+            gh release create "zone-$ZONE-v$VERSION" --target "$GITHUB_SHA" \
+              --title "Zone $name (v$VERSION)" \
+              --notes "Paquet de la zone $name, version $VERSION. Fabriqué par GitHub Actions. Contrôle : sha256sum -c SHA256SUMS" \
+              "$RUNNER_TEMP"/package/*
+            printf '| %s | %s s |\n' "Publier la release" "$SECONDS" >> "$TIMES"
+          } 2>&1 | tee "$RUNNER_TEMP/logs/2-release.log"
 
       # The catalogue lives in the release "catalogue". Only a missing release is created
       # (with an explicit empty catalogue); any other error stops the workflow.
@@ -138,39 +148,70 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          mkdir -p "$RUNNER_TEMP/current"
-          if gh release view catalogue > /dev/null 2> "$RUNNER_TEMP/view-error.txt"; then
-            gh release download catalogue --pattern catalogue.json --dir "$RUNNER_TEMP/current" --clobber
-          elif grep -q "release not found" "$RUNNER_TEMP/view-error.txt"; then
-            echo "Release catalogue absente : création avec un catalogue vide."
-            echo '{"formatVersion":1,"zones":[]}' > "$RUNNER_TEMP/current/catalogue.json"
-            gh release create catalogue --target "$GITHUB_SHA" --title "Catalogue des zones" \
-              --notes "Catalogue des zones disponibles. Remplacé à chaque publication d'une zone." \
-              "$RUNNER_TEMP/current/catalogue.json"
-          else
-            cat "$RUNNER_TEMP/view-error.txt"
-            exit 1
-          fi
-          cat "$RUNNER_TEMP/current/catalogue.json"
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
+          {
+            mkdir -p "$RUNNER_TEMP/current"
+            if gh release view catalogue > /dev/null 2> "$RUNNER_TEMP/view-error.txt"; then
+              gh release download catalogue --pattern catalogue.json --dir "$RUNNER_TEMP/current" --clobber
+            elif grep -q "release not found" "$RUNNER_TEMP/view-error.txt"; then
+              echo "Release catalogue absente : création avec un catalogue vide."
+              echo '{"formatVersion":1,"zones":[]}' > "$RUNNER_TEMP/current/catalogue.json"
+              gh release create catalogue --target "$GITHUB_SHA" --title "Catalogue des zones" \
+                --notes "Catalogue des zones disponibles. Remplacé à chaque publication d'une zone." \
+                "$RUNNER_TEMP/current/catalogue.json"
+            else
+              cat "$RUNNER_TEMP/view-error.txt"
+              exit 1
+            fi
+            cat "$RUNNER_TEMP/current/catalogue.json"
+          } 2>&1 | tee "$RUNNER_TEMP/logs/3-catalogue-actuel.log"
 
       - name: Mettre à jour le catalogue
         working-directory: zones
         run: |
-          mkdir -p "$RUNNER_TEMP/new"
-          python -m zonefactory catalogue --current "$RUNNER_TEMP/current/catalogue.json" \
-            --package "$RUNNER_TEMP/package" --repo "$GITHUB_REPOSITORY" --out "$RUNNER_TEMP/new/catalogue.json"
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
+          {
+            mkdir -p "$RUNNER_TEMP/new"
+            python -m zonefactory catalogue --current "$RUNNER_TEMP/current/catalogue.json" \
+              --package "$RUNNER_TEMP/package" --repo "$GITHUB_REPOSITORY" --out "$RUNNER_TEMP/new/catalogue.json"
+          } 2>&1 | tee "$RUNNER_TEMP/logs/4-catalogue.log"
 
       # Downloads the files just published and checks size and SHA-256 of each one.
       - name: Contrôler la release publiée
         working-directory: zones
         run: |
-          python -m zonefactory verify --catalogue "$RUNNER_TEMP/new/catalogue.json" --zone "$ZONE" --dest "$RUNNER_TEMP/verified"
-          printf '| %s | %s s |\n' "Contrôler la release publiée" "$SECONDS" >> "$TIMES"
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
+          {
+            python -m zonefactory verify --catalogue "$RUNNER_TEMP/new/catalogue.json" --zone "$ZONE" --dest "$RUNNER_TEMP/verified"
+            printf '| %s | %s s |\n' "Contrôler la release publiée" "$SECONDS" >> "$TIMES"
+          } 2>&1 | tee "$RUNNER_TEMP/logs/5-verify.log"
 
       - name: Publier le catalogue
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload catalogue "$RUNNER_TEMP/new/catalogue.json" --clobber
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
+          {
+            gh release upload catalogue "$RUNNER_TEMP/new/catalogue.json" --clobber
+          } 2>&1 | tee "$RUNNER_TEMP/logs/6-catalogue-upload.log"
+
+      # When a step fails, GitHub logs need a login: publish the end of each log as a
+      # public annotation (workflow command: % \r \n are encoded as %25 %0D %0A).
+      - name: Annoter les erreurs
+        if: failure()
+        run: |
+          for log in "$RUNNER_TEMP"/logs/*.log; do
+            [ -f "$log" ] || continue
+            text=$(sed 's/\x1b\[[0-9;]*m//g' "$log" | tail -n 60 | tail -c 3500)
+            text=${text//'%'/'%25'}
+            text=${text//$'\r'/'%0D'}
+            text=${text//$'\n'/'%0A'}
+            echo "::error title=Journal $(basename "$log")::$text"
+          done
 
       - name: Résumé
         if: always()

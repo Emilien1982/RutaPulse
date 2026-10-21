@@ -2,6 +2,7 @@
 
 import argparse
 import re
+import subprocess
 import sys
 from pathlib import Path
 
@@ -55,6 +56,9 @@ def main(argv=None) -> int:
         build_zone(zone, args.version, args.out, args.cache_dir)
     except (ConfigError, BuildError, CatalogueError, VerifyError) as err:
         print(f"Erreur : {err}", file=sys.stderr)
+        return 1
+    except subprocess.CalledProcessError as err:
+        print(f"Erreur : la commande a échoué (code {err.returncode}) : {' '.join(map(str, err.cmd))}", file=sys.stderr)
         return 1
     return 0
 
