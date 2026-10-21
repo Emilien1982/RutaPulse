@@ -63,3 +63,25 @@ def test_command_exit_code_is_not_zero_on_wrong_file(tmp_path, served, capsys):
     (tmp_path / "c.json").write_text(json.dumps(catalogue))
     assert main(["verify", "--catalogue", str(tmp_path / "c.json"), "--zone", "nancy", "--dest", str(tmp_path / "d")]) == 1
     assert "Erreur" in capsys.readouterr().err
+
+
+def test_catalogue_is_checked_against_the_schema_but_file_urls_pass(tmp_path, served):
+    _, catalogue = served
+    catalogue["zones"][0]["files"][0]["sha256"] = "abc"
+    with pytest.raises(VerifyError, match="sha256"):
+        verify_zone(catalogue, "nancy", tmp_path / "dest")
+
+
+def test_cut_download_gives_a_french_message(tmp_path, served, monkeypatch):
+    import http.client
+
+    from zonefactory import verify
+
+    _, catalogue = served
+
+    def cut(url):
+        raise http.client.IncompleteRead(b"ab")
+
+    monkeypatch.setattr(verify, "_open", cut)
+    with pytest.raises(VerifyError, match="téléchargement impossible"):
+        verify_zone(catalogue, "nancy", tmp_path / "dest")

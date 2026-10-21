@@ -150,3 +150,12 @@ def test_unsorted_or_duplicate_zones_are_refused(tmp_path, entry):
 
 def test_empty_catalogue_is_valid():
     validate_catalogue({"formatVersion": 1, "zones": []})
+
+
+def test_same_or_lower_version_is_refused(tmp_path, entry):
+    v1_again = zone_entry(make_package(tmp_path / "q", version=1), REPO)
+    with pytest.raises(CatalogueError, match="plus récente"):
+        update_catalogue(catalogue_of(entry), v1_again)
+    v2 = zone_entry(make_package(tmp_path / "r", version=2), REPO)
+    with pytest.raises(CatalogueError, match="plus récente"):
+        update_catalogue(catalogue_of(v2), entry)

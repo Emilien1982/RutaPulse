@@ -89,7 +89,12 @@ Toutes ces commandes se lancent depuis `zones/`, comme `build`.
 - `catalogue --current <fichier> --package <dossier> --repo <propriétaire/dépôt> --out <fichier>` :
   ajoute ou remplace la zone du paquet dans le catalogue, puis le contrôle
   (schéma `schemas/catalogue.schema.json` et règles du code). Le fichier
-  `--current` peut être absent ou vide (premier lancement). Tailles et
+  `--current` doit exister et contenir un catalogue valide : un fichier
+  absent ou vide est refusé, pour qu'une faute de frappe ou un
+  téléchargement raté n'efface pas les autres zones. Au premier lancement,
+  créer un catalogue vide explicite :
+  `echo '{"formatVersion":1,"zones":[]}' > out/vide.json`. Une version
+  inférieure ou égale à celle déjà publiée est refusée. Tailles et
   empreintes sont recalculées et comparées à `SHA256SUMS` : un écart arrête
   tout, et rien n'est écrit si le résultat est invalide.
 - `verify --catalogue <adresse ou fichier> --zone <id> --dest <dossier>` :

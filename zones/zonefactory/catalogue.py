@@ -32,13 +32,20 @@ def empty_catalogue() -> dict:
     return {"formatVersion": 1, "zones": []}
 
 
-def validate_catalogue(catalogue: dict, schema_path: Path = SCHEMA_FILE) -> None:
-    """Schema, then the rules that a schema cannot express. Raise CatalogueError."""
+def validate_schema(catalogue: dict, schema_path: Path = SCHEMA_FILE, any_url: bool = False) -> None:
+    """Check the JSON schema only. `any_url` accepts any address form (file:// in tests)."""
     schema = json.loads(Path(schema_path).read_text(encoding="utf-8"))
+    if any_url:
+        del schema["properties"]["zones"]["items"]["properties"]["files"]["items"]["properties"]["url"]["pattern"]
     errors = sorted(Draft202012Validator(schema).iter_errors(catalogue), key=lambda e: list(e.absolute_path))
     if errors:
         lines = [f"  - {'/'.join(map(str, e.absolute_path)) or '(racine)'} : {e.message}" for e in errors]
         raise CatalogueError("catalogue invalide :\n" + "\n".join(lines))
+
+
+def validate_catalogue(catalogue: dict, schema_path: Path = SCHEMA_FILE) -> None:
+    """Schema, then the rules that a schema cannot express. Raise CatalogueError."""
+    validate_schema(catalogue, schema_path)
     ids = [z["id"] for z in catalogue["zones"]]
     if len(set(ids)) != len(ids):
         raise CatalogueError("catalogue invalide : id en double")
@@ -69,10 +76,16 @@ def _check_zone(zone: dict) -> None:
 
 
 def load_catalogue(path: Path) -> dict:
-    """Read the current catalogue. A missing or empty file means the first run."""
+    """Read the current catalogue. A missing or empty file is refused: a typo or a failed download
+    must not erase the other zones. The first run starts from an explicit empty catalogue."""
     path = Path(path)
-    if not path.is_file() or not path.read_text(encoding="utf-8").strip():
-        return empty_catalogue()
+    if not path.is_file():
+        raise CatalogueError(
+            f"catalogue actuel introuvable : {path}. Au premier lancement, créer un catalogue vide : "
+            f'{json.dumps(empty_catalogue(), separators=(",", ":"))}'
+        )
+    if not path.read_text(encoding="utf-8").strip():
+        raise CatalogueError(f"catalogue actuel vide : {path}. Un catalogue vide s'écrit {json.dumps(empty_catalogue(), separators=(',', ':'))}")
     try:
         catalogue = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as err:
@@ -132,6 +145,12 @@ def zone_entry(package: Path, repo: str) -> dict:
 
 def update_catalogue(current: dict, entry: dict) -> dict:
     """Add the zone, or replace the one with the same id. Zones stay sorted by id."""
+    for zone in current["zones"]:
+        if zone["id"] == entry["id"] and entry["version"] <= zone["version"]:
+            raise CatalogueError(
+                f"zone {entry['id']} : la version {entry['version']} n'est pas plus récente "
+                f"que la version {zone['version']} du catalogue"
+            )
     zones = [z for z in current["zones"] if z["id"] != entry["id"]] + [entry]
     return {"formatVersion": 1, "zones": sorted(zones, key=lambda z: z["id"])}
 

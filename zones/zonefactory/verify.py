@@ -1,10 +1,16 @@
 """Download the files of a zone, check size and SHA-256, store them under their path (what the app does)."""
 
 import hashlib
+import http.client
 import json
 import shutil
 import urllib.request
 from pathlib import Path
+
+from .catalogue import CatalogueError, validate_schema
+
+TIMEOUT_SECONDS = 60  # per network operation, not for a whole file
+_NETWORK_ERRORS = (OSError, http.client.HTTPException)  # URLError, timeouts and IncompleteRead included
 
 
 class VerifyError(Exception):
@@ -14,7 +20,7 @@ class VerifyError(Exception):
 def _open(source: str):
     """Open an address (https://, file://) or a local file path."""
     if "://" in source:
-        return urllib.request.urlopen(source)
+        return urllib.request.urlopen(source, timeout=TIMEOUT_SECONDS)
     return open(source, "rb")
 
 
@@ -22,12 +28,16 @@ def read_catalogue(source: str) -> dict:
     try:
         with _open(source) as f:
             return json.load(f)
-    except (OSError, ValueError) as err:
+    except (*_NETWORK_ERRORS, ValueError) as err:
         raise VerifyError(f"catalogue illisible ({source}) : {err}") from err
 
 
 def verify_zone(catalogue: dict, zone_id: str, dest: Path) -> list[str]:
     """Stop at the first wrong file (VerifyError). Return the stored paths."""
+    try:
+        validate_schema(catalogue, any_url=True)
+    except CatalogueError as err:
+        raise VerifyError(str(err)) from err
     zone = next((z for z in catalogue.get("zones", []) if z.get("id") == zone_id), None)
     if zone is None:
         raise VerifyError(f"zone « {zone_id} » absente du catalogue")
@@ -46,7 +56,7 @@ def verify_zone(catalogue: dict, zone_id: str, dest: Path) -> list[str]:
                     digest.update(chunk)
                     size += len(chunk)
                     out.write(chunk)
-        except OSError as err:
+        except _NETWORK_ERRORS as err:
             part.unlink(missing_ok=True)
             raise VerifyError(f"téléchargement impossible de {path} ({url}) : {err}") from err
         if size != entry["bytes"]:
