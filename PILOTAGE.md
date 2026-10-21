@@ -24,7 +24,7 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement par petites phases | — |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 à spécifier |
 
 ## Décisions prises
 
@@ -46,6 +46,7 @@
 - 2026-10-20 — Essai 1-bis : aucun réglage ne rend les itinéraires plus « VTT ». Valhalla cherche le chemin le moins coûteux entre les points, pas une belle boucle. On garde Valhalla et son réglage de l'essai 1.
 - 2026-10-20 — Cadrage modifié : recalcul en direct, tracé à la main par tronçon, circuits VTT balisés d'OSM (fonction 9). Génération de boucles : plus tard.
 - 2026-10-20 — Essai 3 : carte hors ligne prouvée (MapLibre + PMTiles, 29 Mo pour Nancy), circuits balisés dans le paquet (2 seulement autour de Nancy), GitHub Actions jugé faisable.
+- 2026-10-21 — Phase 0 fusionnée dans main : app Expo à 4 onglets, verify (types, lint, 9 tests), CI GitHub, Maestro sur les deux simulateurs, hook de qualité. ADR 0011 (structure du code) accepté.
 - 2026-10-21 — Écrans années 70 validés ; icône A ; décisions dans docs/06. Découpage en 11 phases validé, **phases enchaînées une par une** (pas de parallélisme, pour le quota).
 - 2026-10-21 — Style hors navigation : affiche des années 70 (style 3), personnage du vététiste récurrent, illustrations minimales en v1.
 - 2026-10-21 — Design : direction B (contrastée) validée pour la navigation ; réponses aux 13 questions dans [docs/06](docs/06-decisions-design.md). Écrans hors navigation : styles « décalés » à explorer (piste : cartoon épuré).
@@ -55,7 +56,7 @@
 
 ## Décisions en attente
 
-- Valider la spec de la phase 0 (socle du projet).
+- Valider la spec de la phase 1 (fabrique de zones).
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
@@ -67,6 +68,9 @@
 
 ## Prochaine étape
 
-Émilien valide les maquettes (`design/`, avec 13 questions dans
-`design/LISEZMOI.md`) et le découpage (docs/05). Ensuite : phase 0 (socle du
-projet) et phase 1 (fabrique de zones), qui ne dépendent pas du design.
+Rédiger la spec de la phase 1 (fabrique de zones sur GitHub Actions) et la
+soumettre à Émilien.
+
+## Points connus, hors périmètre pour l'instant
+
+- Icônes des onglets provisoires (à faire avec le style années 70, phase 2).
