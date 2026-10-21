@@ -10,13 +10,21 @@
   panneau passe au jaune : on le remarque du coin de l'œil sans lire.
   Carte orientée dans le sens de la marche, zoom rapproché à l'approche
   d'une direction. Partie déjà roulée en gris.
+  Retouches validées le 21 octobre 2026 :
+  - « Terminer » en #8A1C12 (9,3:1 sur blanc, au lieu de 6,5:1) ;
+  - roue dentée sous la boussole : ouvre le panneau des réglages du suivi
+    (31b-suivi-reglages.html), la luminosité pour l'instant. Dessin de 48,
+    plus petit que la boussole (64) pour rester discret ; zone de toucher de
+    64 (agrandie de 8 de chaque côté, « hitSlop »), à 16 de celle de la
+    boussole. Même côté que la boussole : les boutons de carte s'empilent à
+    droite sur les deux plateformes, et la gauche reste libre pour la carte.
   Valeurs : design/tokens.md. Carte : dessin simplifié en SVG.
 -->
 <style>
 :root{
   --fond:#FFFFFF; --texte:#111111; --texte-2:#4A4A4A;
   --contour-flottant:rgba(17,17,17,.35); --ombre:0 2px 8px rgba(0,0,0,.25);
-  --danger:#B3261E; --imminent:#FFD400; --itineraire:#C2007A; --position:#1A73E8;
+  --danger:#8A1C12; --imminent:#FFD400; --itineraire:#C2007A; --position:#1A73E8;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:390px;height:844px;overflow:hidden;background:#fff}
@@ -39,6 +47,10 @@ svg.carte *{vector-effect:non-scaling-stroke}
 .position{position:absolute;left:175px;top:549px;width:40px;height:40px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
 .halo{position:absolute;left:165px;top:539px;width:60px;height:60px;border-radius:50%;background:rgba(26,115,232,.16)}
 .boussole{position:absolute;right:16px;top:280px;width:64px;height:64px;border-radius:32px;background:var(--fond);border:1px solid var(--contour-flottant);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
+/* Roue dentée : dessin 48 (top 368 à 416), zone de toucher 64 (360 à 424),
+   centrée sur l'axe de la boussole (x = 342). */
+.reglages{position:absolute;right:24px;top:368px;width:48px;height:48px;border-radius:24px;background:var(--fond);border:1px solid var(--contour-flottant);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
+.reglages::before{content:"";position:absolute;inset:-8px;border-radius:32px}
 .attribution{position:absolute;left:8px;top:682px;font-size:11px;color:#4A4A4A;background:rgba(255,255,255,.75);padding:1px 4px;border-radius:4px}
 
 .bas{position:absolute;left:0;right:0;top:700px;bottom:0;background:var(--fond);border-top:3px solid #111;display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px 0 20px}
@@ -110,7 +122,11 @@ svg.carte *{vector-effect:non-scaling-stroke}
   <svg width="36" height="36" viewBox="0 0 36 36" style="transform:rotate(110deg)"><path d="M18 3 L24 18 L12 18 Z" fill="#B3261E"/><path d="M18 33 L24 18 L12 18 Z" fill="#4A4A4A"/><text x="18" y="15" font-size="8" font-weight="800" fill="#fff" text-anchor="middle" font-family="-apple-system,Roboto,sans-serif">N</text></svg>
 </div>
 
-<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn</div>
+<div class="reglages" role="button" aria-label="Réglages du suivi : luminosité">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" aria-hidden="true"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.2"/></svg>
+</div>
+
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
 
 <div class="bas">
   <div>

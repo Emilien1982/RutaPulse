@@ -10,6 +10,12 @@
   seule, mise à jour à chaque nouvelle indication. Son apparence est celle
   du système ; l'app ne choisit que l'icône, le titre et le texte.
   Titre = la consigne, dans la forme du cadrage (« À gauche dans 200 m »).
+  Petite icône (retouche validée le 21 octobre 2026) : la silhouette blanche de
+  l'icône A (soleil rayé sur l'horizon), une seule couleur comme Android
+  l'exige. Un seul filet dans le soleil au lieu de deux : à 24 dp, deux filets
+  fins se bouchent. Couleur d'accent de la notification : hn.rouille (#B5452A), qui
+  remplit le rond de l'icône (Android 12 et plus). Contraste blanc sur rouille :
+  5,5:1, suffisant pour un pictogramme (3:1) ; aucun texte n'est en rouille.
   Valeurs : design/tokens.md. Fond d'écran et horloge : imitation d'Android 14.
 -->
 <style>
@@ -24,7 +30,7 @@ body{font-family:Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sa
 
 .notif{position:absolute;top:262px;left:12px;right:12px;background:#F1EEF4;color:#1C1B1F;border-radius:24px;padding:14px 16px 16px}
 .notif .entete{display:flex;align-items:center;gap:8px;font-size:13px;color:#49454F}
-.notif .icone{width:22px;height:22px;border-radius:11px;background:#C2007A;display:flex;align-items:center;justify-content:center}
+.notif .icone{width:22px;height:22px;border-radius:11px;background:#B5452A;display:flex;align-items:center;justify-content:center}
 .notif .titre{font-size:17px;font-weight:600;margin-top:10px;padding-left:30px}
 .notif .texte{font-size:15px;color:#49454F;margin-top:2px;padding-left:30px}
 .notif .ouvrir{position:absolute;right:14px;top:12px;width:28px;height:28px;border-radius:14px;background:#E6E0EC;display:flex;align-items:center;justify-content:center}
@@ -54,7 +60,7 @@ body{font-family:Roboto,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sa
 
 <div class="notif">
   <div class="entete">
-    <div class="icone"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18c0-7 12-5 12-12"/></svg></div>
+    <div class="icone"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><defs><clipPath id="n-soleil"><rect x="0" y="0" width="24" height="11"/><rect x="0" y="12.8" width="24" height="3.2"/></clipPath></defs><circle cx="12" cy="16" r="9" fill="#fff" clip-path="url(#n-soleil)"/><rect x="2" y="17.8" width="20" height="2.6" rx="1.3" fill="#fff"/></svg></div>
     <span>RutaPulse · suivi en cours</span>
   </div>
   <div class="ouvrir"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#1C1B1F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></div>

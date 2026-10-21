@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse v1 – Réglages</title>
+<!--
+  Écran 80, v1, style années 70. Décision 6 du 21 octobre 2026 : un écran
+  « Réglages » complet, accessible depuis le menu.
+  Accès : un 4e onglet, « Réglages », à droite de « Zones » (raison dans
+  design/LISEZMOI.md). Les onglets 40, 41, 50 et 51 ont reçu le même 4e onglet.
+  Contenu :
+  - TÉLÉCHARGEMENTS : « Télécharger en Wi-Fi seulement », activé par défaut
+    (décision 10). C'est le même réglage que l'interrupteur du bandeau
+    « Pas de Wi-Fi » de l'écran 41 : changer l'un change l'autre.
+  - PENDANT LE SUIVI : « Luminosité de l'écran », « Automatique » (par défaut,
+    décision 2) ou « Maximum ». Même réglage que le panneau de la roue dentée
+    du suivi (design/31b-suivi-reglages.html). Sélecteur à deux segments, comme
+    à l'écran 10 : les deux choix se voient sans ouvrir de liste.
+  - À PROPOS : « Licences et attributions » (ouvre une liste : OpenStreetMap,
+    OpenMapTiles, Mapterhorn, IGN, Jost et les logiciels libres ; non dessinée,
+    liste simple) ; la version de l'app, en texte, non touchable.
+  Natif : Android, interrupteur Material 3 et segments Material, lignes sans
+  chevron ; iOS, UISwitch (activé en hn.brun), segmented control, chevron « › »
+  sur « Licences et attributions ». Le dessin ici est la version neutre.
+  Toutes les lignes touchables font au moins 56 de haut.
+  Valeurs : design/tokens.md. Numéro de version : exemple.
+-->
+<style>
+:root{
+  --creme:#F4E4C1; --creme-clair:#FBF1DA; --brun:#3A1F0F; --brun-2:#5A3A28;
+  --moutarde:#F0A830; --orange:#E2652B; --rouille:#B5452A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:var(--creme)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--brun);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.geo{font-family:"Futura","Futura PT",Jost,"Century Gothic","Avenir Next",sans-serif;font-weight:700}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden;background:var(--creme)}
+.barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20;color:var(--brun)}
+.barre-etat .icones{display:flex;gap:6px;align-items:center}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--creme);z-index:30}
+
+.decor{position:absolute;top:0;left:0}
+h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-spacing:.5px}
+
+.liste{position:absolute;top:210px;left:12px;right:12px}
+.section{margin:12px 4px 6px;font-size:13px;letter-spacing:1.2px;color:var(--brun-2)}
+.section:first-child{margin-top:0}
+.carte{background:var(--creme-clair);border:2.5px solid var(--brun);border-radius:22px;padding:0 14px 0 16px;overflow:hidden}
+
+.ligne{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;font-size:17px;font-weight:600}
+.ligne + .ligne{border-top:2px solid rgba(58,31,15,.22)}
+.ligne .sous{display:block;font-size:15px;font-weight:400;color:var(--brun-2);margin-top:1px}
+.ligne.double{min-height:68px}
+.valeur{font-size:17px;font-weight:600;color:var(--brun-2)}
+.explication{font-size:15px;line-height:1.35;color:var(--brun-2);padding:0 0 12px}
+.explication b{font-weight:700;color:var(--brun)}
+
+.interrupteur{width:52px;height:32px;border-radius:16px;background:var(--brun);position:relative;flex:none}
+.interrupteur i{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:12px;background:var(--creme-clair);display:flex;align-items:center;justify-content:center}
+
+.titre-reglage{font-size:17px;font-weight:600;padding:12px 0 8px}
+.segments{display:flex;height:48px;border:2.5px solid var(--brun);border-radius:24px;overflow:hidden;background:var(--creme-clair)}
+.segments div{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font-size:17px;font-weight:600}
+.segments div + div{border-left:2.5px solid var(--brun)}
+.segments .choisi{background:var(--brun);color:var(--creme)}
+.carte .explication.apres{padding-top:8px}
+.renvoi{display:flex;align-items:center;gap:6px;font-size:15px;color:var(--brun-2);padding:0 0 12px}
+
+.rayures-bas{position:absolute;left:0;right:0;bottom:83px;height:9px;background:linear-gradient(var(--moutarde) 0 3px,var(--orange) 3px 6px,var(--rouille) 6px 9px)}
+.onglets{position:absolute;left:0;right:0;bottom:0;height:83px;background:var(--brun);display:flex;padding-top:7px}
+.onglet{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:13px;font-weight:500;color:var(--creme)}
+.pastille{width:64px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center}
+.onglet.actif{font-weight:800}
+.onglet.actif .pastille{background:var(--moutarde);color:var(--brun)}
+</style>
+</head>
+<body>
+<div class="ecran">
+
+<!-- Bandeau : soleil rayé posé sur quatre bandes, commun aux onglets -->
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="au-dessus"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#au-dessus)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+
+<div class="barre-etat"><span>09:50</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 11.5L.5 3.2C2.6 1.5 5.2.5 8 .5s5.4 1 7.5 2.7z"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<h1 class="geo">RÉGLAGES</h1>
+
+<div class="liste">
+
+  <div class="section geo">TÉLÉCHARGEMENTS</div>
+  <div class="carte">
+    <div class="ligne" role="switch" aria-checked="true" aria-label="Télécharger en Wi-Fi seulement">
+      <span>Télécharger en Wi-Fi seulement</span>
+      <span class="interrupteur"><i><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></i></span>
+    </div>
+    <div class="explication">Sans Wi-Fi, les zones attendent. Une zone pèse environ 100 Mo.</div>
+  </div>
+
+  <div class="section geo">PENDANT LE SUIVI</div>
+  <div class="carte">
+    <div class="titre-reglage" id="t-lum">Luminosité de l'écran</div>
+    <div class="segments" role="radiogroup" aria-labelledby="t-lum">
+      <div class="choisi" role="radio" aria-checked="true">Automatique</div>
+      <div role="radio" aria-checked="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor" stroke="none"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Maximum</div>
+    </div>
+    <div class="explication apres"><b>Maximum</b> : plus lisible au soleil, mais la batterie baisse plus vite.</div>
+    <div class="renvoi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5A3A28" aria-hidden="true"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg>Se change aussi pendant le suivi.</div>
+  </div>
+
+  <div class="section geo">À PROPOS</div>
+  <div class="carte">
+    <div class="ligne double" role="button">
+      <span>Licences et attributions<span class="sous">OpenStreetMap, IGN, logiciels libres</span></span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </div>
+    <div class="ligne">
+      <span>Version</span>
+      <span class="valeur">1.0.0 (12)</span>
+    </div>
+  </div>
+</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
+</div>
+
+<div class="indicateur"></div>
+</div>
+</body>
+</html>

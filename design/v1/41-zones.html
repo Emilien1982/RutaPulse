@@ -17,8 +17,9 @@
   - Zone prête (Nancy), zone en pause faute de Wi-Fi (Metz, commencée en Wi-Fi),
     zone à télécharger (Gérardmer). Toucher « Télécharger » sans Wi-Fi la met en
     attente, comme Metz.
-  - « Demander une zone » en fin de liste (décision 10). Le moyen d'envoyer la
-    demande est une question pour Émilien.
+  - Pas de bouton « Demander une zone » en v1 (décision 5 du 21 octobre 2026) :
+    la demande arrive en V2, automatique.
+  - Barre d'onglets à quatre onglets : « Réglages » ajouté (voir 80-reglages.html).
   Plus bas, en faisant défiler : place utilisée sur le téléphone et explication
   d'une zone (texte de design/41).
   Le téléchargement actif (barre qui avance) est montré dans 51-telechargement.html.
@@ -72,7 +73,6 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
 .barre i{display:block;height:100%;width:42%;background:var(--moutarde);border-right:2px solid var(--brun)}
 .progres{display:flex;align-items:center;gap:6px;margin-top:5px;font-size:15px;font-weight:600}
 .telecharger{display:flex;flex:none;height:48px;padding:0 18px 0 14px;border-radius:24px;border:2.5px solid var(--brun);background:var(--moutarde);font-size:17px;align-items:center;gap:8px}
-.demander{display:flex;align-items:center;justify-content:center;gap:8px;height:48px;border:2.5px dashed var(--brun);border-radius:24px;font-size:17px;font-weight:600;margin-top:4px}
 
 .rayures-bas{position:absolute;left:0;right:0;bottom:83px;height:9px;background:linear-gradient(var(--moutarde) 0 3px,var(--orange) 3px 6px,var(--rouille) 6px 9px)}
 .onglets{position:absolute;left:0;right:0;bottom:0;height:83px;background:var(--brun);display:flex;padding-top:7px}
@@ -149,8 +149,6 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
     </div>
     <div class="telecharger geo" aria-label="Télécharger la zone Gérardmer (118 Mo)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Télécharger</div>
   </div>
-
-  <div class="demander"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.8" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Ma zone n'est pas là : la demander</div>
 </div>
 
 <div class="rayures-bas"></div>
@@ -158,6 +156,7 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
   <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
   <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
   <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
 </div>
 
 <div class="indicateur"></div>

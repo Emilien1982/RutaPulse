@@ -2,7 +2,9 @@
 
 > Valeurs de référence de la v1. Directions validées par Émilien le
 > 21 octobre 2026 (`docs/06-decisions-design.md`) : **direction B** pour la
-> navigation, **style années 70** pour tout le reste.
+> navigation, **style années 70** pour tout le reste. Mis à jour le même jour
+> avec les décisions « Écrans années 70 » : icône A, rouge de « Terminer »,
+> réglages (onglet et panneau du suivi).
 > Un jeton (« design token ») est une valeur nommée, définie une seule fois
 > ici et réutilisée partout : couleurs, tailles, espacements.
 > Les maquettes HTML de `design/` recopient ces valeurs dans leur bloc
@@ -13,8 +15,8 @@
 
 | Famille | Écrans | Maquettes de référence | Jetons |
 |---|---|---|---|
-| **Navigation** (direction B) | Suivi sur le vélo, téléphone verrouillé | `30`, `31`, `32` | `couleur.*`, `guidage.*`, `texte.guidage-*` |
-| **Hors navigation** (style années 70) | Création, circuit balisé, infos, mes itinéraires, zones, états vides, arrivée, icône | `v1/10` à `v1/70` | `hn.*`, `perso.*`, `icone.*` |
+| **Navigation** (direction B) | Suivi sur le vélo, réglages du suivi, téléphone verrouillé | `30`, `31b`, `31`, `32` | `couleur.*`, `guidage.*`, `suivi.*`, `texte.guidage-*` |
+| **Hors navigation** (style années 70) | Création, circuit balisé, infos, mes itinéraires, zones, états vides, arrivée, icône, réglages | `v1/10` à `v1/80` | `hn.*`, `perso.*`, `icone.*` |
 | **Communs** | Tous | — | `carte.*`, `terrain.*`, `trace.*`, `marqueur.*`, cibles, unités |
 
 La carte, ses tracés et ses marqueurs sont **les mêmes** dans les deux
@@ -47,7 +49,7 @@ d'accessibilité du web).
 | `couleur.texte` | `#111111` | 18,9:1 | Tout texte du suivi |
 | `couleur.texte-2` | `#4A4A4A` | 8,9:1 | Texte secondaire (« Reste ») |
 | `couleur.contour-flottant` | `#111111` à 35 % d'opacité | décor | Bord de 1 point des boutons posés sur la carte du suivi |
-| `couleur.danger` | `#B3261E` | 6,5:1 | « Terminer ». **Sous les 7:1** : voir la proposition d'ajustement dans `LISEZMOI.md` (`#8A1C12`, 9,3:1). |
+| `couleur.danger` | `#8A1C12` (= `hn.danger`) | 9,3:1 | « Terminer » (bord et texte). Passé de `#B3261E` (6,5:1) à `#8A1C12` le 21 octobre 2026 : le rouge est le même dans toute l'app. La flèche nord de la boussole garde son rouge de dessin (`#B3261E`), ce n'est pas un texte. |
 | `couleur.imminent` | `#FFD400` | 13,2:1 avec `texte` | Fond du panneau de guidage à moins de 100 m d'une direction |
 
 Retirés le 21 octobre 2026, car plus aucun écran ne les utilise (les écrans
@@ -63,6 +65,16 @@ Retirés le 21 octobre 2026, car plus aucun écran ne les utilise (les écrans
 | `guidage.fond` | `couleur.fond` | Panneau de la prochaine direction, en temps normal |
 | `guidage.fond-imminent` | `couleur.imminent` | Même panneau, à moins de 100 m de la direction |
 | `guidage.texte` | `couleur.texte` | Flèche, distance, consigne |
+
+### Réglages pendant le suivi (écrans 30 et 31b)
+
+| Jeton | Valeur | Usage |
+|---|---|---|
+| `suivi.bouton-reglages` | Rond de 48 (dessin), zone de toucher de 64 (8 de plus de chaque côté) ; fond `couleur.fond`, bord `couleur.contour-flottant`, `ombre.flottant` ; roue dentée de 26 en `couleur.texte` | Sous la boussole, sur le même axe (centre à 48 du bord droit), dessin de 368 à 416 ; 16 entre sa zone de toucher et celle de la boussole |
+| `suivi.bouton-reglages-ouvert` | Fond et bord `couleur.texte`, roue dentée blanche | Même bouton, panneau ouvert |
+| `suivi.panneau` | Fond `couleur.fond`, bord du haut `bord.guidage` (3, `couleur.texte`), rayon 28 en haut, poignée de 36 × 5 en `couleur.texte-2` | Panneau des réglages du suivi, non bloquant (pas de voile) |
+| `suivi.segments` | Hauteur 64 (`cible.velo`), bord 3 `couleur.texte`, rayon 32 ; choisi : fond `couleur.texte`, texte `#FFFFFF` (18,9:1) ; libellés 20, graisse 700 | « Automatique » / « Maximum » |
+| `suivi.panneau-titre` | 24, graisse 800 | « Réglages du suivi » |
 
 ## Couleurs : hors navigation (style années 70)
 
@@ -80,7 +92,7 @@ Contraste du texte mesuré sur `hn.creme` (fond des écrans) et sur
 | `hn.moutarde` | `#F0A830` | `hn.brun` dessus : 7,5:1 | Soleil, onglet actif, « Enregistrer », « Télécharger », pastille du bouton principal, première bande |
 | `hn.moutarde-pale` | `#F6CB7A` | `hn.brun` dessus : 9,9:1 | Bandeau d'alerte (pas de Wi-Fi), bas du profil, rayons de l'arrivée |
 | `hn.orange` | `#E2652B` | décor, jamais sous du texte (4,4:1) | Deuxième bande |
-| `hn.rouille` | `#B5452A` | décor, jamais sous du texte (4,4:1) | Troisième bande, maillot du vététiste |
+| `hn.rouille` | `#B5452A` | décor, jamais sous du texte (4,4:1) | Troisième bande, maillot du vététiste, couleur d'accent de la notification Android (rond de la petite icône ; blanc dessus : 5,5:1, pictogramme seulement) |
 | `hn.petrole` | `#2D6A66` | décor | Rivières des vignettes, cadre du vélo, bande de la case D− |
 | `hn.olive` | `#A9B56A` | décor | Forêts des vignettes, sol des illustrations |
 | `hn.danger` | `#8A1C12` | 7,5:1 (crème), 8,3:1 (crème clair) | « Supprimer » dans nos écrans. Les menus natifs gardent le rouge du système. |
@@ -255,6 +267,20 @@ ombre.
 | `cible.bouton-principal` | hauteur 56 | « Démarrer le suivi », « En faire un itinéraire »… |
 | `cible.outil` | hauteur 56, largeur ⅓ de la feuille | Annuler, Boucler, Supprimer |
 | `cible.marqueur` | 48 | Zone de toucher d'un point de passage (dessin : 28) |
+| `cible.onglet` | ¼ de la largeur (97 sur 390), hauteur de la barre du système (49 sur iOS au-dessus de la zone du geste, 80 sur Android) | Un onglet de la barre du bas |
+
+## Barre d'onglets (hors navigation)
+
+Quatre onglets depuis le 21 octobre 2026, dans cet ordre : **Carte**,
+**Itinéraires**, **Zones**, **Réglages** (écran `v1/80`). Barre de 83 de haut
+en `hn.brun`, surmontée de `hn.rayures` ; pastille de l'onglet actif de
+64 × 32 en `hn.moutarde`, libellés de 13 en `hn.sur-brun`.
+
+Pictogramme « roue dentée » (onglet Réglages, bouton du suivi, renvoi de
+l'écran 80), dessiné une fois dans un carré de 24 : huit dents (cercle de
+rayon 8,6, trait 3,2, tirets 3,4 / 3,35) et un anneau (rayon 6, trait 3,2 à
+3,4). Les plateformes ont le leur (Material « settings », SF Symbol
+« gearshape ») : on peut le prendre à la place, la forme est la même.
 
 ## Épaisseurs des tracés sur la carte
 
@@ -352,16 +378,23 @@ Debout : jambe −6 / 8, jambe cachée 8 / −4 ; le sol est à 77 sous la hanch
 
 ## Icône
 
-Planche : `v1/70-icone.html`. Trois propositions (A soleil rayé, B arche,
-C roue-soleil), à choisir par Émilien.
+Planche : `v1/70-icone.html`. **Icône choisie : A, le soleil rayé**
+(Émilien, 21 octobre 2026). B et C restent sur la planche pour mémoire.
+
+Dessin de A, dans le carré de 108 : fond `hn.creme` ; soleil `hn.moutarde`
+(centre 54, 62 ; rayon 24) coupé à l'horizon (y 62) et par deux filets
+`hn.creme` (y 49, haut 2,5 ; y 54,5, haut 3,2) ; bandes `hn.orange` (y 62,
+6), `hn.rouille` (y 68, 6), `hn.brun` (y 74 jusqu'en bas) ; chemin
+`hn.creme` qui serpente du bas vers l'horizon.
 
 | Jeton | Valeur |
 |---|---|
 | `icone.canevas` | 108 × 108 (couches Android) ; partie visible : cercle de 72 au centre ; zone sûre : cercle de 66 |
 | `icone.ios` | Carré plein de 1024 px, sans transparence, recadré sur les 72 du centre ; iOS arrondit lui-même les coins |
-| `icone.fond` | `hn.creme` (A, C) ou `hn.brun` (B) |
-| `icone.monochrome` | Android 13 et plus (icônes à thème) : une couche d'une seule couleur, le contour du dessin principal (roue pour C, soleil pour A, arche pour B) |
-| `icone.notification` | Android : petite icône blanche (silhouette du même dessin), teinte d'accent `hn.rouille` |
+| `icone.fond` | `hn.creme` |
+| `icone.monochrome` | Android 13 et plus (icônes à thème) : une couche d'une seule couleur, le soleil coupé de ses deux filets et la ligne d'horizon |
+| `icone.notification` | Android : petite icône blanche, silhouette simplifiée de A dans un carré de 24 : demi-soleil (centre 12, 16 ; rayon 9) coupé d'**un seul** filet (y 11 à 12,8), et une barre d'horizon (y 17,8, haut 2,6, bouts ronds). Deux filets se boucheraient à 24 dp. Couleur d'accent `hn.rouille` (écran 31) |
+| `icone.live-activity` | iOS : icône A en couleur, 20 points, rayon 5, liseré `hn.brun` à 45 % de 1 point pour la détacher du blanc (écran 32) |
 
 ## Mode sombre en v1 : non (décision 12)
 

@@ -11,6 +11,10 @@
   en page est à nous : on reprend le panneau de guidage de l'écran de suivi
   (flèche, distance en gros, consigne), sur fond blanc pour le soleil.
   Hauteur limitée par Apple à 160 points.
+  Icône de l'app en bas à gauche (retouche validée le 21 octobre 2026) :
+  l'icône A en couleur, 20 points, coins arrondis à 5, à la place de la
+  pastille magenta provisoire. Un liseré brun de 1 la détache du blanc (le
+  ciel crème de l'icône est pâle sur fond blanc).
   Valeurs : design/tokens.md. Fond d'écran et horloge : imitation d'iOS 26.
 -->
 <style>
@@ -34,7 +38,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI
 .activite .bas{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:15px;color:var(--texte-2)}
 .activite .bas b{color:var(--texte);font-size:17px;font-weight:700}
 .activite .app{display:flex;align-items:center;gap:6px}
-.activite .app i{width:18px;height:18px;border-radius:5px;background:var(--itineraire);display:flex;align-items:center;justify-content:center}
+.activite .app i{width:20px;height:20px;border-radius:5px;overflow:hidden;box-shadow:0 0 0 1px rgba(58,31,15,.45);display:block}
+.activite .app i svg{display:block}
 
 .raccourci{position:absolute;bottom:46px;width:50px;height:50px;border-radius:25px;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center}
 .indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#fff}
@@ -63,7 +68,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI
     </div>
   </div>
   <div class="bas">
-    <span class="app"><i><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.6" stroke-linecap="round"><path d="M6 18c0-7 12-5 12-12"/></svg></i>RutaPulse</span>
+    <span class="app"><i><svg width="20" height="20" viewBox="18 18 72 72" aria-hidden="true"><defs><clipPath id="a-ciel"><rect width="108" height="62"/></clipPath></defs><rect width="108" height="108" fill="#F4E4C1"/><g clip-path="url(#a-ciel)"><circle cx="54" cy="62" r="24" fill="#F0A830"/><rect x="20" y="49" width="68" height="2.5" fill="#F4E4C1"/><rect x="20" y="54.5" width="68" height="3.2" fill="#F4E4C1"/></g><rect y="62" width="108" height="6" fill="#E2652B"/><rect y="68" width="108" height="6" fill="#B5452A"/><rect y="74" width="108" height="34" fill="#3A1F0F"/><path d="M47 108 C38 95 62 88 53 74 L55 74 C68 88 48 95 69 108 Z" fill="#F4E4C1"/></svg></i>RutaPulse</span>
     <span>Reste <b>21,3 km</b></span>
   </div>
 </div>
