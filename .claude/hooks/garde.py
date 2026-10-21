@@ -16,8 +16,9 @@ import re
 import sys
 
 PROTEGES = ("docs/", "design/", ".claude/", "CLAUDE.md", "PILOTAGE.md")
+# e2e/ holds the Maestro scenarios (end-to-end tests).
 MOTIF_TEST = re.compile(
-    r"(^|/)(tests?|__tests__)/|(^|/)test_[^/]*$|[._-](test|spec)\.[^/]+$"
+    r"(^|/)(tests?|__tests__|e2e)/|(^|/)test_[^/]*$|[._-](test|spec)\.[^/]+$"
 )
 GIT_LECTURE = re.compile(r"^\s*git\s+(diff|log|show|status|blame)\b")
 ENCHAINEMENT = re.compile(r"[;&|<>`]|\$\(")

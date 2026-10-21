@@ -1,0 +1,32 @@
+# C2 : ouvre les 4 onglets et vérifie les textes français.
+# Les étapes optionnelles gèrent le lanceur et le menu de développement d'Expo.
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+- openLink:
+    link: rutapulse://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8081
+    optional: true
+- tapOn:
+    text: 'Ouvrir|Open'
+    optional: true
+- tapOn:
+    text: 'Continuer|Continue'
+    optional: true
+- tapOn:
+    text: 'Close|Fermer'
+    optional: true
+- extendedWaitUntil:
+    visible: 'Carte'
+    timeout: 90000
+- assertVisible: 'Carte'
+- takeScreenshot: captures/carte
+- tapOn: 'Itinéraires.*'
+- assertVisible: 'Itinéraires'
+- takeScreenshot: captures/itineraires
+- tapOn: 'Zones.*'
+- assertVisible: 'Zones'
+- takeScreenshot: captures/zones
+- tapOn: 'Réglages.*'
+- assertVisible: 'Réglages'
+- takeScreenshot: captures/reglages
