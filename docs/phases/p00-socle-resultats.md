@@ -28,7 +28,7 @@ parlent donc de 4 onglets.
 | C4 | Lint et formatage, 0 erreur | `npm run lint` | ESLint (contrôle du code) avec 0 avertissement toléré, puis `prettier --check .` : code 0 | **oui** | idem |
 | C5 | Au moins un test d'écran | `npm test` | 5 suites, **9 tests** réussis : les 4 écrans et leurs titres, plus `t()` | **oui** | idem |
 | C6 | Une seule commande | `npm run verify` | Enchaîne types, lint et tests, et s'arrête à la première erreur | **oui** | `mobile/package.json` |
-| C7 | Hook de formatage et de contrôle | Fichier mal formaté corrigé ou signalé | Le script `.claude/hooks/qualite.py` reformate un fichier mal formaté (code 0). Il refuse une erreur ESLint (code 2 et message renvoyé à l'agent). Mais Claude Code lit les hooks au démarrage d'une session : dans cette session, ni moi ni un sous-agent ne l'avons vu se déclencher | **partiel** : script prouvé, déclenchement réel non vu | T7 ci-dessous |
+| C7 | Hook de formatage et de contrôle | Fichier mal formaté corrigé ou signalé | Le script `.claude/hooks/qualite.py` reformate un fichier mal formaté (code 0). Il refuse une erreur ESLint (code 2 et message renvoyé à l'agent). Mais Claude Code lit les hooks au démarrage d'une session : dans cette session, ni moi ni un sous-agent ne l'avons vu se déclencher | **oui**, prouvé le 21 octobre dans la session de pilotage, après la fusion (voir plus bas) | T7 ci-dessous |
 | C8 | La CI lance `verify` et refuse un défaut | Vert, rouge exprès, vert | Job `verify` : réussi (a484d1c), échoué à l'étape « Run npm run verify » (b794650, test cassé exprès), réussi (a181152) | **oui** | [vert](https://github.com/Emilien1982/RutaPulse/actions/runs/39626166512), [rouge](https://github.com/Emilien1982/RutaPulse/actions/runs/39627330409), [vert](https://github.com/Emilien1982/RutaPulse/actions/runs/39627542298) |
 | C9 | Structure et règles écrites | ADR 0011, `CLAUDE.md` | ADR 0011 (statut « Proposé ») ; `CLAUDE.md` : sections « Stack et règles de code » et « Commandes » ; skill `/verif` : commandes du projet | **oui** | `docs/adr/0011-structure-du-code.md` |
 | C10 | Aucun secret, aucune donnée personnelle | Audit avant le push | 0 occurrence des motifs `sk-ant-`, `AIza`, `ghp_`, `gsk_`, clé privée, dans l'arbre et dans l'historique de la branche. Auteur et committer en noreply sur tous les commits. Aucun chemin local ni e-mail dans les fichiers de la phase | **oui** | audit refait avant chaque push |
@@ -105,12 +105,25 @@ faudra revoir les runs une fois l'incident fini.
   (C7).
 - Prise en cours de phase : Réglages est un 4e onglet (docs/06).
 
+## C7 prouvé en conditions réelles (21 octobre, session de pilotage)
+
+Après la fusion dans main, la session de pilotage a fait écrire deux
+fichiers par le sous-agent `developpeur` :
+
+- `src/core/hookProbe.ts`, mal formaté exprès. Message reçu par l'agent :
+  « PostToolUse hook modified … after your edit (likely a formatter) ». Le
+  fichier sur le disque était reformaté (`export const hookProbe = (a:
+  number, b: number) => {` sur trois lignes).
+- `src/core/lintProbe.ts`, qui importe `react-native` dans `core/`. Message
+  bloquant reçu par l'agent : « ESLint refuse src/core/lintProbe.ts. Corrige
+  avant de continuer », avec la règle `no-restricted-imports`.
+
+Limite à connaître : un hook qui tourne **après** l'écriture ne l'empêche
+pas. Le fichier fautif est écrit, puis l'agent reçoit l'ordre de le
+corriger. Les deux fichiers d'essai ont été supprimés.
+
 ## Ce qui reste non vérifié
 
-- **C7 en conditions réelles** : il faut une session de Claude Code qui
-  démarre dans ce dépôt après l'ajout du hook. Essai à faire : demander à
-  un agent d'écrire un fichier mal formaté sous `mobile/`, et constater
-  qu'il est reformaté.
 - Les journaux détaillés de la CI demandent une connexion à GitHub ; la
   preuve retenue est l'état de chaque étape, lu par l'API publique.
 - La première capture (C1) montre encore le lien « Réglages » de
