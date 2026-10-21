@@ -8,9 +8,20 @@
 - **Écrans de navigation** (suivi sur le vélo, écran verrouillé) :
   **direction B, contrastée**, validée.
 - **Écrans hors navigation** (création, infos, mes itinéraires, zones,
-  circuits) : style à choisir parmi des variantes « décalées », pour sortir
-  du lot. Piste préférée d'Émilien : **cartoon épuré**. En cours
-  d'exploration par le designer.
+  circuits, arrivée) : **style 3, « affiche des années 70 »**, choisi par
+  Émilien le 21 octobre 2026 parmi 5 styles décalés
+  (`design/styles/`).
+
+## Style hors navigation : décisions
+
+| # | Question | Décision |
+|---|---|---|
+| 1 | Quel style | Style 3, affiche des années 70. |
+| 2 | Ton de l'app | Sourire dans le décor ; les chiffres restent sobres et très lisibles, pour la confiance. |
+| 3 | Personnage récurrent | Oui, le vététiste : liste vide, téléchargement, erreur. |
+| 4 | Écran « Arrivé » | Dans le style années 70 : c'est un moment de fête. |
+| 5 | Icône de l'app | Elle suit le style. |
+| 6 | Illustrations en v1 | Le minimum : bandeau, vignettes et 3 états vides. Le jeu complet en V2, avec l'animation d'arrivée. |
 
 ## Réponses aux 13 questions
 
