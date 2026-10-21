@@ -1,11 +1,24 @@
 # Jetons de design de RutaPulse
 
-> Proposition du designer, 21 octobre 2026. À valider par Émilien.
+> Valeurs de référence de la v1. Directions validées par Émilien le
+> 21 octobre 2026 (`docs/06-decisions-design.md`) : **direction B** pour la
+> navigation, **style années 70** pour tout le reste.
 > Un jeton (« design token ») est une valeur nommée, définie une seule fois
 > ici et réutilisée partout : couleurs, tailles, espacements.
 > Les maquettes HTML de `design/` recopient ces valeurs dans leur bloc
 > `:root` (variables CSS), car chaque fichier doit s'ouvrir seul. **En cas
 > d'écart, ce fichier fait foi.**
+
+## Deux familles d'écrans
+
+| Famille | Écrans | Maquettes de référence | Jetons |
+|---|---|---|---|
+| **Navigation** (direction B) | Suivi sur le vélo, téléphone verrouillé | `30`, `31`, `32` | `couleur.*`, `guidage.*`, `texte.guidage-*` |
+| **Hors navigation** (style années 70) | Création, circuit balisé, infos, mes itinéraires, zones, états vides, arrivée, icône | `v1/10` à `v1/70` | `hn.*`, `perso.*`, `icone.*` |
+| **Communs** | Tous | — | `carte.*`, `terrain.*`, `trace.*`, `marqueur.*`, cibles, unités |
+
+La carte, ses tracés et ses marqueurs sont **les mêmes** dans les deux
+familles : on passe de la création au suivi sans réapprendre la légende.
 
 ## Unité
 
@@ -18,31 +31,30 @@ aussi ses épaisseurs de trait dans cette unité.
 
 | Condition | Conséquence |
 |---|---|
-| Plein soleil : l'écran reflète le ciel, les couleurs pâles disparaissent | Texte noir sur fond clair. Contraste du texte d'au moins 7:1 partout, 12:1 sur les écrans vus en roulant. Pas de gris clair pour une info utile. |
+| Plein soleil : l'écran reflète le ciel, les couleurs pâles disparaissent | Texte foncé sur fond clair. Contraste du texte d'au moins 7:1 partout, 12:1 sur les écrans vus en roulant. Pas de gris clair pour une info utile. |
 | Téléphone sur le guidon, à environ 65 cm des yeux au lieu de 30 cm en main | Les textes lus en roulant font au moins 20 points. L'info principale (distance avant la prochaine direction) fait 72 points. |
 | Coup d'œil d'une seconde, avec les vibrations | Une seule info dominante. Chiffres en gras, à largeur fixe (`tabular-nums`, chiffres tabulaires) pour qu'ils ne sautent pas quand ils changent. |
 | Gants | Cibles tactiles de 64 points en roulant, 48 à l'arrêt. 16 points entre deux cibles en roulant. Aucun geste à deux doigts obligatoire. |
 
-## Couleurs
+## Couleurs : navigation (direction B)
 
-### Interface
-
-Contraste mesuré sur fond blanc (`#FFFFFF`), calculé selon la formule WCAG
-(règles d'accessibilité du web).
+Contraste mesuré sur fond blanc (`#FFFFFF`), formule WCAG (règles
+d'accessibilité du web).
 
 | Jeton | Valeur | Contraste | Usage |
 |---|---|---|---|
-| `couleur.fond` | `#FFFFFF` | — | Fond des écrans et des panneaux |
-| `couleur.surface` | `#F2F2F2` | — | Cartes et zones groupées dans les listes |
-| `couleur.texte` | `#111111` | 18,9:1 | Tout texte principal |
-| `couleur.texte-2` | `#4A4A4A` | 8,9:1 | Texte secondaire. Rien de plus clair pour du texte. |
-| `couleur.separateur` | `#D0D0D0` | décor | Filets entre lignes de liste |
-| `couleur.contour-flottant` | `#111111` à 35 % d'opacité | décor | Bord de 1 point des boutons posés sur la carte : l'ombre seule ne se voit plus au soleil |
-| `couleur.action` | `#0A47A8` | 8,1:1 | Bouton principal (fond), liens, onglet actif |
-| `couleur.sur-action` | `#FFFFFF` | 8,1:1 sur `action` | Texte d'un bouton principal |
-| `couleur.danger` | `#B3261E` | 6,5:1 | Supprimer, Terminer le suivi |
-| `couleur.succes` | `#146C2E` | 6,5:1 | Zone prête, téléchargement fini |
+| `couleur.fond` | `#FFFFFF` | — | Fond du panneau de guidage et du bas du suivi |
+| `couleur.texte` | `#111111` | 18,9:1 | Tout texte du suivi |
+| `couleur.texte-2` | `#4A4A4A` | 8,9:1 | Texte secondaire (« Reste ») |
+| `couleur.contour-flottant` | `#111111` à 35 % d'opacité | décor | Bord de 1 point des boutons posés sur la carte du suivi |
+| `couleur.danger` | `#B3261E` | 6,5:1 | « Terminer ». **Sous les 7:1** : voir la proposition d'ajustement dans `LISEZMOI.md` (`#8A1C12`, 9,3:1). |
 | `couleur.imminent` | `#FFD400` | 13,2:1 avec `texte` | Fond du panneau de guidage à moins de 100 m d'une direction |
+
+Retirés le 21 octobre 2026, car plus aucun écran ne les utilise (les écrans
+10 à 41 passent au style années 70) : `couleur.surface`,
+`couleur.separateur`, `couleur.action` (bleu), `couleur.sur-action`,
+`couleur.succes`. Le vert reste celui du départ sur la carte
+(`carte.depart`).
 
 ### Guidage (écran de suivi)
 
@@ -52,7 +64,50 @@ Contraste mesuré sur fond blanc (`#FFFFFF`), calculé selon la formule WCAG
 | `guidage.fond-imminent` | `couleur.imminent` | Même panneau, à moins de 100 m de la direction |
 | `guidage.texte` | `couleur.texte` | Flèche, distance, consigne |
 
-### Carte : nos tracés
+## Couleurs : hors navigation (style années 70)
+
+Contraste du texte mesuré sur `hn.creme` (fond des écrans) et sur
+`hn.creme-clair` (cartes, cases, boutons secondaires). Formule WCAG.
+
+| Jeton | Valeur | Contraste | Usage |
+|---|---|---|---|
+| `hn.creme` | `#F4E4C1` | — | Fond des écrans et des feuilles du bas |
+| `hn.creme-clair` | `#FBF1DA` | — | Cartes de liste, cases, boutons secondaires, boutons posés sur la carte |
+| `hn.sable` | `#F7DDA6` | — | Fond des médaillons, rail des barres de progression |
+| `hn.brun` | `#3A1F0F` | 12,3:1 (crème), 13,5:1 (crème clair) | Texte, tous les bords, barre d'onglets, bouton principal (fond) |
+| `hn.brun-2` | `#5A3A28` | 8,2:1 (crème), 9,0:1 (crème clair) | Texte secondaire. **Jamais sur `hn.moutarde-pale`** (6,6:1). |
+| `hn.sur-brun` | `hn.creme` | 12,3:1 sur `hn.brun` | Texte et icônes sur fond brun (bouton principal, onglets) |
+| `hn.moutarde` | `#F0A830` | `hn.brun` dessus : 7,5:1 | Soleil, onglet actif, « Enregistrer », « Télécharger », pastille du bouton principal, première bande |
+| `hn.moutarde-pale` | `#F6CB7A` | `hn.brun` dessus : 9,9:1 | Bandeau d'alerte (pas de Wi-Fi), bas du profil, rayons de l'arrivée |
+| `hn.orange` | `#E2652B` | décor, jamais sous du texte (4,4:1) | Deuxième bande |
+| `hn.rouille` | `#B5452A` | décor, jamais sous du texte (4,4:1) | Troisième bande, maillot du vététiste |
+| `hn.petrole` | `#2D6A66` | décor | Rivières des vignettes, cadre du vélo, bande de la case D− |
+| `hn.olive` | `#A9B56A` | décor | Forêts des vignettes, sol des illustrations |
+| `hn.danger` | `#8A1C12` | 7,5:1 (crème), 8,3:1 (crème clair) | « Supprimer » dans nos écrans. Les menus natifs gardent le rouge du système. |
+| `hn.succes` | `#0F5223` | 7,5:1 (crème), 8,3:1 (crème clair) | « Prête sans réseau » |
+| `hn.ombre` | 0 2 8, `hn.brun` à 30 % | décor | Boutons et bulles posés sur la carte, toujours avec un bord brun |
+| `hn.voile-hors-zone` | `#CFC8BB` à 72 % | décor | Carte au-delà du bord de la zone téléchargée (52) |
+
+Règles :
+- **Pas de magenta en texte** (4,7:1 sur crème) : un petit trait magenta à
+  côté d'un texte brun fait le lien avec la carte (écran 11).
+- Les couleurs de la carte (`carte.*`) ne changent pas sur fond crème.
+
+### La signature : les trois rayures
+
+`hn.rayures` : trois bandes de 3 points, `hn.moutarde`, `hn.orange`,
+`hn.rouille`, de haut en bas (9 points en tout).
+
+| Où | Comment |
+|---|---|
+| Sous la barre du haut des écrans de création (10, 11, 52) | Pleine largeur |
+| Au-dessus de la barre d'onglets (40, 41, 50, 51) | Pleine largeur |
+| Bandeau des onglets | Soleil rayé (rond `hn.moutarde` coupé de deux filets crème) posé sur quatre bandes de 9 (les trois + `hn.brun`), 200 points de haut |
+| Cases de chiffres (20) et lignes du résumé (60) | Bande de 9 à gauche : moutarde, orange, rouille, pétrole |
+| Profil d'altitude (20) | Rempli de quatre bandes : rouille, orange, moutarde, moutarde pâle |
+| Fenêtre de carte en arche (20) | Trois anneaux : 5 moutarde, 4 orange, 3 rouille |
+
+## Carte : nos tracés (communs)
 
 Le style de carte actuel (essai 3) a déjà : pistes brunes, sentiers en
 tirets rouges, circuits bleus, eau bleue, routes blanches. Nos tracés
@@ -65,10 +120,13 @@ doivent se distinguer de tout cela, par la couleur **et** par l'épaisseur.
 | `carte.parcouru` | `#8C8C8C` à 70 % | — | Partie de l'itinéraire déjà roulée, pendant le suivi |
 | `carte.circuit` | `#2F6BFF` à 55 % | — | Circuits VTT balisés (couche) |
 | `carte.circuit-choisi` | `#2F6BFF` à 100 % | — | Circuit touché, avant d'en faire un itinéraire |
+| `carte.sens-circuit` | chevrons `#FFFFFF` de 7 × 8, tous les 150 points environ | — | Sens du circuit choisi (décision 7), dessinés sur son tracé |
 | `carte.position` | `#1A73E8`, bord blanc | — | Ma position. Bleu : convention des deux plateformes. |
 | `carte.depart` | `#146C2E` | — | Pastille du départ |
 | `carte.arrivee` | `#111111` | — | Pastille de l'arrivée (drapeau) |
 | `carte.point` | fond `#FFFFFF`, bord `#C2007A`, chiffre `#111111` | — | Points de passage numérotés |
+| `carte.point-refuse` | fond `#FFFFFF`, bord en tirets `hn.brun`, « ! » | — | Point touché hors de la zone, en attente d'un choix (52) |
+| `carte.bord-zone` | `hn.brun`, 2,5, tirets 9 / 6 | — | Bord de la zone téléchargée (52) |
 
 ### Carte : fond (reprise du style de l'essai 3)
 
@@ -87,6 +145,14 @@ doivent se distinguer de tout cela, par la couleur **et** par l'épaisseur.
 (`subclass=footway`) hors de la couche des sentiers, sinon les villages se
 couvrent de tirets rouges.
 
+### Attribution
+
+« © OpenStreetMap © OpenMapTiles © Mapterhorn © IGN » (décision 13), en 11
+points, `hn.brun-2` sur `hn.creme-clair` à 88 %. Sur une petite carte (arche
+de l'écran 20) ou quand la place manque (52) : « © OpenStreetMap » suivi d'un
+bouton « i » qui ouvre la liste complète (convention de MapLibre). Zone de
+toucher de 48 autour du « i ».
+
 ### Terrain (infos de l'itinéraire)
 
 Mêmes teintes que la carte, pour qu'on n'ait qu'une légende à apprendre.
@@ -100,60 +166,94 @@ Mêmes teintes que la carte, pour qu'on n'ait qu'une légende à apprendre.
 
 ## Typographie
 
-Police **du système** : SF Pro sur iOS, Roboto sur Android. Pas de police
-à télécharger, rendu net, et elle suit la taille de texte choisie dans les
-réglages du téléphone.
+### Deux polices
 
-| Jeton | Taille | Graisse | Usage |
-|---|---|---|---|
-| `texte.guidage-distance` | 72 | 800 | « 200 » : distance avant la prochaine direction |
-| `texte.guidage-unite` | 40 | 800 | « m », « km » à côté de la distance. Plus petit, pour que « 1,2 km » tienne sur la ligne avec la flèche |
-| `texte.guidage-consigne` | 28 | 700 | « Tournez à gauche » |
-| `texte.guidage-restant` | 36 | 800 | Distance restante (valeur) |
-| `texte.guidage-etiquette` | 20 | 600 | « Reste », libellés lus en roulant (minimum en roulant) |
-| `texte.chiffre-cle` | 28 | 700 | Distance, D+, durée, à l'arrêt |
-| `texte.chiffre-cle-unite` | 17 | 700 | Unité à côté d'un chiffre clé (« km », « m », « h ») |
-| `texte.titre-ecran` | 28 | 700 | Titre d'un écran |
-| `texte.titre-section` | 20 | 700 | Titre d'un bloc |
-| `texte.corps` | 17 | 400 | Texte courant |
-| `texte.bouton` | 17 | 600 | Libellé de bouton |
-| `texte.secondaire` | 15 | 400 | Ligne d'explication, en `texte-2` |
-| `texte.legende` | 13 | 500 | Unités sous un chiffre, axes du profil. Minimum hors carte. |
-| `texte.attribution` | 11 | 400 | « © OpenStreetMap… » seulement (imposé par les licences) |
+| Police | Où | Pourquoi |
+|---|---|---|
+| **Police du système** (SF Pro sur iOS, Roboto sur Android) | Tout l'écran de suivi ; hors navigation : corps, listes, noms d'itinéraires, **tous les chiffres**, onglets, segments, outils, menus | Grand œil (hauteur des minuscules), chiffres tabulaires, suit la taille de texte du téléphone. Les chiffres sont les mêmes de la création au suivi. |
+| **Jost 700** (licence libre OFL, à embarquer avec `expo-font`, environ 130 Ko) | Hors navigation seulement : titres d'écran (en capitales), surtitres de bloc (en capitales espacées), nom de l'itinéraire en titre, libellés des boutons d'action (« Démarrer le suivi », « Enregistrer », « Télécharger ») | La voix « affiche des années 70 ». Les maquettes utilisent Futura (iOS et macOS seulement), dont Jost est un proche libre. Son petit œil le réserve aux textes courts et grands. |
+
+Une seule graisse de Jost suffit en v1 (700).
+
+### Tailles
+
+| Jeton | Taille | Graisse | Police | Usage |
+|---|---|---|---|---|
+| `texte.guidage-distance` | 72 | 800 | système | « 200 » : distance avant la prochaine direction |
+| `texte.guidage-unite` | 40 | 800 | système | « m », « km » à côté de la distance |
+| `texte.guidage-consigne` | 28 | 700 | système | « Tournez à gauche » |
+| `texte.guidage-restant` | 36 | 800 | système | Distance restante (valeur) ; chiffres de l'écran « Arrivée » |
+| `texte.guidage-etiquette` | 20 | 600 | système | « Reste », libellés lus en roulant (minimum en roulant) |
+| `texte.titre-fete` | 44 | 700 | Jost, capitales, espacement 2 | « ARRIVÉE ! » |
+| `texte.titre-ecran` | 26 | 700 | Jost, capitales, espacement 0,5 | « MES ITINÉRAIRES », « ZONES HORS LIGNE » |
+| `texte.titre-etat` | 24 | 700 | Jost | Titre d'un état vide (50, 51) |
+| `texte.titre-nom` | 22 | 700 | Jost | Nom de l'itinéraire ou du circuit en tête d'écran ou de feuille ; titre d'une erreur |
+| `texte.titre-barre` | 18 | 700 | Jost | Titre de la barre du haut (« Nouvel itinéraire ») |
+| `texte.chiffre-cle` | 28 | 800 | système | Distance, D+, durée, à l'arrêt |
+| `texte.chiffre-cle-unite` | 17 | 700 | système | Unité à côté d'un chiffre clé (« km », « m », « h ») |
+| `texte.bouton-action` | 17 (20 sur l'écran « Arrivée ») | 700 | Jost | Libellé d'un bouton principal ou secondaire |
+| `texte.bouton` | 17 | 600 | système | Segments, interrupteurs, liens soulignés |
+| `texte.outil` | 15 | 600 | système | Libellé sous l'icône d'un outil (Annuler, Boucler, Supprimer) |
+| `texte.surtitre` | 13 à 16 | 700 | Jost, capitales, espacement 1 à 1,2 | « PROCHAIN TRONÇON », « PROFIL ET TERRAIN », « DISPONIBLES » |
+| `texte.corps` | 17 | 400 | système | Texte courant |
+| `texte.secondaire` | 15 | 400 | système | Ligne d'explication, en `hn.brun-2` |
+| `texte.legende` | 13 | 500 | système | Unités sous un chiffre, axes du profil. Minimum hors carte. |
+| `texte.attribution` | 11 | 400 | système | Attributions de la carte seulement (imposé par les licences) |
 
 - Interligne : 1,2 pour les chiffres et titres, 1,4 pour le corps.
-- Chiffres : toujours `fontVariant: ['tabular-nums']`.
+- Chiffres : toujours `fontVariant: ['tabular-nums']`, toujours en police du
+  système (décision 2 : « les chiffres restent sobres et très lisibles »).
 - Nombres en français : virgule décimale (« 12,4 km »), espace fine avant
   l'unité. L'essai 1 a vu « 1.5 » sur Android : forcer le format français
   dans le code, ne pas dépendre de la langue du téléphone.
 - Les tailles de guidage ne suivent **pas** la taille de texte du système
   au-delà de 120 % (elles sont déjà très grandes, et l'écran déborderait).
+- Les noms d'itinéraires dans les listes restent en police du système : ils
+  sont longs et variables, et Jost est plus large.
 
 ## Espacements
 
 Échelle de 4 en 4 : `esp.1` = 4, `esp.2` = 8, `esp.3` = 12, `esp.4` = 16,
 `esp.6` = 24, `esp.8` = 32, `esp.12` = 48.
 
-- Marge latérale des écrans : 16.
+- Marge latérale des écrans : 16 ; listes de cartes : 12.
+- Écart entre deux cartes de liste : 8 à 10.
 - Écart entre deux cibles tactiles : 8 à l'arrêt, 16 en roulant.
 
-## Rayons d'angle
+## Bords et rayons
+
+### Navigation (direction B)
 
 | Jeton | Valeur | Usage |
 |---|---|---|
-| `rayon.petit` | 8 | Pastilles, vignettes |
-| `rayon.moyen` | 12 | Cartes, panneaux posés sur la carte |
-| `rayon.feuille` | 16 | Haut des feuilles du bas (« bottom sheet », panneau qui monte du bas) |
-| `rayon.bouton` | 28 | Boutons principaux de 56 et boutons ronds sur la carte |
-| `rayon.plein` | 999 | Pastilles rondes, boutons ronds |
+| `bord.guidage` | 3, `couleur.texte` | Bas du panneau de guidage, haut du panneau « Reste » |
+| `rayon.bouton-velo` | 32 | Boutons de 64 du suivi |
+| `rayon.plein` | 999 | Boutons ronds |
+
+### Hors navigation (style années 70)
+
+Tout élément a un bord brun : il détache l'élément au soleil, mieux qu'une
+ombre.
+
+| Jeton | Valeur | Usage |
+|---|---|---|
+| `hn.bord` | 2,5, `hn.brun` | Cartes, cases, boutons, segments, boutons posés sur la carte, bandeau d'alerte |
+| `hn.bord-fort` | 3, `hn.brun` | Médaillons, arche, bord des feuilles du bas |
+| `hn.rayon-bouton` | 24 (hauteur 48), 28 (hauteur 56), 32 (hauteur 64) | Boutons en pilule |
+| `hn.rayon-carte` | 22 à 24 | Lignes de liste, cartes de zone, résumé de l'arrivée |
+| `hn.rayon-case` | 18 | Cases de chiffres, outils, carte d'aide |
+| `hn.rayon-feuille` | 28 | Haut des feuilles du bas (« bottom sheet », panneau qui monte du bas) |
+| `hn.medaillon` | rond de 64, bord 3, anneau intérieur moutarde de 3 | Vignettes de la liste d'itinéraires |
+| `hn.arche` | rayon 164 / 96 en haut, 18 en bas | Fenêtre de carte de l'écran « Infos » |
 
 ## Cibles tactiles
 
 | Jeton | Valeur | Usage |
 |---|---|---|
 | `cible.arret` | 48 | Minimum à l'arrêt (Android : 48 dp, iOS : 44 pt ; on prend le plus grand) |
-| `cible.velo` | 64 | Minimum sur l'écran de suivi |
-| `cible.bouton-principal` | hauteur 56 | « Démarrer le suivi », « Enregistrer »… |
+| `cible.velo` | 64 | Minimum sur l'écran de suivi, et bouton « Fermer » de l'écran « Arrivée » (lu sur le guidon) |
+| `cible.bouton-principal` | hauteur 56 | « Démarrer le suivi », « En faire un itinéraire »… |
+| `cible.outil` | hauteur 56, largeur ⅓ de la feuille | Annuler, Boucler, Supprimer |
 | `cible.marqueur` | 48 | Zone de toucher d'un point de passage (dessin : 28) |
 
 ## Épaisseurs des tracés sur la carte
@@ -184,110 +284,93 @@ au zoom 17 (`line-width` en `interpolate` sur le zoom).
 
 ## Ombres
 
-Une seule : `ombre.flottant` = 0 2 8 noir à 25 %, toujours avec
-`couleur.contour-flottant`. Au soleil, une ombre ne suffit pas à détacher
-un bouton de la carte.
+- Navigation : `ombre.flottant` = 0 2 8 noir à 25 %, toujours avec
+  `couleur.contour-flottant`.
+- Hors navigation : `hn.ombre` (plus haut), toujours avec `hn.bord`.
+- Au soleil, une ombre seule ne suffit pas à détacher un bouton de la carte.
 
-## Hors navigation : styles à l'essai (non validés)
+## Personnage : le vététiste
 
-> Ajouté le 21 octobre 2026. Cinq styles « décalés » pour les écrans hors
-> navigation (`design/styles/`). **Aucun n'est validé.** Quand Émilien en
-> choisit un, ses valeurs remplacent ici celles de l'interface pour ces
-> écrans ; les autres sont supprimées.
->
-> **Ne changent dans aucun style** : tout l'écran de suivi et l'écran
-> verrouillé (direction B), les jetons `carte.*`, `terrain.*`, `trace.*`,
-> `marqueur.*`, les cibles tactiles, les tailles de texte minimales, le
-> menu natif des lignes, les boîtes de dialogue du système, `couleur.danger`.
-> Contraste du texte : 7:1 au moins dans chaque style (mesuré ci-dessous
-> sur le fond principal).
+Décisions 3 et 6 : il apparaît sur la liste vide (50), le téléchargement
+(51), l'erreur (52) et l'arrivée (60). En V2, il est animé sur le podium.
+Il est dessiné pour être **animé sans être redessiné**.
 
-### Style 1 : cartoon épuré
+### Règle de dessin
 
-| Jeton | Valeur | Contraste | Usage |
-|---|---|---|---|
-| `s1.fond` | `#FFF8EC` | — | Fond des écrans |
-| `s1.carte` | `#FFFFFF` | — | Cartes de la liste, boutons secondaires |
-| `s1.encre` | `#1E1B2E` | 16:1 | Texte et tous les contours |
-| `s1.encre-2` | `#4A4560` | 8,6:1 | Texte secondaire |
-| `s1.ciel` / `s1.ciel-pale` | `#BDE5FF` / `#E3F4FF` | encre 12,7:1 | Bandeau, fond du profil |
-| `s1.herbe` / `s1.herbe-claire` | `#7FCB5E` / `#B9E7A0` | décor | Collines, profil |
-| `s1.soleil` / `s1.soleil-bord` | `#FFD23F` / `#E8A900` | encre 11,7:1 | Bouton principal, onglet actif, bouton ouvert |
-| `s1.case-1` à `4` | `#BDE5FF` `#FFE79A` `#C9EDB4` `#FFD6C9` | encre 12:1 au moins | Les quatre chiffres clés |
-| `s1.trait` | 3 | — | Contour de tout élément (cartes, boutons, vignettes, profil) |
-| Rayons | cartes 20, cases 18, vignettes 16, boutons 24 à 28 | — | Tout est arrondi |
-| Police titres et chiffres | Nunito 800 (à embarquer) | — | Système pour noms, corps et menus |
+- Vu de profil, tourné vers la droite. Aplats sans contour, comme une
+  affiche ; seul le vélo a des traits.
+- Membres : traits ronds (`stroke-linecap: round`). Cuisse 36 de long, 10
+  d'épaisseur ; tibia 36, épaisseur 8 ; bras 20, épaisseur 7 ; avant-bras 18,
+  épaisseur 6. Buste : rectangle de 18 × 44, arrondi de 9. Tête : rond de 12
+  de rayon. Hauteur debout : environ 145.
+- Pas de texte dans les illustrations (traduction, lecture à 48 points). Un
+  « ? » est un dessin, pas une lettre.
+- Une illustration par écran au plus, jamais sur des chiffres.
 
-### Style 2 : carnet de terrain dessiné
+### Couleurs
 
-| Jeton | Valeur | Contraste | Usage |
-|---|---|---|---|
-| `s2.papier` | `#F6F0E1` | — | Fond |
-| `s2.quadrillage` | `#E4DAC3`, pas de 22 | décor | Quadrillage du papier |
-| `s2.encre` | `#1F2A44` | 12,5:1 | Texte, contours, bouton principal (fond) |
-| `s2.encre-2` | `#4F4636` | 8,2:1 | Texte secondaire |
-| `s2.crayon` | `#8C7B5A` | décor | Filets dessinés entre les lignes |
-| `s2.crayon-rouge` | `#B3261E` | décor | Soulignés, cercle autour de l'élément actif |
-| `s2.scotch` | `#ECCE78` à 78 % | décor | Ruban adhésif des vignettes |
-| `s2.case` | `#FFFDF6` à 82 % | — | Fond des cases, pour les détacher du quadrillage |
-| Bords | 2, rayons irréguliers (4 à 16, différents à chaque coin) | — | Effet « tracé à main levée » |
-| Police titres | Patrick Hand (à embarquer) | — | Titres d'écran et de bloc seulement |
+| Jeton | Valeur | Partie |
+|---|---|---|
+| `perso.peau` / `perso.peau-ombre` | `#D9956A` / `#B97A52` | Visage, bras, jambes ; côté caché en ombre |
+| `perso.maillot` / `perso.maillot-ombre` | `hn.rouille` / `#8E3520` | Maillot, manches |
+| `perso.bande` | `hn.moutarde` | Bande du maillot |
+| `perso.casque` / `perso.visiere` | `hn.moutarde` / `hn.orange` | Casque |
+| `perso.cuissard` | `hn.brun` (côté visible), `hn.brun-2` (caché) | Cuissard, gants, chaussures |
+| `perso.cadre` | `hn.petrole`, trait 6 | Cadre du vélo |
+| `perso.pneu` | `hn.brun`, trait 6, rayon 27 ; rayons `hn.brun-2`, trait 2 | Roues |
+| `perso.boue` | `#7A4A1E` (= `terrain.piste`) | Éclaboussures (60, et V2) |
 
-### Style 3 : affiche des années 70
+### Squelette (pour l'animation)
 
-| Jeton | Valeur | Contraste | Usage |
-|---|---|---|---|
-| `s3.creme` / `s3.creme-clair` | `#F4E4C1` / `#FBF1DA` | — | Fond / cartes et cases |
-| `s3.brun` | `#3A1F0F` | 12,1:1 | Texte, contours, barre d'onglets, bouton principal |
-| `s3.brun-2` | `#5A3A28` | 8,1:1 | Texte secondaire |
-| `s3.moutarde` | `#F0A830` | brun 7,5:1 | Soleil, onglet actif, bande |
-| `s3.orange` / `s3.rouille` | `#E2652B` / `#B5452A` | décor, jamais sous du texte | Bandes |
-| `s3.petrole` / `s3.olive` | `#2D6A66` / `#A9B56A` | décor | Rivière et forêts des vignettes, bande d'une case |
-| Bords | 2,5 à 3 ; rayons 18 à 28, vignettes rondes, carte en arche | — | |
-| Police titres et chiffres | Jost 700 (à embarquer ; Futura dans les maquettes) | — | Système pour noms et corps |
+Chaque membre est un groupe SVG (`<G>` de `react-native-svg`) qui tourne
+autour de son articulation. Une pose est une liste d'angles ; une animation
+fait varier ces angles (`react-native-reanimated`).
 
-### Style 4 : néo-brutalisme coloré
+| Groupe | Origine | Articulation des enfants |
+|---|---|---|
+| `vetetiste` | hanche (0, 0) | — |
+| `buste` | hanche | épaule (0, −34), cou (0, −40) |
+| `tete` | cou | — |
+| `bras`, `bras-loin` | épaule | coude (0, 20) → `avant-bras` |
+| `jambe`, `jambe-loin` | hanche | genou (0, 36) → `tibia` |
+| `velo` | pédalier (0, 0) | roues (−42, −2) et (62, −2) ; `manivelle` (longueur 13) ; selle à (−12, −53) ; guidon à (43, −57) |
 
-| Jeton | Valeur | Contraste | Usage |
-|---|---|---|---|
-| `s4.fond` | `#D9CCFF` (lilas) | — | Fond |
-| `s4.blanc` | `#FFFFFF` | — | Cartes, bande du profil |
-| `s4.noir` | `#111111` | 12,6:1 sur lilas | Texte, bords, ombres |
-| `s4.texte-2` | `#2E2E2E` | 9,1:1 | Texte secondaire |
-| `s4.citron` `s4.cyan` `s4.rose` `s4.jaune` | `#C8F560` `#7FE3F0` `#FF9ECD` `#FFD400` | noir 9,9:1 au moins | Aplats des cases, vignettes, boutons |
-| `s4.bord` | 3, noir, angles vifs | — | Tout élément |
-| `s4.ombre` | décalage 4 × 4 (3 × 3 pour les cases), sans flou, noir | — | Tout élément touchable |
-| Police | Système 800 à 900 ; chiffres clés en chasse fixe du système | — | Rien à embarquer |
+Deux couches : `perso-loin` (jambe et bras du côté caché) se dessine **avant**
+le vélo, `perso-pres` **après**. Assis sur le vélo, la hanche est en
+(−10, −56) par rapport au pédalier.
 
-### Style 5 : sérigraphie trois encres
+### Poses de la v1
 
-| Jeton | Valeur | Contraste | Usage |
-|---|---|---|---|
-| `s5.papier` | `#F3EEE3` | — | Fond |
-| `s5.bleu` | `#24336B` | 10,3:1 | Seule encre du texte ; bords, bouton principal |
-| `s5.bleu-2` | `#3A4470` | 8,1:1 | Texte secondaire |
-| `s5.magenta` | `#C2007A` (= `carte.itineraire`) | décor, jamais du texte | Trames, décalage des titres, ombre du bouton |
-| `s5.jaune` | `#FFD400` (= `couleur.imminent`) | bleu 8,3:1 | Trame de l'en-tête, surlignage des chiffres |
-| `s5.trame` | points de 1,2 à 2,3, pas de 4,5 à 7 | décor | Aplats tramés |
-| `s5.decalage` | 2 à 2,5 vers la droite et le bas, magenta | décor | Titres et profil : encre « mal calée » |
-| Bords | 2 à 4, rayon 4 | — | |
-| Police titres | Grotesque étroite du système : Avenir Next Condensed (iOS), `sans-serif-condensed` (Android) | — | Rien à embarquer |
+| Pose | Écran | Angles principaux (degrés, sens horaire) |
+|---|---|---|
+| Carte vierge | 50 | buste 3 ; bras −37 / avant-bras −70 ; tête 15 |
+| Roule | 51 | buste 55 ; bras −85,8 / −55 ; jambe −29,6 / 31,7 ; jambe cachée −56 / 102,9 ; manivelle 60 |
+| Se gratte le casque | 52 | buste 0 ; bras −126,5 / −80,2 ; tête −6 |
+| Podium | 60 | buste 0 ; bras −130 / −10 (trophée) ; bras caché 150 / 20 ; tête −10 |
 
-## Mode sombre en v1 : non, je le déconseille
+Debout : jambe −6 / 8, jambe cachée 8 / −4 ; le sol est à 77 sous la hanche.
+
+## Icône
+
+Planche : `v1/70-icone.html`. Trois propositions (A soleil rayé, B arche,
+C roue-soleil), à choisir par Émilien.
+
+| Jeton | Valeur |
+|---|---|
+| `icone.canevas` | 108 × 108 (couches Android) ; partie visible : cercle de 72 au centre ; zone sûre : cercle de 66 |
+| `icone.ios` | Carré plein de 1024 px, sans transparence, recadré sur les 72 du centre ; iOS arrondit lui-même les coins |
+| `icone.fond` | `hn.creme` (A, C) ou `hn.brun` (B) |
+| `icone.monochrome` | Android 13 et plus (icônes à thème) : une couche d'une seule couleur, le contour du dessin principal (roue pour C, soleil pour A, arche pour B) |
+| `icone.notification` | Android : petite icône blanche (silhouette du même dessin), teinte d'accent `hn.rouille` |
+
+## Mode sombre en v1 : non (décision 12)
 
 - **Au soleil, le clair se lit mieux.** Un fond noir reflète le ciel et le
-  visage, et le texte blanc perd son contraste. Les compteurs de vélo GPS
-  sont clairs le jour pour cette raison.
-- **Une deuxième carte à faire et à tester.** Un mode sombre utile demande un
-  style MapLibre sombre complet (fond, pistes, sentiers, courbes, relief),
-  à régler et à valider sur les deux plateformes.
-- **Usage de nuit rare** pour la v1, à confirmer par Émilien.
+  visage, et le texte blanc perd son contraste.
+- **Une deuxième carte à faire et à tester** : un style MapLibre sombre
+  complet, sur les deux plateformes.
 - **À faire quand même** : forcer le thème clair (`userInterfaceStyle:
   "light"` dans la configuration Expo). Sans cela, un téléphone réglé en
   mode sombre afficherait une app à moitié sombre (menus et feuilles du
-  système en noir, nos écrans en blanc).
-- **Contradiction à trancher** : l'ADR 0006 prévoit un « style de carte
-  sombre pendant le suivi » pour économiser la batterie. C'est justement
-  l'écran lu au soleil. Le gain réel n'est pas mesuré (l'essai 2 sur
-  simulateur ne mesure pas la batterie). Question posée à Émilien dans
-  `LISEZMOI.md`.
+  système en noir, nos écrans en crème).
+- À reconsidérer en V2.

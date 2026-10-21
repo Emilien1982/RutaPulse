@@ -1,207 +1,246 @@
-# Design de RutaPulse : proposition pour la v1
+# Design de RutaPulse : maquettes de la v1
 
-> 21 octobre 2026. Proposition du designer (étape 3d), **à juger par
-> Émilien**. Rien n'est validé.
->
-> Mise à jour : Émilien a validé la direction B pour la navigation
-> (`docs/06-decisions-design.md`). Le style des écrans hors navigation est
-> en exploration dans [`styles/`](styles/LISEZMOI.md).
+> 21 octobre 2026. Les deux directions sont validées par Émilien
+> (`docs/06-decisions-design.md`) : **direction B** pour la navigation,
+> **style années 70** (style 3) pour tout le reste. Les maquettes de
+> référence pour le développement sont celles du tableau « Les écrans de la
+> v1 » ci-dessous. Les points marqués « à valider » attendent encore Émilien.
 
 ## Comment regarder
 
-- Les captures PNG sont dans `design/captures/`, une par écran, au même nom
-  que le fichier HTML.
 - Chaque maquette est un fichier HTML autonome (sans police, image ni lien
   en ligne), au format d'un téléphone : 390 × 844 points. Il s'ouvre dans un
   navigateur, même hors ligne.
-- Les valeurs (couleurs, tailles, espacements, épaisseurs des tracés) sont
-  définies dans [`tokens.md`](tokens.md). Les HTML les recopient ; en cas
-  d'écart, `tokens.md` fait foi.
+- Captures PNG : `design/captures/` pour les écrans de navigation,
+  `design/v1/captures/` pour les écrans hors navigation, au même nom que le
+  fichier HTML.
+- Les valeurs (couleurs, tailles, bords, polices, personnage, icône) sont
+  dans [`tokens.md`](tokens.md). Les HTML les recopient ; en cas d'écart,
+  `tokens.md` fait foi.
 - La carte des maquettes est un dessin simplifié en SVG (format d'image
   vectorielle), qui reprend les couleurs du style de l'essai 3. Ce n'est pas
   la vraie carte.
-- Les maquettes montrent une seule version, neutre. Chaque plateforme
-  utilise ensuite ses composants natifs (tableau « Conventions » plus bas).
+- Les titres et boutons utilisent Futura dans les maquettes (présente sur
+  iOS et macOS) ; l'app utilisera Jost, sa proche libre, embarquée. Sur un
+  autre système, le navigateur prend une police de secours : les captures
+  doivent se faire sur un Mac.
+- Une seule version neutre par écran ; chaque plateforme utilise ensuite ses
+  composants natifs (tableau « Conventions » plus bas).
 
-## Les écrans
+## Les écrans de la v1
 
-| Fichier | Écran | Fonction du cadrage |
+| Fichier | Écran | Fonction du cadrage, décision |
 |---|---|---|
-| `01-direction-a-sobre.html` | Direction A : suivi sur le vélo | 7 |
-| `02-direction-b-contraste.html` | Direction B : suivi sur le vélo | 7 |
-| `10-creation-itineraire.html` | Création : on glisse un point, l'itinéraire se recalcule pendant le geste ; circuits balisés affichés | 2, 9 |
-| `11-creation-trace-a-la-main.html` | Création : deux tronçons tracés à la main, en tirets | 2 |
-| `12-circuit-balise.html` | Carte : un circuit balisé touché, « En faire un itinéraire » | 9 |
-| `20-infos-itineraire.html` | Infos : distance, durée, D+ et D−, profil d'altitude, terrain, difficulté | 3 |
-| `30-suivi-velo.html` | Suivi, direction B complète : direction à 50 m, panneau jaune | 7 |
+| `v1/10-creation-itineraire.html` | Création : on glisse un point, l'itinéraire se recalcule pendant le geste ; circuits affichés ; bouton « Boucler » | 2, 9 ; décision 6 |
+| `v1/11-creation-trace-a-la-main.html` | Création : deux tronçons tracés à la main, en tirets | 2 ; décision 8 |
+| `v1/12-circuit-balise.html` | Carte : un circuit balisé touché, son sens, le départ au point le plus proche, « En faire un itinéraire » | 9 ; décision 7 |
+| `v1/20-infos-itineraire.html` | Infos : distance, durée, D+ et D−, profil, terrain, difficulté, carte en arche | 3 ; décision 13 |
+| `30-suivi-velo.html` | Suivi, direction B : direction à 50 m, panneau jaune | 7 |
 | `31-verrouille-android.html` | Téléphone verrouillé, Android : la notification unique | 8 |
 | `32-verrouille-ios.html` | Téléphone verrouillé, iOS : la Live Activity (bandeau en direct) | 8 |
-| `40-mes-itineraires.html` | Mes itinéraires, menu d'une ligne ouvert (renommer, exporter en GPX, format d'échange de traces GPS, supprimer), import GPX | 4, 5 |
-| `41-zones.html` | Zones hors ligne : prête, en téléchargement, à télécharger | 6 |
+| `v1/40-mes-itineraires.html` | Mes itinéraires, menu natif d'une ligne ouvert, import GPX | 4, 5 |
+| `v1/41-zones.html` | Zones : prête, en attente du Wi-Fi, à télécharger ; bandeau « Pas de Wi-Fi » avec l'interrupteur « Wi-Fi seulement » ; « Demander une zone » | 6 ; décision 10 |
+| `v1/50-liste-vide.html` | Mes itinéraires vide, avec le vététiste | 4 ; décision 3 |
+| `v1/51-telechargement.html` | Onglet Carte pendant le téléchargement de la première zone : le vététiste roule sur la barre de progression | 6 ; décision 3 |
+| `v1/52-erreur.html` | Création : point touché hors de la zone, calcul impossible, trois sorties | 2, 6 ; décisions 3, 10 |
+| `v1/60-arrivee.html` | Arrivée : résumé (distance, D+, durée), suivi arrêté, podium fixe | décisions 4, 5 (questions) |
+| `v1/70-icone.html` | Icône : trois propositions, iOS, Android adaptative, 48 points | décision 5 (style) |
 
 Pas dessinés, car ils découlent des écrans ci-dessus : la carte d'accueil
-(l'écran 12 sans la feuille, avec un bouton « Nouvel itinéraire »), le
-menu des couches, les boîtes de confirmation, la saisie du nom, les
-demandes de permission du système.
+(l'écran 12 sans la feuille, avec un bouton « Nouvel itinéraire ») ; la
+carte vide au tout premier lancement (l'écran 51 sans barre, avec
+« Choisir une zone ») ; le menu des couches ; les boîtes de confirmation ; la
+saisie du nom ; les demandes de permission du système ; le message d'un GPX
+importé hors des zones (décision 11 : même feuille que l'écran 52, avec
+« Télécharger la zone » ou « Demander une zone »).
 
-## Les deux directions, sur l'écran de suivi
+### Historique (ne plus s'en servir pour développer)
 
-### A — Sobre, carte dominante (`01`)
-
-La carte remplit l'écran ; la prochaine direction tient dans une petite
-carte sombre posée en haut, comme dans une app de navigation routière.
-
-- **Forces** : beaucoup de contexte autour de soi, utile en forêt où la
-  consigne n'a souvent pas de nom de chemin (« Tournez à gauche. ») ;
-  aspect familier (Google Maps, Komoot) ; peu de cadres.
-- **Faiblesses** : distance en 40 points et consigne en 22, trop petites à
-  65 cm sur un chemin qui secoue ; le cadre sombre reflète le ciel au soleil
-  et son texte blanc perd du contraste ; c'est la carte, détaillée et pâle,
-  qui domine, alors qu'elle se lit mal au soleil ; bouton d'arrêt de 56
-  points seulement.
-
-### B — Contrastée, gros chiffres (`02`, puis `30`)
-
-Un panneau blanc en haut donne la prochaine direction en très gros
-caractères noirs ; la carte, simplifiée, occupe le milieu ; la distance
-restante est en bas.
-
-- **Forces** : distance lisible d'un coup d'œil (72 points) ; noir sur
-  blanc (contraste de 18,9:1) ; trois zones fixes, l'œil sait où regarder ;
-  le panneau peut passer au jaune à l'approche d'une direction ; boutons de
-  64 points.
-- **Faiblesses** : la carte ne garde que 52 % de la hauteur, on voit moins
-  loin devant ; aspect plus « outil » que beau ; les grands aplats blancs
-  consomment plus sur un écran OLED (écran dont chaque point éclaire
-  lui-même) qu'un fond noir, sans que l'écart soit mesuré.
-
-### Recommandation : B
-
-Le suivi se lit en roulant, d'un coup d'œil, souvent au soleil : la taille
-et le contraste priment. B garde de A une carte assez grande pour voir une
-fourche, car en forêt c'est elle qui lève le doute. Les écrans 10 à 41 sont
-dessinés dans la direction B : noir sur blanc, chiffres clés en 28 points,
-cibles de 48 à 64 points, bords marqués.
+- `01-direction-a-sobre.html`, `02-direction-b-contraste.html` : les deux
+  directions comparées sur le suivi. B est retenue ; `30` en est la version
+  complète.
+- `10`, `11`, `12`, `20`, `40`, `41` à la racine de `design/` : premières
+  versions, en direction B. **Remplacées par `v1/`.**
+- `styles/` : les cinq styles essayés pour les écrans hors navigation. Le
+  style 3 est retenu ; seuls ses jetons restent dans `tokens.md`.
 
 ## Les choix importants
 
-Suivi sur le vélo
+### Style années 70 (hors navigation)
+
+- **Chiffres en police du système, titres en Jost** : décision 2 (chiffres sobres) ; Futura et Jost ont un petit œil et des chiffres qui changent de largeur ; et les chiffres de la création sont ainsi ceux du suivi.
+- **Jost réservé aux textes courts et grands (titres, boutons d'action)** : c'est la voix de l'affiche ; en petit, la police du système se lit mieux.
+- **Un bord brun de 2,5 sur tout élément** : au soleil, un bord se voit, une ombre non.
+- **Trois rayures moutarde, orange, rouille sous la barre du haut et au-dessus des onglets** : la signature du style, toujours au même endroit, jamais sur une information.
+- **Carte, tracés et marqueurs identiques à ceux du suivi** : une seule légende à apprendre ; seuls la barre du haut, les boutons posés sur la carte et les feuilles du bas prennent le style.
+- **Pas de texte en magenta ni en orange** : 4,7:1 et 4,4:1 sur le crème ; un petit trait magenta à côté d'un texte brun fait le lien avec la carte.
+- **Rouge de suppression foncé (`#8A1C12`) et vert « prête » foncé (`#0F5223`)** : les couleurs d'origine n'atteignaient pas 7:1 sur le crème.
+- **Menus et boîtes de dialogue natifs, non décorés** : sur iOS, le menu natif ne se décore pas, et chacun garde les gestes de sa plateforme.
+
+### Création, circuit, infos
+
+- **Outils sur trois cases égales, icône au-dessus du libellé (Annuler, Boucler, Supprimer)** : trois libellés tiennent sur la largeur en 15 points, et chaque case garde 56 de haut.
+- **« Boucler » ajoute le départ comme dernier point** : décision 6, en un geste, au même endroit qu'« Annuler » ; grisé quand l'itinéraire finit déjà au départ, car il n'aurait rien à faire.
+- **Circuit : chevrons blancs pour le sens, départ prévu affiché au point le plus proche** : décision 7, visible avant de toucher le bouton.
+- **Attribution de la carte complète, avec l'IGN ; en version courte avec un bouton « i » sur les petites cartes** : décision 13 et licences ; convention de MapLibre.
+- **Recalcul pendant le geste, point glissé au-dessus du doigt, tracé à la main par touches, sélecteur à deux segments, création en plein écran** : choix de la première version, inchangés.
+
+### Listes, zones
+
+- **Interrupteur « Télécharger en Wi-Fi seulement » dans le bandeau « Pas de Wi-Fi » lui-même** : c'est le raccourci de la décision 10, en un geste, sans changer d'écran.
+- **Téléchargement commencé en Wi-Fi puis Wi-Fi perdu : « En attente du Wi-Fi », pas une erreur** : il reprend seul, l'utilisateur n'a rien à faire.
+- **Pas de vignette pour les zones** : un dessin générique n'apprend rien, et la place sert au nom et au bouton « Télécharger ».
+- **« Ma zone n'est pas là : la demander » en fin de liste, en cadre pointillé** : décision 10 ; le pointillé dit « une place vide à remplir ».
+- **Vignettes d'itinéraires en médaillon rond, dessinées depuis le tracé** : reprises du style 3.
+
+### Le vététiste et les états vides
+
+- **Un pantin articulé (hanche, épaule, coude, genou, cou), pas un dessin figé** : chaque pose est une liste d'angles ; la V2 anime les mêmes groupes, sans rien redessiner.
+- **Dessin en aplats, sans contour ni texte** : style affiche, et rien à traduire.
+- **Un vététiste générique, casqué, de profil** : le casque et le profil évitent de lui donner un visage précis ; tout le monde peut s'y reconnaître.
+- **La barre de progression est le chemin sur lequel il roule (51)** : on lit l'avancement d'un coup d'œil, et en v1 il suffit de décaler le dessin.
+- **L'erreur hors zone propose trois sorties : télécharger la zone, relier à la main, retirer le point** : le tracé à la main ne demande pas de calcul, donc on n'est jamais bloqué.
+- **L'arrivée montre la dernière image de l'animation V2 (podium, trophée, boue)** : la V2 n'aura qu'à animer jusqu'à cette pose.
+- **Arrivée lue sur le guidon : chiffres de 36, bouton « Fermer » de 64** : on est encore sur le vélo, souvent avec des gants.
+- **« Le suivi est arrêté. » écrit sous le résumé** : on sait que le GPS est coupé (décision 5).
+
+### Suivi sur le vélo (direction B, inchangé)
+
 - **Distance en 72 points, unité en 40** : « 1,2 km » tient sur une ligne à côté de la flèche.
 - **Panneau jaune sous 100 m** : le changement se voit du coin de l'œil, sans lire.
-- **Carte orientée dans le sens de la marche, zoom automatique à l'approche d'une direction** : gauche et droite se lisent directement, et personne ne pince l'écran avec des gants.
-- **Boussole pour remettre le nord en haut** : convention des deux plateformes quand la carte tourne.
-- **Deux boutons seulement, de 64 points (boussole, Terminer)** : moins d'éléments, moins de touches par erreur avec des gants ou un cahot.
-- **« Terminer » demande une confirmation** : arrêter le suivi par erreur au milieu d'une sortie serait pénible.
-- **En suivi, relief et courbes à 50 %, sentiers plus épais** : à une fourche, c'est le sentier qu'on cherche, pas le relief.
-- **Partie déjà roulée en gris** : on voit d'un coup ce qui reste.
+- **Carte orientée dans le sens de la marche, zoom automatique à l'approche d'une direction ; boussole pour remettre le nord en haut** : gauche et droite se lisent directement, sans pincer l'écran avec des gants.
+- **Deux boutons seulement, de 64 points (boussole, Terminer), « Terminer » confirmé** : moins de touches par erreur.
+- **En suivi, relief et courbes à 50 %, sentiers plus épais, partie roulée en gris** : à une fourche, c'est le sentier qu'on cherche.
+- **Distance restante et D+ restant ; écart à l'itinéraire affiché en distance, sans alerte** : décisions 3 et 4.
 
-Carte et tracés
-- **Itinéraire en magenta, avec un liseré blanc** : c'est la seule couleur absente du fond de carte (pistes brunes, sentiers rouges, circuits et eau bleus).
-- **Itinéraire plus épais que tout le reste (7 en création, 10 en suivi)** : il se distingue aussi par la forme, pour les daltoniens et au soleil.
-- **Tronçon tracé à la main en tirets** : on sait qu'il n'est pas calculé par les chemins.
-- **Position en flèche bleue** : convention des deux plateformes.
-- **Attribution visible en petit sur chaque carte** : exigée par les licences OSM et OpenMapTiles.
-- **Hors zone : carte grisée et bord en tirets** (non dessiné) : l'essai 3 montre qu'au-delà du bord il ne reste que le relief, l'utilisateur doit comprendre pourquoi.
+### Général
 
-Création d'itinéraire
-- **Recalcul pendant le geste, sans bouton « Calculer »** : le cadrage demande le direct, et Valhalla calcule en quelques dizaines de millisecondes (mesuré sur émulateur).
-- **Le point glissé est dessiné au-dessus du doigt** : sinon le doigt le cache.
-- **Ajouter un point : toucher la carte (il s'ajoute à la fin) ; en insérer un : glisser le tracé** : convention des apps de carte (Google Maps, Komoot).
-- **Sélecteur à deux segments « Par les chemins / À la main » pour le tronçon suivant** : composant natif des deux plateformes, et le mode en cours reste visible.
-- **Tracé à la main par touches (lignes droites), pas au doigt glissé** : plus précis avec des gants, la carte reste déplaçable, et chaque point se déplace ou s'annule comme les autres.
-- **Résumé (distance, D+, durée) toujours visible en bas** : on voit l'effet de chaque point sans changer d'écran.
-- **Création en plein écran, sans barre d'onglets** : plus de carte, et pas de sortie par erreur au milieu d'un tracé.
+- **Thème clair seulement, forcé** : meilleur au soleil (décision 12), et un téléphone en mode sombre n'affichera pas une app à moitié sombre.
 
-Infos, listes, zones
-- **Profil d'altitude et bande de terrain sur le même axe** : on voit où sont les montées et sur quel terrain.
-- **Couleurs de terrain = couleurs de la carte** : une seule légende à apprendre.
-- **Difficulté donnée en part connue et part inconnue** : elle n'est connue que sur 1 à 4 % des voies en France (ADR 0005) ; le dire évite de faire croire à un parcours facile.
-- **Trois onglets : Carte, Itinéraires, Zones** : peu d'écrans, et c'est la convention des deux plateformes.
-- **Actions d'un itinéraire dans le menu natif de la ligne** : la liste reste lisible, et chaque plateforme garde ses gestes.
+## Cohérence avec les écrans de navigation
 
-Téléphone verrouillé
-- **Android : titre = consigne courte (« À gauche dans 200 m »), texte = distance restante** : le système impose la mise en page, et seul le titre est en gras.
-- **iOS : la Live Activity reprend le panneau de guidage, sur fond blanc** : même lecture sur l'écran verrouillé que dans l'app, et lisible au soleil.
+Le passage se fait par « Démarrer le suivi » (écran 20) : on quitte le crème
+et le brun pour le blanc, le noir et le jaune du suivi.
 
-Général
-- **Thème clair seulement, forcé** (détail dans `tokens.md`) : meilleur au soleil, et un téléphone en mode sombre n'affichera pas une app à moitié sombre.
-- **Police du système, chiffres à largeur fixe** : rien à télécharger, et les chiffres ne sautent pas quand ils changent.
+**Ce qui relie déjà les deux** (fait dans `v1/`, sans toucher à B) :
+- la même carte, les mêmes tracés, les mêmes marqueurs, la même position ;
+- les mêmes chiffres, en police du système, gras et tabulaires ;
+- les mêmes formes : bords épais, boutons en pilule (rayon = demi-hauteur) ;
+- le bouton « Démarrer le suivi » porte un disque moutarde : la couleur
+  chaude la plus proche du jaune du panneau de guidage.
+
+**Ce qui change, et c'est voulu** : on prépare au chaud, on roule au
+contraste maximal. Le crème reflète un peu plus le ciel que le blanc ; le
+suivi garde le blanc pur.
+
+**Jugement** : le changement de fond se remarque, mais il ne choque pas,
+car rien de ce qu'on regarde (carte, tracé, chiffres) ne change. À confirmer
+sur les captures, côte à côte : `v1/20` puis `30`.
+
+### Ajustements proposés pour la direction B (non appliqués, à valider)
+
+Les fichiers 30 à 32 n'ont pas été modifiés.
+
+1. **Rouge de « Terminer » : `#B3261E` → `#8A1C12`** (rouge du style 70).
+   Contraste de 6,5:1 à 9,3:1 sur blanc : B passe enfin la règle des 7:1,
+   et le rouge est le même dans toute l'app. Le bouton reste reconnaissable
+   comme rouge. Je le recommande.
+2. **Icône de l'app dans la notification (31) et la Live Activity (32)** :
+   remplacer la pastille magenta provisoire par l'icône choisie (planche 70),
+   et prendre `hn.rouille` comme couleur d'accent de la notification Android.
+   À faire de toute façon dès que l'icône est choisie.
+3. **Facultatif : les trois rayures (6 points au lieu de 9) en haut du
+   panneau « Reste »**, à la place du filet noir de 3. Elles rappellent les
+   écrans de préparation, loin du panneau de guidage pour ne pas brouiller
+   son passage au jaune. À juger sur une capture : si elles attirent l'œil en
+   roulant, on n'y touche pas. Je ne propose **rien** dans le panneau de
+   guidage ni sur la carte du suivi.
+
+Je déconseille de passer le fond du suivi au crème, ou le jaune du panneau
+au moutarde : ils perdraient en lumière au soleil (le moutarde n'a que 9,3:1
+avec le noir, contre 13,2:1 pour le jaune).
 
 ## Conventions des plateformes
 
 | Élément | Android | iOS |
 |---|---|---|
-| Onglets | Barre de navigation Material 3 (système de design de Google) | Tab bar (barre d'onglets) |
+| Onglets | Barre de navigation Material 3 (système de design de Google), pastille sous l'icône active | Tab bar (barre d'onglets) |
 | Retour | Flèche dans la barre du haut, geste ou bouton retour du système | « ‹ Itinéraires », glisser depuis le bord gauche |
 | Actions d'une ligne | Icône ⋮ puis menu déroulant | Icône ••• ou appui long, menu contextuel ; glisser à gauche pour supprimer |
 | Feuille du bas | Feuille modale Material | Feuille avec poignée et hauteurs fixes (« detents ») |
 | Sélecteur à deux segments | Segmented buttons (boutons à segments) | Segmented control (même chose) |
+| Interrupteur | Switch Material 3 | UISwitch ; couleur d'activation `hn.brun` |
+| Barre de progression | Indicateur linéaire, dessiné à notre style | UIProgressView, dessinée à notre style |
 | Confirmer « Terminer », « Supprimer » | Boîte de dialogue Material | Alerte du système |
 | Exporter un GPX | Feuille de partage Android | Feuille de partage iOS |
 | Importer un GPX | Sélecteur de fichiers du système | Sélecteur de fichiers du système |
 | Téléphone verrouillé | Notification du service de premier plan | Live Activity |
+| Icône de l'app | Icône adaptative : fond + dessin (108 dp), couche monochrome (Android 13) | Carré de 1024 px ; variantes sombre et teintée d'iOS 18 à prévoir |
 
 ## À vérifier par le développement (faisabilité, pas produit)
 
+Nouveau avec `v1/` :
+- **Jost** : embarquer la graisse 700 avec `expo-font`, vérifier les accents
+  (É, è, ç, ô) et le rendu identique sur les deux plateformes.
+- **Vététiste animable** : `react-native-svg` + `react-native-reanimated`,
+  rotation d'un `<G>` autour d'une articulation (`transform` animé, ou
+  `rotation` + `origin`). À éprouver sur Android avant la V2, sur l'écran 51
+  (jambes et roues qui tournent).
+- **Pas de Wi-Fi** : savoir si le téléphone est en Wi-Fi (`expo-network` ou
+  `@react-native-community/netinfo`), mettre en pause et reprendre un
+  téléchargement de 100 Mo sans tout recommencer.
+- **Téléchargement en arrière-plan** : continue-t-il si l'on quitte l'app,
+  ou si l'écran s'éteint ? Le texte de l'écran 51 en dépend.
+- **Bord de la zone sur la carte** (52) : couche MapLibre tirée des limites
+  du fichier de description de la zone ; voile gris au-delà.
+- **Fenêtre en arche** (20) : grand rayon d'angle en haut et anneaux en vues
+  imbriquées ; vérifier que la carte MapLibre se découpe bien dans
+  l'arrondi (`overflow: hidden`) sur Android.
+- **Icône** : couches de l'icône adaptative et couche monochrome dans
+  `app.json` (`android.adaptiveIcon`), variantes iOS 18.
+
+Toujours ouverts (première version) :
 - `expo-location/next` : la notification de service accepte-t-elle un titre
-  **et** un texte, et notre icône ? Sinon tout tient dans une seule ligne.
-- Android 14 : l'utilisateur peut balayer une notification de service. Le
-  suivi doit continuer, et la notification revenir à la mise à jour
-  suivante.
-- Live Activity (`expo-widgets`) : fond blanc (`activityBackgroundTint`),
-  flèche en symbole SF (icônes d'Apple), fréquence de mise à jour permise.
-- MapLibre : glisser un point dessiné au-dessus du doigt (geste à nous,
-  avec `getCoordinateFromView`) et glisser le tracé pour insérer un point.
-- MapLibre : caméra qui suit le cap, zoom automatique, et style de suivi
-  (relief et courbes à 50 %) par changement de propriétés des couches.
-- Altitude d'un tronçon tracé à la main : sans calcul par les chemins, son
-  D+ et son terrain viennent-ils des tuiles d'altitude ? Sinon, l'afficher
-  « inconnu ».
-- Fonction 9 : remettre les voies d'un circuit dans l'ordre avant le
-  calcul (constat de l'essai 3).
-- Écran de suivi : limiter l'agrandissement par la taille de texte du
-  système à 120 % (`maxFontSizeMultiplier`), sinon le panneau déborde.
-- Thème clair forcé : `userInterfaceStyle: "light"` dans la configuration
-  Expo.
+  **et** un texte, et notre icône ?
+- Android 14 : une notification de service balayée doit revenir à la mise à
+  jour suivante, sans arrêter le suivi.
+- Live Activity (`expo-widgets`) : fond blanc, flèche en symbole SF,
+  fréquence de mise à jour permise.
+- MapLibre : glisser un point dessiné au-dessus du doigt, glisser le tracé
+  pour insérer un point ; zoom jusqu'au niveau 18 en agrandissant les tuiles
+  du zoom 14 (décision 8).
+- MapLibre : caméra qui suit le cap, zoom automatique, style de suivi par
+  changement de propriétés des couches.
+- Altitude d'un tronçon tracé à la main : sinon, l'afficher « inconnu ».
+- Fonction 9 : remettre les voies d'un circuit dans l'ordre avant le calcul.
+- Écran de suivi : `maxFontSizeMultiplier` à 1,2.
+- Thème clair forcé : `userInterfaceStyle: "light"`.
 
 ## Questions pour Émilien (je ne les tranche pas)
 
-1. **Carte du suivi : claire ou sombre ?** L'ADR 0006 prévoit une carte
-   sombre pendant le suivi, pour la batterie. Au soleil, le clair se lit
-   mieux, et le gain de batterie n'est pas mesuré. Je recommande le clair,
-   puis une mesure de batterie lors d'une vraie sortie.
-2. **Luminosité** : pendant le suivi, l'app doit-elle pousser la luminosité
-   au maximum ? Plus lisible au soleil, mais plus de batterie.
-3. **Infos du suivi** : seulement la distance restante (cadrage), ou aussi
-   le D+ restant, l'heure d'arrivée, la vitesse ? Chaque ajout réduit la
-   taille des chiffres.
-4. **Hors de l'itinéraire** : l'alerte est prévue « plus tard ». En v1, que
-   montre le panneau quand on s'écarte ? Rien de spécial (la dernière
-   consigne reste), ou « Rejoignez l'itinéraire : 80 m », sans son ?
-5. **Arrivée** : le suivi s'arrête-t-il seul, ou un écran « Arrivé »
-   propose-t-il de terminer ?
-6. **Boucles** : faut-il un bouton « Revenir au départ » qui ferme la boucle
-   d'un geste ? La plupart des sorties VTT sont des boucles.
-7. **Circuit balisé** : dans quel sens le parcourir, et à partir de quel
-   point (le plus proche de moi, ou le début du circuit dans OSM) ? Et pour
-   un circuit en plusieurs morceaux (un sur dix en Lorraine) : relier les
-   morceaux par le calcul, ou refuser ?
-8. **Tracé à la main** : par touches, en lignes droites (ma proposition),
-   ou au doigt glissé ?
-9. **Nom d'un nouvel itinéraire** : un nom par défaut (date, lieu de
-   départ, nom du circuit), ou une question à l'enregistrement ?
-10. **Zones** : proposer la mise à jour quand le catalogue a une carte plus
-    récente ? Télécharger seulement en Wi-Fi, ou aussi en données mobiles
-    (environ 100 Mo par zone) ? Que dire à un proche dont la zone manque ?
-11. **GPX importé hors des zones téléchargées** : refusé, ou gardé avec des
-    infos incomplètes (sans terrain ni recalcul) ?
-12. **Sorties de nuit** : tes proches en font-elles ? Si oui, un suivi en
-    sombre passe-t-il en v1 ou en V2 ?
-13. **Attribution de l'IGN sur la carte** : question déjà ouverte par
-    l'essai 3, qui touche aussi la ligne d'attribution des maquettes.
+1. **Icône** : laquelle des trois (planche 70) ? Ma préférence va à C, la
+   roue-soleil, la plus reconnaissable en petit.
+2. **Résumé de l'arrivée** : la distance et le D+ sont-ils ceux de
+   l'itinéraire prévu, ou ceux réellement roulés (la v1 n'enregistre pas la
+   trace) ? La durée compte-t-elle les pauses, du « Démarrer » à l'arrivée ?
+3. **Arrivée détectée trop tôt** : sur une boucle, on repasse près du départ
+   au début ou au milieu. Faut-il un bouton « Continuer le suivi » sur
+   l'écran d'arrivée, au cas où ?
+4. **Titre de l'arrivée** : « ARRIVÉE ! » (le nom, comme une banderole, qui
+   va à tout le monde) au lieu de « Arrivé ». D'accord ?
+5. **Demander une zone** : par quel moyen la demande t'arrive-t-elle
+   (courriel prérempli, message, formulaire) ? Et que promet l'app à la
+   personne (un délai, rien) ?
+6. **Où vivent les réglages** (Wi-Fi seulement, luminosité au maximum de la
+   décision 2) ? Il n'y a pas d'écran Réglages dans les trois onglets. Faut-il
+   un quatrième onglet, une entrée dans l'onglet Zones, ou ailleurs ?
+7. **Ajustements de B** (section « Cohérence ») : acceptes-tu le rouge
+   foncé pour « Terminer » ? Veux-tu essayer les rayures sur le panneau
+   « Reste » ?
 
 ## Hors périmètre, volontairement absent
 
-Guidage par la voix et économiseur d'écran (V2) ; alerte d'écart, boucle
+Guidage par la voix et économiseur d'écran (V2) ; animation de l'arrivée
+(V2) ; mode sombre (V2, à reconsidérer) ; alerte d'écart, boucle
 automatique, enregistrement des sorties (plus tard). Aucun de ces éléments
 n'apparaît dans les maquettes.

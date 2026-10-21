@@ -1,5 +1,13 @@
 # Styles « décalés » pour les écrans hors navigation
 
+> **Archive.** Le 21 octobre 2026, Émilien a choisi le **style 3, affiche
+> des années 70** (`docs/06-decisions-design.md`). Les maquettes de
+> référence sont désormais dans [`../v1/`](../v1/), et seules les valeurs du
+> style 3 restent dans [`../tokens.md`](../tokens.md) (préfixe `hn.`). Les
+> valeurs des styles 1, 2, 4 et 5 n'existent plus que dans leurs fichiers
+> HTML ci-dessous. La suite de ce document est la proposition d'origine,
+> laissée telle quelle.
+
 > 21 octobre 2026. Proposition du designer, **à juger par Émilien**.
 > Rien n'est validé. Suite de `docs/06-decisions-design.md` : la direction B
 > reste celle du suivi et de l'écran verrouillé ; ici, on cherche le style

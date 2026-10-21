@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse v1 – Icône de l'app : trois propositions</title>
+<!--
+  Planche 70, v1, style années 70 (décision 5 : l'icône suit le style).
+  Trois propositions, chacune en trois versions :
+  - iOS : carré aux coins arrondis (le système applique son propre arrondi
+    « continu » ; le fichier livré est un carré plein de 1024 px) ;
+  - Android : icône adaptative, deux couches de 108 × 108 dp (fond et dessin) ;
+    le lanceur n'en montre que le cercle central de 72 dp (masque rond ici).
+    Tout ce qui compte tient dans la zone sûre, le cercle de 66 dp en tirets ;
+  - la taille réelle, 48 points, sur un fond clair et sur un fond sombre.
+  Chaque dessin est fait une seule fois, dans un carré de 108 (symboles plus
+  bas), puis recadré : c'est ainsi qu'il faudra exporter les fichiers.
+  Pas de texte dans l'icône : il serait illisible à 48 points, et le nom
+  « RutaPulse » est déjà écrit dessous par le système.
+  Valeurs : design/tokens.md, « Icône ».
+-->
+<style>
+:root{
+  --creme:#F4E4C1; --creme-clair:#FBF1DA; --brun:#3A1F0F; --brun-2:#5A3A28;
+  --moutarde:#F0A830; --orange:#E2652B; --rouille:#B5452A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:var(--creme)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--brun);-webkit-font-smoothing:antialiased}
+.geo{font-family:"Futura","Futura PT",Jost,"Century Gothic","Avenir Next",sans-serif;font-weight:700}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden;background:var(--creme)}
+.barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20}
+.barre-etat .icones{display:flex;gap:6px;align-items:center}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--brun);z-index:30}
+
+h1{position:absolute;top:56px;left:16px;font-size:26px;line-height:1.2;letter-spacing:.5px}
+.sous{position:absolute;top:92px;left:16px;right:16px;font-size:15px;line-height:1.35;color:var(--brun-2)}
+
+.planches{position:absolute;top:146px;left:16px;right:16px}
+.carte{background:var(--creme-clair);border:2.5px solid var(--brun);border-radius:22px;padding:10px 12px 8px;margin-bottom:10px}
+.carte .titre{display:flex;justify-content:space-between;align-items:center;font-size:17px;height:24px}
+.badge{font-family:-apple-system,BlinkMacSystemFont,Roboto,system-ui,sans-serif;font-size:13px;font-weight:700;background:var(--moutarde);border:2px solid var(--brun);border-radius:12px;padding:1px 8px}
+.rangee{display:flex;gap:14px;align-items:flex-start;margin-top:8px}
+.rangee svg{display:block}
+.reel{display:flex;width:120px;height:88px;border-radius:14px;overflow:hidden;border:2px solid var(--brun)}
+.reel div{flex:1;display:flex;align-items:center;justify-content:center}
+.reel .clair{background:#E9E4DA}
+.reel .sombre{background:#2A2522}
+.legendes{display:flex;gap:14px;margin-top:4px;font-size:13px;font-weight:500;color:var(--brun-2)}
+.legendes span{width:88px;text-align:center}
+.legendes span:last-child{width:120px}
+.pied{position:absolute;top:672px;left:16px;right:16px;font-size:15px;line-height:1.4;color:var(--brun-2)}
+.pied b{color:var(--brun)}
+</style>
+</head>
+<body>
+<div class="ecran">
+
+<!-- Les trois dessins, chacun dans un carré de 108 (couches Android) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <clipPath id="masque-ios"><rect x="18" y="18" width="72" height="72" rx="16"/></clipPath>
+    <clipPath id="masque-android"><circle cx="54" cy="54" r="36"/></clipPath>
+
+    <!-- A. Soleil rayé : le soleil se couche au bout d'un chemin -->
+    <symbol id="icone-a" viewBox="0 0 108 108">
+      <rect width="108" height="108" fill="#F4E4C1"/>
+      <clipPath id="a-ciel"><rect width="108" height="62"/></clipPath>
+      <g clip-path="url(#a-ciel)">
+        <circle cx="54" cy="62" r="24" fill="#F0A830"/>
+        <rect x="20" y="49" width="68" height="2.5" fill="#F4E4C1"/>
+        <rect x="20" y="54.5" width="68" height="3.2" fill="#F4E4C1"/>
+      </g>
+      <rect y="62" width="108" height="6" fill="#E2652B"/>
+      <rect y="68" width="108" height="6" fill="#B5452A"/>
+      <rect y="74" width="108" height="34" fill="#3A1F0F"/>
+      <path d="M47 108 C38 95 62 88 53 74 L55 74 C68 88 48 95 69 108 Z" fill="#F4E4C1"/>
+    </symbol>
+
+    <!-- B. L'arche : la fenêtre en arche de l'écran « Infos », avec un itinéraire -->
+    <symbol id="icone-b" viewBox="0 0 108 108">
+      <rect width="108" height="108" fill="#3A1F0F"/>
+      <path d="M24 88 V50 A30 30 0 0 1 84 50 V88 Z" fill="#B5452A"/>
+      <path d="M28 88 V50 A26 26 0 0 1 80 50 V88 Z" fill="#E2652B"/>
+      <path d="M32 88 V50 A22 22 0 0 1 76 50 V88 Z" fill="#F0A830"/>
+      <path d="M36 88 V50 A18 18 0 0 1 72 50 V88 Z" fill="#F4E4C1"/>
+      <clipPath id="b-fenetre"><path d="M36 88 V50 A18 18 0 0 1 72 50 V88 Z"/></clipPath>
+      <g clip-path="url(#b-fenetre)">
+        <path d="M30 62 C40 58 50 66 78 58 V74 C60 80 44 70 30 78 Z" fill="#A9B56A"/>
+        <path d="M46 80 C40 72 40 60 46 52 C52 44 62 46 64 56 C66 66 58 70 61 79" fill="none" stroke="#C2007A" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="46" cy="80" r="4" fill="#146C2E" stroke="#F4E4C1" stroke-width="1.6"/>
+      </g>
+    </symbol>
+
+    <!-- C. Roue-soleil : une roue de VTT qui se lève comme un soleil -->
+    <symbol id="icone-c" viewBox="0 0 108 108">
+      <rect width="108" height="108" fill="#F4E4C1"/>
+      <g stroke="#F0A830" stroke-width="4.5" stroke-linecap="round">
+        <path d="M54 35 V30"/><path d="M70.6 40.2 L73.5 36.2"/><path d="M37.4 40.2 L34.5 36.2"/><path d="M81.3 54.1 L86 52.4"/><path d="M26.7 54.1 L22 52.4"/>
+      </g>
+      <clipPath id="c-ciel"><rect width="108" height="68"/></clipPath>
+      <g clip-path="url(#c-ciel)">
+        <circle cx="54" cy="64" r="22" fill="#F0A830" stroke="#3A1F0F" stroke-width="6"/>
+        <g stroke="#3A1F0F" stroke-width="2.6"><path d="M32 64 H76"/><path d="M43 45 L65 83"/><path d="M65 45 L43 83"/></g>
+        <circle cx="54" cy="64" r="4.5" fill="#3A1F0F"/>
+      </g>
+      <rect y="68" width="108" height="6" fill="#E2652B"/>
+      <rect y="74" width="108" height="6" fill="#B5452A"/>
+      <rect y="80" width="108" height="28" fill="#3A1F0F"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="barre-etat"><span>09:00</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<h1 class="geo">ICÔNE DE L'APP</h1>
+<div class="sous">Trois propositions. Pour chacune : iOS, Android (le cercle en tirets est la zone sûre) et la taille réelle, 48 points.</div>
+
+<div class="planches">
+
+  <div class="carte">
+    <div class="titre"><span class="geo">A · Soleil rayé</span></div>
+    <div class="rangee">
+      <svg width="88" height="88" viewBox="18 18 72 72" aria-label="Icône A, iOS"><g clip-path="url(#masque-ios)"><use href="#icone-a" width="108" height="108"/></g></svg>
+      <svg width="88" height="88" viewBox="18 18 72 72" aria-label="Icône A, Android"><g clip-path="url(#masque-android)"><use href="#icone-a" width="108" height="108"/></g><circle cx="54" cy="54" r="33" fill="none" stroke="#3A1F0F" stroke-width=".9" stroke-dasharray="2 2" opacity=".7"/></svg>
+      <div class="reel">
+        <div class="clair"><svg width="48" height="48" viewBox="18 18 72 72"><g clip-path="url(#masque-ios)"><use href="#icone-a" width="108" height="108"/></g></svg></div>
+        <div class="sombre"><svg width="48" height="48" viewBox="18 18 72 72"><g clip-path="url(#masque-android)"><use href="#icone-a" width="108" height="108"/></g></svg></div>
+      </div>
+    </div>
+    <div class="legendes"><span>iOS</span><span>Android</span><span>48 points</span></div>
+  </div>
+
+  <div class="carte">
+    <div class="titre"><span class="geo">B · L'arche et l'itinéraire</span></div>
+    <div class="rangee">
+      <svg width="88" height="88" viewBox="18 18 72 72" aria-label="Icône B, iOS"><g clip-path="url(#masque-ios)"><use href="#icone-b" width="108" height="108"/></g></svg>
+      <svg width="88" height="88" viewBox="18 18 72 72" aria-label="Icône B, Android"><g clip-path="url(#masque-android)"><use href="#icone-b" width="108" height="108"/></g><circle cx="54" cy="54" r="33" fill="none" stroke="#FBF1DA" stroke-width=".9" stroke-dasharray="2 2" opacity=".8"/></svg>
+      <div class="reel">
+        <div class="clair"><svg width="48" height="48" viewBox="18 18 72 72"><g clip-path="url(#masque-ios)"><use href="#icone-b" width="108" height="108"/></g></svg></div>
+        <div class="sombre"><svg width="48" height="48" viewBox="18 18 72 72"><g clip-path="url(#masque-android)"><use href="#icone-b" width="108" height="108"/></g></svg></div>
+      </div>
+    </div>
+    <div class="legendes"><span>iOS</span><span>Android</span><span>48 points</span></div>
+  </div>
+
+  <div class="carte">
+    <div class="titre"><span class="geo">C · Roue-soleil</span><span class="badge">Ma préférence</span></div>
+    <div class="rangee">
+      <svg width="88" height="88" viewBox="18 18 72 72" aria-label="Icône C, iOS"><g clip-path="url(#masque-ios)"><use href="#icone-c" width="108" height="108"/></g></svg>
+      <svg width="88" height="88" viewBox="18 18 72 72" aria-label="Icône C, Android"><g clip-path="url(#masque-android)"><use href="#icone-c" width="108" height="108"/></g><circle cx="54" cy="54" r="33" fill="none" stroke="#3A1F0F" stroke-width=".9" stroke-dasharray="2 2" opacity=".7"/></svg>
+      <div class="reel">
+        <div class="clair"><svg width="48" height="48" viewBox="18 18 72 72"><g clip-path="url(#masque-ios)"><use href="#icone-c" width="108" height="108"/></g></svg></div>
+        <div class="sombre"><svg width="48" height="48" viewBox="18 18 72 72"><g clip-path="url(#masque-android)"><use href="#icone-c" width="108" height="108"/></g></svg></div>
+      </div>
+    </div>
+    <div class="legendes"><span>iOS</span><span>Android</span><span>48 points</span></div>
+  </div>
+</div>
+
+<div class="pied"><b>C se reconnaît le mieux en petit</b> : une seule forme, une roue, que seule une app de vélo peut avoir. A est la plus « affiche », mais un coucher de soleil rayé est courant dans le plein air. B dit ce que fait l'app (un itinéraire en magenta), mais ses détails disparaissent à 48 points.</div>
+
+<div class="indicateur"></div>
+</div>
+</body>
+</html>

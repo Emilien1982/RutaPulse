@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse v1 – Créer un itinéraire : déplacer un point, recalcul en direct</title>
+<!--
+  Écran 10, v1, style années 70. Même contenu que design/10-creation-itineraire.html.
+  Fonctions 2 et 9 du cadrage ; décision 6 (bouton « Boucler » : ajoute le départ
+  comme dernier point).
+  Instant montré : on glisse le point 2 ; l'itinéraire et les chiffres du bas se
+  recalculent pendant le geste. Le point glissé est dessiné au-dessus du doigt.
+  La carte, les tracés et les marqueurs ne changent pas : ce sont ceux du suivi
+  (jetons carte.*, trace.*, marqueur.*). Seuls la barre du haut, les boutons
+  posés sur la carte et la feuille du bas prennent le style.
+  Chiffres en police du système (800, chiffres tabulaires) : ils changent pendant
+  le geste et ce sont les mêmes que sur l'écran de suivi.
+  Valeurs : design/tokens.md. Carte : dessin simplifié en SVG.
+-->
+<style>
+:root{
+  --creme:#F4E4C1; --creme-clair:#FBF1DA; --brun:#3A1F0F; --brun-2:#5A3A28;
+  --moutarde:#F0A830; --orange:#E2652B; --rouille:#B5452A; --danger:#8A1C12;
+  --ombre:0 2px 8px rgba(58,31,15,.30);
+  --itineraire:#C2007A; --circuit:#2F6BFF; --depart:#146C2E;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:var(--creme)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--brun);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.geo{font-family:"Futura","Futura PT",Jost,"Century Gothic","Avenir Next",sans-serif;font-weight:700}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden}
+svg.carte{position:absolute;left:0;top:0;width:390px;height:844px}
+svg.carte *{vector-effect:non-scaling-stroke}
+.barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20;color:var(--brun)}
+.barre-etat .icones{display:flex;gap:6px;align-items:center}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--brun);z-index:30}
+
+/* Barre du haut : crème, puis les trois rayures */
+.barre-haut{position:absolute;top:0;left:0;right:0;height:112px;background:var(--creme);z-index:10}
+.barre-haut .contenu{position:absolute;top:47px;left:0;right:0;height:56px;display:flex;align-items:center;gap:4px;padding:0 8px 0 4px}
+.barre-haut .titre{flex:1;font-size:18px;line-height:1.2}
+.rayures{position:absolute;left:0;right:0;bottom:0;height:9px;background:linear-gradient(var(--moutarde) 0 3px,var(--orange) 3px 6px,var(--rouille) 6px 9px)}
+.icone-btn{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:24px}
+.enregistrer{height:48px;padding:0 18px;border-radius:24px;background:var(--moutarde);border:2.5px solid var(--brun);display:flex;align-items:center;font-size:17px}
+
+/* Boutons posés sur la carte */
+.flottant{position:absolute;right:16px;width:48px;height:48px;border-radius:24px;background:var(--creme-clair);border:2.5px solid var(--brun);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
+.flottant .pastille{position:absolute;top:6px;right:6px;width:11px;height:11px;border-radius:6px;background:var(--circuit);border:2px solid var(--creme-clair)}
+
+.bulle{position:absolute;top:124px;left:50%;transform:translateX(-50%);background:var(--brun);color:var(--creme);font-size:15px;font-weight:600;padding:10px 18px;border-radius:20px;white-space:nowrap;box-shadow:var(--ombre)}
+
+/* Marqueurs : jetons marqueur.*, identiques au suivi */
+.marqueur{position:absolute;display:flex;align-items:center;justify-content:center;border-radius:50%;font-weight:800;box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.point{width:28px;height:28px;margin:-14px 0 0 -14px;background:#fff;border:3px solid var(--itineraire);font-size:15px;color:#111}
+.point.deplace{width:40px;height:40px;margin:-20px 0 0 -20px;font-size:18px;box-shadow:0 0 0 8px rgba(194,0,122,.22),0 6px 12px rgba(0,0,0,.35)}
+.depart{width:32px;height:32px;margin:-16px 0 0 -16px;background:var(--depart);border:3px solid #fff}
+.arrivee{width:32px;height:32px;margin:-16px 0 0 -16px;background:#111;border:3px solid #fff}
+.doigt{position:absolute;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;background:rgba(58,31,15,.18);border:2px solid rgba(58,31,15,.35)}
+.attribution{position:absolute;left:8px;top:556px;font-size:11px;color:var(--brun-2);background:rgba(251,241,218,.88);padding:1px 5px;border-radius:4px}
+
+/* Feuille du bas */
+.feuille{position:absolute;left:0;right:0;top:578px;bottom:0;background:var(--creme);border:3px solid var(--brun);border-bottom:0;border-radius:28px 28px 0 0;box-shadow:0 -2px 10px rgba(58,31,15,.22);padding:13px 13px 0}
+.resume{display:flex;align-items:center;gap:16px;padding-left:3px}
+.chiffre{flex:none}
+.chiffre .v{font-size:28px;font-weight:800;line-height:1.15;white-space:nowrap}
+.chiffre u{text-decoration:none;font-size:17px;font-weight:700}
+.chiffre .e{font-size:13px;font-weight:600;color:var(--brun-2)}
+.details{margin-left:auto;width:48px;height:48px;border-radius:24px;background:var(--creme-clair);border:2.5px solid var(--brun);display:flex;align-items:center;justify-content:center;flex:none}
+.surtitre{font-size:13px;letter-spacing:1.2px;color:var(--brun-2);margin:13px 0 6px 3px}
+.segments{display:flex;height:48px;border:2.5px solid var(--brun);border-radius:24px;overflow:hidden;background:var(--creme-clair)}
+.segments div{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font-size:17px;font-weight:600}
+.segments .choisi{background:var(--brun);color:var(--creme)}
+.outils{display:flex;gap:8px;margin-top:10px}
+.outil{flex:1;height:56px;border-radius:18px;background:var(--creme-clair);border:2.5px solid var(--brun);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:15px;font-weight:600}
+.outil.danger{color:var(--danger)}
+</style>
+</head>
+<body>
+<div class="ecran">
+
+<svg class="carte" viewBox="0 0 390 844" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <rect x="-400" y="-400" width="1200" height="1700" fill="#EEEBE4"/>
+  <path d="M-60 140 C60 120 120 160 170 150 C230 140 280 170 300 220 C310 280 290 340 250 360 C200 380 160 360 120 380 C80 395 30 380 -60 390 Z" fill="#D3E4C0"/>
+  <path d="M-60 620 C80 600 140 640 200 640 C260 640 290 700 300 900 L-60 900 Z" fill="#D3E4C0"/>
+  <path d="M370 -60 L460 -60 L460 220 C410 190 370 120 370 -60 Z" fill="#D3E4C0"/>
+  <path d="M-60 -60 L120 -60 C110 20 60 60 -60 70 Z" fill="#D3E4C0"/>
+  <path d="M90 486 L226 472 L232 562 L96 576 Z" fill="#E3DCD0"/>
+  <g class="relief"><path d="M175 150 C240 150 300 210 292 290 C286 330 262 352 240 362 C268 300 250 200 175 150 Z" fill="#000" opacity=".07"/><path d="M-60 300 C20 280 60 300 60 330 C30 320 -10 330 -60 345 Z" fill="#000" opacity=".05"/></g>
+  <g class="courbes" fill="none" stroke="#C9B293" stroke-width="1">
+    <path d="M-60 190 C40 170 110 215 175 195 S265 150 330 170"/>
+    <path d="M-60 230 C40 210 110 260 180 235 S270 195 320 210"/>
+    <path d="M-60 300 C50 285 110 320 185 290 S275 260 300 280"/>
+    <path d="M-60 430 C50 410 120 440 200 425 S300 400 330 420"/>
+    <path d="M-60 90 C30 70 100 110 160 95 S250 60 330 80"/>
+  </g>
+  <g class="courbes" fill="none" stroke="#B89C78" stroke-width="1.8">
+    <path d="M-60 265 C45 248 110 290 182 262 S272 228 310 245"/>
+  </g>
+  <path d="M345 -60 C320 120 370 220 335 330 C305 420 320 520 300 600 C285 680 330 760 310 900" fill="none" stroke="#A8CCDD" stroke-width="22"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M-60 497 C80 482 150 468 235 470 S340 462 460 430" stroke="#BFB7AA" stroke-width="9"/>
+    <path d="M138 -60 C148 120 128 260 150 400 S160 640 190 900" stroke="#BFB7AA" stroke-width="8"/>
+    <path d="M-60 497 C80 482 150 468 235 470 S340 462 460 430" stroke="#FFFFFF" stroke-width="6.5"/>
+    <path d="M138 -60 C148 120 128 260 150 400 S160 640 190 900" stroke="#FFFFFF" stroke-width="5.5"/>
+    <g stroke="#FFFFFF" stroke-width="4"><path d="M100 540 L228 522"/><path d="M120 490 L128 572"/><path d="M196 472 L204 556"/></g>
+  </g>
+  <g class="pistes" fill="none" stroke="#7A4A1E" stroke-width="2.5" stroke-linecap="round">
+    <path d="M235 470 C255 440 272 415 270 390 S255 330 250 300"/>
+    <path d="M250 300 C235 270 215 240 190 215"/>
+    <path d="M70 250 C66 280 62 305 60 330"/>
+    <path d="M60 330 C90 360 120 385 150 400"/>
+    <path d="M190 215 C200 170 215 120 210 60 C208 20 200 -20 205 -60"/>
+    <path d="M250 300 C285 292 305 280 322 268"/>
+    <path d="M60 330 C40 360 20 400 -60 440"/>
+  </g>
+  <g class="sentiers" fill="none" stroke="#C62828" stroke-width="2" stroke-dasharray="5 4">
+    <path d="M190 215 C150 220 110 235 70 250"/>
+    <path d="M70 250 C40 220 20 180 -60 160"/>
+    <path d="M210 60 C250 40 290 30 360 10"/>
+    <path d="M150 400 C175 385 195 360 205 330 S215 280 230 262"/>
+    <path d="M270 390 C290 400 300 410 310 430"/>
+  </g>
+  <g class="circuits" fill="none" stroke="#2F6BFF" stroke-opacity=".55" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M150 400 C120 385 90 360 60 330 C40 360 20 400 -60 440"/>
+    <path d="M190 215 C200 170 215 120 210 60 C250 40 290 30 360 10"/>
+  </g>
+  <g class="etiquettes" font-family="-apple-system,Roboto,sans-serif">
+    <text x="122" y="530" font-size="13" font-weight="600" fill="#4A4A4A">Le Vaux</text>
+    <text x="40" y="176" font-size="12" font-style="italic" fill="#4F6E3C">Bois de la Côte</text>
+    <text x="300" y="240" font-size="10" fill="#9C8160">300</text>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C150 220 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="11"/>
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C150 220 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#C2007A" stroke-width="7"/>
+  </g>
+</svg>
+
+<div class="marqueur depart" style="left:175px;top:470px"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M3 1.5 L10.5 6 L3 10.5 Z" fill="#fff"/></svg></div>
+<div class="marqueur arrivee" style="left:152px;top:440px"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 15V1.5" stroke="#fff" stroke-width="1.8"/><path d="M3.9 2h10v7h-10z" fill="#fff"/><path d="M3.9 2h3.3v3.5H3.9zM10.6 2h3.3v3.5h-3.3zM7.2 5.5h3.4V9H7.2z" fill="#111"/></svg></div>
+<div class="marqueur point" style="left:250px;top:300px">1</div>
+<div class="marqueur point" style="left:60px;top:330px">3</div>
+<div class="doigt" style="left:192px;top:258px"></div>
+<div class="marqueur point deplace" style="left:190px;top:215px">2</div>
+
+<div class="bulle">Point 2 : relâchez pour le poser</div>
+
+<div class="flottant" style="top:176px" aria-label="Couches de la carte (circuits balisés affichés)">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.3" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>
+  <span class="pastille"></span>
+</div>
+<div class="flottant" style="top:236px" aria-label="Ma position">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="#3A1F0F"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+</div>
+
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+
+<div class="barre-haut">
+  <div class="contenu">
+    <div class="icone-btn" aria-label="Fermer sans enregistrer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    <div class="titre geo">Nouvel itinéraire</div>
+    <div class="enregistrer geo">Enregistrer</div>
+  </div>
+  <div class="rayures"></div>
+</div>
+
+<div class="barre-etat"><span>10:02</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="18" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<div class="feuille">
+  <div class="resume">
+    <div class="chiffre"><div class="v">25,1<u> km</u></div><div class="e">Distance</div></div>
+    <div class="chiffre"><div class="v">421<u> m</u></div><div class="e">Montée (D+)</div></div>
+    <div class="chiffre"><div class="v">1<u> h </u>35</div><div class="e">Durée estimée</div></div>
+    <div class="details" aria-label="Infos de l'itinéraire"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></div>
+  </div>
+  <div class="surtitre geo">PROCHAIN TRONÇON</div>
+  <div class="segments" role="radiogroup" aria-label="Prochain tronçon">
+    <div class="choisi" role="radio" aria-checked="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M6 18c0-7 12-5 12-12"/><circle cx="6" cy="19" r="2" fill="currentColor"/><circle cx="18" cy="5" r="2" fill="currentColor"/></svg>Par les chemins</div>
+    <div role="radio" aria-checked="false"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>À la main</div>
+  </div>
+  <div class="outils">
+    <div class="outil" aria-label="Annuler la dernière action"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5L4 10l5 5"/><path d="M4 10h10a6 6 0 0 1 6 6v2"/></svg>Annuler</div>
+    <div class="outil" aria-label="Boucler : ajoute le départ comme dernier point"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M17.5 2.5v4h-4"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/></svg>Boucler</div>
+    <div class="outil danger" aria-label="Supprimer le point choisi"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Supprimer</div>
+  </div>
+</div>
+
+<div class="indicateur"></div>
+</div>
+</body>
+</html>

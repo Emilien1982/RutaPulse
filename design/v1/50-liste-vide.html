@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse v1 – Mes itinéraires, liste vide</title>
+<!--
+  Écran 50, v1, style années 70. État vide de l'écran 40 (décision 3 : le
+  vététiste apparaît sur la liste vide).
+  Instant montré : premier lancement, aucun itinéraire enregistré.
+  Le vététiste, debout à côté de son vélo, regarde une carte vierge.
+  « Créer un itinéraire » ouvre l'onglet Carte en mode création (écran 10).
+  « Importer un GPX » reste à sa place habituelle, en haut à droite.
+
+  LE PERSONNAGE (règle complète : design/tokens.md, « Personnage »)
+  - Deux couches, comme pour un pantin : « perso-loin » (jambe et bras du côté
+    caché, dessinés derrière le vélo) et « perso-pres » (le reste).
+  - Chaque membre est un groupe qui tourne autour de son articulation :
+    hanche = origine (0 0) du personnage ; épaule = (0 -34) dans le buste ;
+    genou = (0 36) dans la cuisse ; coude = (0 20) dans le bras ; cou = (0 -40).
+    Une pose = une liste d'angles. Une animation (V2) = des angles qui changent.
+  - Le vélo a son origine au pédalier (0 0) ; roues en (-42 -2) et (62 -2).
+  Couleurs en hexadécimal dans le SVG : ce sont les jetons perso.* et hn.*.
+  Valeurs : design/tokens.md.
+-->
+<style>
+:root{
+  --creme:#F4E4C1; --creme-clair:#FBF1DA; --brun:#3A1F0F; --brun-2:#5A3A28;
+  --moutarde:#F0A830; --orange:#E2652B; --rouille:#B5452A; --olive:#A9B56A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:var(--creme)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--brun);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.geo{font-family:"Futura","Futura PT",Jost,"Century Gothic","Avenir Next",sans-serif;font-weight:700}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden;background:var(--creme)}
+.barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20;color:var(--brun)}
+.barre-etat .icones{display:flex;gap:6px;align-items:center}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--creme);z-index:30}
+
+.decor{position:absolute;top:0;left:0}
+.importer{position:absolute;top:51px;right:16px;height:48px;display:flex;align-items:center;gap:6px;padding:0 16px 0 12px;background:var(--creme-clair);border:2.5px solid var(--brun);border-radius:24px;font-size:16px}
+h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-spacing:.5px}
+
+.illustration{position:absolute;top:220px;left:0}
+.vide{position:absolute;top:430px;left:24px;right:24px;text-align:center}
+.vide h2{font-size:24px;line-height:1.2}
+.vide p{font-size:17px;line-height:1.4;color:var(--brun-2);margin-top:8px}
+.principal{position:absolute;top:548px;left:55px;right:55px;height:56px;border-radius:28px;background:var(--brun);color:var(--creme);font-size:17px;display:flex;align-items:center;justify-content:center;gap:10px;padding-left:4px}
+.principal .soleil{width:32px;height:32px;border-radius:16px;background:var(--moutarde);display:flex;align-items:center;justify-content:center}
+
+.rayures-bas{position:absolute;left:0;right:0;bottom:83px;height:9px;background:linear-gradient(var(--moutarde) 0 3px,var(--orange) 3px 6px,var(--rouille) 6px 9px)}
+.onglets{position:absolute;left:0;right:0;bottom:0;height:83px;background:var(--brun);display:flex;padding-top:7px}
+.onglet{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:13px;font-weight:500;color:var(--creme)}
+.pastille{width:64px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center}
+.onglet.actif{font-weight:800}
+.onglet.actif .pastille{background:var(--moutarde);color:var(--brun)}
+</style>
+</head>
+<body>
+<div class="ecran">
+
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="au-dessus"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#au-dessus)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+
+<div class="barre-etat"><span>09:30</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<div class="importer geo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M12 11v6M9 14h6"/></svg>Importer un GPX</div>
+<h1 class="geo">MES ITINÉRAIRES</h1>
+
+<!-- Illustration : le vététiste et sa carte vierge -->
+<svg class="illustration" width="390" height="196" viewBox="0 0 390 196" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <!-- Sol -->
+  <rect x="64" y="176" width="262" height="9" rx="4.5" fill="#A9B56A"/>
+  <g fill="none" stroke="#A9B56A" stroke-width="3" stroke-linecap="round">
+    <path d="M80 176 l-3 -8 M86 176 l0 -10 M92 176 l3 -8"/>
+    <path d="M300 176 l-3 -7 M306 176 l0 -9 M312 176 l3 -7"/>
+  </g>
+
+  <!-- Vélo, origine au pédalier -->
+  <g class="velo" transform="translate(204 148)">
+    <g class="manivelle-loin" transform="rotate(200)"><line x2="13" stroke="#5A3A28" stroke-width="4" stroke-linecap="round"/></g>
+    <g class="roue roue-arriere" transform="translate(-42 -2)">
+      <circle r="27" fill="none" stroke="#3A1F0F" stroke-width="6"/>
+      <g stroke="#5A3A28" stroke-width="2"><line x1="-24" x2="24"/><line x1="-12" y1="-20.8" x2="12" y2="20.8"/><line x1="-12" y1="20.8" x2="12" y2="-20.8"/></g>
+      <circle r="3.5" fill="#3A1F0F"/>
+    </g>
+    <g class="roue roue-avant" transform="translate(62 -2)">
+      <circle r="27" fill="none" stroke="#3A1F0F" stroke-width="6"/>
+      <g stroke="#5A3A28" stroke-width="2"><line x1="-24" x2="24"/><line x1="-12" y1="-20.8" x2="12" y2="20.8"/><line x1="-12" y1="20.8" x2="12" y2="-20.8"/></g>
+      <circle r="3.5" fill="#3A1F0F"/>
+    </g>
+    <path class="cadre" d="M-42 -2 L0 0 L-10 -42 Z M-10 -42 L48 -46 L51 -34 L0 0" fill="none" stroke="#2D6A66" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path class="fourche" d="M51 -34 L62 -2" stroke="#5A3A28" stroke-width="5" stroke-linecap="round"/>
+    <path class="tige-selle" d="M-10 -42 L-12 -51" stroke="#3A1F0F" stroke-width="4"/>
+    <path class="selle" d="M-22 -53 L-3 -53" stroke="#3A1F0F" stroke-width="5" stroke-linecap="round"/>
+    <path class="guidon" d="M48 -46 L50 -55 L43 -57" fill="none" stroke="#3A1F0F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle class="plateau" r="7" fill="#FBF1DA" stroke="#3A1F0F" stroke-width="2.5"/>
+    <g class="manivelle" transform="rotate(20)"><line x2="13" stroke="#3A1F0F" stroke-width="4" stroke-linecap="round"/><g transform="translate(13 0) rotate(-20)"><rect x="-5" y="-2.5" width="10" height="5" rx="2" fill="#3A1F0F"/></g></g>
+  </g>
+
+  <!-- Vététiste, origine à la hanche. Pose « carte vierge ». -->
+  <g class="vetetiste" transform="translate(114 100)">
+    <!-- côté caché -->
+    <g class="jambe-loin" transform="rotate(8)">
+      <line y2="36" stroke="#5A3A28" stroke-width="10" stroke-linecap="round"/>
+      <g class="tibia" transform="translate(0 36) rotate(-4)">
+        <line y2="36" stroke="#B97A52" stroke-width="8" stroke-linecap="round"/>
+        <ellipse class="chaussure" cx="4" cy="37" rx="8" ry="4.5" fill="#5A3A28"/>
+      </g>
+    </g>
+    <g class="buste" transform="rotate(3)">
+      <g class="bras-loin" transform="translate(0 -34) rotate(-25)">
+        <line y2="20" stroke="#B97A52" stroke-width="7" stroke-linecap="round"/>
+        <g class="avant-bras" transform="translate(0 20) rotate(-85)">
+          <line y2="18" stroke="#B97A52" stroke-width="6" stroke-linecap="round"/>
+          <circle class="gant" cy="19" r="4.5" fill="#5A3A28"/>
+        </g>
+        <circle class="manche" cy="2" r="6.5" fill="#8E3520"/>
+      </g>
+      <rect class="maillot" x="-9" y="-40" width="18" height="44" rx="9" fill="#B5452A"/>
+      <rect class="bande" x="-9" y="-25" width="18" height="5" fill="#F0A830"/>
+      <g class="tete" transform="translate(0 -40) rotate(15)">
+        <circle cy="-12" r="12" fill="#D9956A"/>
+        <path class="casque" d="M-13.5 -13 A13.5 13.5 0 0 1 13.5 -13 Z" fill="#F0A830"/>
+        <path class="visiere" d="M12 -14 L21 -12 L12.5 -10 Z" fill="#E2652B"/>
+        <circle class="oeil" cx="6.5" cy="-9.5" r="1.8" fill="#3A1F0F"/>
+        <path class="bouche" d="M4.5 -4 h5" fill="none" stroke="#3A1F0F" stroke-width="1.6" stroke-linecap="round"/>
+      </g>
+      <!-- Accessoire de la pose : la carte vierge -->
+      <g class="accessoire carte-vierge">
+        <path d="M20 -46 L54 -40 L52 -12 L18 -18 Z" fill="#FBF1DA" stroke="#3A1F0F" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M31 -44 L29 -16 M42 -42 L40 -14" stroke="#5A3A28" stroke-width="1.4" stroke-dasharray="3 2.5"/>
+      </g>
+      <g class="bras" transform="translate(0 -34) rotate(-37)">
+        <line y2="20" stroke="#D9956A" stroke-width="7" stroke-linecap="round"/>
+        <g class="avant-bras" transform="translate(0 20) rotate(-70)">
+          <line y2="18" stroke="#D9956A" stroke-width="6" stroke-linecap="round"/>
+          <circle class="gant" cy="19" r="4.5" fill="#3A1F0F"/>
+        </g>
+        <circle class="manche" cy="2" r="6.5" fill="#B5452A"/>
+      </g>
+    </g>
+    <g class="jambe" transform="rotate(-6)">
+      <line y2="36" stroke="#3A1F0F" stroke-width="10" stroke-linecap="round"/>
+      <g class="tibia" transform="translate(0 36) rotate(8)">
+        <line y2="36" stroke="#D9956A" stroke-width="8" stroke-linecap="round"/>
+        <ellipse class="chaussure" cx="4" cy="37" rx="8" ry="4.5" fill="#3A1F0F"/>
+      </g>
+    </g>
+  </g>
+</svg>
+
+<div class="vide">
+  <h2 class="geo">Pas encore d'itinéraire</h2>
+  <p>Tracez votre première sortie sur la carte, ou importez un fichier GPX.</p>
+</div>
+<div class="principal geo"><span class="soleil"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>Créer un itinéraire</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
+</div>
+
+<div class="indicateur"></div>
+</div>
+</body>
+</html>

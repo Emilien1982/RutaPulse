@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse v1 – Infos de l'itinéraire</title>
+<!--
+  Écran 20, v1, style années 70. Version finie de
+  design/styles/3-affiche-annees-70-infos.html (même contenu que design/20).
+  Fonction 3 du cadrage. Ouvert depuis « Mes itinéraires » ou depuis le résumé
+  de la création.
+  Ce qui change par rapport à l'essai de style :
+  - chiffres clés en police du système (800, chiffres tabulaires) : sobres
+    (décision 2) et identiques à ceux de la création et du suivi ;
+  - attribution de la carte dans l'arche (exigée par les licences, IGN compris :
+    décision 13), en version courte avec un bouton « i » qui ouvre la liste
+    complète (convention de MapLibre) ;
+  - libellés et noms accessibles.
+  La carte est la vraie carte MapLibre, dans une fenêtre en arche cerclée de
+  trois bandes. Le profil est rempli de bandes ; le terrain garde les couleurs
+  de la carte, l'itinéraire son magenta.
+  Valeurs : design/tokens.md.
+-->
+<style>
+:root{
+  --creme:#F4E4C1; --creme-clair:#FBF1DA; --brun:#3A1F0F; --brun-2:#5A3A28;
+  --moutarde:#F0A830; --moutarde-pale:#F6CB7A; --orange:#E2652B; --rouille:#B5452A; --petrole:#2D6A66;
+  --terrain-route:#5A5A5A; --terrain-piste:#7A4A1E; --terrain-sentier:#C62828;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:var(--creme)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--brun);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.geo{font-family:"Futura","Futura PT",Jost,"Century Gothic","Avenir Next",sans-serif;font-weight:700}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden;background:var(--creme)}
+.barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20;color:var(--brun)}
+.barre-etat .icones{display:flex;gap:6px;align-items:center}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--brun);z-index:30}
+
+.barre-haut{position:absolute;top:47px;left:0;right:0;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 4px}
+.retour{height:48px;display:flex;align-items:center;gap:2px;padding:0 10px 0 4px;font-size:17px}
+.icone-btn{width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+
+.arche{position:absolute;top:120px;left:31px;width:328px;height:146px;border:3px solid var(--brun);border-radius:164px 164px 18px 18px / 96px 96px 18px 18px;overflow:hidden;background:#EEEBE4;
+  box-shadow:0 0 0 5px var(--moutarde),0 0 0 9px var(--orange),0 0 0 12px var(--rouille)}
+.arche svg{display:block}
+.arche svg *{vector-effect:non-scaling-stroke}
+.attribution{position:absolute;right:12px;bottom:5px;display:flex;align-items:center;gap:4px;font-size:11px;color:var(--brun-2);background:rgba(251,241,218,.9);padding:1px 2px 1px 5px;border-radius:9px}
+.attribution i{font-style:normal;width:16px;height:16px;border-radius:8px;border:1.5px solid var(--brun-2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+
+.contenu{position:absolute;top:292px;left:16px;right:16px}
+.nom{font-size:22px;line-height:1.2}
+.sous{font-size:15px;color:var(--brun-2);margin-top:2px}
+
+.grille{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.case{background:var(--creme-clair);border:2.5px solid var(--brun);border-radius:18px;padding:6px 12px 7px 20px}
+.case .v{font-size:28px;font-weight:800;line-height:1.15}
+.case u{text-decoration:none;font-size:17px;font-weight:700}
+.case .e{font-size:13px;font-weight:600;color:var(--brun-2)}
+
+.bloc-titre{margin-top:12px;display:flex;justify-content:space-between;align-items:baseline}
+.bloc-titre .geo{font-size:16px;letter-spacing:1px}
+.bloc-titre span.d{font-size:13px;font-weight:500;color:var(--brun-2)}
+.profil{display:block;margin-top:6px}
+
+.legende{display:flex;gap:14px;margin-top:8px;font-size:15px}
+.legende i{display:inline-block;width:15px;height:15px;border-radius:50%;border:2px solid var(--brun);margin-right:6px;vertical-align:-2px}
+.difficulte{font-size:15px;margin-top:6px;line-height:1.35}
+.difficulte b{font-weight:700}
+.difficulte .t2{color:var(--brun-2)}
+
+.actions{position:absolute;left:16px;right:16px;top:744px;display:flex;gap:10px}
+.secondaire{width:128px;height:56px;border-radius:28px;border:2.5px solid var(--brun);background:var(--creme-clair);font-size:17px;display:flex;align-items:center;justify-content:center;gap:6px}
+.principal{flex:1;height:56px;border-radius:28px;background:var(--brun);color:var(--creme);font-size:17px;display:flex;align-items:center;justify-content:center;gap:10px;padding-left:4px}
+.principal .soleil{width:32px;height:32px;border-radius:16px;background:var(--moutarde);display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+<div class="ecran">
+
+<div class="barre-etat"><span>09:58</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<div class="barre-haut">
+  <div class="retour geo" aria-label="Retour à Mes itinéraires"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Itinéraires</div>
+  <div class="icone-btn" aria-label="Plus d'actions : renommer, exporter en GPX, supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+</div>
+
+<!-- La vraie carte, dans une arche cerclée de trois bandes -->
+<div class="arche">
+<svg width="322" height="140" viewBox="-212 192 754 290" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <rect x="-400" y="-400" width="1200" height="1700" fill="#EEEBE4"/>
+  <path d="M-60 140 C60 120 120 160 170 150 C230 140 280 170 300 220 C310 280 290 340 250 360 C200 380 160 360 120 380 C80 395 30 380 -60 390 Z" fill="#D3E4C0"/>
+  <path d="M-200 150 C-150 120 -100 180 -60 140 L-60 390 C-120 400 -170 380 -200 420 Z" fill="#D3E4C0"/>
+  <path d="M370 -60 L460 -60 L460 220 C410 190 370 120 370 -60 Z" fill="#D3E4C0"/>
+  <path d="M90 486 L226 472 L232 562 L96 576 Z" fill="#E3DCD0"/>
+  <path d="M345 -60 C320 120 370 220 335 330 C305 420 320 520 300 600" fill="none" stroke="#A8CCDD" stroke-width="10"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M-260 520 C-120 500 -60 497 -60 497 C80 482 150 468 235 470 S340 462 560 420" stroke="#FFFFFF" stroke-width="3.5"/>
+    <path d="M138 -60 C148 120 128 260 150 400 S160 640 190 900" stroke="#FFFFFF" stroke-width="3"/>
+  </g>
+  <g fill="none" stroke="#7A4A1E" stroke-width="1.5" stroke-linecap="round">
+    <path d="M190 215 C200 170 215 120 210 60"/><path d="M250 300 C285 292 305 280 322 268"/><path d="M60 330 C40 360 20 400 -60 440"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C150 220 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="8"/>
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C150 220 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#C2007A" stroke-width="5"/>
+  </g>
+  <circle cx="175" cy="470" r="16" fill="#146C2E" stroke="#fff" stroke-width="2"/>
+  <circle cx="152" cy="440" r="16" fill="#111" stroke="#fff" stroke-width="2"/>
+</svg>
+<div class="attribution" aria-label="Attributions de la carte : OpenStreetMap, OpenMapTiles, Mapterhorn, IGN">© OpenStreetMap <i>i</i></div>
+</div>
+
+<div class="contenu">
+  <div class="nom geo">Boucle du Bois de la Côte</div>
+  <div class="sous">Zone Nancy · modifié le 20 oct. 2026</div>
+
+  <div class="grille">
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--moutarde)"><div class="v">25,1<u> km</u></div><div class="e">Distance</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--orange)"><div class="v">1<u> h </u>35</div><div class="e">Durée estimée</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--rouille)"><div class="v">421<u> m</u></div><div class="e">Montée (D+)</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--petrole)"><div class="v">421<u> m</u></div><div class="e">Descente (D−)</div></div>
+  </div>
+
+  <div class="bloc-titre"><span class="geo">PROFIL ET TERRAIN</span><span class="d">de 245 à 390 m</span></div>
+  <!-- Profil : 25 km sur 358 de large ; altitude 220 à 400 m sur 84 de haut. Mêmes altitudes que l'écran 20. -->
+  <svg class="profil" width="358" height="122" viewBox="0 0 358 122" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Roboto,sans-serif" role="img" aria-label="Profil d'altitude : quatre montées, de 245 à 390 m">
+    <defs>
+      <clipPath id="sous-profil"><polygon points="0,84 0,72.3 14.3,60.7 28.6,42 43,23.3 57.3,11.7 71.6,28 85.9,46.7 100.2,32.7 114.6,14 128.9,4.7 143.2,21 157.5,42 171.8,56 186.2,39.7 200.5,21 214.8,7 229.1,23.3 243.4,46.7 257.8,60.7 272.1,44.3 286.4,28 300.7,20.5 315,37.3 329.4,53.7 343.7,49 358,72.3 358,84"/></clipPath>
+    </defs>
+    <g clip-path="url(#sous-profil)">
+      <rect x="0" y="0" width="358" height="22" fill="#B5452A"/>
+      <rect x="0" y="22" width="358" height="21" fill="#E2652B"/>
+      <rect x="0" y="43" width="358" height="21" fill="#F0A830"/>
+      <rect x="0" y="64" width="358" height="20" fill="#F6CB7A"/>
+    </g>
+    <polyline fill="none" stroke="#3A1F0F" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="0,72.3 14.3,60.7 28.6,42 43,23.3 57.3,11.7 71.6,28 85.9,46.7 100.2,32.7 114.6,14 128.9,4.7 143.2,21 157.5,42 171.8,56 186.2,39.7 200.5,21 214.8,7 229.1,23.3 243.4,46.7 257.8,60.7 272.1,44.3 286.4,28 300.7,20.5 315,37.3 329.4,53.7 343.7,49 358,72.3"/>
+    <line x1="0" y1="85" x2="358" y2="85" stroke="#3A1F0F" stroke-width="2"/>
+    <g>
+      <rect x="0" y="89" width="14.3" height="12" fill="#5A5A5A"/>
+      <rect x="14.3" y="89" width="71.6" height="12" fill="#7A4A1E"/>
+      <rect x="85.9" y="89" width="43" height="12" fill="#C62828"/>
+      <rect x="128.9" y="89" width="57.3" height="12" fill="#7A4A1E"/>
+      <rect x="186.2" y="89" width="57.2" height="12" fill="#C62828"/>
+      <rect x="243.4" y="89" width="28.7" height="12" fill="#7A4A1E"/>
+      <rect x="272.1" y="89" width="28.6" height="12" fill="#C62828"/>
+      <rect x="300.7" y="89" width="28.7" height="12" fill="#7A4A1E"/>
+      <rect x="329.4" y="89" width="28.6" height="12" fill="#5A5A5A"/>
+    </g>
+    <g font-size="13" font-weight="500" fill="#5A3A28">
+      <text x="0" y="118">0</text><text x="71.6" y="118" text-anchor="middle">5</text><text x="143.2" y="118" text-anchor="middle">10</text><text x="214.8" y="118" text-anchor="middle">15</text><text x="286.4" y="118" text-anchor="middle">20</text><text x="358" y="118" text-anchor="end">25 km</text>
+    </g>
+  </svg>
+
+  <div class="legende">
+    <span><i style="background:#5A5A5A"></i>Route 12 %</span>
+    <span><i style="background:#7A4A1E"></i>Piste 52 %</span>
+    <span><i style="background:#C62828"></i>Sentier 36 %</span>
+  </div>
+  <div class="difficulte"><b>Difficulté</b> : S1 (facile) sur 4 % ; <span class="t2">inconnue sur 96 %, la carte la donne rarement.</span></div>
+</div>
+
+<div class="actions geo">
+  <div class="secondaire"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>Modifier</div>
+  <div class="principal"><span class="soleil"><svg width="16" height="16" viewBox="0 0 24 24" fill="#3A1F0F"><path d="M7 4.5v15l12-7.5z"/></svg></span>Démarrer le suivi</div>
+</div>
+
+<div class="indicateur"></div>
+</div>
+</body>
+</html>
