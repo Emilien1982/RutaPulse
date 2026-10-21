@@ -1,6 +1,7 @@
 """Command line: python3 -m zonefactory <command> (run from zones/)."""
 
 import argparse
+import re
 import sys
 from pathlib import Path
 
@@ -16,11 +17,16 @@ def main(argv=None) -> int:
     build.add_argument("--version", type=int, required=True, help="numéro de version du paquet (1 ou plus)")
     build.add_argument("--out", type=Path, required=True, help="dossier de sortie (vide ou à créer)")
     build.add_argument("--cache-dir", type=Path, default=DEFAULT_CACHE_DIR, help="dossier des gros fichiers réutilisés")
+    build.add_argument("--osm-url", help="adresse d'extrait OSM qui remplace celle de zones.json pour cette fabrication")
     args = parser.parse_args(argv)
     try:
         if args.version < 1:
             raise ConfigError("--version doit valoir 1 ou plus")
         zone = get_zone(load_zones(), args.id)
+        if args.osm_url:
+            if not re.fullmatch(r"https://.+\.osm\.pbf", args.osm_url):
+                raise ConfigError("--osm-url doit être une adresse https:// qui finit par .osm.pbf")
+            zone = dict(zone, osmExtractUrl=args.osm_url)
         build_zone(zone, args.version, args.out, args.cache_dir)
     except (ConfigError, BuildError) as err:
         print(f"Erreur : {err}", file=sys.stderr)

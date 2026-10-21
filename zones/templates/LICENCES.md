@@ -34,6 +34,9 @@ Chacune impose une mention. L'application les affiche.
 - Sources d'altitude sur la France : IGN (Licence Ouverte 2.0) et Copernicus
   GLO-30. La liste complète des sources, avec leur licence, est sur la page
   d'attribution de Mapterhorn ci-dessus.
+- Mention demandée pour Copernicus GLO-30 : « © DLR e.V. 2010-2014 and
+  © Airbus Defence and Space GmbH 2014-2018 provided under COPERNICUS by the
+  European Union and ESA; all rights reserved ».
 
 ## Altitude et courbes de niveau : SRTM (NASA)
 

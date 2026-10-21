@@ -15,6 +15,9 @@ python3 -m venv .venv
 
 ## Fabriquer une zone
 
+L'environnement `.venv` (ou `pip install -r requirements.txt`) doit exister
+avant toute commande `python3 -m zonefactory`, sinon `jsonschema` manque.
+
 ```
 .venv/bin/python -m zonefactory build nancy --version 1 --out out/nancy
 ```
@@ -29,16 +32,21 @@ Pour contrôler le résultat : `cd out/nancy && shasum -a 256 -c SHA256SUMS`.
 
 ### Fichiers réutilisés
 
-Règle : un gros fichier déjà présent dans le dossier de cache n'est jamais
-retéléchargé. Le cache contient :
+Règles :
 
-- l'extrait OSM, nommé comme son adresse (`lorraine-261018.osm.pbf`) ;
-- les annexes de Planetiler (`planetiler/sources/`, 1,4 Go) ;
-- les tuiles d'altitude (`elevation/N48/N48E005.hgt`…), rangées après le
-  premier calcul.
-
-Le reste est refait à chaque fois, dans `work/<id>/`. Pour forcer un
-nouveau téléchargement, supprimer le fichier du cache.
+- Le **cache** (`--cache-dir`, par défaut `work/cache/`) garde les annexes de
+  Planetiler (`planetiler/sources/`, 1,4 Go) et les tuiles d'altitude
+  (`elevation/N48/N48E005.hgt`…). Un fichier déjà là n'est jamais
+  retéléchargé. Une tuile d'altitude qui n'a pas la bonne taille
+  (25 934 402 octets) est supprimée et refaite. Une zone ne prend que ses
+  propres tuiles.
+- L'**extrait OSM** est rangé dans `work/osm/`, hors du cache. Il n'est
+  réutilisé que si son adresse est datée (`lorraine-261018.osm.pbf`). Une
+  adresse `…-latest.osm.pbf` est retéléchargée à chaque fois, car son contenu
+  change chaque jour.
+- Le reste est refait à chaque fois, dans `work/<id>/`.
+- Les conteneurs Docker tournent avec l'identifiant de l'utilisateur courant
+  (`--user`), pour que les fichiers produits restent à lui sous Linux.
 
 ## Ajouter une zone
 

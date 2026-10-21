@@ -1,12 +1,17 @@
 """Build the package of one zone (ADR 0003, sections 1, 2, 6 and 7).
 
-Reuse rule for big downloads: a file already present in the cache folder is
-never downloaded again. The cache holds the OSM extract (named after its
-address), the Planetiler annexes (planetiler/sources/) and the HGT tiles
-(elevation/N48/...). Everything else is rebuilt at each run in work/<id>/.
+Reuse rules for big downloads:
+- the cache folder holds the Planetiler annexes (planetiler/sources/) and the
+  HGT tiles (elevation/N48/...): a file already there is never downloaded again
+  (an HGT tile of the wrong size is deleted first);
+- the OSM extract is kept in work/osm/ and reused only when its address is
+  dated (not "-latest"), because "-latest" changes every day;
+- everything else is rebuilt at each run in work/<id>/.
 """
 
+import hashlib
 import json
+import os
 import re
 import shutil
 import subprocess
@@ -34,6 +39,11 @@ CONTOUR_MARGIN = 0.01  # degrees added around the zone so that lines do not stop
 WORK_DIR = ZONES_DIR / "work"
 DEFAULT_CACHE_DIR = WORK_DIR / "cache"
 TEMPLATES_DIR = ZONES_DIR / "templates"
+OSM_DIR = WORK_DIR / "osm"
+HGT_BYTES = 3601 * 3601 * 2  # SRTM 1 arc-second tile
+# Containers write as the current user, so that Linux (GitHub Actions) does not
+# leave root-owned files that we could neither move nor delete.
+DOCKER_USER = ["--user", f"{os.getuid()}:{os.getgid()}"]
 
 
 class BuildError(Exception):
@@ -94,6 +104,31 @@ def osm_header(pbf: Path, bbox: dict) -> str:
     return date
 
 
+def drop_truncated_tiles(cache: Path, bbox: dict) -> None:
+    """Delete cached HGT tiles of this zone whose size is wrong, so that they are rebuilt."""
+    for name in hgt_names_for_bbox(bbox):
+        tile = cache / "elevation" / storage_path(name).split("/", 1)[1]
+        if tile.is_file() and tile.stat().st_size != HGT_BYTES:
+            print(f"  tuile d'altitude du cache de taille inattendue, supprimée : {tile.name}")
+            tile.unlink()
+
+
+def dated_url(url: str, osm_date: str) -> str:
+    """Replace `-latest.osm.pbf` by `-YYMMDD.osm.pbf` (UTC date of osmDate). Other addresses are kept."""
+    if not url.endswith("-latest.osm.pbf"):
+        return url
+    day = datetime.strptime(osm_date, "%Y-%m-%dT%H:%M:%SZ").strftime("%y%m%d")
+    return url[: -len("latest.osm.pbf")] + f"{day}.osm.pbf"
+
+
+def md5_file(path: Path) -> str:
+    digest = hashlib.md5()
+    with open(path, "rb") as f:
+        while chunk := f.read(1024 * 1024):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def download(url: str, dest: Path) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     part = dest.with_name(dest.name + ".part")
@@ -111,7 +146,7 @@ def step(name: str, func, *args):
 
 
 def valhalla(work: Path, *args):
-    run(["docker", "run", "--rm", "-v", f"{work}:/data", "-w", "/data", VALHALLA_IMAGE, *args])
+    run(["docker", "run", "--rm", *DOCKER_USER, "-v", f"{work}:/data", "-w", "/data", VALHALLA_IMAGE, *args])
 
 
 def build_routing(work: Path, cache: Path, bbox: dict, pbf: Path) -> None:
@@ -120,7 +155,7 @@ def build_routing(work: Path, cache: Path, bbox: dict, pbf: Path) -> None:
     run(["osmium", "extract", "-b", box, "--strategy=smart", "-o", work / "zone.osm.pbf", pbf])
     with open(work / "valhalla.json", "w") as config:
         run(
-            ["docker", "run", "--rm", VALHALLA_IMAGE, "valhalla_build_config",
+            ["docker", "run", "--rm", *DOCKER_USER, VALHALLA_IMAGE, "valhalla_build_config",
              "--mjolnir-tile-dir", "/data/valhalla_tiles",
              "--mjolnir-tile-extract", "/data/valhalla_tiles.tar",
              "--mjolnir-admin", "/data/admins.sqlite",
@@ -129,13 +164,19 @@ def build_routing(work: Path, cache: Path, bbox: dict, pbf: Path) -> None:
         )  # fmt: skip
     valhalla(work, "valhalla_build_admins", "-c", "/data/valhalla.json", "/data/zone.osm.pbf")
     wanted = hgt_names_for_bbox(bbox)
-    if all((cache / "elevation" / storage_path(n).split("/", 1)[1]).is_file() for n in wanted):
+    rel = [storage_path(n).split("/", 1)[1] for n in wanted]  # e.g. N48/N48E005.hgt
+    (work / "elevation").mkdir()
+    if all((cache / "elevation" / r).is_file() for r in rel):
         print("  altitude : tuiles trouvées dans le cache")
-        shutil.copytree(cache / "elevation", work / "elevation")
     else:
-        (work / "elevation").mkdir()
         valhalla(work, "valhalla_build_elevation", f"--from-bbox={box}", "--decompress", "-c", "/data/valhalla.json")
-        shutil.copytree(work / "elevation", cache / "elevation", dirs_exist_ok=True)
+        for r in rel:  # only this zone's tiles go to the cache
+            (cache / "elevation" / r).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(work / "elevation" / r, cache / "elevation" / r)
+    for r in rel:  # copy (also after a build, to keep one code path)
+        if not (work / "elevation" / r).is_file():
+            (work / "elevation" / r).parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(cache / "elevation" / r, work / "elevation" / r)
     valhalla(work, "valhalla_build_tiles", "-c", "/data/valhalla.json", "/data/zone.osm.pbf")
     valhalla(work, "valhalla_build_extract", "-c", "/data/valhalla.json", "-v")
 
@@ -146,7 +187,7 @@ def build_map(work: Path, cache: Path, bbox: dict, pbf: Path) -> None:
     sources.mkdir(parents=True, exist_ok=True)
     (work / "planetiler").mkdir()
     run(
-        ["docker", "run", "--rm", "-e", f"JAVA_TOOL_OPTIONS=-Xmx{PLANETILER_XMX}",
+        ["docker", "run", "--rm", *DOCKER_USER, "-e", f"JAVA_TOOL_OPTIONS=-Xmx{PLANETILER_XMX}",
          "-v", f"{work / 'planetiler'}:/data", "-v", f"{sources}:/sources", "-v", f"{pbf}:/input/extract.osm.pbf:ro",
          PLANETILER_IMAGE, "--osm-path=/input/extract.osm.pbf", "--download-dir=/sources", "--tmpdir=/data/tmp",
          "--download", f"--bounds={bbox_arg(bbox)}", "--minzoom=0", f"--maxzoom={MAP_MAXZOOM}",
@@ -161,7 +202,7 @@ def build_terrain(work: Path, bbox: dict) -> None:
 def build_contours(work: Path, bbox: dict, name: str) -> None:
     """HGT -> gdal_contour every 10 m -> attribute `major` -> tippecanoe (layer `contour`)."""
     def gdal(*args):
-        run(["docker", "run", "--rm", "-v", f"{work}:/data", "-w", "/data", GDAL_IMAGE, *args])
+        run(["docker", "run", "--rm", *DOCKER_USER, "-v", f"{work}:/data", "-w", "/data", GDAL_IMAGE, *args])
 
     hgt = [f"/data/elevation/{storage_path(n).split('/', 1)[1]}" for n in hgt_names_for_bbox(bbox)]
     m = CONTOUR_MARGIN
@@ -194,15 +235,19 @@ def build_zone(zone: dict, version: int, out: Path, cache: Path = DEFAULT_CACHE_
     out.mkdir(parents=True, exist_ok=True)
     out, cache = out.resolve(), cache.resolve()
     work = (WORK_DIR / zone["id"]).resolve()
-    shutil.rmtree(work, ignore_errors=True)
+    if work.exists():
+        shutil.rmtree(work)
     work.mkdir(parents=True)
     cache.mkdir(parents=True, exist_ok=True)
     bbox, started = zone["bbox"], time.monotonic()
 
     versions = tool_versions()
-    pbf = cache / zone["osmExtractUrl"].rsplit("/", 1)[1]
+    drop_truncated_tiles(cache, bbox)
+    pbf = OSM_DIR / zone["osmExtractUrl"].rsplit("/", 1)[1]
+    if re.search(r"-latest\.osm\.pbf$", pbf.name):
+        pbf.unlink(missing_ok=True)  # "latest" changes every day: never reuse it
     if pbf.is_file() and pbf.stat().st_size > 0:
-        print(f"Extrait OSM déjà dans le cache : {pbf}")
+        print(f"Extrait OSM daté déjà présent : {pbf}")
     else:
         step("Téléchargement de l'extrait OSM", download, zone["osmExtractUrl"], pbf)
     osm_date = osm_header(pbf, bbox)
@@ -215,8 +260,11 @@ def build_zone(zone: dict, version: int, out: Path, cache: Path = DEFAULT_CACHE_
     print("\n".join(report))
 
     shutil.move(work / "valhalla_tiles.tar", out / "valhalla_tiles.tar")
-    for hgt in sorted((work / "elevation").rglob("*.hgt")):
-        shutil.move(hgt, out / hgt.name)
+    for name in hgt_names_for_bbox(bbox):
+        tile = work / "elevation" / storage_path(name).split("/", 1)[1]
+        if tile.stat().st_size != HGT_BYTES:
+            raise BuildError(f"tuile d'altitude de taille inattendue : {name} ({tile.stat().st_size} octets)")
+        shutil.copy2(tile, out / name)
     for name in ("map.pmtiles", "terrain.pmtiles", "contours.pmtiles", "trails.geojson"):
         shutil.move(work / name if name != "map.pmtiles" else work / "planetiler" / name, out / name)
     shutil.copy(TEMPLATES_DIR / "LICENCES.md", out / "LICENCES.md")
@@ -227,6 +275,7 @@ def build_zone(zone: dict, version: int, out: Path, cache: Path = DEFAULT_CACHE_
         "version": version,
         "bbox": bbox,
         "osmDate": osm_date,
+        "osmExtract": {"url": dated_url(zone["osmExtractUrl"], osm_date), "md5": md5_file(pbf)},
         "builtAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "tools": versions,
     }
