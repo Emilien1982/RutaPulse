@@ -1,0 +1,456 @@
+Starting a Gradle Daemon (subsequent builds will be faster)
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle-plugin:settings-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle-plugin:shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle-plugin:settings-plugin:pluginDescriptors
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:pluginDescriptors
+> Task :gradle-plugin:settings-plugin:processResources
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:processResources
+> Task :gradle-plugin:shared:processResources NO-SOURCE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:processResources NO-SOURCE
+> Task :gradle-plugin:shared:compileKotlin
+> Task :gradle-plugin:shared:compileJava NO-SOURCE
+> Task :gradle-plugin:shared:classes UP-TO-DATE
+> Task :gradle-plugin:shared:jar
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:compileKotlin
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:compileJava NO-SOURCE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:classes UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:jar
+> Task :gradle-plugin:settings-plugin:compileKotlin
+> Task :gradle-plugin:settings-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:settings-plugin:classes
+> Task :gradle-plugin:settings-plugin:jar
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:compileKotlin
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:compileJava NO-SOURCE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:classes
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:jar
+> Task :expo-gradle-plugin:expo-autolinking-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle-plugin:react-native-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-module-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-module-gradle-plugin:pluginDescriptors
+> Task :expo-module-gradle-plugin:processResources
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:pluginDescriptors
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:processResources
+> Task :expo-gradle-plugin:expo-autolinking-plugin:pluginDescriptors
+> Task :expo-gradle-plugin:expo-autolinking-plugin:processResources
+> Task :gradle-plugin:react-native-gradle-plugin:pluginDescriptors
+> Task :gradle-plugin:react-native-gradle-plugin:processResources
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:compileKotlin
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:compileJava NO-SOURCE
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:classes
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:jar
+> Task :expo-gradle-plugin:expo-autolinking-plugin:compileKotlin
+> Task :expo-gradle-plugin:expo-autolinking-plugin:compileJava NO-SOURCE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:classes
+> Task :expo-gradle-plugin:expo-autolinking-plugin:jar
+> Task :gradle-plugin:react-native-gradle-plugin:compileKotlin
+> Task :gradle-plugin:react-native-gradle-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:react-native-gradle-plugin:classes
+> Task :gradle-plugin:react-native-gradle-plugin:jar
+> Task :expo-module-gradle-plugin:compileKotlin
+> Task :expo-module-gradle-plugin:compileJava NO-SOURCE
+> Task :expo-module-gradle-plugin:classes
+> Task :expo-module-gradle-plugin:jar
+
+> Configure project :
+[32m[ExpoRootProject][0m The Kotlin Gradle plugin used by this build is [32m2.2.10[0m, but the version catalog declares [33m2.2.0[0m. Using the plugin version.
+[32m[ExpoRootProject][0m Using the following versions:
+  - buildTools:  [32m37.0.0[0m
+  - minSdk:      [32m24[0m
+  - compileSdk:  [32m37[0m
+  - targetSdk:   [32m36[0m
+  - ndk:         [32m27.1.12297006[0m
+  - kotlin:      [32m2.2.10[0m
+  - ksp:         [32m2.2.10-2.0.2[0m
+
+> Configure project :app
+WARNING: The option setting 'android.builtInKotlin=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+WARNING: The option setting 'android.newDsl=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+ ℹ️  [33mApplying gradle plugin[0m '[32mexpo-max-sdk-override-plugin[0m'
+  [expo-max-sdk-override-plugin] This plugin will find all permissions declared with `android:maxSdkVersion`. If there exists a declaration with the `android:maxSdkVersion` annotation and another one without, the plugin will remove the annotation from the final merged manifest. In order to see a log with the changes run a clean build of the app.
+WARNING: API 'applicationVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling applicationVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+WARNING: API 'testVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling testVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+WARNING: API 'unitTestVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling unitTestVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+
+> Configure project :expo
+WARNING: API 'libraryVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling libraryVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+
+Using expo modules
+  - [32mexpo-dom-webview[0m (58.0.2)
+  - [32mexpo-log-box[0m (58.0.12)
+  - [32mexpo-constants[0m (58.0.12)
+  - [32mexpo-modules-core[0m (58.0.23)
+  - [33m[📦][0m [32mexpo-asset[0m (58.0.17)
+  - [33m[📦][0m [32mexpo-file-system[0m (58.0.10)
+  - [33m[📦][0m [32mexpo-font[0m (58.0.9)
+  - [33m[📦][0m [32mexpo-keep-awake[0m (58.0.3)
+  - [33m[📦][0m [32mexpo-location[0m (58.0.18)
+  - [33m[📦][0m [32mexpo-status-bar[0m (58.0.3)
+  - [33m[📦][0m [32mexpo-task-manager[0m (58.0.12)
+  - [33m[📦][0m [32munimodules-app-loader[0m (58.0.2)
+
+
+> Task :expo-dom-webview:preBuild UP-TO-DATE
+> Task :expo-constants:preBuild UP-TO-DATE
+> Task :expo-log-box:preBuild UP-TO-DATE
+> Task :expo-dom-webview:preDebugBuild UP-TO-DATE
+> Task :expo-log-box:preDebugBuild UP-TO-DATE
+> Task :app:generateAutolinkingNewArchitectureFiles
+> Task :app:generateAutolinkingPackageList
+> Task :app:generateCodegenSchemaFromJavaScript SKIPPED
+> Task :app:generateCodegenArtifactsFromSchema SKIPPED
+> Task :expo-log-box:processDebugNavigationResources
+> Task :expo-dom-webview:processDebugNavigationResources
+> Task :expo-log-box:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-dom-webview:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:generateReactNativeEntryPoint
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :expo-dom-webview:generateDebugResources
+> Task :expo-log-box:generateDebugBuildConfig
+> Task :expo-log-box:generateDebugResources
+> Task :expo:generateInlineModules
+> Task :expo:generatePackagesList
+> Task :expo:preBuild
+> Task :expo:preDebugBuild
+> Task :expo:processDebugNavigationResources
+> Task :expo:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo:generateDebugResources
+> Task :expo-log-box:packageDebugResources
+> Task :expo-dom-webview:packageDebugResources
+> Task :expo:packageDebugResources
+> Task :expo-constants:createDebugExpoConfig
+> Task :expo-modules-core:decompressPrebuiltNativeLibs
+> Task :expo-modules-core:preBuild
+> Task :app:preBuild
+> Task :app:preDebugBuild
+> Task :expo-modules-core:preDebugBuild
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :expo-modules-core:processDebugNavigationResources
+> Task :expo-modules-core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:generateDebugBuildConfig
+> Task :expo-modules-core:generateDebugBuildConfig
+> Task :expo-modules-core:generateDebugResources
+> Task :app:generateDebugResValues
+> Task :expo-modules-core:packageDebugResources
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:javaPreCompileDebug
+> Task :expo-log-box:generateDebugAssets UP-TO-DATE
+> Task :expo-log-box:javaPreCompileDebug
+> Task :expo:generateDebugAssets UP-TO-DATE
+> Task :expo-log-box:mergeDebugAssets
+> Task :expo:javaPreCompileDebug
+> Task :expo-log-box:parseDebugLocalResources
+> Task :expo:mergeDebugAssets
+> Task :expo:parseDebugLocalResources
+> Task :expo-log-box:writeDebugAarMetadata
+> Task :expo:extractDeepLinksDebug
+> Task :expo-log-box:extractDeepLinksDebug
+> Task :expo-dom-webview:generateDebugAssets UP-TO-DATE
+> Task :expo-dom-webview:javaPreCompileDebug
+> Task :expo:writeDebugAarMetadata
+> Task :expo-dom-webview:mergeDebugAssets
+> Task :expo-dom-webview:parseDebugLocalResources
+> Task :expo-dom-webview:writeDebugAarMetadata
+> Task :expo:mapDebugSourceSetPaths
+> Task :expo-log-box:mapDebugSourceSetPaths
+> Task :expo-dom-webview:extractDeepLinksDebug
+> Task :expo-log-box:generateDebugRFile
+> Task :expo:generateDebugRFile
+> Task :expo-dom-webview:generateDebugRFile
+> Task :expo-dom-webview:mapDebugSourceSetPaths
+> Task :expo-log-box:compileDebugLibraryResources
+> Task :expo:compileDebugLibraryResources
+> Task :expo-dom-webview:compileDebugLibraryResources
+> Task :expo:mergeDebugJniLibFolders
+> Task :expo:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-dom-webview:mergeDebugJniLibFolders
+> Task :expo-log-box:mergeDebugJniLibFolders
+> Task :expo-log-box:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-dom-webview:mergeDebugNativeLibs NO-SOURCE
+> Task :expo:stripDebugDebugSymbols NO-SOURCE
+> Task :expo-dom-webview:copyDebugJniLibsProjectOnly
+> Task :expo-log-box:copyDebugJniLibsProjectOnly
+> Task :expo:copyDebugJniLibsProjectOnly
+> Task :expo:copyDebugJniLibsProjectAndLocalJars
+> Task :expo:extractDeepLinksForAarDebug
+> Task :expo-dom-webview:stripDebugDebugSymbols NO-SOURCE
+> Task :expo-dom-webview:checkDebugAarMetadata
+> Task :expo-log-box:processDebugManifest
+> Task :expo:prepareDebugArtProfile
+> Task :expo:processDebugManifest
+> Task :expo-dom-webview:processDebugManifest
+> Task :expo:prepareLintJarForPublish
+> Task :expo-dom-webview:extractDeepLinksForAarDebug
+> Task :expo-dom-webview:prepareDebugArtProfile
+> Task :expo-dom-webview:prepareLintJarForPublish
+> Task :expo-constants:createExpoFingerprint
+> Task :expo-constants:preDebugBuild
+> Task :expo-constants:processDebugNavigationResources
+> Task :expo-constants:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-constants:generateDebugResources
+> Task :expo-constants:packageDebugResources
+> Task :expo-constants:javaPreCompileDebug
+> Task :expo-constants:generateDebugAssets UP-TO-DATE
+> Task :expo-modules-core:generateDebugAssets UP-TO-DATE
+> Task :expo-constants:mergeDebugAssets
+> Task :expo-modules-core:parseDebugLocalResources
+> Task :expo-constants:writeDebugAarMetadata
+> Task :expo-dom-webview:copyDebugJniLibsProjectAndLocalJars
+> Task :expo-modules-core:javaPreCompileDebug
+> Task :expo-modules-core:mergeDebugAssets
+> Task :expo-constants:extractDeepLinksDebug
+> Task :expo-constants:parseDebugLocalResources
+> Task :expo-modules-core:writeDebugAarMetadata
+> Task :expo-modules-core:generateDebugRFile
+> Task :expo-modules-core:extractDeepLinksDebug
+> Task :expo-log-box:checkDebugAarMetadata
+> Task :expo-constants:mapDebugSourceSetPaths
+> Task :expo-constants:processDebugManifest
+> Task :expo-log-box:stripDebugDebugSymbols NO-SOURCE
+> Task :expo-constants:mergeDebugJniLibFolders
+> Task :expo-constants:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-constants:generateDebugRFile
+> Task :expo-constants:stripDebugDebugSymbols NO-SOURCE
+> Task :expo-constants:copyDebugJniLibsProjectAndLocalJars
+> Task :expo-constants:extractDeepLinksForAarDebug
+> Task :expo-constants:prepareDebugArtProfile
+> Task :expo-log-box:copyDebugJniLibsProjectAndLocalJars
+> Task :expo-log-box:extractDeepLinksForAarDebug
+> Task :expo-log-box:prepareDebugArtProfile
+> Task :expo-constants:compileDebugLibraryResources
+> Task :expo-constants:prepareLintJarForPublish
+> Task :expo-constants:checkDebugAarMetadata
+> Task :expo-log-box:prepareLintJarForPublish
+> Task :expo-constants:copyDebugJniLibsProjectOnly
+> Task :expo:checkDebugAarMetadata
+> Task :expo-modules-core:mapDebugSourceSetPaths
+
+> Task :expo-modules-core:processDebugManifest
+/Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/AndroidManifest.xml:8:9-11:45 Warning:
+	meta-data#com.facebook.soloader.enabled@android:value was tagged at AndroidManifest.xml:8 to replace other declarations but no other declaration present
+
+> Task :expo-modules-core:compileDebugLibraryResources
+> Task :expo-modules-core:unpackExpoModulesV2Cpp
+> Task :app:generateDebugGlobalSynthetics
+> Task :app:processDebugNavigationResources
+> Task :app:parseDebugLocalResources
+> Task :app:mergeDebugAssets
+> Task :app:generateDebugRFile
+> Task :app:compressDebugAssets
+> Task :app:desugarDebugFileDependencies
+> Task :app:checkDebugDuplicateClasses
+> Task :app:checkDebugAarMetadata
+
+> Task :expo-modules-core:configureCMakeDebug[arm64-v8a]
+[CXX5304] Observed package id 'build-tools;33.0.0' in inconsistent location '/Users/utilisateur/Library/Android/sdk/build-tools/33.0.0-2' (Expected '/Users/utilisateur/Library/Android/sdk/build-tools/33.0.0')
+[CXX5304] Observed package id 'build-tools;33.0.0' in inconsistent location '/Users/utilisateur/Library/Android/sdk/build-tools/33.0.0-2' (Expected '/Users/utilisateur/Library/Android/sdk/build-tools/33.0.0')
+[CXX5304] Already observed package id 'build-tools;33.0.0' in '/Users/utilisateur/Library/Android/sdk/build-tools/33.0.0'. Skipping duplicate at '/Users/utilisateur/Library/Android/sdk/build-tools/33.0.0-2'
+[CXX5304] Already observed package id 'build-tools;33.0.0' in '/Users/utilisateur/Library/Android/sdk/build-tools/33.0.0'. Skipping duplicate at '/Users/utilisateur/Library/Android/sdk/build-tools/33.0.0-2'
+
+> Task :expo-modules-core:buildCMakeDebug[arm64-v8a]
+> Task :expo-modules-core:mergeDebugJniLibFolders
+> Task :expo-modules-core:checkDebugAarMetadata
+> Task :expo-modules-core:extractDeepLinksForAarDebug
+> Task :expo-modules-core:prepareDebugArtProfile
+> Task :expo-modules-core:prepareLintJarForPublish
+> Task :expo-modules-core:mergeDebugNativeLibs
+> Task :expo-modules-core:copyDebugJniLibsProjectOnly
+> Task :expo-modules-core:stripDebugDebugSymbols
+> Task :expo-modules-core:copyDebugJniLibsProjectAndLocalJars
+> Task :app:mapDebugSourceSetPaths
+> Task :app:compileDebugNavigationResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+
+> Task :app:processDebugMainManifest
+/Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/android/app/src/debug/AndroidManifest.xml:6:5-162 Warning:
+	application@android:usesCleartextTraffic was tagged at AndroidManifest.xml:6 to replace other declarations but no other declaration present
+/Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/android/app/src/debug/AndroidManifest.xml Warning:
+	provider#expo.modules.filesystem.FileSystemFileProvider@android:authorities was tagged at AndroidManifest.xml:0 to replace other declarations but no other declaration present
+
+> Task :app:expoDebugOverrideMaxSdkConflicts
+[33m---------- Expo Max Sdk Override Plugin ----------[0m
+[32m>>> No 'android:maxSdkVersion' conflicts found[0m
+[33m--------------------------------------------------[0m
+
+> Task :app:processDebugManifest
+> Task :app:mergeDebugResources
+> Task :app:configureCMakeDebug[arm64-v8a]
+> Task :app:mergeExtDexDebug
+> Task :app:buildCMakeDebug[arm64-v8a]
+> Task :app:mergeDebugJniLibFolders
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+> Task :app:mergeDebugNativeLibs
+> Task :app:stripDebugDebugSymbols
+
+> Task :expo-modules-core:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/CppType.kt:42:23 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/JavaCallback.kt:38:10 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/JavaCallback.kt:96:45 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:49:15 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:64:30 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:66:14 'constructor(byteBuffer: ByteBuffer): NativeArrayBuffer' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:74:39 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:75:7 'constructor(byteBuffer: ByteBuffer): NativeArrayBuffer' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:80:37 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:86:47 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:92:23 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:92:43 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:95:41 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:105:14 'constructor(byteBuffer: ByteBuffer): NativeArrayBuffer' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/ColorCompat.kt:115:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/JSTypeConverter.kt:7:8 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/JSTypeConverter.kt:245:55 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/JSTypeConverter.kt:247:19 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/ReturnType.kt:6:8 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/ReturnType.kt:45:5 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/TypeConverterProvider.kt:19:8 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/TypeConverterProvider.kt:254:7 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+
+> Task :expo-modules-core:compileDebugJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :expo-modules-core:processDebugJavaRes
+> Task :expo-modules-core:extractDebugAnnotations
+> Task :expo-modules-core:mergeDebugGeneratedProguardFiles
+> Task :expo-modules-core:mergeDebugConsumerProguardFiles
+> Task :expo-modules-core:bundleLibCompileToJarDebug
+> Task :expo-modules-core:mergeDebugJavaResource
+> Task :expo-modules-core:syncDebugLibJars
+> Task :expo-modules-core:bundleDebugAar
+> Task :expo-modules-core:assembleDebug
+> Task :expo-constants:compileDebugKotlin
+> Task :expo-constants:compileDebugJavaWithJavac NO-SOURCE
+> Task :expo-constants:bundleLibCompileToJarDebug
+> Task :expo-constants:processDebugJavaRes
+> Task :expo-constants:bundleLibRuntimeToDirDebug
+> Task :expo-modules-core:bundleLibRuntimeToDirDebug
+> Task :expo-constants:extractDebugAnnotations
+> Task :expo-constants:mergeDebugGeneratedProguardFiles
+> Task :expo-constants:mergeDebugConsumerProguardFiles
+> Task :expo-constants:mergeDebugJavaResource
+> Task :expo-constants:syncDebugLibJars
+> Task :expo-constants:bundleDebugAar
+> Task :expo-constants:assembleDebug
+> Task :expo-log-box:compileDebugKotlin
+> Task :expo-log-box:compileDebugJavaWithJavac
+> Task :expo-log-box:bundleLibCompileToJarDebug
+> Task :expo-log-box:processDebugJavaRes
+> Task :expo-log-box:bundleLibRuntimeToDirDebug
+> Task :expo-log-box:extractDebugAnnotations
+> Task :expo-log-box:mergeDebugGeneratedProguardFiles
+> Task :expo-log-box:mergeDebugConsumerProguardFiles
+> Task :expo-log-box:mergeDebugJavaResource
+> Task :expo-log-box:syncDebugLibJars
+> Task :expo-log-box:bundleDebugAar
+> Task :expo-log-box:assembleDebug
+
+> Task :expo-dom-webview:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/node_modules/@expo/dom-webview/android/src/main/java/expo/modules/webview/DomWebView.kt:200:16 'var allowFileAccessFromFileURLs: Boolean' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/node_modules/@expo/dom-webview/android/src/main/java/expo/modules/webview/DomWebView.kt:254:18 'fun executeOnJavaScriptThread(runnable: Runnable): Unit' is deprecated. Use RuntimeContext.schedule instead.
+
+> Task :expo-dom-webview:compileDebugJavaWithJavac NO-SOURCE
+> Task :expo-dom-webview:bundleLibCompileToJarDebug
+> Task :expo-dom-webview:processDebugJavaRes
+> Task :expo-dom-webview:extractDebugAnnotations
+> Task :expo-dom-webview:mergeDebugGeneratedProguardFiles
+> Task :expo-dom-webview:mergeDebugConsumerProguardFiles
+> Task :expo-dom-webview:bundleLibRuntimeToDirDebug
+> Task :expo-dom-webview:mergeDebugJavaResource
+> Task :expo-dom-webview:syncDebugLibJars
+> Task :expo-dom-webview:bundleDebugAar
+> Task :expo-dom-webview:assembleDebug
+
+> Task :expo:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/android/src/main/java/expo/modules/ExpoModulesPackage.kt:34:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:22:8 'class ReactInstanceManager : Any' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:103:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:103:43 'class ReactInstanceManager : Any' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:104:21 'val reactInstanceManager: ReactInstanceManager' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/android/src/main/java/expo/modules/fetch/ExpoFetchModule.kt:15:8 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/android/src/main/java/expo/modules/fetch/ExpoFetchModule.kt:33:39 'constructor(reactContext: ReactContext): ForwardingCookieHandler' is deprecated. Use the default constructor.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/android/src/main/java/expo/modules/fetch/ExpoFetchModule.kt:111:27 'constructor(byteBuffer: ByteBuffer): NativeArrayBuffer' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/android/src/main/java/expo/modules/fetch/NativeResponse.kt:44:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/node_modules/expo/android/src/main/java/expo/modules/fetch/NativeResponse.kt:46:11 'fun deallocate(): Unit' is deprecated. Use sharedObjectDidRelease() instead.
+
+> Task :expo:compileDebugJavaWithJavac NO-SOURCE
+> Task :expo:bundleLibCompileToJarDebug
+> Task :expo:processDebugJavaRes
+> Task :expo:bundleLibRuntimeToDirDebug
+> Task :expo:extractDebugAnnotations
+> Task :expo:mergeDebugGeneratedProguardFiles
+> Task :expo:mergeDebugConsumerProguardFiles
+> Task :expo:mergeDebugJavaResource
+> Task :expo:syncDebugLibJars
+> Task :expo:bundleDebugAar
+> Task :expo:assembleDebug
+
+> Task :app:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/android/app/src/main/java/fr/vttnav/essai2/MainActivity.kt:36:20 'constructor(activity: ReactActivity, mainComponentName: String, fabricEnabled: Boolean): DefaultReactActivityDelegate' is deprecated. Creating DefaultReactActivityDelegate with flags is deprecated.
+
+> Task :app:compileDebugJavaWithJavac
+> Task :app:processDebugJavaRes
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJavaResource
+> Task :app:mergeLibDexDebug
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+[Incubating] Problems report is available at: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/essai-2-ae2d48/essais/02-suivi-verrouille/app/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.4.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 54s
+232 actionable tasks: 232 executed
+EXIT 0

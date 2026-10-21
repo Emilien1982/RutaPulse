@@ -1,0 +1,2 @@
+{"type": "notif", "k": 0, "texte": "Indication 0 : tournez à gauche", "t": 1792530841507}
+{"type": "erreur", "where": "start", "message": "Call to function 'LocationUpdatesHandle.start' has been rejected.\n→ Caused by: Background location permissions are not granted. Call requestBackgroundPermissions() after foreground location has been granted.", "t": 1792530841560}

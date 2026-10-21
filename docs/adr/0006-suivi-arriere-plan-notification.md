@@ -68,6 +68,31 @@ d'architecture).
   plus tard. Les règles de Google sur la localisation en arrière-plan
   devront alors être relues.
 
+## Résultat de l'essai 2 (2026-10-21)
+
+Détail : [docs/essais/02-suivi-verrouille.md](../essais/02-suivi-verrouille.md).
+
+- **Décision confirmée** sur les deux simulateurs, pendant une heure écran
+  verrouillé : une position par seconde, aucun trou de plus de 2,4 s ; une
+  seule notification (Android) ou Live Activity (iOS), mise à jour en moins
+  de 2 s à chaque indication.
+- **Corrections à appliquer en développement :**
+  - Android : profil de localisation `AUTOMOTIVE_NAVIGATION` et non
+    « fitness », qui ne donne qu'une position toutes les 10 s en
+    arrière-plan ;
+  - Android : permission `ACCESS_BACKGROUND_LOCATION` obligatoire avec
+    `expo-location/next` ;
+  - Android : règle de conservation R8 (outil qui réduit le code de l'app)
+    pour `expo-task-manager`, et `expo-widgets` exclu de la liaison
+    Android ;
+  - iOS : l'utilisateur doit en plus accepter « Autoriser les activités en
+    direct ».
+- À vérifier sur un vrai téléphone : signature de la Live Activity avec un
+  compte Apple gratuit (2 identifiants et un App Group, sans notification
+  push) ; mode Doze et économies d'énergie des fabricants Android ;
+  notification visible sur l'écran verrouillé avec un canal de faible
+  importance.
+
 ## Sources
 
 - expo-location, API `next` : https://docs.expo.dev/versions/v58.0.0/sdk/location-next.md

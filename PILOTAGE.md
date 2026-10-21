@@ -23,7 +23,7 @@
 |---|---|---|
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
-| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essai 3 ✅ ([résultats](docs/essais/03-carte-hors-ligne.md)), essai 2 en cours |
+| 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
 | 4+ | Développement par petites phases | — |
 
 ## Décisions prises
@@ -46,6 +46,7 @@
 - 2026-10-20 — Essai 1-bis : aucun réglage ne rend les itinéraires plus « VTT ». Valhalla cherche le chemin le moins coûteux entre les points, pas une belle boucle. On garde Valhalla et son réglage de l'essai 1.
 - 2026-10-20 — Cadrage modifié : recalcul en direct, tracé à la main par tronçon, circuits VTT balisés d'OSM (fonction 9). Génération de boucles : plus tard.
 - 2026-10-20 — Essai 3 : carte hors ligne prouvée (MapLibre + PMTiles, 29 Mo pour Nancy), circuits balisés dans le paquet (2 seulement autour de Nancy), GitHub Actions jugé faisable.
+- 2026-10-21 — Essai 2 : suivi d'1 h écran verrouillé prouvé sur Android (notification unique, mise à jour en 1,8 s au plus) et iOS (Live Activity, 1 s au plus). Corrections pour le développement dans l'ADR 0006.
 - 2026-10-20 — Le dénivelé reste en v1 : il est fourni par Valhalla, son calcul n'est pas le problème.
 - 2026-10-19 — Une session par phase d'exécution ; la session de pilotage reste avec Émilien.
 
@@ -59,24 +60,11 @@
 - Temps de calcul d'un itinéraire.
 - Consommation de batterie (écran allumé et verrouillé).
 - Précision du GPS en forêt.
-- Live Activity iOS avec un compte Apple gratuit.
+- Live Activity iOS avec un compte Apple gratuit (signature : 2 identifiants + App Group, sans push).
+- Suivi verrouillé sur batterie : mode Doze et économies d'énergie des fabricants ; notification visible sur l'écran verrouillé (canal de faible importance).
 
 ## Prochaine étape
 
-Étape 3c, suite : essais 2 (suivi téléphone verrouillé et notification) et 3
-(carte hors ligne, avec les circuits balisés dans le paquet de zone).
-
-## Épreuve de la configuration (phase 2) : bilan
-- Les 5 garde-fous testés marchent (développeur, testeur, relecteur) :
-  messages de blocage reçus et fichiers vérifiés.
-- Bug volontaire détecté deux fois : par le relecteur en lisant le code, et
-  par le test de symétrie.
-- Défaut trouvé et corrigé : une session démarrée dans le dossier parent
-  garde un mauvais chemin vers les hooks. Règle : ouvrir la session dans
-  `vtt-nav`.
-- Faiblesse des tests : aucun cas général avec une valeur de référence.
-  Consigne ajoutée au testeur.
-- Limites connues, acceptées : le développeur et le testeur peuvent écrire
-  par une commande shell (le relecteur contrôle le diff) ; architecte et
-  designer non testés.
-- Le code de l'épreuve est supprimé ; il reste dans l'historique git.
+Émilien valide les maquettes (`design/`, avec 13 questions dans
+`design/LISEZMOI.md`) et le découpage (docs/05). Ensuite : phase 0 (socle du
+projet) et phase 1 (fabrique de zones), qui ne dépendent pas du design.

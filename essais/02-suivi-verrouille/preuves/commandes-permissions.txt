@@ -1,0 +1,7 @@
+adb -s emulator-5554 shell pm grant fr.vttnav.essai2 android.permission.ACCESS_FINE_LOCATION
+adb -s emulator-5554 shell pm grant fr.vttnav.essai2 android.permission.ACCESS_COARSE_LOCATION
+adb -s emulator-5554 shell pm grant fr.vttnav.essai2 android.permission.ACCESS_BACKGROUND_LOCATION
+adb -s emulator-5554 shell pm grant fr.vttnav.essai2 android.permission.POST_NOTIFICATIONS
+adb -s emulator-5554 shell dumpsys deviceidle whitelist +fr.vttnav.essai2   # not required, kept as precaution
+adb -s emulator-5554 shell settings put secure lock_screen_show_silent_notifications 1   # lock screen shows the (low importance) service notification
+# lock/wake: input keyevent 26 (off) / 224 (wake); swipe to unlock

@@ -1,0 +1,6 @@
+outils/sortie/
+journaux/
+
+# raw journals contain positions (R3 source): only the redacted ones (*-expurge.*) are versioned
+preuves/*.jsonl
+!preuves/*-expurge.jsonl
