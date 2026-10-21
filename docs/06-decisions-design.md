@@ -23,6 +23,20 @@
 | 5 | Icône de l'app | Elle suit le style. |
 | 6 | Illustrations en v1 | Le minimum : bandeau, vignettes et 3 états vides. Le jeu complet en V2, avec l'animation d'arrivée. |
 
+## Écrans années 70 : décisions (21 octobre 2026)
+
+Émilien valide les 11 écrans de `design/v1/`.
+
+| # | Question | Décision |
+|---|---|---|
+| 1 | Icône | **A, le soleil rayé.** |
+| 2 | Résumé de l'arrivée | Chiffres **réels** : distance et D+ réellement parcourus, durée réelle. |
+| 3 | « Continuer le suivi » à l'arrivée | Non. |
+| 4 | Titre « ARRIVÉE ! » | Oui. |
+| 5 | « Demander une zone » | Pas en v1 (bouton retiré). **V2** : une demande automatique, traitée sans intervention humaine. |
+| 6 | Réglages | Un écran « Réglages » complet, accessible depuis le menu. Sur l'écran de navigation, une petite roue dentée ouvre les réglages utiles pendant le suivi : la luminosité, pour l'instant. |
+| 7 | Retouches de la direction B | Oui : rouge plus foncé pour « Terminer », icône de l'app dans la notification et la Live Activity. Pas de rayures sur l'écran de suivi. |
+
 ## Réponses aux 13 questions
 
 | # | Question | Décision |
