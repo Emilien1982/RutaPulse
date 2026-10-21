@@ -143,6 +143,10 @@ Pourquoi un fichier par élément plutôt qu'une archive :
   "version": 1,
   "bbox": { "lonMin": 5.84, "latMin": 48.47, "lonMax": 6.52, "latMax": 48.92 },
   "osmDate": "2026-10-18T20:25:06Z",
+  "osmExtract": {
+    "url": "https://download.geofabrik.de/europe/france/lorraine-261018.osm.pbf",
+    "md5": "96a475c7406fba7937077df7914b45aa"
+  },
   "builtAt": "2026-10-22T09:12:31Z",
   "tools": {
     "valhalla": "3.9.1",
@@ -160,6 +164,15 @@ Pourquoi un fichier par élément plutôt qu'une archive :
   (`osmosis_replication_timestamp`), en temps universel (UTC). Si l'en-tête
   ne la donne pas, la fabrication s'arrête. Les essais écrivaient
   « unknown » : ce n'est plus permis.
+- `osmExtract` : l'extrait exact utilisé, pour pouvoir refaire la zone
+  (contrôle C7). `url` est l'adresse **datée** : si `zones.json` donne une
+  adresse `…-latest.osm.pbf`, le script la remplace par
+  `…-AAMMJJ.osm.pbf`, où `AAMMJJ` est la date (UTC) de `osmDate`. C'est la
+  règle de nommage de Geofabrik (l'extrait du 18 octobre 2026, 20 h 25 UTC,
+  s'appelle `lorraine-261018.osm.pbf`). `md5` est l'empreinte MD5 du
+  fichier utilisé, le type d'empreinte que Geofabrik publie à côté de chaque
+  extrait (`….osm.pbf.md5`) : on peut ainsi vérifier que l'adresse datée
+  donne bien le même fichier.
 - `builtAt` : date de fabrication. `tools` : versions lues sur les outils
   pendant la fabrication.
 - Pas de liste de fichiers ni d'empreintes : elles sont dans le catalogue
@@ -310,9 +323,12 @@ Aucun autre champ n'est permis.
   zone. Le script lit les limites écrites dans l'en-tête de l'extrait et
   s'arrête si la zone en dépasse. Une zone à cheval sur deux régions prend
   la région parente (par exemple la France entière).
-- `…-latest.osm.pbf` donne les données du jour. Une adresse datée
+- `…-latest.osm.pbf` donne les données du jour : c'est l'adresse normale
+  d'une zone (décision C7 ci-dessous). Une adresse datée
   (`lorraine-261018.osm.pbf`) fige les données, mais Geofabrik ne garde un
-  fichier du jour qu'environ une semaine (voir « Risque C7 »).
+  fichier du jour qu'environ une semaine. Elle sert à refaire une zone déjà
+  publiée : `build` accepte l'option `--osm-url <adresse>`, qui remplace
+  l'adresse de `zones.json` pour une fabrication.
 - **Altitude : rien à écrire.** Les tuiles HGT se déduisent des limites :
   `valhalla_build_elevation --from-bbox` les télécharge. Les courbes sont
   ensuite faites à partir de ces mêmes fichiers : un seul téléchargement, au
@@ -381,7 +397,26 @@ par tuile, en lisant des fichiers binaires : c'est fragile, on l'abandonne.
 
 ### Risque C7 : la date de l'extrait OSM
 
-**Question à trancher par Émilien** : elle touche à ce que la spec promet.
+**Décision du pilotage (2026-10-21) : choix B, adapté.** Pas de copie figée
+de l'extrait dans une release. Raison : en production, une zone viendra
+toujours d'un extrait récent. Figer l'extrait du 18 octobre prouverait un cas
+qui n'existera plus, avec une course contre sa disparition et 163 Mo de plus
+à héberger. C7 devient deux contrôles (spec de la phase 1, mise à jour) :
+1. **Reproductibilité** : la zone publiée note l'adresse datée de son
+   extrait (`osmExtract.url` dans `zone.json`). On refait la zone sur le Mac
+   à partir de cette adresse (`build --osm-url`). Sur les 5 références, les
+   itinéraires du Mac et de GitHub doivent être **identiques**, octet pour
+   octet sur les tracés.
+2. **Cohérence avec l'essai 1** : sur les 5 références, la distance reste à
+   ± 2 % et le D+ à ± 5 % de l'essai 1. Un écart plus grand doit être
+   expliqué, par exemple par une voie modifiée dans OSM entre-temps.
+
+`zones.json` donne donc `lorraine-latest.osm.pbf` pour Nancy. Le contrôle 1
+dépend encore des différences de processeur et de version d'osmium entre le
+Mac et GitHub, notées plus bas : un écart serait mesuré et expliqué, pas
+masqué.
+
+Analyse qui a précédé la décision :
 
 C7 promet « mêmes calculs d'itinéraire que les essais sur les 5
 références ». Ce que je constate :
