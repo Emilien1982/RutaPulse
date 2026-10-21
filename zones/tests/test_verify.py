@@ -46,8 +46,9 @@ def test_unknown_zone_and_unsafe_path(tmp_path, served):
     with pytest.raises(VerifyError, match="absente"):
         verify_zone(catalogue, "metz", tmp_path / "dest")
     catalogue["zones"][0]["files"][0]["path"] = "../evil"
-    with pytest.raises(VerifyError, match="refusé"):
+    with pytest.raises(VerifyError):  # refused by the schema (or later by the path check): any message
         verify_zone(catalogue, "nancy", tmp_path / "dest")
+    assert not (tmp_path / "evil").exists() and not (tmp_path / "dest" / ".." / "evil").exists()
 
 
 def test_command_with_local_catalogue_file(tmp_path, served, capsys):

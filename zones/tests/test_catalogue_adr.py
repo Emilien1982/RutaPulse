@@ -308,3 +308,65 @@ def test_cli_verify_exit_codes(nancy, tmp_path):
     bad.write_text(json.dumps(cat))
     ko = cli("verify", "--catalogue", bad, "--zone", "nancy", "--dest", tmp_path / "d2")
     assert ko.returncode != 0 and "Erreur" in ko.stderr
+
+
+# --- second pass on T3 (commit caaa31b)
+def free_port_url():
+    import socket
+
+    s = socket.socket()
+    s.bind(("127.0.0.1", 0))
+    port = s.getsockname()[1]
+    s.close()  # nothing listens on this port any more: the connection is refused
+    return f"http://127.0.0.1:{port}"
+
+
+def test_lower_or_equal_version_is_refused_and_higher_accepted(tmp_path):
+    v3 = zone_entry(make_package(tmp_path / "v3", version=3), REPO)
+    cat = update_catalogue({"formatVersion": 1, "zones": []}, v3)
+    for n in (1, 2, 3):
+        with pytest.raises(CatalogueError):
+            update_catalogue(cat, zone_entry(make_package(tmp_path / f"v{n}b", version=n), REPO))
+    cat4 = update_catalogue(cat, zone_entry(make_package(tmp_path / "v4", version=4), REPO))
+    assert cat4["zones"][0]["version"] == 4
+
+
+def test_make_catalogue_with_old_version_writes_nothing(tmp_path):
+    cur, out = tmp_path / "cur.json", tmp_path / "out.json"
+    cur.write_text('{"formatVersion": 1, "zones": []}')
+    make_catalogue(cur, make_package(tmp_path / "a", version=2), REPO, cur)
+    with pytest.raises(CatalogueError):
+        make_catalogue(cur, make_package(tmp_path / "b", version=2), REPO, out)
+    assert not out.exists()
+
+
+def test_verify_validates_the_catalogue_with_the_schema(nancy, tmp_path):
+    cat = local_catalogue(nancy, None)
+    cat["zones"][0]["files"][0]["sha256"] = "abc"
+    with pytest.raises(VerifyError):
+        verify_zone(cat, "nancy", tmp_path / "dest")
+    cat = local_catalogue(nancy, None)
+    cat["zones"][0]["extra"] = 1
+    with pytest.raises(VerifyError):
+        verify_zone(cat, "nancy", tmp_path / "dest")
+    assert not (tmp_path / "dest").exists() or not [p for p in (tmp_path / "dest").rglob("*") if p.is_file()]
+
+
+def test_verify_still_accepts_file_urls(nancy, tmp_path):
+    cat = local_catalogue(nancy, None)
+    assert all(f["url"].startswith("file://") for f in cat["zones"][0]["files"])
+    assert len(verify_zone(cat, "nancy", tmp_path / "dest")) == 9
+
+
+def test_network_cut_on_a_file_gives_a_french_message(nancy, tmp_path):
+    cat = local_catalogue(nancy, None)
+    cat["zones"][0]["files"][0]["url"] = free_port_url() + "/x"
+    with pytest.raises(VerifyError, match="téléchargement impossible"):
+        verify_zone(cat, "nancy", tmp_path / "dest")
+
+
+def test_network_cut_on_the_catalogue_gives_a_french_message_and_exit_code_1(tmp_path):
+    done = cli("verify", "--catalogue", free_port_url() + "/catalogue.json", "--zone", "nancy", "--dest", tmp_path / "d")
+    assert done.returncode == 1
+    assert "Erreur : catalogue illisible" in done.stderr
+    assert "Traceback" not in done.stderr

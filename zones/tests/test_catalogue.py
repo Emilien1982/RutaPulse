@@ -65,15 +65,11 @@ def test_replace_a_version(tmp_path, entry):
     assert [(z["id"], z["version"]) for z in result["zones"]] == [("nancy", 2)]
 
 
-def test_missing_or_empty_current_file_is_a_first_run(tmp_path):
-    assert load_catalogue(tmp_path / "absent.json") == {"formatVersion": 1, "zones": []}
-    (tmp_path / "empty.json").write_text("")
-    assert load_catalogue(tmp_path / "empty.json")["zones"] == []
-
-
-def test_make_catalogue_from_nothing_then_replace(tmp_path):
+def test_make_catalogue_from_explicit_empty_then_replace(tmp_path):
     out = tmp_path / "c.json"
-    make_catalogue(tmp_path / "absent.json", make_package(tmp_path / "p1"), REPO, out)
+    first = tmp_path / "first.json"
+    first.write_text('{"formatVersion": 1, "zones": []}')
+    make_catalogue(first, make_package(tmp_path / "p1"), REPO, out)
     make_catalogue(out, make_package(tmp_path / "p2", version=2), REPO, out)
     zones = json.loads(out.read_text())["zones"]
     assert [(z["id"], z["version"]) for z in zones] == [("nancy", 2)]
@@ -103,8 +99,10 @@ def test_invalid_result_is_not_written(tmp_path):
     (folder / "N48E005.hgt").unlink()  # required file missing
     write_sums(folder)
     out = tmp_path / "c.json"
+    first = tmp_path / "first.json"
+    first.write_text('{"formatVersion": 1, "zones": []}')
     with pytest.raises(CatalogueError, match="elevation"):
-        make_catalogue(tmp_path / "absent.json", folder, REPO, out)
+        make_catalogue(first, folder, REPO, out)
     assert not out.exists()
 
 
