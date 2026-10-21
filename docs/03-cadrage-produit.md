@@ -32,6 +32,8 @@ de direction.
 | 9 | Circuits VTT balisés | Les circuits VTT balisés connus d'OpenStreetMap s'affichent sur la carte. Un geste transforme un circuit en itinéraire, qu'on peut ensuite modifier. |
 
 ## V2 (prévue)
+- Sons : alertes, approche d'une direction, arrivée, écart avec le parcours,
+  etc.
 - Demander une zone manquante depuis l'app, avec une fabrication
   automatique, sans intervention humaine.
 - Animation d'arrivée : un vététiste couvert de boue monte sur un podium et

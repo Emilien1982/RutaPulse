@@ -37,6 +37,18 @@
 | 6 | Réglages | Un écran « Réglages » complet, accessible depuis le menu. Sur l'écran de navigation, une petite roue dentée ouvre les réglages utiles pendant le suivi : la luminosité, pour l'instant. |
 | 7 | Retouches de la direction B | Oui : rouge plus foncé pour « Terminer », icône de l'app dans la notification et la Live Activity. Pas de rayures sur l'écran de suivi. |
 
+## Retouches : décisions (21 octobre 2026)
+
+Émilien valide les retouches (`design/v1/captures/planche-retouches.png`).
+
+| # | Question | Décision |
+|---|---|---|
+| 1 | Durée à l'arrivée | Pauses comprises, du « Démarrer le suivi » à l'arrivée. |
+| 2 | Luminosité changée pendant le suivi | C'est le même réglage que dans l'onglet Réglages : il vaut pour les sorties suivantes. |
+| 3 | Panneau de réglages du suivi | Il se ferme seul à moins de 100 m d'une direction. |
+| 4 | « Terminer » avant l'arrivée | Même résumé aux chiffres réels, titré « Sortie terminée ». |
+| — | Accès aux réglages | Un 4e onglet « Réglages ». |
+
 ## Réponses aux 13 questions
 
 | # | Question | Décision |
