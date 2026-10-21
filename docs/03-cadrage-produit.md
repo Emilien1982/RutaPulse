@@ -32,6 +32,11 @@ de direction.
 | 9 | Circuits VTT balisés | Les circuits VTT balisés connus d'OpenStreetMap s'affichent sur la carte. Un geste transforme un circuit en itinéraire, qu'on peut ensuite modifier. |
 
 ## V2 (prévue)
+- Animation d'arrivée : un vététiste couvert de boue monte sur un podium et
+  brandit un trophée.
+- Mode sombre : à reconsidérer.
+- Nom de la commune dans le nom par défaut d'un itinéraire, s'il n'est pas
+  fait en v1.
 - Guidage par la voix.
 - Économiseur d'écran quand le téléphone n'est pas verrouillé : l'écran
   s'assombrit ou se simplifie entre deux indications.
