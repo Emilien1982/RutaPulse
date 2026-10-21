@@ -78,3 +78,22 @@ Une adresse `…-latest.osm.pbf` donne les données du jour. Une adresse datée
 ```
 
 Ils ne demandent ni réseau ni Docker.
+
+## Catalogue, version suivante, contrôle
+
+Toutes ces commandes se lancent depuis `zones/`, comme `build`.
+
+- `next-version <id>` : lit les étiquettes git (une par ligne) sur l'entrée
+  standard et écrit le numéro suivant.
+  `git tag --list | .venv/bin/python -m zonefactory next-version nancy`
+- `catalogue --current <fichier> --package <dossier> --repo <propriétaire/dépôt> --out <fichier>` :
+  ajoute ou remplace la zone du paquet dans le catalogue, puis le contrôle
+  (schéma `schemas/catalogue.schema.json` et règles du code). Le fichier
+  `--current` peut être absent ou vide (premier lancement). Tailles et
+  empreintes sont recalculées et comparées à `SHA256SUMS` : un écart arrête
+  tout, et rien n'est écrit si le résultat est invalide.
+- `verify --catalogue <adresse ou fichier> --zone <id> --dest <dossier>` :
+  télécharge chaque fichier de la zone, contrôle sa taille et son SHA-256,
+  le range sous son `path`. Code de sortie non nul au premier fichier faux.
+  Accepte aussi des adresses `file://` et un catalogue local (essais sans
+  réseau).
