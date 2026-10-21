@@ -8,8 +8,9 @@ d'architecture).
 
 ## Contexte
 
-- La phase 0 crée l'app vide : 3 onglets (Carte, Itinéraires, Zones) et un
-  écran Réglages. Les agents y ajouteront du code pendant 10 phases.
+- La phase 0 crée l'app vide : 4 onglets (Carte, Itinéraires, Zones,
+  Réglages). Réglages est un onglet depuis la décision de design du
+  21 octobre 2026 (docs/06, « Retouches »). Les agents y ajouteront du code pendant 10 phases.
 - Déjà décidé : Expo SDK 58 et dossiers natifs générés (ADR 0001), textes
   lus par `t()` (ADR 0007), Expo Router (ADR 0008), Jest, Testing Library
   et Maestro (ADR 0009).
@@ -41,13 +42,13 @@ vtt-nav/
 mobile/
 ├── src/
 │   ├── app/                  écrans Expo Router, fichiers minces
-│   │   ├── _layout.tsx       pile racine : onglets + Réglages
-│   │   ├── settings.tsx      Réglages, ouvert par-dessus les onglets
+│   │   ├── _layout.tsx       pile racine : les onglets
 │   │   └── (tabs)/
-│   │       ├── _layout.tsx   barre des 3 onglets
+│   │       ├── _layout.tsx   barre des 4 onglets
 │   │       ├── index.tsx     Carte
 │   │       ├── routes.tsx    Itinéraires
-│   │       └── zones.tsx     Zones
+│   │       ├── zones.tsx     Zones
+│   │       └── settings.tsx  Réglages
 │   ├── features/             fonctionnalités (features)
 │   │   ├── map/MapScreen.tsx + MapScreen.test.tsx
 │   │   ├── routes/RoutesScreen.tsx + test

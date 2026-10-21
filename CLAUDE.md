@@ -33,5 +33,23 @@ toute phase coûteuse avant son lancement.
 - Messages de commit en français, à l'impératif, une ligne de titre courte.
 
 ## Stack et règles de code
-À définir en phase 3 (ADR à venir). Préférences d'Émilien : React Native ;
-bibliothèques TanStack quand elles conviennent au besoin.
+- App : Expo SDK 58 (React Native 0.88), TypeScript strict, Expo Router,
+  dans `mobile/`. Choix détaillés : ADR 0001 à 0010.
+- Structure, règles d'import entre dossiers, nommage et tests : ADR 0011.
+  ESLint (contrôle du code) refuse un import interdit.
+- Textes visibles en français, seulement dans `mobile/src/core/i18n/fr.ts`,
+  lus par `t()`.
+- `mobile/android/` et `mobile/ios/` sont générés : ne pas les modifier.
+
+## Commandes (depuis `mobile/`)
+- `npm run verify` : types, puis lint, puis tests. Doit passer avant chaque
+  commit. La CI (vérification automatique sur GitHub) lance la même commande.
+- `npm run typecheck`, `npm run lint` (ESLint + Prettier, 0 avertissement),
+  `npm test` (Jest), `npm run format` (formate tout).
+- App sur simulateur : `npx expo run:ios --device "iPhone 17"` ou
+  `npx expo run:android`. Shell non interactif : exporter
+  `ANDROID_HOME=$HOME/Library/Android/sdk` et `LANG=fr_FR.UTF-8`.
+- Parcours Maestro (outil de test de bout en bout) : `maestro test e2e/`.
+- Un hook (crochet automatique) formate et contrôle chaque fichier de
+  `mobile/` modifié par un agent (`.claude/hooks/qualite.py`). Une erreur
+  ESLint bloque l'agent jusqu'à correction.

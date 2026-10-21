@@ -11,5 +11,18 @@
       "Bash(git push --force:*)",
       "Bash(git config user.email:*)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$(git rev-parse --show-toplevel)/.claude/hooks/qualite.py\""
+          }
+        ]
+      }
+    ]
   }
 }

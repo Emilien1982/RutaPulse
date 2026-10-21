@@ -22,4 +22,18 @@ Un message de succès n'est pas une preuve. Un code de sortie non plus.
 7. **Un garde-fou se prouve en le cassant.** Introduire volontairement le
    défaut qu'il doit attraper, constater qu'il l'attrape, puis annuler.
 
+## Les commandes du projet (depuis `mobile/`)
+
+- Code : `npm run verify && echo OK || echo ÉCHEC`. Lire le résumé de Jest
+  (`Test Suites` et `Tests` : exécutés, réussis, échoués).
+- App iOS : `xcrun simctl io booted screenshot <fichier>.png`, puis regarder
+  l'image. La version de développement demande « Ouvrir dans RutaPulse ? » :
+  la valider, sinon la capture montre l'écran d'accueil.
+- App Android : `adb exec-out screencap -p > <fichier>.png`, puis regarder
+  l'image.
+- Parcours : `maestro test e2e/<parcours>.yaml`, avec le nombre d'étapes
+  réussies.
+- CI : `gh run list --branch <branche>` puis `gh run view <id>` ; la preuve
+  est la conclusion `success` ou `failure` du run, pas le push.
+
 Dans le compte rendu, séparer ce qui est prouvé de ce qui ne l'est pas.
