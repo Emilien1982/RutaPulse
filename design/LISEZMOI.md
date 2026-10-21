@@ -2,6 +2,10 @@
 
 > 21 octobre 2026. Proposition du designer (étape 3d), **à juger par
 > Émilien**. Rien n'est validé.
+>
+> Mise à jour : Émilien a validé la direction B pour la navigation
+> (`docs/06-decisions-design.md`). Le style des écrans hors navigation est
+> en exploration dans [`styles/`](styles/LISEZMOI.md).
 
 ## Comment regarder
 

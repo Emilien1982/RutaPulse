@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse – Style 1, cartoon épuré – Infos de l'itinéraire</title>
+<!--
+  Style 1 : cartoon épuré. Même contenu que design/20-infos-itineraire.html,
+  seul le style change.
+  Valeurs : design/tokens.md, section « Hors navigation : styles à l'essai », style 1.
+  La carte du haut est la vraie carte (MapLibre, style de l'essai 3) : elle
+  garde ses couleurs, seul son cadre prend le style.
+  Les couleurs du terrain et l'itinéraire magenta ne changent pas : ce sont
+  celles de la carte et de l'écran de suivi.
+-->
+<style>
+:root{
+  --fond:#FFF8EC; --carte:#FFFFFF; --encre:#1E1B2E; --encre-2:#4A4560;
+  --ciel:#BDE5FF; --ciel-pale:#E3F4FF; --herbe:#7FCB5E; --soleil:#FFD23F; --soleil-bord:#E8A900;
+  --case-1:#BDE5FF; --case-2:#FFE79A; --case-3:#C9EDB4; --case-4:#FFD6C9;
+  --trait:3px;
+  --terrain-route:#5A5A5A; --terrain-piste:#7A4A1E; --terrain-sentier:#C62828;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:var(--fond)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--encre);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.rond{font-family:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold",Nunito,system-ui,sans-serif}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden;background:var(--fond)}
+.barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20;color:var(--encre)}
+.barre-etat .icones{display:flex;gap:6px;align-items:center}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--encre);z-index:30}
+
+.barre-haut{position:absolute;top:47px;left:0;right:0;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.retour{height:48px;display:flex;align-items:center;gap:2px;padding:0 16px 0 8px;font-size:16px;font-weight:700;background:var(--carte);border:var(--trait) solid var(--encre);border-radius:24px}
+.icone-btn{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:24px;background:var(--carte);border:var(--trait) solid var(--encre)}
+
+.cadre-carte{position:absolute;top:110px;left:16px;width:358px;height:150px;border:var(--trait) solid var(--encre);border-radius:22px;overflow:hidden;background:#EEEBE4}
+.cadre-carte svg{display:block}
+.cadre-carte svg *{vector-effect:non-scaling-stroke}
+
+.contenu{position:absolute;top:268px;left:16px;right:16px}
+.nom{font-size:22px;font-weight:800;line-height:1.2}
+.sous{font-size:15px;color:var(--encre-2);margin-top:2px}
+
+.grille{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.case{border:var(--trait) solid var(--encre);border-radius:18px;padding:7px 14px 8px}
+.case .v{font-size:28px;font-weight:800;line-height:1.15}
+.case u{text-decoration:none;font-size:17px}
+.case .e{font-size:13px;font-weight:600;color:var(--encre)}
+
+.bloc-titre{font-size:18px;font-weight:800;margin-top:14px;display:flex;justify-content:space-between;align-items:baseline}
+.bloc-titre span{font-family:-apple-system,BlinkMacSystemFont,Roboto,system-ui,sans-serif;font-size:13px;font-weight:500;color:var(--encre-2)}
+.profil{display:block;margin-top:8px}
+
+.legende{display:flex;gap:14px;margin-top:8px;font-size:15px}
+.legende i{display:inline-block;width:16px;height:16px;border-radius:5px;border:2px solid var(--encre);margin-right:6px;vertical-align:-3px}
+.difficulte{font-size:15px;margin-top:6px;line-height:1.35}
+.difficulte b{font-weight:700}
+.difficulte .t2{color:var(--encre-2)}
+
+.actions{position:absolute;left:16px;right:16px;top:744px;display:flex;gap:10px}
+.secondaire{width:128px;height:56px;border-radius:28px;border:var(--trait) solid var(--encre);background:var(--carte);font-size:17px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:6px}
+.principal{flex:1;height:56px;border-radius:28px;border:var(--trait) solid var(--encre);background:var(--soleil);box-shadow:inset 0 -5px 0 var(--soleil-bord);color:var(--encre);font-size:18px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;padding-bottom:3px}
+</style>
+</head>
+<body>
+<div class="ecran">
+
+<div class="barre-etat"><span>09:58</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<div class="barre-haut">
+  <div class="retour rond"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Itinéraires</div>
+  <div class="icone-btn" aria-label="Plus d'actions : renommer, exporter en GPX, supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#1E1B2E"><circle cx="12" cy="5" r="2.4"/><circle cx="12" cy="12" r="2.4"/><circle cx="12" cy="19" r="2.4"/></svg></div>
+</div>
+
+<!-- Vraie carte (dessin simplifié), dans un cadre cartoon -->
+<div class="cadre-carte">
+<svg width="352" height="144" viewBox="-212 192 754 290" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <rect x="-400" y="-400" width="1200" height="1700" fill="#EEEBE4"/>
+  <path d="M-60 140 C60 120 120 160 170 150 C230 140 280 170 300 220 C310 280 290 340 250 360 C200 380 160 360 120 380 C80 395 30 380 -60 390 Z" fill="#D3E4C0"/>
+  <path d="M-200 150 C-150 120 -100 180 -60 140 L-60 390 C-120 400 -170 380 -200 420 Z" fill="#D3E4C0"/>
+  <path d="M370 -60 L460 -60 L460 220 C410 190 370 120 370 -60 Z" fill="#D3E4C0"/>
+  <path d="M90 486 L226 472 L232 562 L96 576 Z" fill="#E3DCD0"/>
+  <path d="M345 -60 C320 120 370 220 335 330 C305 420 320 520 300 600" fill="none" stroke="#A8CCDD" stroke-width="10"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M-260 520 C-120 500 -60 497 -60 497 C80 482 150 468 235 470 S340 462 560 420" stroke="#FFFFFF" stroke-width="3.5"/>
+    <path d="M138 -60 C148 120 128 260 150 400 S160 640 190 900" stroke="#FFFFFF" stroke-width="3"/>
+  </g>
+  <g fill="none" stroke="#7A4A1E" stroke-width="1.5" stroke-linecap="round">
+    <path d="M190 215 C200 170 215 120 210 60"/><path d="M250 300 C285 292 305 280 322 268"/><path d="M60 330 C40 360 20 400 -60 440"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C150 220 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="8"/>
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C150 220 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#C2007A" stroke-width="5"/>
+  </g>
+  <circle cx="175" cy="470" r="16" fill="#146C2E" stroke="#fff" stroke-width="2"/>
+  <circle cx="152" cy="440" r="16" fill="#111" stroke="#fff" stroke-width="2"/>
+</svg>
+</div>
+
+<div class="contenu">
+  <div class="nom rond">Boucle du Bois de la Côte</div>
+  <div class="sous">Zone Nancy · modifié le 20 oct. 2026</div>
+
+  <div class="grille">
+    <div class="case" style="background:var(--case-1)"><div class="v rond">25,1<u> km</u></div><div class="e">Distance</div></div>
+    <div class="case" style="background:var(--case-2)"><div class="v rond">1<u> h </u>35</div><div class="e">Durée estimée</div></div>
+    <div class="case" style="background:var(--case-3)"><div class="v rond">421<u> m</u></div><div class="e">Montée (D+)</div></div>
+    <div class="case" style="background:var(--case-4)"><div class="v rond">421<u> m</u></div><div class="e">Descente (D−)</div></div>
+  </div>
+
+  <div class="bloc-titre rond">Profil et terrain <span>de 245 à 390 m</span></div>
+  <!-- Profil : collines vertes sur ciel pâle, contour d'encre. Mêmes altitudes que l'écran 20. -->
+  <svg class="profil" width="358" height="122" viewBox="0 0 358 122" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Roboto,sans-serif">
+    <defs>
+      <clipPath id="panneau"><rect x="1.5" y="1.5" width="355" height="84" rx="12"/></clipPath>
+      <clipPath id="bande"><rect x="1.25" y="91" width="355.5" height="13" rx="6.5"/></clipPath>
+    </defs>
+    <rect x="1.5" y="1.5" width="355" height="84" rx="12" fill="#E3F4FF"/>
+    <g clip-path="url(#panneau)">
+      <polygon fill="#7FCB5E" points="0,90 0,72.3 14.3,60.7 28.6,42 43,23.3 57.3,11.7 71.6,28 85.9,46.7 100.2,32.7 114.6,14 128.9,4.7 143.2,21 157.5,42 171.8,56 186.2,39.7 200.5,21 214.8,7 229.1,23.3 243.4,46.7 257.8,60.7 272.1,44.3 286.4,28 300.7,20.5 315,37.3 329.4,53.7 343.7,49 358,72.3 358,90"/>
+      <polyline fill="none" stroke="#1E1B2E" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" points="0,72.3 14.3,60.7 28.6,42 43,23.3 57.3,11.7 71.6,28 85.9,46.7 100.2,32.7 114.6,14 128.9,4.7 143.2,21 157.5,42 171.8,56 186.2,39.7 200.5,21 214.8,7 229.1,23.3 243.4,46.7 257.8,60.7 272.1,44.3 286.4,28 300.7,20.5 315,37.3 329.4,53.7 343.7,49 358,72.3"/>
+    </g>
+    <rect x="1.5" y="1.5" width="355" height="84" rx="12" fill="none" stroke="#1E1B2E" stroke-width="3"/>
+    <!-- Bande de terrain, même axe : route 0-1, piste 1-6, sentier 6-9, piste 9-13, sentier 13-17, piste 17-19, sentier 19-21, piste 21-23, route 23-25 km -->
+    <g clip-path="url(#bande)">
+      <rect x="0" y="91" width="14.3" height="13" fill="#5A5A5A"/>
+      <rect x="14.3" y="91" width="71.6" height="13" fill="#7A4A1E"/>
+      <rect x="85.9" y="91" width="43" height="13" fill="#C62828"/>
+      <rect x="128.9" y="91" width="57.3" height="13" fill="#7A4A1E"/>
+      <rect x="186.2" y="91" width="57.2" height="13" fill="#C62828"/>
+      <rect x="243.4" y="91" width="28.7" height="13" fill="#7A4A1E"/>
+      <rect x="272.1" y="91" width="28.6" height="13" fill="#C62828"/>
+      <rect x="300.7" y="91" width="28.7" height="13" fill="#7A4A1E"/>
+      <rect x="329.4" y="91" width="28.6" height="13" fill="#5A5A5A"/>
+    </g>
+    <rect x="1.25" y="91" width="355.5" height="13" rx="6.5" fill="none" stroke="#1E1B2E" stroke-width="2.5"/>
+    <g font-size="13" font-weight="600" fill="#4A4560">
+      <text x="0" y="120">0</text><text x="71.6" y="120" text-anchor="middle">5</text><text x="143.2" y="120" text-anchor="middle">10</text><text x="214.8" y="120" text-anchor="middle">15</text><text x="286.4" y="120" text-anchor="middle">20</text><text x="358" y="120" text-anchor="end">25 km</text>
+    </g>
+  </svg>
+
+  <div class="legende">
+    <span><i style="background:#5A5A5A"></i>Route 12 %</span>
+    <span><i style="background:#7A4A1E"></i>Piste 52 %</span>
+    <span><i style="background:#C62828"></i>Sentier 36 %</span>
+  </div>
+  <div class="difficulte"><b>Difficulté</b> : S1 (facile) sur 4 % ; <span class="t2">inconnue sur 96 %, la carte la donne rarement.</span></div>
+</div>
+
+<div class="actions rond">
+  <div class="secondaire"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>Modifier</div>
+  <div class="principal"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M7 4.5v15l12-7.5z"/></svg>Démarrer le suivi</div>
+</div>
+
+<div class="indicateur"></div>
+</div>
+</body>
+</html>

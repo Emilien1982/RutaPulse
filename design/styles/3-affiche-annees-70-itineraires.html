@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse – Style 3, affiche années 70 – Mes itinéraires</title>
+<!--
+  Style 3 : affiche rétro des années 70. Même contenu que
+  design/40-mes-itineraires.html, seul le style change.
+  Valeurs : design/tokens.md, section « Hors navigation : styles à l'essai », style 3.
+  Titres en géométrique grasse : ici Futura (présente sur iOS et macOS).
+  Dans l'app : Jost (libre, proche de Futura), à embarquer pour avoir le même
+  rendu sur Android.
+  Noms et chiffres de la liste en police du système : ils sont longs et
+  variables, Futura grasse est trop large pour la ligne.
+  Le menu de la ligne reste le menu natif de la plateforme.
+-->
+<style>
+:root{
+  --creme:#F4E4C1; --creme-clair:#FBF1DA; --brun:#3A1F0F; --brun-2:#5A3A28;
+  --rouille:#B5452A; --orange:#E2652B; --moutarde:#F0A830; --petrole:#2D6A66; --olive:#A9B56A;
+  --itineraire:#C2007A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;height:844px;overflow:hidden;background:var(--creme)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--brun);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
+.geo{font-family:"Futura","Futura PT",Jost,"Century Gothic","Avenir Next",sans-serif;font-weight:700}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden;background:var(--creme)}
+.barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20;color:var(--brun)}
+.barre-etat .icones{display:flex;gap:6px;align-items:center}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--creme);z-index:30}
+
+.decor{position:absolute;top:0;left:0}
+.importer{position:absolute;top:51px;right:16px;height:48px;display:flex;align-items:center;gap:6px;padding:0 16px 0 12px;background:var(--creme-clair);border:2.5px solid var(--brun);border-radius:24px;font-size:16px}
+h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-spacing:.5px}
+
+.liste{position:absolute;top:216px;left:12px;right:12px}
+.ligne{display:flex;align-items:center;gap:10px;height:96px;margin-bottom:10px;padding:0 2px 0 10px;background:var(--creme-clair);border:2.5px solid var(--brun);border-radius:24px}
+.medaillon{width:64px;height:64px;flex:none;border:3px solid var(--brun);border-radius:50%;overflow:hidden;box-shadow:inset 0 0 0 3px var(--moutarde)}
+.medaillon svg{display:block;width:100%;height:100%}
+.texte{flex:1;min-width:0}
+.nom{font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chiffres{font-size:15px;margin-top:3px}
+.chiffres b{font-weight:800}
+.meta{font-size:13px;font-weight:500;color:var(--brun-2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plus{width:48px;height:48px;border-radius:24px;display:flex;align-items:center;justify-content:center;flex:none}
+.plus.ouvert{background:var(--moutarde);border:2.5px solid var(--brun)}
+
+.menu{position:absolute;right:12px;top:398px;width:236px;background:#FFFFFF;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.28);border:1px solid rgba(17,17,17,.2);overflow:hidden;z-index:15;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,system-ui,sans-serif;color:#111}
+.menu div{height:52px;display:flex;align-items:center;gap:12px;padding:0 16px;font-size:17px;border-bottom:1px solid #D0D0D0}
+.menu div:last-child{border-bottom:0;color:#B3261E}
+
+.rayures-bas{position:absolute;left:0;right:0;bottom:83px;height:9px;background:linear-gradient(var(--moutarde) 0 3px,var(--orange) 3px 6px,var(--rouille) 6px 9px)}
+.onglets{position:absolute;left:0;right:0;bottom:0;height:83px;background:var(--brun);display:flex;padding-top:7px}
+.onglet{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:13px;font-weight:500;color:var(--creme)}
+.pastille{width:64px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center}
+.onglet.actif{font-weight:800}
+.onglet.actif .pastille{background:var(--moutarde);color:var(--brun)}
+</style>
+</head>
+<body>
+<div class="ecran">
+
+<!-- Coucher de soleil : soleil rayé posé sur quatre bandes -->
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="au-dessus"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#au-dessus)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+
+<div class="barre-etat"><span>09:45</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<div class="importer geo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M12 11v6M9 14h6"/></svg>Importer un GPX</div>
+<h1 class="geo">MES ITINÉRAIRES</h1>
+
+<div class="liste">
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 20 C20 14 40 26 74 18 V48 C50 56 20 44 -2 52 Z" fill="#A9B56A"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linejoin="round"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/><circle cx="40" cy="60" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Boucle du Bois de la Côte</div>
+      <div class="chiffres"><b>25,1 km</b> · D+ 421 m · 1 h 35</div>
+      <div class="meta">Zone Nancy · modifié le 20 oct.</div>
+    </div>
+    <div class="plus" aria-label="Actions"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 -2 H40 C34 20 50 40 30 74 H-2 Z" fill="#A9B56A"/><path d="M58 -2 C50 24 66 44 56 74" fill="none" stroke="#2D6A66" stroke-width="5"/><path d="M24 58 C14 50 8 40 10 28 C12 16 24 10 36 10 C48 10 52 22 50 34 C48 46 52 54 44 60 C38 64 30 63 24 58 Z" fill="none" stroke="#FBF1DA" stroke-width="7"/><path d="M24 58 C14 50 8 40 10 28 C12 16 24 10 36 10 C48 10 52 22 50 34 C48 46 52 54 44 60 C38 64 30 63 24 58 Z" fill="none" stroke="#C2007A" stroke-width="4"/><circle cx="24" cy="58" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Petite Suisse Lorraine</div>
+      <div class="chiffres"><b>35,6 km</b> · D+ 468 m · 2 h 15</div>
+      <div class="meta">Zone Nancy · d'après un circuit balisé</div>
+    </div>
+    <div class="plus ouvert" aria-label="Actions"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M20 -2 H74 V40 C50 30 30 30 20 -2 Z" fill="#A9B56A"/><path d="M-2 50 C24 46 48 54 74 48" fill="none" stroke="#FBF1DA" stroke-width="4"/><path d="M8 50 L20 30 L34 26 L40 12 L58 16 L62 34 L50 44 L56 60 L30 62 Z" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linejoin="round"/><path d="M8 50 L20 30 L34 26 L40 12 L58 16 L62 34 L50 44 L56 60 L30 62 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/><circle cx="8" cy="50" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Rando VTT Ludres</div>
+      <div class="chiffres"><b>42,1 km</b> · D+ 665 m · 2 h 40</div>
+      <div class="meta">Zone Nancy · GPX importé le 19 oct.</div>
+    </div>
+    <div class="plus" aria-label="Actions"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 36 C20 30 40 44 74 34 V74 H-2 Z" fill="#A9B56A"/><path d="M14 56 C20 40 30 30 46 26 C56 24 62 16 60 10" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linecap="round"/><path d="M14 56 C20 40 30 30 46 26 C56 24 62 16 60 10" fill="none" stroke="#C2007A" stroke-width="4" stroke-linecap="round"/><circle cx="14" cy="56" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/><circle cx="60" cy="10" r="5" fill="#3A1F0F" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Plateau de Malzéville</div>
+      <div class="chiffres"><b>14,8 km</b> · D+ 186 m · 0 h 55</div>
+      <div class="meta">Zone Nancy · créé le 12 oct.</div>
+    </div>
+    <div class="plus" aria-label="Actions"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+</div>
+
+<div class="menu">
+  <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>Renommer</div>
+  <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7 9l5-5 5 5M5 20h14"/></svg>Exporter en GPX</div>
+  <div><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Supprimer</div>
+</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets geo">
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
+  <div class="onglet actif"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
+</div>
+
+<div class="indicateur"></div>
+</div>
+</body>
+</html>
