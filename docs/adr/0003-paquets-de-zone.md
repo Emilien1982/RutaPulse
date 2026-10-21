@@ -497,6 +497,14 @@ il faudra aussi une tolérance.
   catalogue ne pourrait sans doute plus être remplacé. Non éprouvé.
 - À éprouver en phase 2 : le téléchargement de 106 Mo en une dizaine de
   fichiers depuis GitHub sur le téléphone, avec reprise après coupure.
+- Négatif, constaté le 21 octobre 2026 : la fabrique dépend de serveurs
+  tiers, Geofabrik (extraits OSM) et osmdata.openstreetmap.de (polygones
+  d'eau pour Planetiler, 931 Mo). Ce dernier ne répondait plus du tout
+  pendant le premier lancement du workflow, qui a échoué. Parade appliquée :
+  avec un cache plein, la carte se construit sans joindre ce serveur. Si une
+  panne se répète, la parade suivante serait une copie des annexes dans une
+  release du dépôt, avec l'attribution exigée par l'ODbL. C'est à décider
+  plus tard avec Émilien (décision du pilotage).
 
 ## Alternatives rejetées
 
