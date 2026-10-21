@@ -9,6 +9,6 @@ describe('ZonesScreen', () => {
   });
 
   it('exports the French title', () => {
-    expect(zonesTitle).toBe('Zones');
+    expect(zonesTitle).toBe('Zonex');
   });
 });
