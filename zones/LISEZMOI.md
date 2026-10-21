@@ -102,3 +102,36 @@ Toutes ces commandes se lancent depuis `zones/`, comme `build`.
   le range sous son `path`. Code de sortie non nul au premier fichier faux.
   Accepte aussi des adresses `file://` et un catalogue local (essais sans
   réseau).
+
+## Publier une zone avec GitHub Actions
+
+Le workflow `.github/workflows/fabriquer-zone.yml` (« Fabriquer une zone »)
+fabrique la zone sur une machine de GitHub et la publie, sans ton Mac.
+
+Lancer : onglet « Actions » du dépôt, « Fabriquer une zone », « Run
+workflow », puis écrire l'`id` de la zone (par défaut `nancy`). Seul un
+workflow déjà présent sur la branche `main` peut être lancé ainsi. Avant la
+fusion de la phase 1, un `push` sur la branche `claude/phase-1-zones-73115d`
+(fichiers de `zones/` ou du workflow) lance la fabrication de `nancy`. Ce
+déclencheur est à retirer après la fusion.
+
+Ce que fait le workflow, dans l'ordre :
+
+1. calcule la version (étiquettes `zone-<id>-v<n>` déjà présentes, plus 1) ;
+2. fabrique le paquet (commande `build`) ;
+3. crée la release `zone-<id>-v<n>` avec tous les fichiers, `SHA256SUMS`
+   compris ;
+4. récupère le catalogue de la release `catalogue` (la crée avec un
+   catalogue vide si elle n'existe pas) et y ajoute la zone ;
+5. retélécharge la release publiée et contrôle chaque fichier (`verify`) ;
+6. seulement alors, remplace `catalogue.json` dans la release `catalogue`.
+
+Le résumé du lancement donne la version, la date des données, l'adresse
+datée de l'extrait OSM (à réutiliser avec `--osm-url` pour refaire la même
+zone sur le Mac), son MD5, les tailles, les durées, la mémoire et le disque.
+Le workflow n'utilise que le jeton automatique de GitHub : aucun secret.
+Les annexes de Planetiler et les tuiles d'altitude sont gardées en cache
+d'un lancement à l'autre ; l'extrait OSM ne l'est pas.
+
+Pour ajouter une zone : ajouter son bloc dans `zones.json` (voir plus haut),
+pousser sur `main`, puis lancer le workflow avec son `id`.
