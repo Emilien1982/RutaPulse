@@ -28,6 +28,8 @@ VALHALLA_IMAGE = "ghcr.io/valhalla/valhalla:3.9.1"
 PLANETILER_IMAGE = "ghcr.io/onthegomap/planetiler:0.10.2"
 GDAL_IMAGE = "ghcr.io/osgeo/gdal:alpine-small-3.10.3"
 PLANETILER_XMX = "4g"
+# Annexes read by Planetiler 0.10.2 (OpenMapTiles profile), in its --download-dir
+PLANETILER_SOURCES = ["lake_centerline.shp.zip", "natural_earth_vector.sqlite.zip", "water-polygons-split-3857.zip"]
 TERRAIN_URL = "https://download.mapterhorn.com/planet.pmtiles"
 TERRAIN_MAXZOOM = 12
 MAP_MAXZOOM = 14
@@ -204,11 +206,18 @@ def build_map(work: Path, cache: Path, bbox: dict, pbf: Path) -> None:
             ["docker", "run", "--rm", *DOCKER_USER, "-e", f"JAVA_TOOL_OPTIONS=-Xmx{PLANETILER_XMX}",
              "-v", f"{work / 'planetiler'}:/data", "-v", f"{sources}:/sources", "-v", f"{pbf}:/input/extract.osm.pbf:ro",
              PLANETILER_IMAGE, "--osm-path=/input/extract.osm.pbf", "--download-dir=/sources", "--tmpdir=/data/tmp",
-             "--download", f"--bounds={bbox_arg(bbox)}", *args]
+             f"--bounds={bbox_arg(bbox)}", *args]
         )  # fmt: skip
 
-    # The annexes come from third-party servers that are sometimes slow or down: try again a few times.
-    retry(lambda: planetiler("--only-download"))
+    # The annexes come from third-party servers that are sometimes slow or down. With --download,
+    # Planetiler asks the server about every annexe, even a present one: so use it only when
+    # one is missing (with a few tries), and build the map without it.
+    missing = [name for name in PLANETILER_SOURCES if not (sources / name).is_file()]
+    if missing:
+        print(f"  annexes absentes du cache : {', '.join(missing)}")
+        retry(lambda: planetiler("--download", "--only-download"))
+    else:
+        print("  annexes de Planetiler trouvées dans le cache")
     planetiler("--minzoom=0", f"--maxzoom={MAP_MAXZOOM}", "--output=/data/map.pmtiles", "--force")
 
 

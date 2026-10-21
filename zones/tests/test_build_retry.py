@@ -34,21 +34,40 @@ def test_retry_gives_up_after_the_last_attempt(monkeypatch):
     assert len(calls) == 3
 
 
-def test_planetiler_download_is_retried_then_map_is_built(tmp_path, monkeypatch):
+BBOX = {"lonMin": 5.84, "latMin": 48.47, "lonMax": 6.52, "latMax": 48.92}
+
+
+def run_build_map(tmp_path, monkeypatch, present, fail_first_download=False):
     commands = []
 
     def fake_run(cmd, **kw):
         commands.append(cmd)
-        if "--only-download" in cmd and len(commands) == 1:
+        if fail_first_download and "--only-download" in cmd and len(commands) == 1:
             raise subprocess.CalledProcessError(1, cmd)
 
     monkeypatch.setattr(build, "run", fake_run)
     monkeypatch.setattr(build.time, "sleep", lambda s: None)
     work, cache = tmp_path / "work", tmp_path / "cache"
     work.mkdir()
-    bbox = {"lonMin": 5.84, "latMin": 48.47, "lonMax": 6.52, "latMax": 48.92}
-    build.build_map(work, cache, bbox, tmp_path / "x.osm.pbf")
+    sources = cache / "planetiler" / "sources"
+    sources.mkdir(parents=True)
+    for name in present:
+        (sources / name).write_bytes(b"x")
+    build.build_map(work, cache, BBOX, tmp_path / "x.osm.pbf")
+    return commands
+
+
+def test_complete_cache_means_no_download_at_all(tmp_path, monkeypatch):
+    commands = run_build_map(tmp_path, monkeypatch, build.PLANETILER_SOURCES)
+    assert len(commands) == 1
+    assert "--download" not in commands[0] and "--only-download" not in commands[0]
+    assert "--output=/data/map.pmtiles" in commands[0]
+
+
+def test_incomplete_cache_downloads_with_retries_then_builds_without_download(tmp_path, monkeypatch):
+    commands = run_build_map(tmp_path, monkeypatch, build.PLANETILER_SOURCES[:2], fail_first_download=True)
     assert ["--only-download" in c for c in commands] == [True, True, False]
+    assert "--download" not in commands[-1]
     assert "--output=/data/map.pmtiles" in commands[-1]
 
 
