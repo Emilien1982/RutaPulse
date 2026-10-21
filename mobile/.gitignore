@@ -39,3 +39,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Maestro screenshots (kept in docs/phases/captures/)
+/e2e/captures/
