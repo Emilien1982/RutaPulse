@@ -12,6 +12,7 @@ VALID = {
             "name": "Nancy",
             "bbox": {"lonMin": 5.84, "latMin": 48.47, "lonMax": 6.52, "latMax": 48.92},
             "osmExtractUrl": "https://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf",
+            "coastal": False,
         }
     ]
 }

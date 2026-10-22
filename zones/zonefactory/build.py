@@ -17,6 +17,7 @@ import shutil
 import subprocess
 import time
 import urllib.request
+import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -29,7 +30,8 @@ PLANETILER_IMAGE = "ghcr.io/onthegomap/planetiler:0.10.2"
 GDAL_IMAGE = "ghcr.io/osgeo/gdal:alpine-small-3.10.3"
 PLANETILER_XMX = "4g"
 # Annexes read by Planetiler 0.10.2 (OpenMapTiles profile), in its --download-dir
-PLANETILER_SOURCES = ["lake_centerline.shp.zip", "natural_earth_vector.sqlite.zip", "water-polygons-split-3857.zip"]
+WATER_ZIP = "water-polygons-split-3857.zip"
+PLANETILER_SOURCES = ["lake_centerline.shp.zip", "natural_earth_vector.sqlite.zip", WATER_ZIP]
 TERRAIN_URL = "https://download.mapterhorn.com/planet.pmtiles"
 TERRAIN_MAXZOOM = 12
 MAP_MAXZOOM = 14
@@ -195,27 +197,71 @@ def retry(action, attempts: int = 3, wait_seconds: float = 30):
             time.sleep(wait_seconds)
 
 
-def build_map(work: Path, cache: Path, bbox: dict, pbf: Path) -> None:
+def inland_water_zip(work: Path) -> Path:
+    """A valid "water polygons" file with no sea, for a zone far from the coast (ADR 0003, section 5).
+
+    The real file (osmdata, 931 MB) only describes seas and oceans: lakes and rivers come from the
+    OSM extract. Same name and same layout as the real zip, as Planetiler 0.10.2 reads it.
+    It is made in work/<id>/water/, never in the cache: it must not be mistaken for the real one.
+    """
+    folder = work / "water"
+    shapes = folder / "shapes"
+    shapes.mkdir(parents=True)
+    (folder / "empty.geojson").write_text('{"type":"FeatureCollection","features":[]}\n', encoding="utf-8")
+    run(["docker", "run", "--rm", *DOCKER_USER, "-v", f"{folder}:/data", "-w", "/data", GDAL_IMAGE,
+         "ogr2ogr", "-f", "ESRI Shapefile", "-a_srs", "EPSG:3857", "-nlt", "POLYGON", "-nln", "water_polygons",
+         "/data/shapes", "/data/empty.geojson"])  # fmt: skip
+    return zip_shapefile(shapes, folder / WATER_ZIP)
+
+
+def zip_shapefile(shapes: Path, dest: Path) -> Path:
+    """Zip the files of `shapes` under `water-polygons-split-3857/`, like the real file."""
+    with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as archive:
+        for path in sorted(shapes.iterdir()):
+            archive.write(path, f"water-polygons-split-3857/{path.name}")
+    return dest
+
+
+def sources_needed(coastal: bool) -> list[str]:
+    """Annexes that must be in the cache. An inland zone does not use the real water polygons."""
+    return PLANETILER_SOURCES if coastal else [n for n in PLANETILER_SOURCES if n != WATER_ZIP]
+
+
+def build_map(work: Path, cache: Path, bbox: dict, pbf: Path, coastal: bool = True) -> None:
     """OpenMapTiles map with Planetiler, default profile, zooms 0 to 14."""
     sources = cache / "planetiler" / "sources"
     sources.mkdir(parents=True, exist_ok=True)
     (work / "planetiler").mkdir()
+    mounts = ["-v", f"{work / 'planetiler'}:/data", "-v", f"{sources}:/sources", "-v", f"{pbf}:/input/extract.osm.pbf:ro"]
+    water_args = []
+    if not coastal:
+        water = inland_water_zip(work)
+        mounts += ["-v", f"{water.parent}:/water:ro"]
+        water_args = [f"--water-polygons-path=/water/{water.name}"]
 
     def planetiler(*args):
         run(
-            ["docker", "run", "--rm", *DOCKER_USER, "-e", f"JAVA_TOOL_OPTIONS=-Xmx{PLANETILER_XMX}",
-             "-v", f"{work / 'planetiler'}:/data", "-v", f"{sources}:/sources", "-v", f"{pbf}:/input/extract.osm.pbf:ro",
+            ["docker", "run", "--rm", *DOCKER_USER, "-e", f"JAVA_TOOL_OPTIONS=-Xmx{PLANETILER_XMX}", *mounts,
              PLANETILER_IMAGE, "--osm-path=/input/extract.osm.pbf", "--download-dir=/sources", "--tmpdir=/data/tmp",
-             f"--bounds={bbox_arg(bbox)}", *args]
+             f"--bounds={bbox_arg(bbox)}", *water_args, *args]
         )  # fmt: skip
 
     # The annexes come from third-party servers that are sometimes slow or down. With --download,
     # Planetiler asks the server about every annexe, even a present one: so use it only when
     # one is missing (with a few tries), and build the map without it.
-    missing = [name for name in PLANETILER_SOURCES if not (sources / name).is_file()]
+    missing = [name for name in sources_needed(coastal) if not (sources / name).is_file()]
     if missing:
         print(f"  annexes absentes du cache : {', '.join(missing)}")
-        retry(lambda: planetiler("--download", "--only-download"))
+        try:
+            retry(lambda: planetiler("--download", "--only-download"))
+        except subprocess.CalledProcessError as err:
+            if WATER_ZIP in missing:
+                raise BuildError(
+                    "le serveur des polygones d'eau (osmdata.openstreetmap.de) ne répond pas : "
+                    "la zone côtière ne peut pas être fabriquée tant que le fichier n'est pas dans le cache. "
+                    "Réessayer plus tard."
+                ) from err
+            raise BuildError("le téléchargement des annexes de Planetiler a échoué après plusieurs essais") from err
     else:
         print("  annexes de Planetiler trouvées dans le cache")
     planetiler("--minzoom=0", f"--maxzoom={MAP_MAXZOOM}", "--output=/data/map.pmtiles", "--force")
@@ -279,7 +325,7 @@ def build_zone(zone: dict, version: int, out: Path, cache: Path = DEFAULT_CACHE_
     osm_date = osm_header(pbf, bbox)
 
     step("Calcul d'itinéraire (Valhalla) et altitude", build_routing, work, cache, bbox, pbf)
-    step("Carte (Planetiler)", build_map, work, cache, bbox, pbf)
+    step("Carte (Planetiler)", build_map, work, cache, bbox, pbf, zone.get("coastal", True))
     step("Relief (Mapterhorn)", build_terrain, work, bbox)
     step("Courbes de niveau", build_contours, work, bbox, zone["name"])
     report = step("Circuits balisés", trails.extract_trails, pbf, bbox, work / "trails.geojson", work)

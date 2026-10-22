@@ -17,7 +17,7 @@ BASE = "https://download.geofabrik.de/europe/france/lorraine"
 
 
 def make_zone(url):
-    return {"id": "nancy", "name": "Nancy", "bbox": BBOX, "osmExtractUrl": url}
+    return {"id": "nancy", "name": "Nancy", "bbox": BBOX, "osmExtractUrl": url, "coastal": False}
 
 
 def test_dated_url_from_latest():
@@ -69,7 +69,7 @@ class Env:
         elif args[0] == "valhalla_build_extract":
             (work / "valhalla_tiles.tar").write_bytes(b"tar")
 
-    def build_map(self, work, cache, bbox, pbf):
+    def build_map(self, work, cache, bbox, pbf, coastal):
         (work / "planetiler").mkdir()
         (work / "planetiler" / "map.pmtiles").write_bytes(b"m")
 

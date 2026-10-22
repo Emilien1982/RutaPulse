@@ -18,12 +18,14 @@ NANCY = {
     "name": "Nancy",
     "bbox": {"lonMin": 5.84, "latMin": 48.47, "lonMax": 6.52, "latMax": 48.92},
     "osmExtractUrl": "https://download.geofabrik.de/europe/france/lorraine-261018.osm.pbf",
+    "coastal": False,
 }
 TEST_ZONE = {
     "id": "essai-est",
     "name": "Essai Est",
     "bbox": {"lonMin": 7.1, "latMin": 48.2, "lonMax": 7.6, "latMax": 48.6},
     "osmExtractUrl": "https://download.geofabrik.de/europe/france/alsace-latest.osm.pbf",
+    "coastal": False,
 }
 TEMPLATE = Path(__file__).resolve().parent.parent / "templates" / "LICENCES.md"
 

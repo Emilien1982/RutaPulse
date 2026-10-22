@@ -11,7 +11,7 @@
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["id", "name", "bbox", "osmExtractUrl"],
+        "required": ["id", "name", "bbox", "osmExtractUrl", "coastal"],
         "properties": {
           "id": {
             "type": "string",
@@ -31,7 +31,8 @@
               "latMax": { "type": "number", "minimum": -90, "maximum": 90 }
             }
           },
-          "osmExtractUrl": { "type": "string", "pattern": "^https://.+\\.osm\\.pbf$" }
+          "osmExtractUrl": { "type": "string", "pattern": "^https://.+\\.osm\\.pbf$" },
+          "coastal": { "type": "boolean" }
         }
       }
     }
