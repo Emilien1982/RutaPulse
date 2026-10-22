@@ -1,0 +1,251 @@
+# Builds the package of one zone on a free GitHub machine, publishes it as a release,
+# then updates the catalogue (ADR 0003, sections 3 and 4; ADR 0012).
+name: Fabriquer une zone
+
+on:
+  workflow_dispatch:
+    inputs:
+      zone:
+        description: "Identifiant de la zone, tel qu'écrit dans zones/zones.json"
+        type: string
+        required: true
+        default: nancy
+
+# The automatic GITHUB_TOKEN is the only credential (no secret): it creates releases.
+# It is given (as GH_TOKEN) only to the steps that call `gh`, not to the build tools.
+permissions:
+  contents: write
+
+# One run at a time, never cancelled: two runs must not rewrite the catalogue together.
+concurrency:
+  group: fabriquer-zone
+  cancel-in-progress: false
+
+jobs:
+  fabriquer:
+    # ARM machine (free for a public repository): the Mac that made the reference routes is ARM,
+    # and tiles made on x86-64 change the route R1 (ADR 0003, section 6).
+    runs-on: ubuntu-24.04-arm
+    # Mac (10 cores): about 1.5 minutes; first GitHub run (x86-64, 4 cores): 4 min 53 s.
+    # Large margin for slow downloads.
+    timeout-minutes: 60
+    env:
+      ZONE: ${{ inputs.zone || 'nancy' }}
+      TIMES: ${{ github.workspace }}/times.md
+    steps:
+      - uses: actions/checkout@v7
+
+      # Ubuntu 24.04 (noble, universe) package versions, checked on 2026-10-22 in the
+      # Launchpad archive: osmium-tool 1.16.0-1build1 and tippecanoe 2.49.0-1build1, both
+      # Published for amd64 and arm64.
+      - name: Installer osmium et tippecanoe
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y osmium-tool=1.16.0-1build1 tippecanoe=2.49.0-1build1
+          osmium --version | head -1
+          tippecanoe --version
+          printf '| %s | %s s |\n' "Installer osmium et tippecanoe" "$SECONDS" >> "$TIMES"
+
+      # go-pmtiles 1.31.2, Linux arm64. The SHA-256 is the "digest" given by the GitHub API
+      # for this release asset, and was recomputed on the downloaded file on 2026-10-21.
+      - name: Installer pmtiles
+        env:
+          PMTILES_VERSION: "1.31.2"
+          PMTILES_SHA256: "f8bd47e7ea866863489cad588fbaf2f31f42e5821f7a03f009b3769f05801cb1"
+        run: |
+          file="go-pmtiles_${PMTILES_VERSION}_Linux_arm64.tar.gz"
+          curl -fL -o "$RUNNER_TEMP/$file" "https://github.com/protomaps/go-pmtiles/releases/download/v${PMTILES_VERSION}/$file"
+          echo "$PMTILES_SHA256  $RUNNER_TEMP/$file" | sha256sum -c -
+          mkdir -p "$HOME/bin"
+          tar -xzf "$RUNNER_TEMP/$file" -C "$HOME/bin" pmtiles
+          echo "$HOME/bin" >> "$GITHUB_PATH"
+          "$HOME/bin/pmtiles" version
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: zones/requirements.txt
+      - run: pip install -r zones/requirements.txt
+
+      - name: Tirer les images Docker
+        run: |
+          docker pull ghcr.io/valhalla/valhalla:3.9.1
+          docker pull ghcr.io/onthegomap/planetiler:0.10.2
+          docker pull ghcr.io/osgeo/gdal:alpine-small-3.10.3
+          # public annotation (readable without an account), then refuse any image that is not arm64
+          valhalla=$(docker image inspect --format '{{.Os}}/{{.Architecture}}' ghcr.io/valhalla/valhalla:3.9.1)
+          planetiler=$(docker image inspect --format '{{.Os}}/{{.Architecture}}' ghcr.io/onthegomap/planetiler:0.10.2)
+          gdal=$(docker image inspect --format '{{.Os}}/{{.Architecture}}' ghcr.io/osgeo/gdal:alpine-small-3.10.3)
+          echo "::notice title=Architecture::machine $(uname -m) ; valhalla $valhalla ; planetiler $planetiler ; gdal $gdal"
+          for image in "$valhalla" "$planetiler" "$gdal"; do
+            if [ "$image" != "linux/arm64" ]; then
+              echo "::error title=Architecture::une image Docker n'est pas linux/arm64 (émulation interdite) : $image"
+              exit 1
+            fi
+          done
+          printf '| %s | %s s |\n' "Tirer les images Docker" "$SECONDS" >> "$TIMES"
+
+      # Big files that do not change from one run to the next: Planetiler annexes (1.4 GB)
+      # and HGT tiles. Fixed key, "arm64" so as not to reuse the cache of the former x86-64 machine:
+      # change the "v1" to start again from an empty cache.
+      # The OSM extract is NOT cached (it is kept outside this folder).
+      - uses: actions/cache@v6
+        with:
+          path: zones/work/cache
+          key: zones-cache-arm64-v1
+
+      - name: Choisir la version
+        id: version
+        working-directory: zones
+        run: |
+          git ls-remote --tags origin 'refs/tags/zone-*' | sed 's#.*refs/tags/##' > "$RUNNER_TEMP/tags.txt"
+          cat "$RUNNER_TEMP/tags.txt"
+          version=$(python -m zonefactory next-version "$ZONE" < "$RUNNER_TEMP/tags.txt")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Version : $version"
+
+      - name: Fabriquer le paquet
+        working-directory: zones
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
+          {
+            # memory sampled every 5 s (MB used), to report the peak (risk 3)
+            # (stderr to /dev/null: a sampler left running must not keep the log pipe open)
+            ( while true; do free -m | awk '/^Mem:/ {print $3}'; sleep 5; done > "$RUNNER_TEMP/mem.txt" 2> /dev/null ) &
+            sampler=$!
+            trap 'kill "$sampler" 2> /dev/null || true' EXIT
+            python -m zonefactory build "$ZONE" --version "$VERSION" --out "$RUNNER_TEMP/package"
+            kill "$sampler" || true
+            printf '| %s | %s s |\n' "Fabriquer le paquet" "$SECONDS" >> "$TIMES"
+            {
+              echo "peak_memory_mb=$(sort -n "$RUNNER_TEMP/mem.txt" | tail -1)"
+              echo "disk_used=$(df -h / | awk 'NR==2 {print $3 " sur " $2}')"
+              echo "work_size=$(du -sh work | cut -f1)"
+            } > "$RUNNER_TEMP/measures.txt"
+          } 2>&1 | tee "$RUNNER_TEMP/logs/1-fabriquer.log"
+
+      - name: Publier la release de la zone
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
+          {
+            name=$(python -c 'import json,sys; print(json.load(open(sys.argv[1]))["name"])' "$RUNNER_TEMP/package/zone.json")
+            gh release create "zone-$ZONE-v$VERSION" --target "$GITHUB_SHA" \
+              --title "Zone $name (v$VERSION)" \
+              --notes "Paquet de la zone $name, version $VERSION. Fabriqué par GitHub Actions. Contrôle : sha256sum -c SHA256SUMS" \
+              "$RUNNER_TEMP"/package/*
+            printf '| %s | %s s |\n' "Publier la release" "$SECONDS" >> "$TIMES"
+          } 2>&1 | tee "$RUNNER_TEMP/logs/2-release.log"
+
+      # The catalogue lives in the release "catalogue". Only a missing release is created
+      # (with an explicit empty catalogue); any other error stops the workflow.
+      - name: Récupérer le catalogue actuel
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
+          {
+            mkdir -p "$RUNNER_TEMP/current"
+            if gh release view catalogue > /dev/null 2> "$RUNNER_TEMP/view-error.txt"; then
+              gh release download catalogue --pattern catalogue.json --dir "$RUNNER_TEMP/current" --clobber
+            elif grep -q "release not found" "$RUNNER_TEMP/view-error.txt"; then
+              echo "Release catalogue absente : création avec un catalogue vide."
+              echo '{"formatVersion":1,"zones":[]}' > "$RUNNER_TEMP/current/catalogue.json"
+              gh release create catalogue --target "$GITHUB_SHA" --title "Catalogue des zones" \
+                --notes "Catalogue des zones disponibles. Remplacé à chaque publication d'une zone." \
+                "$RUNNER_TEMP/current/catalogue.json"
+            else
+              cat "$RUNNER_TEMP/view-error.txt"
+              exit 1
+            fi
+            cat "$RUNNER_TEMP/current/catalogue.json"
+          } 2>&1 | tee "$RUNNER_TEMP/logs/3-catalogue-actuel.log"
+
+      - name: Mettre à jour le catalogue
+        working-directory: zones
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
+          {
+            mkdir -p "$RUNNER_TEMP/new"
+            python -m zonefactory catalogue --current "$RUNNER_TEMP/current/catalogue.json" \
+              --package "$RUNNER_TEMP/package" --repo "$GITHUB_REPOSITORY" --out "$RUNNER_TEMP/new/catalogue.json"
+          } 2>&1 | tee "$RUNNER_TEMP/logs/4-catalogue.log"
+
+      # Downloads the files just published and checks size and SHA-256 of each one.
+      - name: Contrôler la release publiée
+        working-directory: zones
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
+          {
+            python -m zonefactory verify --catalogue "$RUNNER_TEMP/new/catalogue.json" --zone "$ZONE" --dest "$RUNNER_TEMP/verified"
+            printf '| %s | %s s |\n' "Contrôler la release publiée" "$SECONDS" >> "$TIMES"
+          } 2>&1 | tee "$RUNNER_TEMP/logs/5-verify.log"
+
+      - name: Publier le catalogue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/logs"
+          {
+            gh release upload catalogue "$RUNNER_TEMP/new/catalogue.json" --clobber
+          } 2>&1 | tee "$RUNNER_TEMP/logs/6-catalogue-upload.log"
+
+      # When a step fails, GitHub logs need a login: publish the end of each log as a
+      # public annotation (workflow command: % \r \n are encoded as %25 %0D %0A).
+      - name: Annoter les erreurs
+        if: failure()
+        run: |
+          for log in "$RUNNER_TEMP"/logs/*.log; do
+            [ -f "$log" ] || continue
+            text=$(sed 's/\x1b\[[0-9;]*m//g' "$log" | tail -n 60 | tail -c 3500)
+            text=${text//'%'/'%25'}
+            text=${text//$'\r'/'%0D'}
+            text=${text//$'\n'/'%0A'}
+            echo "::error title=Journal $(basename "$log")::$text"
+          done
+
+      - name: Résumé
+        if: always()
+        run: |
+          {
+            echo "## Fabrication de la zone $ZONE"
+            echo "- Architecture de la machine : $(uname -m)"
+            if [ -f "$RUNNER_TEMP/package/zone.json" ]; then
+              python - "$RUNNER_TEMP/package/zone.json" <<'PY'
+          import json, os, sys
+          z = json.load(open(sys.argv[1]))
+          print(f"- Version : {z['version']}")
+          print(f"- Date des données (osmDate) : {z['osmDate']}")
+          print(f"- Extrait OSM daté (pour le contrôle C7) : {z['osmExtract']['url']}")
+          print(f"- MD5 de l'extrait : {z['osmExtract']['md5']}")
+          print("- Outils : " + ", ".join(f"{k} {v}" for k, v in z["tools"].items()))
+          print("\n| Fichier | Octets |\n|---|---|")
+          folder = os.path.dirname(sys.argv[1])
+          for name in sorted(os.listdir(folder)):
+              print(f"| {name} | {os.path.getsize(os.path.join(folder, name))} |")
+          PY
+            fi
+            if [ -f "$RUNNER_TEMP/measures.txt" ]; then
+              echo
+              echo "- Mémoire au plus haut : $(grep peak_memory_mb "$RUNNER_TEMP/measures.txt" | cut -d= -f2) Mo"
+              echo "- Disque utilisé : $(grep disk_used "$RUNNER_TEMP/measures.txt" | cut -d= -f2)"
+              echo "- Dossier de travail : $(grep work_size "$RUNNER_TEMP/measures.txt" | cut -d= -f2)"
+            fi
+            if [ -f "$TIMES" ]; then
+              echo
+              echo "| Étape | Durée |"
+              echo "|---|---|"
+              cat "$TIMES"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

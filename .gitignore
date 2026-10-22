@@ -1,3 +1,8 @@
 .DS_Store
 .claude/settings.local.json
 __pycache__/
+
+# Fabrique de zones (zones/)
+zones/work/
+zones/out/
+zones/.venv/

@@ -29,7 +29,7 @@ sur GitHub, et la zone est disponible au téléchargement pour l'app.
 | C4 | Le catalogue `catalogue.json` décrit chaque zone : nom, limites, date des données, version, taille, empreintes, adresses de téléchargement | Validé par un schéma (description formelle du format) et par des tests |
 | C5 | Le workflow GitHub Actions fabrique et publie la zone Nancy en release | Le run réussi sur GitHub, et la release visible |
 | C6 | Un fichier publié se télécharge et correspond à son empreinte | Téléchargement depuis la release, puis comparaison |
-| C7 | La zone publiée est identique à celle des essais : mêmes calculs d'itinéraire sur les 5 références | Script de comparaison de l'essai 1, relancé sur la zone publiée |
+| C7 | La zone se refait à l'identique, et calcule comme l'essai 1. (1) Refaite sur le Mac depuis l'adresse datée de l'extrait noté par la zone publiée : mêmes tracés, octet pour octet, sur les 5 références. (2) Sur les 5 références, distance à ± 2 % et D+ à ± 5 % de l'essai 1 ; un écart plus grand est expliqué | Script de comparaison de l'essai 1, lancé sur la zone publiée et sur la zone refaite. Critère modifié le 21 octobre 2026 par décision du pilotage (ADR 0003, « Risque C7 ») |
 | C8 | Les mentions de licence sont dans le paquet (OpenStreetMap sous ODbL, OpenMapTiles, Mapterhorn, IGN) | Fichier `LICENCES.md` du paquet |
 | C9 | Le script est testé : génération du catalogue, empreintes, lecture de `zones.json` | Tests lancés par la CI, avec leur nombre |
 | C10 | Aucun secret : la publication utilise le jeton fourni automatiquement par GitHub Actions | Audit du workflow et de l'historique |
