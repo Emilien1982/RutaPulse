@@ -5,12 +5,11 @@
 
 ## En bref
 
-- La zone Nancy est fabriquée et publiée par GitHub Actions, sans le Mac.
-  C'est la release `zone-nancy-v1`, et le catalogue est à une adresse stable.
-- 9 critères sur 10 sont tenus. **C7 n'est pas tenu tel qu'il est écrit**.
-  La cause est prouvée : le processeur qui fabrique les tuiles de calcul
-  change un itinéraire sur 5. Le choix d'une nouvelle règle revient au
-  pilotage (voir C7).
+- La zone Nancy est fabriquée et publiée par GitHub Actions, sans le Mac,
+  sur une machine ARM. La release à jour est `zone-nancy-v2`, et le
+  catalogue est à une adresse stable.
+- Les 10 critères sont tenus. C7 l'est depuis le passage sur ARM : la v1,
+  fabriquée sur x86-64, changeait l'itinéraire R1 (voir C7).
 - Deux pannes de serveurs tiers ont été contournées par décision du
   pilotage, et notées dans l'ADR 0003.
 
@@ -18,9 +17,11 @@
 
 | Quoi | Adresse |
 |---|---|
-| Release de la zone | https://github.com/Emilien1982/RutaPulse/releases/tag/zone-nancy-v1 |
+| Release de la zone, fabriquée sur ARM | https://github.com/Emilien1982/RutaPulse/releases/tag/zone-nancy-v2 |
+| Release v1, fabriquée sur x86-64 (gardée, plus dans le catalogue) | https://github.com/Emilien1982/RutaPulse/releases/tag/zone-nancy-v1 |
 | Catalogue (adresse stable pour l'app) | https://github.com/Emilien1982/RutaPulse/releases/download/catalogue/catalogue.json |
-| Run réussi « Fabriquer une zone » (commit 4d86a6c) | https://github.com/Emilien1982/RutaPulse/actions/runs/39809980778 |
+| Run réussi sur ARM « Fabriquer une zone » (commit e61cde5) | https://github.com/Emilien1982/RutaPulse/actions/runs/39830845075 |
+| Run réussi sur x86-64 (commit 4d86a6c, v1) | https://github.com/Emilien1982/RutaPulse/actions/runs/39809980778 |
 | Run `verify` du même push (CI de l'app et de `zones/`) | https://github.com/Emilien1982/RutaPulse/actions/runs/39809980815 |
 | Premier run, en échec (panne d'osmdata) | https://github.com/Emilien1982/RutaPulse/actions/runs/39644202448 |
 
@@ -32,16 +33,16 @@
 | C2 | Ajouter une zone sans code | Une 2e zone ajoutée au seul `zones.json` est lue et validée ; l'exemple « metz » du LISEZMOI passe la validation | Tests `test_second_zone_is_read_and_can_be_requested`, contrôle du LISEZMOI | Oui, pour la lecture. Une 2e zone n'a pas été fabriquée |
 | C3 | Une empreinte SHA-256 par fichier | `SHA256SUMS` dans le paquet ; empreintes recalculées après téléchargement identiques | C6 ; T6 : un octet changé est détecté | Oui |
 | C4 | Catalogue validé par un schéma et des tests | Le catalogue publié passe `zones/schemas/catalogue.schema.json` et les règles du code | Testeur, T5 ; tests de `test_catalogue*.py` | Oui |
-| C5 | Le workflow publie Nancy en release | Run 39809980778 réussi en 4 min 53 s ; release `zone-nancy-v1` (10 fichiers, pas en brouillon) et release `catalogue` | API, page web et téléchargement, le 22 octobre à 16 h 11 UTC | Oui, déclenché par un push. Le lancement à la main reste à vérifier après la fusion |
-| C6 | Un fichier publié correspond à son empreinte | `verify` depuis l'adresse publique du catalogue : 9 fichiers OK, code 0 ; fichiers à plat : `shasum -a 256 -c SHA256SUMS` 9 OK | Testeur, T5 | Oui |
-| C7 | (1) Refaite sur le Mac depuis l'adresse datée : mêmes tracés. (2) Distance ± 2 %, D+ ± 5 % de l'essai 1 | (1) 0 tracé sur 5 identique à l'octet ; R1 prend un autre chemin. (2) R2 à R5 OK ; R1 : −4,6 % en distance, −7,4 % en D+ | Testeur, T5, script `zones/tests/c7/comparer.py` | **Non tel qu'écrit.** Cause prouvée (voir plus bas) |
+| C5 | Le workflow publie Nancy en release | Run ARM 39830845075 réussi en 3 min 54 s : release `zone-nancy-v2` (10 fichiers, pas en brouillon), catalogue mis à jour en v2. Avant, run x86-64 39809980778 : `zone-nancy-v1` | Annotation publique « machine aarch64 ; valhalla, planetiler, gdal linux/arm64 » ; API, page web et téléchargement | Oui, déclenché par un push. Le lancement à la main reste à vérifier après la fusion |
+| C6 | Un fichier publié correspond à son empreinte | v1 et v2 : `verify` depuis l'adresse publique du catalogue, 9 fichiers OK, code 0 ; fichiers à plat : `shasum -a 256 -c SHA256SUMS`, 9 OK | Testeur, T5 | Oui |
+| C7 | (1) Refaite sur le Mac depuis l'adresse datée : mêmes tracés. (2) Distance ± 2 %, D+ ± 5 % de l'essai 1 | v2 (ARM) : (1) 5 tracés sur 5 identiques octet pour octet à ceux du Mac ; (2) écarts de 0,01 % au plus en distance, 0 % en D+. v1 (x86-64) : (1) 0 sur 5, (2) R1 hors tolérance | Testeur, T5, script `zones/tests/c7/comparer.py` | Oui, avec la fabrication sur ARM (décision d'Émilien, 22 oct.) |
 | C8 | Mentions de licence dans le paquet | `LICENCES.md` : OpenStreetMap (ODbL), OpenMapTiles, Natural Earth, Mapterhorn, IGN, Copernicus, SRTM | Fichier publié | Oui |
 | C9 | Script testé, tests lancés par la CI | La CI lance 182 tests, tous réussis : annotation publique du job `zones`, « 182 passed in 1.89s » | Run https://github.com/Emilien1982/RutaPulse/actions/runs/39813383173 (commit 5c960c5) | Oui |
-| C10 | Aucun secret | Seul le jeton automatique `github.token`, donné aux 3 étapes `gh` ; `permissions: contents: write` ; aucun motif de secret dans le diff ; 19 commits en e-mail noreply | Audit avant chaque push | Oui |
+| C10 | Aucun secret | Seul le jeton automatique `github.token`, donné aux 3 étapes `gh` ; `permissions: contents: write` ; aucun motif de secret dans le diff ; 28 commits en e-mail noreply | Audit avant chaque push | Oui |
 
 ### Tailles du paquet
 
-| Fichier | Mac, extrait du 18 oct. (`nancy-2`) | Publié, extrait du 20 oct. |
+| Fichier | Mac, extrait du 18 oct. (`nancy-2`) | Publié, extrait du 20 oct. (v1 et v2) |
 |---|---|---|
 | `valhalla_tiles.tar` | 28 692 480 | 28 835 840 |
 | `N48E005.hgt` | 25 934 402 | 25 934 402 |
@@ -53,15 +54,24 @@
 | `LICENCES.md` | 2 107 | 2 107 |
 | `zone.json` | 569 | 569 |
 | `SHA256SUMS` | 719 | 719 |
-| Total | 110 805 698 | 110 952 222 (catalogue, sans `SHA256SUMS`) |
+| Total | 110 805 698 | 110 952 222 (v1) et 110 952 225 (v2), d'après le catalogue, sans `SHA256SUMS` |
 
-Durées du run réussi sur GitHub : fabrication 223 s, images Docker 25 s,
-outils 18 s, publication et contrôles 13 s. La mémoire et le disque sont
+Durées sur GitHub : run x86-64 4 min 53 s (dont fabrication 223 s) ; run
+ARM 3 min 54 s. La mémoire et le disque sont
 écrits dans le résumé du run, lisible seulement avec un compte : non relevés.
 
 ### C7 : ce qui est prouvé
 
-Zone publiée : extrait `lorraine-261020.osm.pbf`, dont le MD5 est
+**Sur ARM (v2, run 39830845075).** Même extrait daté que la v1. Les 5
+tracés sont identiques octet pour octet à ceux de la zone refaite sur le
+Mac. Distance et D+ sont ceux de l'essai 1, à 0,01 % près. Fichiers
+identiques entre la v2 et le Mac : HGT, `map.pmtiles`, `terrain.pmtiles`,
+`trails.geojson`, `LICENCES.md`. Fichiers différents : `valhalla_tiles.tar`
+(jamais identique d'une fabrication à l'autre, voir plus bas) et
+`contours.pmtiles` (tippecanoe 2.49.0 sur GitHub, 2.79.0 sur le Mac,
+différence acceptée par l'ADR 0003 § 6).
+
+**Sur x86-64 (v1), avant la décision.** Zone publiée : extrait `lorraine-261020.osm.pbf`, dont le MD5 est
 identique à celui publié par Geofabrik. Elle a été refaite sur le Mac à
 partir de la même adresse.
 
@@ -132,6 +142,16 @@ de jsonschema.
 - **Plantage de `valhalla_build_tiles`** (code 139), 1 fois sur 8
   fabrications sur le Mac. Un nouveau lancement, sans rien changer, a
   réussi. Cause inconnue. Pas vu sur GitHub.
+- **C7 non tenu par la v1** (x86-64). Décision d'Émilien le 22 octobre :
+  fabriquer sur la machine ARM de GitHub, `ubuntu-24.04-arm`, gratuite pour
+  un dépôt public. Le workflow échoue si une image Docker n'est pas
+  `linux/arm64` : aucune émulation ne peut passer en silence.
+- **Incident GitHub Actions le 22 octobre** : de 16 h 26 à 18 h 22 UTC
+  environ, aucun push du dépôt n'a déclenché de workflow. Cela a touché
+  a1184bd, e61cde5, et aussi le push du pilotage sur `main`, d2e92e2. Les
+  runs de e61cde5 ont démarré avec 37 minutes de retard ; a1184bd n'a jamais
+  eu de run. Ma surveillance de cette période avait une erreur de script et
+  a consommé 6 requêtes d'API pour rien.
 - **Lecture de GitHub sans compte** : les journaux des runs exigent une
   connexion. Le workflow publie donc ses erreurs en annotations, lisibles
   par l'API publique. L'API garde ses réponses en cache 60 s, et le filtre
@@ -158,9 +178,10 @@ tippecanoe 2.49.0 (apt), ainsi que pmtiles 1.31.2, contrôlé par son SHA-256.
 - La fabrication d'une 2e zone, et d'une zone côtière.
 - La mémoire et le disque au plus haut sur la machine de GitHub. Ils sont
   dans le résumé du run, qu'il faut un compte pour lire.
-- Ce que donne le téléphone (ARM) avec les tuiles fabriquées sur GitHub
-  (x86-64). On n'a comparé que des fabrications et des calculs faits sur le
-  même processeur. Cela touche directement les phases 2 et 3.
+- Ce que calcule le téléphone avec les tuiles de la v2. Elles sont
+  fabriquées sur ARM, comme celles de l'essai 1, mais l'essai n'est pas
+  refait avec elles. À éprouver en phase 2 ou 3.
+- Une 2e fabrication sur la machine ARM de GitHub : une seule a été mesurée.
 - La cause exacte du plantage occasionnel de `valhalla_build_tiles`.
 
 ## Ce qui a été appris sur les agents
@@ -181,32 +202,28 @@ tippecanoe 2.49.0 (apt), ainsi que pmtiles 1.31.2, contrôlé par son SHA-256.
 
 ## À reporter dans PILOTAGE.md
 
-- Phase 1 : faite, sauf C7. Branche `claude/phase-1-zones-73115d`, prête
-  à fusionner après décision sur C7. Release `zone-nancy-v1` et catalogue
-  publiés.
-- **Décision à prendre (C7)** : la zone ne se refait à l'identique que sur
-  le même type de processeur. Choix possibles :
-  - (a) réécrire C7 en « mêmes tracés sur la même architecture » : c'est
-    prouvé, avec x86-64 émulé sur le Mac ;
-  - (b) fabriquer sur une machine ARM de GitHub, si elle est gratuite pour
-    un dépôt public, pour obtenir les tuiles du Mac et de l'essai 1 ;
-  - (c) accepter l'écart de R1 comme expliqué.
-  Dans tous les cas, il faudra éprouver ce que calcule le téléphone avec
-  les tuiles publiées.
-- Décisions prises pendant la phase : C7 avec un extrait récent (21 oct.) ;
-  attendre le retour d'osmdata (21 oct.) ; eau vide pour une zone
-  intérieure, avec le champ `coastal` (22 oct.).
+- Phase 1 : faite, les 10 critères tenus. Branche
+  `claude/phase-1-zones-73115d`, prête à fusionner. Release `zone-nancy-v2`
+  (ARM) et catalogue publiés ; la v1 (x86-64) reste en release, hors du
+  catalogue.
+- Décisions prises pendant la phase :
+  - C7 avec un extrait récent (pilotage, 21 oct.) ;
+  - attendre le retour d'osmdata (pilotage, 21 oct.) ;
+  - eau vide pour une zone intérieure, avec le champ `coastal`
+    (pilotage, 22 oct.) ;
+  - fabrication sur la machine ARM de GitHub (Émilien, 22 oct.) ;
+  - `ubuntu-24.04` fixé dans `verify.yml` (pilotage, 22 oct.) ;
+  - fichiers de test à part autorisés pour le testeur, écrit dans
+    l'ADR 0012 (pilotage, 22 oct.).
+- Fait sur la branche : déclencheur `push` temporaire retiré de
+  `fabriquer-zone.yml`. Il ne reste que le lancement à la main.
 - Après la fusion :
-  - retirer le déclencheur `push` temporaire de `fabriquer-zone.yml` ;
-  - Émilien vérifie un lancement à la main ;
-  - accepter les ADR 0003 (section du 21 octobre) et 0012, toujours
-    « proposés » ;
+  - Émilien vérifie un lancement à la main (onglet Actions, « Fabriquer une
+    zone », zone `nancy`). Il publiera une v3 ;
+  - accepter les ADR 0003 (sections du 21 et du 22 octobre) et 0012,
+    toujours « proposés » ;
   - citer `zones/` et ses commandes dans `CLAUDE.md`.
-- GitHub annonce que le libellé `ubuntu-latest` passera à Ubuntu 26 à
-  partir du 19 octobre 2026. `verify.yml` l'utilise (le workflow de zone
-  fixe `ubuntu-24.04`). À fixer pour éviter une surprise.
 - À décider plus tard avec Émilien : une copie des annexes de Planetiler
   dans une release, si osmdata retombe en panne pour une zone côtière.
-- Règle des noms de tests (ADR 0012 : un fichier par module) : le testeur a
-  créé ses propres fichiers. Trancher : les ranger par module, ou écrire
-  la règle du testeur dans l'ADR.
+- Pour les phases 2 et 3 : éprouver le calcul sur le téléphone avec les
+  tuiles publiées.
