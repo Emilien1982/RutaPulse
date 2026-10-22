@@ -40,7 +40,8 @@ jobs:
     # ARM machine (free for a public repository): the Mac that made the reference routes is ARM,
     # and tiles made on x86-64 change the route R1 (ADR 0003, section 6).
     runs-on: ubuntu-24.04-arm
-    # Mac (10 cores): about 1.5 minutes. Large margin for 4 cores and slow downloads.
+    # Mac (10 cores): about 1.5 minutes; first GitHub run (x86-64, 4 cores): 4 min 53 s.
+    # Large margin for slow downloads.
     timeout-minutes: 60
     env:
       ZONE: ${{ inputs.zone || 'nancy' }}
