@@ -43,4 +43,13 @@ jobs:
             zones/requirements.txt
             zones/requirements-dev.txt
       - run: pip install -r requirements-dev.txt
-      - run: python -m pytest
+      # The summary line of pytest (with the number of tests) is also published as a public
+      # annotation (GitHub logs need a login). The exit code of pytest is kept.
+      - name: Lancer les tests
+        run: |
+          set -o pipefail
+          status=0
+          python -m pytest 2>&1 | tee "$RUNNER_TEMP/pytest.log" || status=$?
+          summary=$(grep -E '^=+ .* in [0-9.]+s' "$RUNNER_TEMP/pytest.log" | tail -n 1 | sed -E 's/^=+ //; s/ =+$//')
+          echo "::notice title=Tests zones::${summary:-aucune ligne de résumé pytest}"
+          exit "$status"
