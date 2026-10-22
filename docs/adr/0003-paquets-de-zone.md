@@ -71,9 +71,8 @@ d'architecture).
 
 ## Format du paquet et du catalogue (2026-10-21, phase 1)
 
-- Statut : proposé le 2026-10-21 (tâche T1 de
-  [p01-fabrique-zones](../phases/p01-fabrique-zones.md)), à valider par
-  Émilien.
+- Statut : accepté le 2026-10-22 par Émilien (proposé le 2026-10-21, tâche
+  T1 de [p01-fabrique-zones](../phases/p01-fabrique-zones.md)).
 - Ce qui change par rapport au 19 octobre :
   - les paquets sont fabriqués par **GitHub Actions** (l'option à étudier
     devient la règle). Le Mac sert à vérifier le script ;

@@ -1,6 +1,6 @@
 # ADR 0012 — Code de la fabrique de zones : Python et pytest
 
-- Statut : Proposé le 2026-10-21, à valider par Émilien
+- Statut : Accepté le 2026-10-22
 - Date : 2026-10-21 (phase 1, tâche T1 de [p01-fabrique-zones](../phases/p01-fabrique-zones.md))
 - Format des paquets et du catalogue : ADR 0003, section « Format du paquet
   et du catalogue ».

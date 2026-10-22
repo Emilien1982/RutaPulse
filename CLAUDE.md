@@ -41,6 +41,14 @@ toute phase coûteuse avant son lancement.
   lus par `t()`.
 - `mobile/android/` et `mobile/ios/` sont générés : ne pas les modifier.
 
+## Fabrique de zones (`zones/`)
+- Python et pytest (ADR 0012) ; format des paquets et du catalogue : ADR 0003.
+- Tests : `cd zones && .venv/bin/python -m pytest -q`. Fabriquer sur le Mac :
+  `cd zones && .venv/bin/python -m zonefactory build <zone> --version <n>`.
+- En production, les zones sont fabriquées sur GitHub (workflow « Fabriquer
+  une zone », machine ARM, lancé à la main). Ajouter une zone : quelques
+  lignes dans `zones/zones.json`, sans code.
+
 ## Commandes (depuis `mobile/`)
 - `npm run verify` : types, puis lint, puis tests. Doit passer avant chaque
   commit. La CI (vérification automatique sur GitHub) lance la même commande.

@@ -24,7 +24,7 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 à spécifier |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 à spécifier |
 
 ## Décisions prises
 
@@ -46,6 +46,10 @@
 - 2026-10-20 — Essai 1-bis : aucun réglage ne rend les itinéraires plus « VTT ». Valhalla cherche le chemin le moins coûteux entre les points, pas une belle boucle. On garde Valhalla et son réglage de l'essai 1.
 - 2026-10-20 — Cadrage modifié : recalcul en direct, tracé à la main par tronçon, circuits VTT balisés d'OSM (fonction 9). Génération de boucles : plus tard.
 - 2026-10-20 — Essai 3 : carte hors ligne prouvée (MapLibre + PMTiles, 29 Mo pour Nancy), circuits balisés dans le paquet (2 seulement autour de Nancy), GitHub Actions jugé faisable.
+- 2026-10-22 — Phase 1 fusionnée dans main : zone Nancy v2 fabriquée sur une machine ARM de GitHub et publiée (release zone-nancy-v2, catalogue à adresse fixe), 10 critères sur 10. ADR 0003 (format, ARM, serveurs tiers) et 0012 (Python pour la fabrique) acceptés.
+- 2026-10-22 — Les données de calcul dépendent du type de processeur : les zones se fabriquent sur ARM, comme le Mac de référence.
+- 2026-10-22 — Zone intérieure : fichier « sans mer » fabriqué localement (champ `coastal`), carte identique octet pour octet.
+- 2026-10-22 — Le relecteur vérifie qu'aucun test existant n'est modifié par le développeur.
 - 2026-10-21 — Phase 0 fusionnée dans main : app Expo à 4 onglets, verify (types, lint, 9 tests), CI GitHub, Maestro sur les deux simulateurs, hook de qualité. ADR 0011 (structure du code) accepté.
 - 2026-10-21 — Écrans années 70 validés ; icône A ; décisions dans docs/06. Découpage en 11 phases validé, **phases enchaînées une par une** (pas de parallélisme, pour le quota).
 - 2026-10-21 — Style hors navigation : affiche des années 70 (style 3), personnage du vététiste récurrent, illustrations minimales en v1.
@@ -56,7 +60,8 @@
 
 ## Décisions en attente
 
-- Valider la spec de la phase 1 (fabrique de zones).
+- Lancement à la main du workflow « Fabriquer une zone » par Émilien (dernier contrôle de la phase 1).
+- Spec de la phase 2 (carte hors ligne dans l'app).
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
@@ -68,9 +73,12 @@
 
 ## Prochaine étape
 
-Rédiger la spec de la phase 1 (fabrique de zones sur GitHub Actions) et la
-soumettre à Émilien.
+Émilien lance une fois le workflow « Fabriquer une zone » à la main sur
+GitHub. Ensuite : spec de la phase 2 (carte hors ligne dans l'app).
 
 ## Points connus, hors périmètre pour l'instant
 
 - Icônes des onglets provisoires (à faire avec le style années 70, phase 2).
+- À vérifier en phase 3 : ce que calcule le téléphone (ARM) avec les tuiles publiées.
+- La fabrique dépend de serveurs tiers (Geofabrik, osmdata) ; une zone côtière échoue si osmdata est en panne. Parade possible plus tard : copie des annexes dans une release.
+- Une zone côtière et une 2e zone n'ont pas encore été fabriquées.
