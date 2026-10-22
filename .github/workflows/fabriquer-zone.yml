@@ -37,7 +37,9 @@ concurrency:
 
 jobs:
   fabriquer:
-    runs-on: ubuntu-24.04
+    # ARM machine (free for a public repository): the Mac that made the reference routes is ARM,
+    # and tiles made on x86-64 change the route R1 (ADR 0003, section 6).
+    runs-on: ubuntu-24.04-arm
     # Mac (10 cores): about 1.5 minutes. Large margin for 4 cores and slow downloads.
     timeout-minutes: 60
     env:
@@ -46,8 +48,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # Ubuntu 24.04 (noble, universe) package versions, checked on 2026-10-21 in the
-      # Launchpad archive: osmium-tool 1.16.0-1build1 and tippecanoe 2.49.0-1build1 (Published).
+      # Ubuntu 24.04 (noble, universe) package versions, checked on 2026-10-22 in the
+      # Launchpad archive: osmium-tool 1.16.0-1build1 and tippecanoe 2.49.0-1build1, both
+      # Published for amd64 and arm64.
       - name: Installer osmium et tippecanoe
         run: |
           sudo apt-get update
@@ -56,14 +59,14 @@ jobs:
           tippecanoe --version
           printf '| %s | %s s |\n' "Installer osmium et tippecanoe" "$SECONDS" >> "$TIMES"
 
-      # go-pmtiles 1.31.2, Linux x86-64. The SHA-256 is the "digest" given by the GitHub API
+      # go-pmtiles 1.31.2, Linux arm64. The SHA-256 is the "digest" given by the GitHub API
       # for this release asset, and was recomputed on the downloaded file on 2026-10-21.
       - name: Installer pmtiles
         env:
           PMTILES_VERSION: "1.31.2"
-          PMTILES_SHA256: "3ed7dbf4ec2e6dfe5e25b6f70d1ffc932729f93c86db353bf514dd71010a312f"
+          PMTILES_SHA256: "f8bd47e7ea866863489cad588fbaf2f31f42e5821f7a03f009b3769f05801cb1"
         run: |
-          file="go-pmtiles_${PMTILES_VERSION}_Linux_x86_64.tar.gz"
+          file="go-pmtiles_${PMTILES_VERSION}_Linux_arm64.tar.gz"
           curl -fL -o "$RUNNER_TEMP/$file" "https://github.com/protomaps/go-pmtiles/releases/download/v${PMTILES_VERSION}/$file"
           echo "$PMTILES_SHA256  $RUNNER_TEMP/$file" | sha256sum -c -
           mkdir -p "$HOME/bin"
@@ -86,12 +89,12 @@ jobs:
           printf '| %s | %s s |\n' "Tirer les images Docker" "$SECONDS" >> "$TIMES"
 
       # Big files that do not change from one run to the next: Planetiler annexes (1.4 GB)
-      # and HGT tiles. Fixed key: change the "v1" to start again from an empty cache.
+      # and HGT tiles. Fixed key ("arm64": not the cache of the former x86-64 machine): change the "v1" to start again from an empty cache.
       # The OSM extract is NOT cached (it is kept outside this folder).
       - uses: actions/cache@v6
         with:
           path: zones/work/cache
-          key: zones-cache-v1
+          key: zones-cache-arm64-v1
 
       - name: Choisir la version
         id: version
@@ -218,6 +221,7 @@ jobs:
         run: |
           {
             echo "## Fabrication de la zone $ZONE"
+            echo "- Architecture de la machine : $(uname -m)"
             if [ -f "$RUNNER_TEMP/package/zone.json" ]; then
               python - "$RUNNER_TEMP/package/zone.json" <<'PY'
           import json, os, sys
