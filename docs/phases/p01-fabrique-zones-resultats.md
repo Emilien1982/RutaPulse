@@ -36,7 +36,7 @@
 | C6 | Un fichier publié correspond à son empreinte | `verify` depuis l'adresse publique du catalogue : 9 fichiers OK, code 0 ; fichiers à plat : `shasum -a 256 -c SHA256SUMS` 9 OK | Testeur, T5 | Oui |
 | C7 | (1) Refaite sur le Mac depuis l'adresse datée : mêmes tracés. (2) Distance ± 2 %, D+ ± 5 % de l'essai 1 | (1) 0 tracé sur 5 identique à l'octet ; R1 prend un autre chemin. (2) R2 à R5 OK ; R1 : −4,6 % en distance, −7,4 % en D+ | Testeur, T5, script `zones/tests/c7/comparer.py` | **Non tel qu'écrit.** Cause prouvée (voir plus bas) |
 | C8 | Mentions de licence dans le paquet | `LICENCES.md` : OpenStreetMap (ODbL), OpenMapTiles, Natural Earth, Mapterhorn, IGN, Copernicus, SRTM | Fichier publié | Oui |
-| C9 | Script testé, tests lancés par la CI | 182 tests pytest réussis en local ; le job `zones` de la CI est vert | Run 39809980815. Nombre de tests vu par la CI : voir la ligne C9 en fin de document | Oui (voir la note) |
+| C9 | Script testé, tests lancés par la CI | La CI lance 182 tests, tous réussis : annotation publique du job `zones`, « 182 passed in 1.89s » | Run https://github.com/Emilien1982/RutaPulse/actions/runs/39813383173 (commit 5c960c5) | Oui |
 | C10 | Aucun secret | Seul le jeton automatique `github.token`, donné aux 3 étapes `gh` ; `permissions: contents: write` ; aucun motif de secret dans le diff ; 19 commits en e-mail noreply | Audit avant chaque push | Oui |
 
 ### Tailles du paquet
@@ -92,6 +92,27 @@ partir de la même adresse.
 - L'archive `valhalla_tiles.tar` n'est jamais identique d'une fabrication à
   l'autre, même sur la même machine (dates et ordre des calculs). Il faut
   comparer les itinéraires, pas les fichiers.
+
+## T6 : casser exprès
+
+Fait sur le Mac le 21 octobre, sur une copie du paquet. Le vrai
+`zones.json` est restauré par git après chaque cas.
+
+| Défaut introduit | Contrôle | Résultat |
+|---|---|---|
+| Un octet changé dans `trails.geojson` | `shasum -a 256 -c SHA256SUMS` | `trails.geojson: FAILED`, code 1 |
+| Le même | `zonefactory catalogue` | « empreinte fausse pour trails.geojson », code 1, aucun catalogue écrit |
+| Le même, catalogue juste | `zonefactory verify` | 6 fichiers OK puis « empreinte fausse », code 1, arrêt au fichier faux |
+| `zones.json` : un côté de plus de 1° | `zonefactory build` | « un côté dépasse 1° », code 1 |
+| `zones.json` : id `Nancy Ville` | `build` | refus par le schéma, motif de l'id |
+| `zones.json` : champ inconnu | `build` | « Additional properties are not allowed » |
+| `zones.json` : adresse en `.zip` | `build` | refus par le schéma, motif `.osm.pbf` |
+| `zones.json` : JSON cassé | `build` | « zones.json illisible », code 1 |
+| `zones.json` : lonMin ≥ lonMax | `build` | « il faut lonMin < lonMax », code 1 |
+
+Dans tous les cas de `zones.json`, aucun paquet n'est fabriqué. Les
+messages sont en français, mais ceux du schéma reprennent le texte anglais
+de jsonschema.
 
 ## Écarts et incidents
 
@@ -181,6 +202,9 @@ tippecanoe 2.49.0 (apt), ainsi que pmtiles 1.31.2, contrôlé par son SHA-256.
   - accepter les ADR 0003 (section du 21 octobre) et 0012, toujours
     « proposés » ;
   - citer `zones/` et ses commandes dans `CLAUDE.md`.
+- GitHub annonce que le libellé `ubuntu-latest` passera à Ubuntu 26 à
+  partir du 19 octobre 2026. `verify.yml` l'utilise (le workflow de zone
+  fixe `ubuntu-24.04`). À fixer pour éviter une surprise.
 - À décider plus tard avec Émilien : une copie des annexes de Planetiler
   dans une release, si osmdata retombe en panne pour une zone côtière.
 - Règle des noms de tests (ADR 0012 : un fichier par module) : le testeur a
