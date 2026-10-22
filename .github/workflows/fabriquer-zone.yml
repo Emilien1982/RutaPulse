@@ -86,10 +86,22 @@ jobs:
           docker pull ghcr.io/valhalla/valhalla:3.9.1
           docker pull ghcr.io/onthegomap/planetiler:0.10.2
           docker pull ghcr.io/osgeo/gdal:alpine-small-3.10.3
+          # public annotation (readable without an account), then refuse any image that is not arm64
+          valhalla=$(docker image inspect --format '{{.Os}}/{{.Architecture}}' ghcr.io/valhalla/valhalla:3.9.1)
+          planetiler=$(docker image inspect --format '{{.Os}}/{{.Architecture}}' ghcr.io/onthegomap/planetiler:0.10.2)
+          gdal=$(docker image inspect --format '{{.Os}}/{{.Architecture}}' ghcr.io/osgeo/gdal:alpine-small-3.10.3)
+          echo "::notice title=Architecture::machine $(uname -m) ; valhalla $valhalla ; planetiler $planetiler ; gdal $gdal"
+          for image in "$valhalla" "$planetiler" "$gdal"; do
+            if [ "$image" != "linux/arm64" ]; then
+              echo "::error title=Architecture::une image Docker n'est pas linux/arm64 (émulation interdite) : $image"
+              exit 1
+            fi
+          done
           printf '| %s | %s s |\n' "Tirer les images Docker" "$SECONDS" >> "$TIMES"
 
       # Big files that do not change from one run to the next: Planetiler annexes (1.4 GB)
-      # and HGT tiles. Fixed key ("arm64": not the cache of the former x86-64 machine): change the "v1" to start again from an empty cache.
+      # and HGT tiles. Fixed key, "arm64" so as not to reuse the cache of the former x86-64 machine:
+      # change the "v1" to start again from an empty cache.
       # The OSM extract is NOT cached (it is kept outside this folder).
       - uses: actions/cache@v6
         with:
