@@ -27,6 +27,13 @@ La spec de la tâche et la référence git des modifications à relire.
 4. Cherche les bugs : cas limites, valeurs nulles, erreurs non gérées,
    calculs faux.
 5. Vérifie qu'aucun fichier hors périmètre n'a changé.
+6. **Tests existants** : liste les fichiers de test modifiés ou supprimés par
+   le diff (`git diff --stat`, puis le détail). Le développeur n'a pas le
+   droit de toucher un test déjà commité, et son garde-fou ne voit pas les
+   écritures faites par le terminal. Pour chaque test existant modifié par
+   le développeur, retiré, ou dont l'attendu a changé : défaut bloquant,
+   sauf si la spec demande ce changement. Un test ajouté dans un fichier
+   existant compte aussi comme une modification de ce fichier.
 
 ## Ce que tu signales
 Seulement les défauts **bloquants** :
