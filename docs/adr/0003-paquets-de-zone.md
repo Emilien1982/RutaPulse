@@ -303,7 +303,8 @@ C'est le seul fichier à modifier pour ajouter une zone (C2).
       "id": "nancy",
       "name": "Nancy",
       "bbox": { "lonMin": 5.84, "latMin": 48.47, "lonMax": 6.52, "latMax": 48.92 },
-      "osmExtractUrl": "https://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf"
+      "osmExtractUrl": "https://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf",
+      "coastal": false
     }
   ]
 }
@@ -316,6 +317,7 @@ C'est le seul fichier à modifier pour ajouter une zone (C2).
 | `name` | 1 à 60 caractères ; peut changer |
 | `bbox` | même règle que dans le catalogue ; en plus, chaque côté mesure **au plus 1°** (contrôlé par le code). Cela protège la machine de GitHub et la limite de 2 Gio d'une faute de frappe |
 | `osmExtractUrl` | `^https://.+\.osm\.pbf$` : adresse d'un extrait OSM, en général chez Geofabrik (site qui publie chaque jour des extraits régionaux d'OSM) |
+| `coastal` | booléen, obligatoire : `true` si la zone touche la mer. Ajouté le 22 octobre 2026 (voir plus bas) |
 
 Aucun autre champ n'est permis.
 
@@ -337,6 +339,17 @@ Aucun autre champ n'est permis.
 - Le relief (Mapterhorn) et les annexes de Planetiler sont les mêmes pour
   toutes les zones : leurs adresses sont dans le code, pas dans
   `zones.json`.
+- **Zone intérieure ou côtière** (décision du pilotage, 22 octobre 2026,
+  après 16 h de panne d'osmdata.openstreetmap.de) : les polygones d'eau
+  d'osmdata (931 Mo) ne décrivent que les mers et océans ; lacs et rivières
+  viennent de l'extrait OSM. Pour une zone `"coastal": false`, le script
+  fabrique avec GDAL un fichier de polygones d'eau valide mais sans mer, et
+  le donne à Planetiler à la place du téléchargement. Condition : la carte
+  obtenue doit être identique à celle faite avec le vrai fichier (preuve
+  sur Nancy, dans les résultats de la phase 1). Une zone `"coastal": true`
+  garde le vrai fichier ; si le serveur est en panne, elle échoue avec un
+  message clair. Parade future, à décider avec Émilien : une copie des
+  annexes dans une release du dépôt, avec l'attribution exigée par l'ODbL.
 
 ### 6. Outils et versions
 
