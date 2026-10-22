@@ -10,20 +10,6 @@ on:
         type: string
         required: true
         default: nancy
-  # TEMPORARY, to remove after the merge into main. GitHub only allows a manual
-  # start of a workflow that already exists on main (phase 1, risk 1): until then,
-  # a push on the phase branch builds "nancy" so that the workflow can be tried.
-  push:
-    branches:
-      - claude/phase-1-zones-73115d
-    paths:
-      # exactly what changes the package (not the tests nor the LISEZMOI)
-      - "zones/zonefactory/**"
-      - "zones/zones.json"
-      - "zones/schemas/**"
-      - "zones/templates/**"
-      - "zones/requirements.txt"
-      - ".github/workflows/fabriquer-zone.yml"
 
 # The automatic GITHUB_TOKEN is the only credential (no secret): it creates releases.
 # It is given (as GH_TOKEN) only to the steps that call `gh`, not to the build tools.

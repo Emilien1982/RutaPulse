@@ -115,10 +115,8 @@ fabrique la zone sur une machine de GitHub et la publie, sans ton Mac.
 
 Lancer : onglet « Actions » du dépôt, « Fabriquer une zone », « Run
 workflow », puis écrire l'`id` de la zone (par défaut `nancy`). Seul un
-workflow déjà présent sur la branche `main` peut être lancé ainsi. Avant la
-fusion de la phase 1, un `push` sur la branche `claude/phase-1-zones-73115d`
-(fichiers de `zones/` ou du workflow) lance la fabrication de `nancy`. Ce
-déclencheur est à retirer après la fusion.
+workflow déjà présent sur la branche `main` peut être lancé ainsi. C'est le
+seul déclencheur : un `push` ne lance rien.
 
 Ce que fait le workflow, dans l'ordre :
 
