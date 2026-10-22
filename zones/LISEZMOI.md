@@ -57,7 +57,8 @@ Ajouter un bloc dans `zones.json`, sans écrire de code :
   "id": "metz",
   "name": "Metz",
   "bbox": { "lonMin": 6.0, "latMin": 48.9, "lonMax": 6.4, "latMax": 49.3 },
-  "osmExtractUrl": "https://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf"
+  "osmExtractUrl": "https://download.geofabrik.de/europe/france/lorraine-latest.osm.pbf",
+  "coastal": false
 }
 ```
 
@@ -66,6 +67,10 @@ Ajouter un bloc dans `zones.json`, sans écrire de code :
 - `bbox` : limites en degrés. Chaque côté mesure 1° au plus.
 - `osmExtractUrl` : le plus petit extrait Geofabrik qui contient toute la
   zone. Le script s'arrête si la zone dépasse l'extrait.
+- `coastal` : `true` si la zone touche la mer, `false` sinon. Une zone
+  intérieure n'a pas besoin du fichier des mers (931 Mo) : un fichier vide le
+  remplace. Une erreur sur ce champ donne une carte fausse, sans aucun
+  message.
 - Le fichier est contrôlé par `schemas/zones.schema.json` et par le code.
 
 Une adresse `…-latest.osm.pbf` donne les données du jour. Une adresse datée
