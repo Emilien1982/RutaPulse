@@ -353,7 +353,7 @@ Aucun autre champ n'est permis.
 
 ### 6. Outils et versions
 
-| Outil | Version | Sur le Mac | Sur GitHub Actions (`ubuntu-24.04`) | Remarque |
+| Outil | Version | Sur le Mac | Sur GitHub Actions (`ubuntu-24.04-arm`) | Remarque |
 |---|---|---|---|---|
 | Valhalla | 3.9.1 | image Docker (programme livré prêt à tourner dans un conteneur isolé) `ghcr.io/valhalla/valhalla:3.9.1` | même image | Même moteur que valhalla-mobile 0.6.4 (ADR 0002). Ne change pas sans l'app |
 | Planetiler | 0.10.2 | image Docker `ghcr.io/onthegomap/planetiler:0.10.2` | même image | Dernière version publiée (29 mars). Une version de développement est sortie le 17 octobre : le projet est maintenu |
@@ -365,6 +365,15 @@ Aucun autre champ n'est permis.
 
 - La fabrication de référence, celle qu'on publie, est celle de GitHub
   Actions. Celle du Mac sert à mettre au point le script (C1).
+- **Processeur ARM (décision d'Émilien, 22 octobre 2026).** Les tuiles de
+  calcul de Valhalla dépendent du processeur qui les fabrique. Fabriquées
+  sur x86-64, elles changent l'itinéraire R1 par rapport au Mac (ARM). Les
+  zones sont donc fabriquées sur la machine Linux ARM gratuite de GitHub,
+  `ubuntu-24.04-arm` : 4 processeurs, 16 Go de mémoire, 14 Go de disque,
+  gratuite et sans limite pour un dépôt public. Source :
+  https://docs.github.com/en/actions/reference/runners/github-hosted-runners.
+  Les images Docker tournent alors en arm64 natif, sans émulation. C'est le
+  même type de processeur que le Mac, l'essai 1 et les téléphones.
 - Les numéros exacts des paquets Ubuntu (`osmium-tool=1.16.0-1build1`,
   `tippecanoe=2.49.0-1build1`) viennent du workflow de l'essai 3, qui n'a
   jamais tourné. À confirmer au premier lancement (T4).

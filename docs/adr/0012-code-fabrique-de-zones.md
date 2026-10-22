@@ -53,8 +53,14 @@ d'architecture).
 | Catalogue | ajout d'une zone ; remplacement d'une version ; tri ; `totalBytes` ; fichiers obligatoires ; forme des adresses ; validation par le schéma ; refus d'une empreinte trop courte et d'un `path` avec `..` |
 | Circuits balisés | les 6 cas de `essais/03-carte-hors-ligne/zone/tests/test_circuits.py`, repris sur un texte au format OPL (format texte d'osmium) écrit dans le test, sans lancer osmium |
 
-- Le test est à côté du sujet : un fichier `tests/test_<sujet>.py` par
-  module.
+- Le test est à côté du sujet : le développeur écrit un fichier
+  `tests/test_<sujet>.py` par module.
+- Le testeur peut écrire ses propres fichiers, à part
+  (`tests/test_<sujet>_<précision>.py`, ou un dossier comme `tests/c7/`).
+  Ses tests, écrits d'après la spec, restent ainsi séparés de ceux du
+  développeur. Le développeur ne modifie aucun test existant ; s'il en
+  ajoute, il crée un nouveau fichier (décision du pilotage, 22 octobre
+  2026).
 
 ### 3. Dossier `zones/`
 
