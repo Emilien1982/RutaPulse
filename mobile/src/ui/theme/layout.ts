@@ -27,9 +27,8 @@ export const target = {
   mainButton: 56, // cible.bouton-principal
 } as const;
 
-// Tab bar: 83 tall in the mockups, topped by the 9-point stripes.
+// Tab bar pill (the bar height is computed in features/shell).
 export const tabBar = {
-  height: 83,
   pillWidth: 64,
   pillHeight: 32,
 } as const;
