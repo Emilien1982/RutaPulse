@@ -46,6 +46,7 @@
 - 2026-10-20 — Essai 1-bis : aucun réglage ne rend les itinéraires plus « VTT ». Valhalla cherche le chemin le moins coûteux entre les points, pas une belle boucle. On garde Valhalla et son réglage de l'essai 1.
 - 2026-10-20 — Cadrage modifié : recalcul en direct, tracé à la main par tronçon, circuits VTT balisés d'OSM (fonction 9). Génération de boucles : plus tard.
 - 2026-10-20 — Essai 3 : carte hors ligne prouvée (MapLibre + PMTiles, 29 Mo pour Nancy), circuits balisés dans le paquet (2 seulement autour de Nancy), GitHub Actions jugé faisable.
+- 2026-10-23 — Lancement à la main du workflow par Émilien : run réussi, release zone-nancy-v3, catalogue en version 3. Phase 1 entièrement prouvée.
 - 2026-10-22 — Phase 1 fusionnée dans main : zone Nancy v2 fabriquée sur une machine ARM de GitHub et publiée (release zone-nancy-v2, catalogue à adresse fixe), 10 critères sur 10. ADR 0003 (format, ARM, serveurs tiers) et 0012 (Python pour la fabrique) acceptés.
 - 2026-10-22 — Les données de calcul dépendent du type de processeur : les zones se fabriquent sur ARM, comme le Mac de référence.
 - 2026-10-22 — Zone intérieure : fichier « sans mer » fabriqué localement (champ `coastal`), carte identique octet pour octet.
@@ -60,8 +61,8 @@
 
 ## Décisions en attente
 
-- Lancement à la main du workflow « Fabriquer une zone » par Émilien (dernier contrôle de la phase 1).
-- Spec de la phase 2 (carte hors ligne dans l'app).
+- Valider la spec de la phase 2 (carte hors ligne dans l'app).
+- Combien de versions de zone garder sur GitHub (3 releases de 110 Mo déjà).
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
@@ -73,8 +74,7 @@
 
 ## Prochaine étape
 
-Émilien lance une fois le workflow « Fabriquer une zone » à la main sur
-GitHub. Ensuite : spec de la phase 2 (carte hors ligne dans l'app).
+Émilien valide la spec de la phase 2 ([docs/phases/p02-carte-hors-ligne.md](docs/phases/p02-carte-hors-ligne.md)).
 
 ## Points connus, hors périmètre pour l'instant
 
