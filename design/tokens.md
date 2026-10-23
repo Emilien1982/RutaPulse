@@ -153,9 +153,29 @@ doivent se distinguer de tout cela, par la couleur **et** par l'épaisseur.
 | `carte.sentier` | `#C62828` | Sentiers, en tirets, 4,7:1 sur le fond |
 | `carte.courbe` / `carte.courbe-maitresse` | `#C9B293` / `#B89C78` | Courbes de niveau, tous les 10 m / 50 m |
 
-À corriger dans le style (constat de l'essai 3) : filtrer les trottoirs
-(`subclass=footway`) hors de la couche des sentiers, sinon les villages se
-couvrent de tirets rouges.
+Ajoutés le 24 octobre 2026 (phase 2, style de carte détaillé :
+[`style-carte.md`](style-carte.md)) :
+
+| Jeton | Valeur | Contraste sur `carte.fond` | Usage |
+|---|---|---|---|
+| `carte.prairie` | `#E4E9D0` | décor | Prés, pelouses, zones humides (`landcover` grass, wetland). Les champs restent en `carte.fond` : la forêt se détache mieux |
+| `carte.batiment` | `#D6CCBD` | décor | Bâtiments, dès le zoom 14 |
+| `carte.eau-trait` | `#7DB0CB` | décor | Ruisseaux et fossés (plus foncé que `carte.eau`, sinon un trait de 1 point disparaît) |
+| `carte.pieton` | `#A89F92` | décor (2,3:1) | Trottoirs et voies piétonnes (`footway`, `pedestrian`), dès le zoom 16 : à peine visibles, exprès |
+| `carte.escalier` | `#6B5E52` | 5,3:1 | Escaliers (`steps`), en hachures : un obstacle pour le vélo |
+| `carte.rail` | `#9A9387` | décor | Voies ferrées |
+| `carte.ombrage-ombre` | `#4A3F35` | décor | Ombre et accent de l'ombrage du relief |
+| `carte.ombrage-lumiere` | `#FFFFFF` à 60 % | décor | Versants éclairés de l'ombrage |
+| `carte.etiquette` | `#111111` (= `couleur.texte`) | 15,9:1 | Noms des villes et villages |
+| `carte.etiquette-2` | `#4A4A4A` (= `couleur.texte-2`) | 7,4:1 | Noms des hameaux, quartiers, rues et chemins |
+| `carte.cote` | `#5A3A28` (= `hn.brun-2`) | 8,5:1 | Altitude écrite sur les courbes maîtresses |
+| `carte.eau-texte` | `#174B63` | 7,9:1 | Noms des rivières et canaux |
+| `carte.etiquette-halo` | `#FFFFFF` | — | Halo de toutes les étiquettes de la carte |
+
+Trottoirs (constat de l'essai 3) : **corrigé** dans `style-carte.md`. Le
+schéma OpenMapTiles range trottoirs et passages piétons en
+`subclass=footway`, sans moyen de les distinguer : tous les `footway` sortent
+des sentiers et deviennent un trait fin `carte.pieton`, dès le zoom 16.
 
 ### Attribution
 
@@ -211,6 +231,19 @@ Une seule graisse de Jost suffit en v1 (700).
 | `texte.secondaire` | 15 | 400 | système | Ligne d'explication, en `hn.brun-2` |
 | `texte.legende` | 13 | 500 | système | Unités sous un chiffre, axes du profil. Minimum hors carte. |
 | `texte.attribution` | 11 | 400 | système | Attributions de la carte seulement (imposé par les licences) |
+
+Étiquettes **dans** la carte (ajoutées le 24 octobre 2026) : police **Noto
+Sans** en glyphes locaux (MapLibre ne sait pas utiliser la police du
+système). Tailles au zoom 15 ; courbes complètes dans `style-carte.md`.
+
+| Jeton | Taille au zoom 15 | Police | Usage |
+|---|---|---|---|
+| `texte.carte-ville` | 20 (ville), 18 (bourg) | Noto Sans Bold | `place` city, town |
+| `texte.carte-village` | 16 | Noto Sans Bold | `place` village |
+| `texte.carte-hameau` | 13 | Noto Sans Regular | Hameaux, quartiers, lieux-dits |
+| `texte.carte-voie` | 12 | Noto Sans Regular | Noms de rues et de chemins, dès le zoom 15 |
+| `texte.carte-cote` | 12,7 | Noto Sans Regular | Altitude des courbes maîtresses |
+| `texte.carte-eau` | 13 | Noto Sans Italic | Rivières et canaux |
 
 - Interligne : 1,2 pour les chiffres et titres, 1,4 pour le corps.
 - Chiffres : toujours `fontVariant: ['tabular-nums']`, toujours en police du
@@ -298,6 +331,20 @@ au zoom 17 (`line-width` en `interpolate` sur le zoom).
 | `trace.piste` | 2,5 | 2,5 | |
 | `trace.sentier` | 2, tirets 5 / 4 | 2,5, tirets 5 / 4 | Plus épais en suivi : c'est à une fourche qu'on en a besoin |
 | `trace.courbe` / maîtresse | 1 / 1,8 | 50 % d'opacité | En suivi, le relief et les courbes s'effacent à moitié |
+
+Fond de carte, valeurs au zoom 15 (ajoutées le 24 octobre 2026). Les
+épaisseurs des zooms 8 à 18 sont dans [`style-carte.md`](style-carte.md) et
+passent par ces valeurs au zoom 15.
+
+| Jeton | Intérieur / bord | Détail |
+|---|---|---|
+| `trace.voie-grande` | 7 / 9,5 | Autoroutes, routes nationales et principales (`motorway`, `trunk`, `primary`) |
+| `trace.voie-moyenne` | 5,5 / 7,5 | Routes départementales (`secondary`, `tertiary`) |
+| `trace.voie-petite` | 3,75 / 5,5 | Rues et petites routes (`minor`) |
+| `trace.voie-desserte` | 2,25 / 3,5 | Dessertes (`service`), pistes cyclables et chemins revêtus |
+| `trace.pieton` | 0,75 au zoom 16 | Pas dessiné avant le zoom 16 |
+| `trace.escalier` | 3, tirets 0,9 / 0,9 | Hachures |
+| `trace.ruisseau` | 1,2 | |
 
 ## Marqueurs sur la carte
 
