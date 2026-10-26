@@ -1,0 +1,54 @@
+# C13 : télécharger Nancy, passer en mode avion, redémarrer l'app, voir la carte.
+# Pensé pour une version release (sans lanceur Expo).
+# Android : le mode avion est réel. Il est coupé au début du parcours et à sa
+# fin (onFlowComplete, exécuté aussi en cas d'échec), pour ne pas gêner le
+# parcours suivant. iOS : le simulateur n'a pas de mode avion, ces étapes
+# sont ignorées.
+appId: fr.rutapulse.app
+onFlowComplete:
+  - runFlow:
+      when:
+        platform: Android
+      commands:
+        - setAirplaneMode: disabled
+---
+# Par sécurité : réseau rétabli avant de commencer.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setAirplaneMode: disabled
+- launchApp:
+    clearState: false
+- tapOn: 'Zones.*'
+- assertVisible: 'Zones hors ligne'
+# Repartir d'une installation sans Nancy.
+- runFlow:
+    when:
+      visible: 'Actions de la zone Nancy.*'
+    commands:
+      - tapOn: 'Actions de la zone Nancy.*'
+      - tapOn: 'Supprimer'
+- extendedWaitUntil:
+    visible: 'Télécharger la zone Nancy.*'
+    timeout: 30000
+- tapOn: 'Télécharger la zone Nancy.*'
+- extendedWaitUntil:
+    visible: 'Prête sans réseau'
+    timeout: 600000
+- takeScreenshot: captures/zones-nancy-prete
+# Mode avion (Android seulement), puis redémarrage : l'app démarre hors ligne.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setAirplaneMode: enabled
+- stopApp
+- launchApp
+- tapOn: 'Carte.*'
+- extendedWaitUntil:
+    visible: '.*OpenStreetMap.*'
+    timeout: 30000
+- assertNotVisible: 'Pas encore de carte'
+- assertVisible: 'Carte de la zone Nancy'
+- takeScreenshot: captures/carte-mode-avion

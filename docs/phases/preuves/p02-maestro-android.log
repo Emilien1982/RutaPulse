@@ -1,0 +1,60 @@
+Running on Pixel_6_API_34_arm64
+ > Flow carte-hors-ligne
+  > On Flow Complete
+Run flow when Platform is ANDROID...
+  Disable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Launch app "fr.rutapulse.app"... COMPLETED
+Tap on "Zones.*"... COMPLETED
+Assert that "Zones hors ligne" is visible... COMPLETED
+Run flow when "Actions de la zone Nancy.*" is visible...
+  Tap on "Actions de la zone Nancy.*"... COMPLETED
+  Tap on "Supprimer"... COMPLETED
+Run flow when "Actions de la zone Nancy.*" is visible... COMPLETED
+Assert that "Télécharger la zone Nancy.*" is visible... COMPLETED
+Tap on "Télécharger la zone Nancy.*"... COMPLETED
+Assert that "Prête sans réseau" is visible... COMPLETED
+Take screenshot captures/zones-nancy-prete... COMPLETED
+Run flow when Platform is ANDROID...
+  Enable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Stop fr.rutapulse.app... COMPLETED
+Launch app "fr.rutapulse.app"... COMPLETED
+Tap on "Carte.*"... COMPLETED
+Assert that ".*OpenStreetMap.*" is visible... COMPLETED
+Assert that "Pas encore de carte" is not visible... COMPLETED
+Assert that "Carte de la zone Nancy" is visible... COMPLETED
+Take screenshot captures/carte-mode-avion... COMPLETED
+Run flow when Platform is ANDROID...
+  Disable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Running on Pixel_6_API_34_arm64
+ > Flow carte-hors-ligne
+  > On Flow Complete
+Run flow when Platform is ANDROID...
+  Disable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Launch app "fr.rutapulse.app"... COMPLETED
+Tap on "Zones.*"... COMPLETED
+Assert that "Zones hors ligne" is visible... COMPLETED
+Run flow when "Actions de la zone Nancy.*" is visible...
+  Tap on "Actions de la zone Nancy.*"... COMPLETED
+  Tap on "Supprimer"... COMPLETED
+Run flow when "Actions de la zone Nancy.*" is visible... COMPLETED
+Assert that "Télécharger la zone Nancy.*" is visible... COMPLETED
+Tap on "Télécharger la zone Nancy.*"... COMPLETED
+Assert that "Prête sans réseau" is visible... COMPLETED
+Take screenshot captures/zones-nancy-prete... COMPLETED
+Run flow when Platform is ANDROID...
+  Enable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Stop fr.rutapulse.app... COMPLETED
+Launch app "fr.rutapulse.app"... COMPLETED
+Tap on "Carte.*"... COMPLETED
+Assert that ".*OpenStreetMap.*" is visible... COMPLETED
+Assert that "Pas encore de carte" is not visible... COMPLETED
+Assert that "Carte de la zone Nancy" is visible... COMPLETED
+Take screenshot captures/carte-mode-avion... COMPLETED
+Run flow when Platform is ANDROID...
+  Disable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
