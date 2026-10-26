@@ -49,6 +49,14 @@
 | 4 | « Terminer » avant l'arrivée | Même résumé aux chiffres réels, titré « Sortie terminée ». |
 | — | Accès aux réglages | Un 4e onglet « Réglages ». |
 
+## Carte et limites de la zone (26 octobre 2026)
+
+| Question | Décision |
+|---|---|
+| Déplacer la carte hors de la zone téléchargée | **Bloqué.** Au moins 50 % de la largeur ou de la hauteur de l'écran reste sur la zone (au moins 25 % de la surface) : le centre de la carte reste dans le rectangle de la zone. Raison : hors zone, la carte n'est qu'un fond uni, sans intérêt, et on risque de s'y perdre. |
+| Contour de la zone | Un trait fin en tirets (`carte.bord-zone`). |
+| Recentrer quand on est hors de la zone | La carte va au point de la zone le plus proche de la position, avec le message « Vous êtes hors de la zone téléchargée ». |
+
 ## Réponses aux 13 questions
 
 | # | Question | Décision |
