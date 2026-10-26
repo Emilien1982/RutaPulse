@@ -393,6 +393,29 @@ Un attribut absent (`surface` non renseigné) vaut `null` : `["!=", null, "paved
 est vrai. Un sentier sans `surface` reste donc un sentier, une piste cyclable
 sans `surface` reste une petite voie blanche.
 
+## Bord de la zone et voile (ajouté le 26 octobre 2026, T7)
+
+Aux petits zooms, une tuile couvre bien plus que la zone : la carte déborde
+du carré téléchargé (jusqu'à Épinal pour Nancy), puis s'arrête net en
+zoomant. On croirait avoir ces lieux hors ligne. Un voile couvre donc tout ce
+qui est hors de la zone, comme sur l'écran 52.
+
+- Source `bord-zone` : GeoJSON tiré du `bbox` de la zone (catalogue), avec
+  deux objets : le contour (ligne fermée des quatre côtés) et le voile (un
+  polygone qui couvre le monde, `[-180, -85]` à `[180, 85]`, percé d'un trou
+  au carré de la zone ; le trou se décrit dans le sens inverse du tour
+  extérieur).
+- Deux couches, **au-dessus de toutes les autres, étiquettes comprises**
+  (un nom de ville hors zone est voilé lui aussi). Le point bleu de MapLibre
+  reste au-dessus.
+
+| # | id | Type | Source | Filtre | Couleur |
+|---|---|---|---|---|---|
+| 31 | `voile-hors-zone` | fill | `bord-zone` | géométrie `Polygon` | `hn.voile-hors-zone` (`#CFC8BB`, `fill-opacity` 0,72) |
+| 32 | `bord-zone` | line | `bord-zone` | géométrie `LineString` | `carte.bord-zone` : 2,5 ; tirets 9 / 6, soit `line-dasharray` `[3.6, 2.4]` ; bouts carrés |
+
+Pas de zoom minimal ni maximal : visibles du zoom 8 au zoom 18.
+
 ## Étiquettes
 
 - **Police : Noto Sans** (Regular, Bold, Italic), glyphes en fichiers

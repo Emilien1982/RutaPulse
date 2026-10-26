@@ -259,22 +259,27 @@ Toujours ouverts (première version) :
 - Écran de suivi : `maxFontSizeMultiplier` à 1,2.
 - Thème clair forcé : `userInterfaceStyle: "light"`.
 
-## Questions pour Émilien (je ne les tranche pas)
+## Questions pour Émilien
 
-Les 7 questions précédentes sont tranchées (`docs/06-decisions-design.md`,
-« Écrans années 70 : décisions »). Nouvelles questions :
+Plus aucune question ouverte sur ces maquettes. Les 7 premières sont
+tranchées dans `docs/06-decisions-design.md`, « Écrans années 70 :
+décisions » ; les 4 suivantes (durée de l'arrivée, luminosité changée
+pendant le suivi, panneau des réglages sous 100 m, « Terminer » avant
+l'arrivée) dans le même document, section « Retouches : décisions ». Ce
+document fait foi. Les commentaires de `31b` et `v1/60` ne décrivent pas
+encore deux de ces décisions : le panneau des réglages du suivi se ferme
+seul à moins de 100 m d'une direction, et « Terminer » avant l'arrivée
+montre le même résumé, titré « Sortie terminée ». À compléter quand on
+reprendra ces écrans.
 
-1. **Durée réelle de l'arrivée** : j'ai compté du « Démarrer le suivi » à
-   l'arrivée, pauses comprises. Ou veux-tu le temps en mouvement seulement ?
-2. **Luminosité changée pendant le suivi (31b)** : je l'ai dessinée comme le
-   même réglage que l'écran 80 (le choix reste pour les sorties suivantes).
-   Ou doit-elle valoir pour la sortie en cours seulement ?
-3. **Panneau des réglages du suivi ouvert à l'approche d'une direction** :
-   doit-il se fermer seul quand la prochaine direction passe sous 100 m, pour
-   rendre toute la carte ? Aujourd'hui il reste ouvert jusqu'à « Fermer ».
-4. **« Terminer » avant l'arrivée** : affiche-t-on aussi un résumé aux
-   chiffres réels (sans « ARRIVÉE ! »), ou revient-on simplement à l'écran
-   d'avant ?
+Les questions nées de la comparaison de la phase 2 sont dans
+[`comparaisons/p02-t7.md`](comparaisons/p02-t7.md), fin du document.
+
+## Comparaisons de l'app aux maquettes
+
+`design/comparaisons/` : un fichier par comparaison (écarts, position à
+l'écran, correction attendue, bloquant ou non). Phase 2 :
+[`p02-t7.md`](comparaisons/p02-t7.md).
 
 ## Hors périmètre, volontairement absent
 
