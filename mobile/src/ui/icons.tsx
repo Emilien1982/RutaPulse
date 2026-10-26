@@ -1,4 +1,4 @@
-import Svg, { Circle, Path } from 'react-native-svg';
+import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
 // Pictograms of the mockups, drawn in a 24 x 24 square. Decorative: the
 // button or tab that holds them carries the accessible label.
@@ -77,6 +77,53 @@ export function LocateIcon(props: IconProps) {
       <Circle cx="12" cy="12" r="7" />
       <Circle cx="12" cy="12" r="2.5" fill={props.color} />
       <Path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+    </Icon>
+  );
+}
+
+export function CheckIcon({ size = 18, ...props }: IconProps) {
+  return (
+    <Icon {...props} size={size} strokeWidth={3.2}>
+      <Path d="M5 12l5 5 9-10" />
+    </Icon>
+  );
+}
+
+export function CloseIcon({ size = 22, ...props }: IconProps) {
+  return (
+    <Icon {...props} size={size} strokeWidth={2.8}>
+      <Path d="M6 6l12 12M18 6L6 18" />
+    </Icon>
+  );
+}
+
+export function PauseIcon({ size = 16, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+      <Rect x="6" y="4" width="4" height="16" rx="1" />
+      <Rect x="14" y="4" width="4" height="16" rx="1" />
+    </Svg>
+  );
+}
+
+export function MoreIcon({ color, size = 24 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+      <Circle cx="12" cy="5" r="2.3" />
+      <Circle cx="12" cy="12" r="2.3" />
+      <Circle cx="12" cy="19" r="2.3" />
+    </Svg>
+  );
+}
+
+export function WifiOffIcon(props: IconProps) {
+  return (
+    <Icon {...props} strokeWidth={2.4}>
+      <Path d="M2 8.5a15 15 0 0 1 20 0" />
+      <Path d="M5.5 12a10 10 0 0 1 13 0" />
+      <Path d="M9 15.5a5 5 0 0 1 6 0" />
+      <Circle cx="12" cy="19" r="1.3" fill={props.color} />
+      <Path d="M3 3l18 18" />
     </Icon>
   );
 }

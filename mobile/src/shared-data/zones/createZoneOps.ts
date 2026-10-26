@@ -17,7 +17,8 @@ export function createZoneOps(): ZoneOps {
       // Foreground: a background download could go on over 4G (ADR 0013).
       const task = File.createDownloadTask(url, file(path), {
         sessionType: 'foreground',
-        onProgress: (data) => onProgress(data.bytesWritten),
+        // iOS sends a BigInt at run time, although the type says number.
+        onProgress: (data) => onProgress(Number(data.bytesWritten)),
       });
       return {
         done: task.downloadAsync().then((result) => {
