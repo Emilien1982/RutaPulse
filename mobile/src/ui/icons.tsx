@@ -1,5 +1,7 @@
 import Svg, { Circle, Path, Rect } from 'react-native-svg';
 
+import { colors } from './theme';
+
 // Pictograms of the mockups, drawn in a 24 x 24 square. Decorative: the
 // button or tab that holds them carries the accessible label.
 type IconProps = { color: string; size?: number };
@@ -77,6 +79,19 @@ export function LocateIcon(props: IconProps) {
       <Circle cx="12" cy="12" r="7" />
       <Circle cx="12" cy="12" r="2.5" fill={props.color} />
       <Path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+    </Icon>
+  );
+}
+
+// The locate pictogram crossed out: the position is refused (mockup 90).
+export function LocateOffIcon(props: IconProps) {
+  return (
+    <Icon {...props} strokeWidth={2.3}>
+      <Circle cx="12" cy="12" r="7" />
+      <Circle cx="12" cy="12" r="2.5" fill={props.color} />
+      <Path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
+      <Path d="M4 4L20 20" stroke={colors.creamLight} strokeWidth={5} />
+      <Path d="M4 4L20 20" stroke={props.color} strokeWidth={2.3} />
     </Icon>
   );
 }

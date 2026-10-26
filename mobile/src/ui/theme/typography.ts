@@ -11,12 +11,15 @@ export const fontAssets = {
   Jost: require('../../../assets/fonts/Jost_700Bold.ttf'),
 };
 
+// Jost has tall accents: a line height under 1.45 times the size cuts the
+// accents of the capitals. The negative margins keep the layout of the
+// mockups (the mockups use 1.2, a browser does not cut).
 // Text styles used by the screens of the offline-map phase.
 export const text = {
   titleScreen: {
     fontFamily: fontFamily.display,
     fontSize: 26,
-    lineHeight: 31,
+    lineHeight: 38,
     letterSpacing: 0.5,
     textTransform: 'uppercase',
     color: colors.brown,
@@ -24,24 +27,27 @@ export const text = {
   titleState: {
     fontFamily: fontFamily.display,
     fontSize: 24,
-    lineHeight: 29,
+    lineHeight: 35,
+    marginVertical: -3,
     color: colors.brown,
   },
   titleName: {
     fontFamily: fontFamily.display,
     fontSize: 22,
-    lineHeight: 26,
+    lineHeight: 32,
+    marginVertical: -3,
     color: colors.brown,
   },
   buttonAction: {
     fontFamily: fontFamily.display,
     fontSize: 17,
-    lineHeight: 20,
+    lineHeight: 25,
   },
   sectionLabel: {
     fontFamily: fontFamily.display,
     fontSize: 13,
-    lineHeight: 16,
+    lineHeight: 19,
+    marginVertical: -1.5,
     letterSpacing: 1.2,
     textTransform: 'uppercase',
     color: colors.brown2,

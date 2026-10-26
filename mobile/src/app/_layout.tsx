@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 
+import { AppStatusBar } from '@/features/shell/AppStatusBar';
 import { FontGate } from '@/features/shell/FontGate';
 import { QueryProvider } from '@/features/shell/QueryProvider';
 import { ZoneDownloaderStarter } from '@/features/zones/ZoneDownloaderStarter';
@@ -8,6 +9,7 @@ export default function RootLayout() {
   return (
     <QueryProvider>
       <FontGate>
+        <AppStatusBar />
         <ZoneDownloaderStarter />
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

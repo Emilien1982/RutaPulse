@@ -1,0 +1,28 @@
+Running on Pixel_6_API_34_arm64
+ > Flow open-all-screens
+Launch app "fr.rutapulse.app"... COMPLETED
+Open rutapulse://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8081... COMPLETED
+Tap on (Optional) "Ouvrir|Open"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Ouvrir|Open
+Tap on (Optional) "Continuer|Continue"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Continuer|Continue
+Tap on (Optional) "Close|Fermer"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Close|Fermer
+Assert that "Carte.*" is visible... COMPLETED
+Assert that "Carte.*" is visible... COMPLETED
+Take screenshot captures/carte... COMPLETED
+Tap on "Itinéraires.*"... COMPLETED
+Assert that "Itinéraires" is visible... COMPLETED
+Take screenshot captures/itineraires... COMPLETED
+Tap on "Zones.*"... COMPLETED
+Assert that "Zones.*" is visible... COMPLETED
+Take screenshot captures/zones... COMPLETED
+Tap on "Réglages.*"... COMPLETED
+Assert that "Réglages" is visible... COMPLETED
+Take screenshot captures/reglages... COMPLETED

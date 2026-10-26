@@ -33,6 +33,6 @@ export function ScreenFrame({ title, children }: ScreenFrameProps) {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.cream },
   content: { paddingBottom: spacing.s6 },
-  title: { position: 'absolute', top: 110, left: spacing.s4 },
+  title: { position: 'absolute', top: 101, left: spacing.s4 },
   body: { marginTop: spacing.s3, paddingHorizontal: spacing.s3 },
 });

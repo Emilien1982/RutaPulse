@@ -162,7 +162,7 @@ function contour(id: string, major: 0 | 1, color: string, width: Json): Layer {
   };
 }
 
-function layers(zoneBorder: Layer): Layer[] {
+function layers(overlay: Layer[]): Layer[] {
   return [
     {
       id: 'fond',
@@ -371,7 +371,6 @@ function layers(zoneBorder: Layer): Layer[] {
       widths(8, 1, 10, 1.5, 12, 2.5, 14, 5, 15, 7, 16, 9, 18, 16),
     ),
     // Reserved place: circuits, route and markers come here (later phases).
-    zoneBorder,
     label(
       'cote',
       'courbes',
@@ -491,6 +490,8 @@ function layers(zoneBorder: Layer): Layer[] {
       },
       { color: c.label, halo: 2 },
     ),
+    // On top of everything, labels included: the veil, then the border.
+    ...overlay,
   ];
 }
 
@@ -513,6 +514,37 @@ export function zoneBorderGeoJson(bbox: Bbox) {
   } as const;
 }
 
+/**
+ * The world with a hole at the zone: everything outside the zone is veiled.
+ * The hole is drawn in the opposite direction of the outer ring.
+ */
+export function zoneVeilGeoJson(bbox: Bbox) {
+  const { lonMin, latMin, lonMax, latMax } = bbox;
+  return {
+    type: 'Feature',
+    properties: {},
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [-180, -85],
+          [180, -85],
+          [180, 85],
+          [-180, 85],
+          [-180, -85],
+        ],
+        [
+          [lonMin, latMin],
+          [lonMin, latMax],
+          [lonMax, latMax],
+          [lonMax, latMin],
+          [lonMin, latMin],
+        ],
+      ],
+    },
+  } as const;
+}
+
 export function buildMapStyle(input: MapStyleInput): StyleSpecification {
   // tokens.md "carte.bord-zone": 2.5 wide, dashes 9 / 6 (in widths).
   const zoneBorder: Layer = {
@@ -524,6 +556,15 @@ export function buildMapStyle(input: MapStyleInput): StyleSpecification {
       'line-color': c.zoneBorder,
       'line-width': 2.5,
       'line-dasharray': [9 / 2.5, 6 / 2.5],
+    },
+  };
+  const zoneVeil: Layer = {
+    id: 'voile-hors-zone',
+    type: 'fill',
+    source: 'voile-zone',
+    paint: {
+      'fill-color': c.outsideVeil,
+      'fill-opacity': c.outsideVeilOpacity,
     },
   };
   const style = {
@@ -538,9 +579,10 @@ export function buildMapStyle(input: MapStyleInput): StyleSpecification {
       },
       courbes: { type: 'vector', url: `pmtiles://${input.files.contours}` },
       'bord-zone': { type: 'geojson', data: zoneBorderGeoJson(input.bbox) },
+      'voile-zone': { type: 'geojson', data: zoneVeilGeoJson(input.bbox) },
     },
     glyphs: `${input.glyphsDir}/{fontstack}/{range}.pbf`,
-    layers: layers(zoneBorder),
+    layers: layers([zoneVeil, zoneBorder]),
   };
   return style as unknown as StyleSpecification;
 }

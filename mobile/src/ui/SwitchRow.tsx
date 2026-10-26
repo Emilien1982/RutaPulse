@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Switch, Text } from 'react-native';
+import { Pressable, StyleSheet, Switch, Text, View } from 'react-native';
 
 import { colors, spacing, text } from './theme';
 
@@ -20,16 +20,18 @@ export function SwitchRow({ label, value, onValueChange }: SwitchRowProps) {
       style={styles.row}
     >
       <Text style={[text.control, styles.label]}>{label}</Text>
-      <Switch
-        value={value}
-        onValueChange={onValueChange}
-        trackColor={{ false: colors.sand, true: colors.brown }}
-        thumbColor={colors.creamLight}
-        ios_backgroundColor={colors.sand}
-        accessible={false}
-        importantForAccessibility="no-hide-descendants"
-        pointerEvents="none"
-      />
+      <View style={styles.switchBox}>
+        <Switch
+          value={value}
+          onValueChange={onValueChange}
+          trackColor={{ false: colors.sand, true: colors.brown }}
+          thumbColor={colors.creamLight}
+          ios_backgroundColor={colors.sand}
+          accessible={false}
+          importantForAccessibility="no-hide-descendants"
+          pointerEvents="none"
+        />
+      </View>
     </Pressable>
   );
 }
@@ -43,4 +45,6 @@ const styles = StyleSheet.create({
     minHeight: 56,
   },
   label: { flex: 1 },
+  // The native switch is drawn at the top of its place: center it by hand.
+  switchBox: { height: 56, justifyContent: 'center' },
 });

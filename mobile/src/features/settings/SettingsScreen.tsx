@@ -36,7 +36,7 @@ export function SettingsScreen() {
 }
 
 const styles = StyleSheet.create({
-  section: { marginHorizontal: spacing.s1, marginBottom: 6 },
+  section: { marginHorizontal: spacing.s1, marginBottom: 4.5 },
   card: {
     backgroundColor: colors.creamLight,
     borderWidth: border.normal,

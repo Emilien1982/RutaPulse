@@ -138,9 +138,13 @@ describe('zone border', () => {
     ]);
   });
 
-  it('is above the roads and below the labels', () => {
+  it('is above all the layers, labels included, under nothing but itself', () => {
+    // style-carte.md, "Bord de la zone et voile", table lines 31 and 32:
+    // the veil (31) then the border (32), "au-dessus de toutes les autres,
+    // étiquettes comprises".
     const order = layers.map((l) => l.id);
-    expect(order.indexOf('bord-zone')).toBeGreaterThan(order.indexOf('voie-g'));
-    expect(order.indexOf('bord-zone')).toBeLessThan(order.indexOf('cote'));
+    expect(order.indexOf('bord-zone')).toBe(order.length - 1);
+    expect(order.indexOf('voile-hors-zone')).toBe(order.length - 2);
+    expect(order.indexOf('bord-zone')).toBeGreaterThan(order.indexOf('cote'));
   });
 });

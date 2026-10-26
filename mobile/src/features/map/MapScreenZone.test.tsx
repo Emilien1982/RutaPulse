@@ -178,7 +178,8 @@ describe('recenter button', () => {
     ).toBeTruthy();
   });
 
-  it('removes the message after a few seconds', async () => {
+  it('keeps the message as long as the position is outside, removes it when back inside', async () => {
+    // Decision of the steering (T7): no more 5 s delay.
     jest.useFakeTimers();
     try {
       mockPosition = { coords: { longitude: 2.35, latitude: 48.85 } };
@@ -188,8 +189,20 @@ describe('recenter button', () => {
         screen.getByText('Vous êtes hors de la zone téléchargée'),
       ).toBeTruthy();
       await act(async () => {
-        jest.advanceTimersByTime(6000);
+        jest.advanceTimersByTime(60000);
       });
+      expect(
+        screen.getByText('Vous êtes hors de la zone téléchargée'),
+      ).toBeTruthy();
+
+      // Back inside the zone: the message goes away.
+      mockPosition = { coords: { longitude: 6.1844, latitude: 48.6921 } };
+      await screen.rerender(
+        <QueryClientProvider client={new QueryClient()}>
+          <MapScreen />
+        </QueryClientProvider>,
+      );
+      await act(async () => {});
       expect(
         screen.queryByText('Vous êtes hors de la zone téléchargée'),
       ).toBeNull();

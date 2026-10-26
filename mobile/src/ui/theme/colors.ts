@@ -12,6 +12,15 @@ export const colors = {
   rust: '#B5452A',
   danger: '#8A1C12',
   success: '#0F5223',
+  olive: '#A9B56A',
+  petrol: '#2D6A66',
+} as const;
+
+// Colors of the cyclist ("perso.*"). Source: design/tokens.md.
+export const characterColors = {
+  skin: '#D9956A',
+  skinShadow: '#B97A52',
+  jerseyShadow: '#8E3520',
 } as const;
 
 // "hn.ombre": 0 2 8, brown at 30 %. Always used with a brown border.
@@ -54,4 +63,7 @@ export const mapColors = {
   // hn.creme-clair at 88 %, behind the attributions.
   attributionBackground: 'rgba(251, 241, 218, 0.88)',
   zoneBorder: colors.brown,
+  // hn.voile-hors-zone: #CFC8BB at 72 %.
+  outsideVeil: '#CFC8BB',
+  outsideVeilOpacity: 0.72,
 } as const;

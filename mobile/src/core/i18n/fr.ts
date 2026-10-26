@@ -8,6 +8,11 @@ export const fr = {
   'map.chooseZone': 'Choisir une zone',
   'map.recenter': 'Recentrer sur ma position',
   'map.outsideZone': 'Vous êtes hors de la zone téléchargée',
+  'map.locationOffTitle': 'Position désactivée',
+  'map.locationOffText':
+    'Autorisez la position dans les réglages pour voir où vous êtes sur la carte.',
+  'map.locationOffCancel': 'Annuler',
+  'map.locationOffSettings': 'Ouvrir les réglages',
   'map.attribution': '© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN',
   'map.label': 'Carte de la zone {name}',
   'settings.title': 'Réglages',

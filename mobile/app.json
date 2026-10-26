@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "rutapulse",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "ios": {
       "bundleIdentifier": "fr.rutapulse.app",
       "icon": "./assets/expo.icon"
@@ -39,7 +39,8 @@
         {
           "locationWhenInUsePermission": "RutaPulse utilise votre position pour l'afficher sur la carte, seulement quand l'app est ouverte."
         }
-      ]
+      ],
+      "expo-status-bar"
     ],
     "experiments": {
       "typedRoutes": true

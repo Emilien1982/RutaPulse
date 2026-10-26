@@ -1,0 +1,19 @@
+Running on iPhone 17 - iOS 26.5 - DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D
+ > Flow open-all-screens
+Launch app "fr.rutapulse.app"... COMPLETED
+Open rutapulse://expo-development-client/?url=http%3A%2F%2Flocalhost%3A8081... COMPLETED
+Tap on (Optional) "Ouvrir|Open"... WARNED
+Tap on (Optional) "Continuer|Continue"... WARNED
+Tap on (Optional) "Close|Fermer"... WARNED
+Assert that "Carte.*" is visible... COMPLETED
+Assert that "Carte.*" is visible... COMPLETED
+Take screenshot captures/carte... COMPLETED
+Tap on "Itinéraires.*"... COMPLETED
+Assert that "Itinéraires" is visible... COMPLETED
+Take screenshot captures/itineraires... COMPLETED
+Tap on "Zones.*"... COMPLETED
+Assert that "Zones.*" is visible... COMPLETED
+Take screenshot captures/zones... COMPLETED
+Tap on "Réglages.*"... COMPLETED
+Assert that "Réglages" is visible... COMPLETED
+Take screenshot captures/reglages... COMPLETED

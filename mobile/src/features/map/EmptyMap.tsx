@@ -1,20 +1,21 @@
 import { StyleSheet, Text, View } from 'react-native';
-import Svg, { Circle, ClipPath, Defs, G, Rect } from 'react-native-svg';
+import Svg, { Circle, ClipPath, Defs, G, Path, Rect } from 'react-native-svg';
 
 import { t } from '@/core/i18n/t';
 import { Button } from '@/ui/Button';
+import { CyclistScene } from '@/ui/Cyclist';
 import { DownloadIcon } from '@/ui/icons';
 import { colors, spacing, text } from '@/ui/theme';
 
 // Empty state of the Map tab (mockup 91): no ready zone. The big striped sun
-// is drawn; the cyclist of the mockup is not (see the report of T5).
+// and the cyclist are drawn, as in the mockup (390 x 425, from y = 47).
 function Sun() {
   return (
     <Svg
       width="100%"
-      height={256}
-      viewBox="0 0 390 256"
-      preserveAspectRatio="xMidYMax slice"
+      height="100%"
+      viewBox="0 0 390 425"
+      preserveAspectRatio="xMidYMin meet"
       accessible={false}
     >
       <Defs>
@@ -28,10 +29,17 @@ function Sun() {
         <Rect x="90" y="187" width="210" height="6" fill={colors.cream} />
         <Rect x="90" y="203" width="210" height="7" fill={colors.cream} />
       </G>
-      <Rect x="0" y="220" width="390" height="9" fill={colors.mustard} />
-      <Rect x="0" y="229" width="390" height="9" fill={colors.orange} />
-      <Rect x="0" y="238" width="390" height="9" fill={colors.rust} />
-      <Rect x="0" y="247" width="390" height="9" fill={colors.brown} />
+      <Rect x="-400" y="220" width="1190" height="9" fill={colors.mustard} />
+      <Rect x="-400" y="229" width="1190" height="9" fill={colors.orange} />
+      <Rect x="-400" y="238" width="1190" height="9" fill={colors.rust} />
+      <Rect x="-400" y="247" width="1190" height="9" fill={colors.brown} />
+      <Path
+        id="collines"
+        d="M-400 290 H0 C40 274 80 274 120 286 C160 298 200 290 240 280 C290 268 340 276 390 288 H790 V296 H-400 Z"
+        fill={colors.olive}
+        opacity={0.55}
+      />
+      <CyclistScene />
     </Svg>
   );
 }
@@ -39,7 +47,9 @@ function Sun() {
 export function EmptyMap({ onChooseZone }: { onChooseZone: () => void }) {
   return (
     <View style={styles.screen}>
-      <Sun />
+      <View style={styles.sun}>
+        <Sun />
+      </View>
       <View style={styles.text}>
         <Text
           accessibilityRole="header"
@@ -67,10 +77,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.cream,
     justifyContent: 'flex-start',
-    paddingTop: 96,
+    paddingTop: 47,
   },
-  text: { paddingHorizontal: spacing.s6, marginTop: spacing.s6 },
+  // The mockup is 844 tall. The gaps are kept, in the flow; when the screen is
+  // shorter (or the system text bigger), the drawing shrinks first.
+  sun: { height: 425, flexShrink: 1, minHeight: 120 },
+  text: { paddingHorizontal: spacing.s6, marginTop: 12 },
   center: { textAlign: 'center' },
   help: { color: colors.brown2, marginTop: spacing.s2 },
-  button: { paddingHorizontal: 55, marginTop: spacing.s6 },
+  button: { paddingHorizontal: 55, marginTop: 31, marginBottom: 16 },
 });
