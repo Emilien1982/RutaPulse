@@ -22,3 +22,36 @@ export const shadow = {
   shadowRadius: 8,
   elevation: 4,
 } as const;
+
+// Colors of the map ("carte.*"). Source: design/tokens.md and
+// design/style-carte.md.
+export const mapColors = {
+  background: '#EEEBE4',
+  wood: '#D3E4C0',
+  meadow: '#E4E9D0',
+  built: '#E3DCD0',
+  building: '#D6CCBD',
+  water: '#A8CCDD',
+  stream: '#7DB0CB',
+  road: '#FFFFFF',
+  roadCasing: '#BFB7AA',
+  track: '#7A4A1E',
+  path: '#C62828',
+  footway: '#A89F92',
+  steps: '#6B5E52',
+  rail: '#9A9387',
+  contour: '#C9B293',
+  contourMajor: '#B89C78',
+  hillshadeShadow: '#4A3F35',
+  hillshadeLight: 'rgba(255, 255, 255, 0.6)',
+  label: '#111111',
+  label2: '#4A4A4A',
+  elevation: '#5A3A28',
+  waterText: '#174B63',
+  labelHalo: '#FFFFFF',
+  position: '#1A73E8',
+  positionBorder: '#FFFFFF',
+  // hn.creme-clair at 88 %, behind the attributions.
+  attributionBackground: 'rgba(251, 241, 218, 0.88)',
+  zoneBorder: colors.brown,
+} as const;
