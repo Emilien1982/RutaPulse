@@ -180,7 +180,7 @@ un fichier, soit 28,8 Mo pour Nancy.
 |---|---|
 | « Wi-Fi seulement » et le Wi-Fi disparaît | Le fichier en cours est annulé (`cancel()`). État « En attente du Wi-Fi ». Le téléchargement repart seul quand le Wi-Fi revient (écoute d'`expo-network`) |
 | Réseau perdu, ou erreur pendant un fichier | Un essai raté pour ce fichier. On attend que le réseau soit permis, puis 5 secondes, et on recommence ce fichier |
-| Aucun octet reçu pendant 30 secondes | Un chien de garde (watchdog, minuterie qui surveille la progression) annule le fichier : un essai raté. Indispensable sur Android, sans délai d'attente |
+| Aucun octet reçu pendant 30 secondes | Un chien de garde (watchdog, minuterie qui surveille la progression) annule le fichier : un essai raté. Filet plus court que le délai du système (environ 60 s sur les deux plateformes, mesuré par E1) |
 | Taille ou empreinte fausse | Le fichier est effacé : un essai raté |
 | 3 essais ratés de suite pour un même fichier | État « Échec », avec « Réessayer ». Les fichiers contrôlés restent |
 | App en arrière-plan | Rien de prévu. Si le système suspend l'app, le fichier en cours échoue ou s'arrête ; il recommence au retour (cas « erreur ») |
@@ -466,3 +466,18 @@ transformés.
   https://tanstack.com/query/latest/docs/framework/react/react-native
 - Sauvegarde automatique Android (limite de 25 Mo) :
   https://developer.android.com/identity/data/autobackup
+
+## Note du 2026-10-26 : résultats de l'essai E1
+
+Détails : [p02-essai-e1.md](../phases/p02-essai-e1.md).
+- Le repli `createDownloadResumable` n'est pas nécessaire : téléchargement,
+  redirection et empreintes marchent sur les deux plateformes.
+- Android et iOS rejettent seuls un téléchargement figé après environ 60 s
+  sans octet. Le chien de garde de 30 s reste un filet plus court.
+- Sur Android, un fichier partiel reste à la destination après une coupure
+  ou un arrêt de l'app. Le téléchargeur **efface le fichier avant chaque
+  essai**, et ne se fie qu'à la taille puis à l'empreinte.
+- Sur iOS, un fichier partiel orphelin peut rester dans `tmp/`. Il est
+  ignoré en v1.
+- Le simulateur iOS annonce `WIFI`. La perte du Wi-Fi (C4) se teste sur
+  Android seulement.
