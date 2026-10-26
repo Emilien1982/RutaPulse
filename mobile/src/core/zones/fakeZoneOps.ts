@@ -1,14 +1,26 @@
 // Fake phone for the tests of core/zones: files in memory, a scripted
 // server, a network that tests change by hand, and timers that tests advance.
 
-import { createHash } from 'node:crypto';
-
 import type { Zone } from './catalogue';
 import type { NetworkInfo } from './networkRule';
 import type { DownloadHandle, ZoneOps } from './zoneOps';
 
+// Fake fingerprints (64 hex digits, different for different texts): no
+// hashing library in the tests. The one exception is
+// a real value computed outside the code, to compare with a real catalogue:
+//   $ printf 'hello\n' | shasum -a 256
+//   5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03  -
+const knownHashes: Record<string, string> = {
+  'hello\n': '5891b5b522d5df086d0ff0b110fbd9d21bb4fc7163af34d08286a2e846f6be03',
+};
+
 export function sha256Of(text: string): string {
-  return createHash('sha256').update(text).digest('hex');
+  const fake = [...text]
+    .map((c) => c.charCodeAt(0).toString(16).padStart(4, '0'))
+    .join('')
+    .padStart(64, '0')
+    .slice(-64);
+  return knownHashes[text] ?? fake;
 }
 
 /** A zone whose files have the given contents (one letter = one byte). */
@@ -47,6 +59,8 @@ export type FakePhone = {
   network: NetworkInfo;
   wifiOnly: boolean;
   space: number;
+  /** While set, `sha256` waits for this promise (tests hold it back). */
+  shaGate: Promise<void> | null;
   started: string[];
   cancelCalls: number;
   serve: (url: string, ...list: Behavior[]) => void;
@@ -69,6 +83,7 @@ export function createFakePhone(): FakePhone {
     network: { isConnected: true, type: 'WIFI' },
     wifiOnly: true,
     space: 10_000_000_000,
+    shaGate: null,
     /** Urls requested, in order. */
     started: [],
     cancelCalls: 0,
@@ -138,7 +153,10 @@ export function createFakePhone(): FakePhone {
         };
       },
       fileSize: async (path) => files.get(path)?.length ?? null,
-      sha256: async (path) => sha256Of(files.get(path) ?? ''),
+      sha256: async (path) => {
+        if (phone.shaGate) await phone.shaGate;
+        return sha256Of(files.get(path) ?? '');
+      },
       readText: async (path) => files.get(path) ?? null,
       writeText: async (path, text) => void files.set(path, text),
       makeDir: async () => {},
@@ -178,7 +196,7 @@ export function createFakePhone(): FakePhone {
 }
 
 function flush(): Promise<void> {
-  return new Promise((resolve) => setImmediate(resolve));
+  return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 export const ok =

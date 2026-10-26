@@ -54,7 +54,9 @@ type Attempt =
 
 /**
  * Steps 2 to 5. Returns the last state: ready, cancelled, no-space or failed.
- * `signal` aborted means "cancel". The caller erases the folder if needed.
+ * `signal` aborted means "cancel". The caller erases the folder if needed,
+ * and must wait for the end of `downloadZone` before doing so: a late write
+ * could otherwise recreate a folder with only `.ready.json` in it.
  */
 export async function downloadZone(
   zone: Zone,
@@ -147,8 +149,10 @@ export async function downloadZone(
 
     let pausedByRule = false;
     let timedOut = false;
+    let finished = false;
     let stopWatchdog = () => {};
     const handle = ops.startDownload(file.url, path, (written) => {
+      if (finished) return;
       armWatchdog();
       downloading(written);
     });
@@ -172,6 +176,7 @@ export async function downloadZone(
     };
     const stopListening = ops.onConditionsChange(() => void recheck());
     signal.addEventListener('abort', cancel);
+    if (signal.aborted) handle.cancel();
     armWatchdog();
 
     let failed = false;
@@ -180,6 +185,7 @@ export async function downloadZone(
     } catch {
       failed = true;
     } finally {
+      finished = true;
       stopWatchdog();
       stopListening();
       signal.removeEventListener('abort', cancel);
@@ -232,7 +238,9 @@ export async function downloadZone(
     }
   }
 
-  // Everything is checked: the marker is written last.
+  // Everything is checked: the marker is written last. No `await` between
+  // this test and the write, so a cancel cannot slip in.
+  if (signal.aborted) return cancelled;
   await ops.writeText(readyPath(zone), serializeReady(zone, ops.now()));
   await ops.remove(planPath(zone));
   for (const name of await ops.listDir(zoneDir(zone.id))) {
