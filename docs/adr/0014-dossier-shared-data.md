@@ -1,6 +1,6 @@
-# ADR 0014 — Un dossier `src/data/` pour les données partagées entre fonctionnalités
+# ADR 0014 — Un dossier `src/shared-data/` pour les données partagées entre fonctionnalités
 
-- Statut : Proposé le 2026-10-24, à valider par Émilien
+- Statut : Accepté le 2026-10-26 (nom du dossier changé par Émilien : shared-data)
 - Date : 2026-10-24 (phase 2, tâche T1 de [p02-carte-hors-ligne](../phases/p02-carte-hors-ligne.md))
 - Modifie l'ADR 0011, §§ 2 et 3 (structure du code et règle de
   dépendance). Né de l'[ADR 0013](0013-telechargement-zones.md).
@@ -28,14 +28,14 @@ d'architecture).
 
 ## Décision
 
-- Nouveau dossier **`mobile/src/data/`** : l'accès aux données gardées sur
+- Nouveau dossier **`mobile/src/shared-data/`** : l'accès aux données gardées sur
   le téléphone (fichiers, réglages ; plus tard SQLite) et les hooks Query
   qui les lisent ou les écrivent, **quand au moins deux fonctionnalités
   s'en servent**. Ce qui ne sert qu'à une fonctionnalité reste dans son
   dossier.
-- Un sous-dossier par domaine : `data/zones/`, `data/settings/`.
-- Pas de composant React dans `data/` : seulement des fonctions et des
-  hooks. Les calculs restent dans `core/` (ADR 0011) ; `data/` les branche
+- Un sous-dossier par domaine : `shared-data/zones/`, `shared-data/settings/`.
+- Pas de composant React dans `shared-data/` : seulement des fonctions et des
+  hooks. Les calculs restent dans `core/` (ADR 0011) ; `shared-data/` les branche
   sur les vraies API du téléphone.
 
 Règle de dépendance, qui remplace le tableau du § 3 de l'ADR 0011 (ajouts
@@ -43,21 +43,21 @@ en gras) :
 
 | Dossier | Peut importer | Ne doit pas importer |
 |---|---|---|
-| `src/app/` | `features/`, `expo-router`, **bibliothèques (pour `QueryClientProvider`)** | `core/`, `ui/`, **`data/`**, `modules/` |
-| `src/features/<x>/` | `ui/`, `core/`, **`data/`**, `modules/`, bibliothèques | une autre fonctionnalité |
-| **`src/data/`** | **`core/`, bibliothèques (`expo-*`, TanStack, React pour les hooks)** | **`features/`, `ui/`, `app/`, `modules/`** |
-| `src/ui/` | `core/`, React, React Native | `features/`, **`data/`**, `modules/` |
-| `src/core/` | `core/`, bibliothèques en TypeScript pur | React, React Native, `expo-*`, `modules/`, **`data/`** |
+| `src/app/` | `features/`, `expo-router`, **bibliothèques (pour `QueryClientProvider`)** | `core/`, `ui/`, **`shared-data/`**, `modules/` |
+| `src/features/<x>/` | `ui/`, `core/`, **`shared-data/`**, `modules/`, bibliothèques | une autre fonctionnalité |
+| **`src/shared-data/`** | **`core/`, bibliothèques (`expo-*`, TanStack, React pour les hooks)** | **`features/`, `ui/`, `app/`, `modules/`** |
+| `src/ui/` | `core/`, React, React Native | `features/`, **`shared-data/`**, `modules/` |
+| `src/core/` | `core/`, bibliothèques en TypeScript pur | React, React Native, `expo-*`, `modules/`, **`shared-data/`** |
 | `modules/` | ses fichiers, `expo-modules-core` | tout `src/` |
 
-- `data/` n'importe pas `modules/` : aucun besoin connu. On l'ouvrira par
+- `shared-data/` n'importe pas `modules/` : aucun besoin connu. On l'ouvrira par
   un nouvel ADR si une phase en a besoin.
-- Tests : une fonction de `data/` qui a une logique (condition, boucle) a
+- Tests : une fonction de `shared-data/` qui a une logique (condition, boucle) a
   un test Jest, avec une imitation (mock) des modules `expo-*`. Un hook qui
   ne fait qu'appeler `useQuery` n'en a pas besoin : les tests d'écran le
   couvrent.
 - ESLint (contrôle du code) : à compléter en T3 de la phase 2, avec les
-  règles de `data/` et l'interdiction de `data/` depuis `app/`, `ui/` et
+  règles de `shared-data/` et l'interdiction de `shared-data/` depuis `app/`, `ui/` et
   `core/`.
 
 ## Alternatives rejetées
@@ -68,7 +68,7 @@ en gras) :
   différer, alors que les clés de Query doivent être identiques.
 - **Tout passer par `core/`, avec les API du téléphone en paramètre** : la
   logique y est déjà (ADR 0013). Il reste à brancher les vraies API à un
-  endroit partagé : c'est ce que fait `data/`.
+  endroit partagé : c'est ce que fait `shared-data/`.
 - **Permettre à une fonctionnalité d'en importer une autre** : les
   dépendances deviendraient vite un sac de nœuds. La règle actuelle est
   simple et ESLint la vérifie.

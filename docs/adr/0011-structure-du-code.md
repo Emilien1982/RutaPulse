@@ -1,6 +1,6 @@
 # ADR 0011 — Structure du dépôt et du code, nommage, tests
 
-- Statut : Accepté le 2026-10-21
+- Statut : Accepté le 2026-10-21 ; tableau du § 3 remplacé par l'[ADR 0014](0014-dossier-shared-data.md) le 2026-10-26
 - Date : 2026-10-21 (phase 0, tâche T1 de [p00-socle](../phases/p00-socle.md))
 
 ADR veut dire « Architecture Decision Record » (fiche de décision

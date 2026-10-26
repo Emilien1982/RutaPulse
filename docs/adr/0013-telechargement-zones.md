@@ -1,11 +1,11 @@
 # ADR 0013 — Télécharger, contrôler et ranger les zones sur le téléphone
 
-- Statut : Proposé le 2026-10-24, à valider par Émilien
+- Statut : Accepté le 2026-10-26
 - Date : 2026-10-24 (phase 2, tâche T1 de [p02-carte-hors-ligne](../phases/p02-carte-hors-ligne.md))
 - Complète l'ADR 0003 (le paquet et le catalogue, vus depuis l'app) et
   l'ADR 0007 (rôle de TanStack Query et de TanStack Store pour les
-  téléchargements). Suit l'ADR 0011 et l'[ADR 0014](0014-dossier-data.md)
-  (dossier `src/data/`, proposé en même temps).
+  téléchargements). Suit l'ADR 0011 et l'[ADR 0014](0014-dossier-shared-data.md)
+  (dossier `src/shared-data/`, proposé en même temps).
 
 ADR veut dire « Architecture Decision Record » (fiche de décision
 d'architecture).
@@ -297,7 +297,7 @@ Query.
   comme dans la doc de TanStack Query pour React Native). Sans cela, Query
   ne sait pas que le téléphone est hors ligne.
 
-Rangement, selon l'ADR 0011 et le dossier `src/data/` de l'ADR 0014 :
+Rangement, selon l'ADR 0011 et le dossier `src/shared-data/` de l'ADR 0014 :
 
 | Endroit | Contenu | Testé par |
 |---|---|---|
@@ -308,8 +308,8 @@ Rangement, selon l'ADR 0011 et le dossier `src/data/` de l'ADR 0014 :
 | `core/zones/zoneRow.ts` | L'état de chaque ligne de l'écran Zones (à télécharger, en cours, en attente, échec, prête), à partir du catalogue, des zones installées et du Store | Jest |
 | `core/zones/activeZone.ts` | Le choix du § 8 | Jest |
 | `core/settings/settings.ts` | `parseSettings(json)` et valeurs par défaut | Jest |
-| `data/zones/` | Les vraies opérations (`expo-file-system`) ; lecture des zones installées ; `useInstalledZones()` ; adresses des fichiers pour la carte | Jest avec une imitation (mock) d'`expo-file-system` pour la logique ; le reste par E1 et Maestro |
-| `data/settings/` | Lecture et écriture de `settings.json` ; `useSettings()`, `useSetWifiOnly()` | Jest avec une imitation |
+| `shared-data/zones/` | Les vraies opérations (`expo-file-system`) ; lecture des zones installées ; `useInstalledZones()` ; adresses des fichiers pour la carte | Jest avec une imitation (mock) d'`expo-file-system` pour la logique ; le reste par E1 et Maestro |
+| `shared-data/settings/` | Lecture et écriture de `settings.json` ; `useSettings()`, `useSetWifiOnly()` | Jest avec une imitation |
 | `features/zones/zoneDownloader.ts` | Le téléchargeur : file d'attente, Store, écoute du réseau et du réglage ; il appelle `downloadZone` avec les vraies opérations | Maestro (C3, C4) |
 | `features/zones/` (le reste) | `ZonesScreen`, `useCatalogue()`, et un composant sans affichage qui démarre le téléchargeur et reprend les téléchargements interrompus | Testing Library |
 | `features/map/` | `MapScreen` : zones installées, zone affichée, copie des glyphes, état vide | Testing Library, Maestro |
@@ -413,7 +413,7 @@ transformés.
 - Négatif : l'app doit rester ouverte pendant le téléchargement. Durée pour
   Nancy en Wi-Fi : mesurée par E1.
 - Négatif : avec un VPN, « Wi-Fi seulement » attend toujours.
-- Négatif : un dossier `src/data/` de plus (ADR 0014), et ESLint à
+- Négatif : un dossier `src/shared-data/` de plus (ADR 0014), et ESLint à
   compléter en T3.
 - **Mise à jour d'une zone** (par exemple v3 vers v4) : le rangement par
   version la permet, et l'étape 4 du § 3 efface l'ancienne version. Mais
