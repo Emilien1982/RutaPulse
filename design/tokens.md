@@ -98,7 +98,7 @@ Contraste du texte mesuré sur `hn.creme` (fond des écrans) et sur
 | `hn.danger` | `#8A1C12` | 7,5:1 (crème), 8,3:1 (crème clair) | « Supprimer » dans nos écrans. Les menus natifs gardent le rouge du système. |
 | `hn.succes` | `#0F5223` | 7,5:1 (crème), 8,3:1 (crème clair) | « Prête sans réseau » |
 | `hn.ombre` | 0 2 8, `hn.brun` à 30 % | décor | Boutons et bulles posés sur la carte, toujours avec un bord brun |
-| `hn.voile-hors-zone` | `#CFC8BB` à 72 % | décor | Carte au-delà du bord de la zone téléchargée (52) |
+| `hn.voile-hors-zone` | `#CFC8BB` à 72 % | décor ; `carte.bord-zone` dessus : 10:1 (12,8:1 côté zone) | Carte au-delà du bord de la zone téléchargée (52, 90) |
 
 Règles :
 - **Pas de magenta en texte** (4,7:1 sur crème) : un petit trait magenta à
@@ -246,6 +246,11 @@ système). Tailles au zoom 15 ; courbes complètes dans `style-carte.md`.
 | `texte.carte-eau` | 13 | Noto Sans Italic | Rivières et canaux |
 
 - Interligne : 1,2 pour les chiffres et titres, 1,4 pour le corps.
+  Exception dans l'app : tout style en **Jost** a une interligne d'au moins
+  1,45 × la taille (titre 26 → 38, surtitre 13 → 19, bouton 17 → 25). Jost
+  a de grands jambages, et iOS coupe ce qui dépasse de la ligne : l'accent
+  des capitales (« RÉGLAGES ») disparaissait à 1,2 (T7, B3). Les maquettes
+  HTML gardent 1,2 : le navigateur ne coupe pas.
 - Chiffres : toujours `fontVariant: ['tabular-nums']`, toujours en police du
   système (décision 2 : « les chiffres restent sobres et très lisibles »).
 - Nombres en français : virgule décimale (« 12,4 km »), espace fine avant
