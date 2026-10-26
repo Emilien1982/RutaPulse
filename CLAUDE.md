@@ -11,6 +11,12 @@ toute phase coûteuse avant son lancement.
 - `docs/` : documents de travail et ADR (`docs/adr/`, une décision par fichier).
 - `design/` : maquettes et valeurs de référence du design.
 
+## Qui parle à Émilien
+- Seule la session de pilotage parle à Émilien. Une session de phase ou
+  d'essai ne lui pose jamais de question et ne termine pas son tour sur une
+  question pour lui : elle envoie ses questions au pilotage (SendMessage),
+  avec sa recommandation, et continue ce qui ne dépend pas de la réponse.
+
 ## Comment on travaille
 - Une phase suit toujours le circuit de la skill `/phase`.
 - La session principale ne code pas : elle délègue au `developpeur`, puis
