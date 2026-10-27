@@ -1,7 +1,8 @@
 const { defineConfig } = require('eslint/config');
 const expoConfig = require('eslint-config-expo/flat');
 
-// Dependency rules between folders: see ADR 0011, section 3.
+// Dependency rules between folders: see ADR 0011, section 3, as replaced by
+// ADR 0014 (shared-data/).
 // Each rule covers the alias form (@/x) and the relative form (../x).
 function group(message, ...names) {
   const group = names.flatMap((n) => [
@@ -18,6 +19,7 @@ const modules = group('Not allowed from this folder.', 'modules');
 const ui = group('Not allowed from this folder.', 'ui');
 const core = group('Not allowed from this folder.', 'core');
 const app = group('Not allowed from this folder.', 'app');
+const sharedData = group('Not allowed from this folder.', 'shared-data');
 
 function restrict(files, { paths = [], patterns = [] }) {
   return {
@@ -65,10 +67,12 @@ module.exports = defineConfig([
       ui,
       app,
       modules,
+      sharedData,
     ],
   }),
-  restrict(['src/ui/**'], { patterns: [features, modules] }),
-  restrict(['src/app/**'], { patterns: [core, ui, modules] }),
+  restrict(['src/ui/**'], { patterns: [features, sharedData, modules] }),
+  restrict(['src/app/**'], { patterns: [core, ui, sharedData, modules] }),
+  restrict(['src/shared-data/**'], { patterns: [features, ui, app, modules] }),
   ...featureDepths,
   restrict(['modules/**'], {
     patterns: [

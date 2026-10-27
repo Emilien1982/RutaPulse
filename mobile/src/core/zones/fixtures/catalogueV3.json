@@ -1,0 +1,74 @@
+{
+  "formatVersion": 1,
+  "zones": [
+    {
+      "id": "nancy",
+      "name": "Nancy",
+      "version": 3,
+      "bbox": {
+        "lonMin": 5.84,
+        "latMin": 48.47,
+        "lonMax": 6.52,
+        "latMax": 48.92
+      },
+      "osmDate": "2026-10-22T20:21:33Z",
+      "totalBytes": 110962386,
+      "files": [
+        {
+          "path": "LICENCES.md",
+          "bytes": 2107,
+          "sha256": "fecb275fc8e71e1cf10a0e75f9a32ac87eabaa2224af3265400d3d47e6a6c289",
+          "url": "https://github.com/Emilien1982/RutaPulse/releases/download/zone-nancy-v3/LICENCES.md"
+        },
+        {
+          "path": "contours.pmtiles",
+          "bytes": 3809985,
+          "sha256": "2c0291166b77745869b4cb028b8237aca8b04185241bc4e6dc17f97198c5f441",
+          "url": "https://github.com/Emilien1982/RutaPulse/releases/download/zone-nancy-v3/contours.pmtiles"
+        },
+        {
+          "path": "elevation/N48/N48E005.hgt",
+          "bytes": 25934402,
+          "sha256": "117acba28ac0111de1148765e04be68e5e32e466431ba39965233a8c74b96604",
+          "url": "https://github.com/Emilien1982/RutaPulse/releases/download/zone-nancy-v3/N48E005.hgt"
+        },
+        {
+          "path": "elevation/N48/N48E006.hgt",
+          "bytes": 25934402,
+          "sha256": "6c9b6fa8bb84ae6504caf6a36070febed7caa3a7538f228ae702d8e37a387ac3",
+          "url": "https://github.com/Emilien1982/RutaPulse/releases/download/zone-nancy-v3/N48E006.hgt"
+        },
+        {
+          "path": "map.pmtiles",
+          "bytes": 17603182,
+          "sha256": "cab6bda568f3265de8fe7de313c4fb4d3ac8b92b860c561b2bee211022a81f13",
+          "url": "https://github.com/Emilien1982/RutaPulse/releases/download/zone-nancy-v3/map.pmtiles"
+        },
+        {
+          "path": "terrain.pmtiles",
+          "bytes": 8775665,
+          "sha256": "57c658ad51e0fc6f2049d156aa0c7ea46398e53eca18f79829799f5148e788e3",
+          "url": "https://github.com/Emilien1982/RutaPulse/releases/download/zone-nancy-v3/terrain.pmtiles"
+        },
+        {
+          "path": "trails.geojson",
+          "bytes": 55994,
+          "sha256": "8c093dc184ef06f69c4b5531e69754e806a1d4fbc897324de5413edf93813de6",
+          "url": "https://github.com/Emilien1982/RutaPulse/releases/download/zone-nancy-v3/trails.geojson"
+        },
+        {
+          "path": "valhalla_tiles.tar",
+          "bytes": 28846080,
+          "sha256": "7fa29249411c75fd0cc651b4f0e06baf9dbd80109eea7df51b8116b7ceb07a44",
+          "url": "https://github.com/Emilien1982/RutaPulse/releases/download/zone-nancy-v3/valhalla_tiles.tar"
+        },
+        {
+          "path": "zone.json",
+          "bytes": 569,
+          "sha256": "cbc612234607de3a37008f5d4310fa6b1d166a23e03683b4b891ddd95bd35df6",
+          "url": "https://github.com/Emilien1982/RutaPulse/releases/download/zone-nancy-v3/zone.json"
+        }
+      ]
+    }
+  ]
+}

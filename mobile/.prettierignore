@@ -4,3 +4,4 @@ node_modules
 .expo
 package-lock.json
 assets
+patches/

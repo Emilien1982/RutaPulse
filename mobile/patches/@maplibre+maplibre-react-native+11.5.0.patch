@@ -1,0 +1,15 @@
+diff --git a/node_modules/@maplibre/maplibre-react-native/ios/components/map-view/MLRNMapView.m b/node_modules/@maplibre/maplibre-react-native/ios/components/map-view/MLRNMapView.m
+index 2221274..be4dc7c 100644
+--- a/node_modules/@maplibre/maplibre-react-native/ios/components/map-view/MLRNMapView.m
++++ b/node_modules/@maplibre/maplibre-react-native/ios/components/map-view/MLRNMapView.m
+@@ -23,7 +23,9 @@ static double const EARTH_RADIUS_M = 6378137;
+ static double const M2PI = M_PI * 2;
+ 
+ - (instancetype)initWithFrame:(CGRect)frame {
+-  if (self = [super initWithFrame:frame]) {
++  // BLANK_STYLE_PATCH: avoid the default demotiles.maplibre.org style request
++  NSURL *blankStyle = [MLRNUtils styleURLFromStyleJSON:@"{\"version\":8,\"sources\":{},\"layers\":[]}"];
++  if (self = [super initWithFrame:frame styleURL:blankStyle]) {
+     self.delegate = self;
+ 
+     _pendingInitialLayout = YES;

@@ -17,15 +17,15 @@ appId: fr.rutapulse.app
     text: 'Close|Fermer'
     optional: true
 - extendedWaitUntil:
-    visible: 'Carte'
+    visible: 'Carte.*'
     timeout: 90000
-- assertVisible: 'Carte'
+- assertVisible: 'Carte.*'
 - takeScreenshot: captures/carte
 - tapOn: 'Itinéraires.*'
 - assertVisible: 'Itinéraires'
 - takeScreenshot: captures/itineraires
 - tapOn: 'Zones.*'
-- assertVisible: 'Zones'
+- assertVisible: 'Zones.*'
 - takeScreenshot: captures/zones
 - tapOn: 'Réglages.*'
 - assertVisible: 'Réglages'

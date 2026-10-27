@@ -53,14 +53,19 @@
 | `v1/60-arrivee.html` | Arrivée : résumé aux chiffres réels (distance parcourue, D+, durée), suivi arrêté, podium fixe, un seul bouton « Fermer » | décisions 4, 5 (questions) ; décisions 2 à 4 (écrans 70) |
 | `v1/70-icone.html` | Icône : A, le soleil rayé, choisie ; B et C pour mémoire ; iOS, Android adaptative, 48 points | décision 5 (style) ; décision 1 (écrans 70) |
 | `v1/80-reglages.html` | Réglages, 4e onglet : Wi-Fi seulement, luminosité pendant le suivi, licences et attributions, version | décisions 2, 10, 13 ; décision 6 (écrans 70) |
+| `v1/90-carte.html` | Onglet Carte avec une zone prête (phase 2) : carte, position, bouton de recentrage, attributions | 1, 6 ; décisions 8, 13 |
+| `v1/91-carte-sans-zone.html` | Onglet Carte sans zone : le vététiste de l'écran 50, « Choisir une zone » ouvre l'onglet Zones (phase 2) | 6 ; décision 3 |
+
+Le style de la carte (couches, filtres, couleurs, épaisseurs du zoom 8 au
+zoom 18, étiquettes, relief) est décrit dans [`style-carte.md`](style-carte.md),
+depuis la phase 2.
 
 Les onglets de `v1/40`, `v1/41`, `v1/50` et `v1/51` ont reçu le 4e onglet
 « Réglages » ; rien d'autre n'y change.
 
 Pas dessinés, car ils découlent des écrans ci-dessus : la carte d'accueil
-(l'écran 12 sans la feuille, avec un bouton « Nouvel itinéraire ») ; la
-carte vide au tout premier lancement (l'écran 51 sans barre, avec
-« Choisir une zone ») ; le menu des couches ; les boîtes de confirmation ; la
+complète (l'écran 90, plus le bouton des couches de l'écran 12 et un bouton
+« Nouvel itinéraire ») ; le menu des couches ; les boîtes de confirmation ; la
 saisie du nom ; les demandes de permission du système ; le message d'un GPX
 importé hors des zones (décision 11 : même feuille que l'écran 52, avec
 « Télécharger la zone ») ; la liste « Licences et attributions » (une liste
@@ -254,22 +259,27 @@ Toujours ouverts (première version) :
 - Écran de suivi : `maxFontSizeMultiplier` à 1,2.
 - Thème clair forcé : `userInterfaceStyle: "light"`.
 
-## Questions pour Émilien (je ne les tranche pas)
+## Questions pour Émilien
 
-Les 7 questions précédentes sont tranchées (`docs/06-decisions-design.md`,
-« Écrans années 70 : décisions »). Nouvelles questions :
+Plus aucune question ouverte sur ces maquettes. Les 7 premières sont
+tranchées dans `docs/06-decisions-design.md`, « Écrans années 70 :
+décisions » ; les 4 suivantes (durée de l'arrivée, luminosité changée
+pendant le suivi, panneau des réglages sous 100 m, « Terminer » avant
+l'arrivée) dans le même document, section « Retouches : décisions ». Ce
+document fait foi. Les commentaires de `31b` et `v1/60` ne décrivent pas
+encore deux de ces décisions : le panneau des réglages du suivi se ferme
+seul à moins de 100 m d'une direction, et « Terminer » avant l'arrivée
+montre le même résumé, titré « Sortie terminée ». À compléter quand on
+reprendra ces écrans.
 
-1. **Durée réelle de l'arrivée** : j'ai compté du « Démarrer le suivi » à
-   l'arrivée, pauses comprises. Ou veux-tu le temps en mouvement seulement ?
-2. **Luminosité changée pendant le suivi (31b)** : je l'ai dessinée comme le
-   même réglage que l'écran 80 (le choix reste pour les sorties suivantes).
-   Ou doit-elle valoir pour la sortie en cours seulement ?
-3. **Panneau des réglages du suivi ouvert à l'approche d'une direction** :
-   doit-il se fermer seul quand la prochaine direction passe sous 100 m, pour
-   rendre toute la carte ? Aujourd'hui il reste ouvert jusqu'à « Fermer ».
-4. **« Terminer » avant l'arrivée** : affiche-t-on aussi un résumé aux
-   chiffres réels (sans « ARRIVÉE ! »), ou revient-on simplement à l'écran
-   d'avant ?
+Les questions nées de la comparaison de la phase 2 sont dans
+[`comparaisons/p02-t7.md`](comparaisons/p02-t7.md), fin du document.
+
+## Comparaisons de l'app aux maquettes
+
+`design/comparaisons/` : un fichier par comparaison (écarts, position à
+l'écran, correction attendue, bloquant ou non). Phase 2 :
+[`p02-t7.md`](comparaisons/p02-t7.md).
 
 ## Hors périmètre, volontairement absent
 
