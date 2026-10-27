@@ -1,0 +1,79 @@
+# C10 : parcours Maestro p03-itineraire-hors-ligne.yaml, 27 octobre 2026 (versions release de clone-apres)
+
+## 1. Android, emulator-5554, mode avion réel activé par le scénario (réglage lu à 0 à la fin ; lu à 1 pendant mes captures en mode avion, icône d avion visible)
+=== Android emulator-5554 release : p03-itineraire-hors-ligne.yaml (14:00:19) ===
+Running on Pixel_6_API_34_arm64
+ > Flow p03-itineraire-hors-ligne
+  > On Flow Complete
+Run flow when Platform is ANDROID...
+  Enable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Launch app "fr.rutapulse.app"... COMPLETED
+Tap on (Optional) "Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*"... WARNED
+ Warning: Element not found: Text matching regex: Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*
+Tap on "Carte.*"... COMPLETED
+Assert that "Carte de la zone Nancy" is visible... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Tap on id: new-route-button... COMPLETED
+Assert that "Touchez le départ sur la carte" is visible... COMPLETED
+Run flow when Platform is ANDROID...
+  Swipe from (20%,75%) to (55%,50%) in 500 ms... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Tap on point (50%,50%)... COMPLETED
+Assert that "Touchez l'arrivée sur la carte" is visible... COMPLETED
+Tap on point (50%,30%)... COMPLETED
+Assert that id: route-distance is visible... COMPLETED
+Assert that id: route-distance is visible... COMPLETED
+Assert that id: route-duration is visible... COMPLETED
+Take screenshot captures/p03-itineraire-hors-ligne... COMPLETED
+Run flow when Platform is ANDROID...
+  Disable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+EXIT=0
+0
+
+## 2. iOS, iPhone 17 (le simulateur n'a pas de mode avion : le Wi-Fi du Mac reste actif ; les étapes avion sont ignorées)
+=== iOS iPhone 17 release (pas de mode avion) ===
+Running on iPhone 17 - iOS 26.5 - DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D
+ > Flow p03-itineraire-hors-ligne
+  > On Flow Complete
+Run flow when Platform is ANDROID...
+Run flow when Platform is ANDROID... SKIPPED
+Launch app "fr.rutapulse.app"... COMPLETED
+Tap on (Optional) "Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*"... WARNED
+Tap on "Carte.*"... COMPLETED
+Assert that "Carte de la zone Nancy" is visible... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Tap on id: new-route-button... COMPLETED
+Assert that "Touchez le départ sur la carte" is visible... COMPLETED
+Run flow when Platform is ANDROID...
+Run flow when Platform is ANDROID... SKIPPED
+Tap on point (50%,50%)... COMPLETED
+Assert that "Touchez l'arrivée sur la carte" is visible... COMPLETED
+Tap on point (50%,30%)... COMPLETED
+Assert that id: route-distance is visible... COMPLETED
+Assert that id: route-distance is visible... COMPLETED
+Assert that id: route-duration is visible... COMPLETED
+Take screenshot captures/p03-itineraire-hors-ligne... COMPLETED
+Run flow when Platform is ANDROID...
+Run flow when Platform is ANDROID... SKIPPED
+EXIT=0
+
+## 3. Tous les scénarios, Android, première tentative (maestro test e2e/)
+carte-hors-ligne a échoué : l'émulateur n'a plus de Wi-Fi connecté (3G seul) et l'app attend le Wi-Fi (« En attente du Wi-Fi · 0 Mo sur 111 »). Le scénario avait supprimé Nancy ; p03 a échoué ensuite faute de zone.
+Waiting for flows to complete...
+[Failed] carte-hors-ligne (10m 25s) (Assertion is false: "Prête sans réseau" is visible)
+[Passed] open-all-screens (20s)
+[Failed] p03-itineraire-hors-ligne (42s) (Assertion is false: "Carte de la zone Nancy" is visible)
+2/3 Flows Failed
+EXIT=1
+
+## 4. Tous les scénarios, Android, après rétablissement (zone retéléchargée, option Wi-Fi seulement coupée dans l'app pour la durée du test, puis remise)
+=== Reprise : 'Télécharger en Wi-Fi seulement' coupé dans l'app (l'émulateur n'a pas de Wi-Fi), tous les scénarios ===
+Waiting for flows to complete...
+[Passed] carte-hors-ligne (23s)
+[Passed] open-all-screens (20s)
+[Passed] p03-itineraire-hors-ligne (16s)
+3/3 Flows Passed in 59s
+EXIT=0
+0
