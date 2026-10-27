@@ -2,6 +2,7 @@
 
 - Statut : Accepté le 2026-10-19 (révisé le 2026-10-19 : TanStack DB retiré, à la demande d'Émilien)
 - Date : 2026-10-19
+- Précisé par l'[ADR 0016](0016-itineraire-en-creation.md) (2026-10-27) : clé de Query par tronçon, Pacer pendant le glisser
 - Détail des recherches : [docs/04-architecture-annexe-recherches.md](../04-architecture-annexe-recherches.md), section TanStack
 
 ADR veut dire « Architecture Decision Record » (fiche de décision
@@ -36,7 +37,7 @@ d'architecture).
   cours (points, historique pour annuler) et l'état du suivi (position,
   prochaine indication). Il est utilisable hors des composants, donc depuis
   la tâche GPS.
-- **TanStack Pacer** (`@tanstack/react-pacer` 0.24.1, en bêta) : limiter la
+- **TanStack Pacer** (`@tanstack/react-pacer` 0.24.1, en version 0.x) : limiter la
   fréquence de trois actions : recalcul pendant qu'on déplace un point,
   rafraîchissement de l'écran de suivi, mise à jour de la notification.
 - **Pas de TanStack DB** en v1 : il ajoute une couche au-dessus de SQLite
@@ -69,7 +70,7 @@ d'architecture).
 ## Conséquences
 
 - Positif : chaque bibliothèque TanStack a un rôle précis et justifié.
-- Négatif : Store et Pacer sont en version 0.x ou en bêta. Leur API
+- Négatif : Store et Pacer sont en version 0.x. Leur API
   (interface de programmation) peut changer. On fige les versions et on lit les notes de version avant chaque
   mise à jour.
 - Une règle simple sépare les rôles : données gardées = SQLite, lues par

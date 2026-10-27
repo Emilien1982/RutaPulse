@@ -1,6 +1,6 @@
 # ADR 0016 — L'itinéraire en création : modèle, recalcul par tronçon, glisser, plein écran
 
-- Statut : Proposé le 2026-10-27 (à accepter par Émilien, via le pilotage)
+- Statut : Accepté le 2026-10-27 par Émilien (via le pilotage)
 - Date : 2026-10-27 (phase 4, tâche T1 de [p04-creer-modifier-itineraire](../phases/p04-creer-modifier-itineraire.md))
 - Précise l'[ADR 0007](0007-donnees-locales-et-etat.md) (clé de Query,
   Pacer) et l'[ADR 0015](0015-module-natif-calcul.md) (code 171, abandon
@@ -262,16 +262,19 @@ function summarize(draft: Draft, legs: (LegResult | undefined)[]): { distanceKm:
 - Non prouvé par l'essai : un point à plus de 300 m d'un chemin, un vrai
   téléphone, l'appui long au vrai doigt.
 
-## Questions pour Émilien (sans blocage : la phase suit la recommandation)
+## Questions pour Émilien (tranchées le 2026-10-27)
 
 1. **Appui long sur iOS pour glisser.** Recommandation : le garder, et le
    dire dans la bulle quand un point est choisi : « Maintenez le point,
    puis glissez-le ». Même texte sur Android, où ce geste marche aussi.
    Pas de vibration en phase 4 (dépendance de plus, `expo-haptics`) ; à
    revoir après usage sur un vrai téléphone.
+   **Réponse : recommandation acceptée par Émilien.** À revoir sur un vrai
+   téléphone.
 2. **Mode du tronçon qui remplace un point supprimé.** Recommandation :
    « à la main » seulement si les deux tronçons retirés l'étaient, sinon
    « par les chemins ». Un échec propose « Relier ce point à la main ».
+   **Réponse : recommandation retenue par le pilotage.**
 
 ## Sources (relevées le 27 octobre 2026)
 
