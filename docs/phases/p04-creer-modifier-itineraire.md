@@ -1,7 +1,7 @@
-# Phase 4 — Créer et modifier un itinéraire (spec, à valider)
+# Phase 4 — Créer et modifier un itinéraire (spec validée)
 
-> 27 octobre 2026. Spec de la session de pilotage, **à valider par Émilien**
-> avant tout code. Découpage : [docs/05](../05-decoupage-v1.md), ligne 4.
+> 27 octobre 2026. Spec de la session de pilotage, **validée par Émilien
+> le 27 octobre 2026**, avec les choix déjà faits. Découpage : [docs/05](../05-decoupage-v1.md), ligne 4.
 > Fonction du cadrage : 2 (complète). Décisions de design : 6 (Boucler) et
 > 8 (tracé à la main) de [docs/06](../06-decisions-design.md). S'appuie sur
 > la phase 3 ([résultats](p03-module-calcul-resultats.md)), l'ADR 0007

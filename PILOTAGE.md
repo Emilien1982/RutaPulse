@@ -24,7 +24,7 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 à spécifier |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 🔧 en cours ([spec](docs/phases/p04-creer-modifier-itineraire.md)) |
 
 ## Décisions prises
 
@@ -51,6 +51,7 @@
 - 2026-10-27 — Nouvelle session de pilotage ; la phase 3 était déjà lancée par l'ancienne.
 - 2026-10-27 — Phase 3 fusionnée dans main : calcul d'itinéraire hors ligne sur l'onglet Carte (départ, arrivée, tracé magenta, distance et durée, feuille hors zone). 10 critères sur 10, 576 tests, CI verte. Tracés de l'app identiques à ceux du Mac sur les 5 références : la question ARM de la phase 1 est réglée.
 - 2026-10-27 — Point posé hors chemin : un trait de liaison en pointillés le relie au tracé. Il n'est pas compté dans la distance, la durée, le suivi ni le GPX pour l'instant (à revoir avant la phase 8). Durée affichée au moins « 1 min ».
+- 2026-10-27 — Spec de la phase 4 (créer et modifier un itinéraire) validée par Émilien, avec les choix du pilotage : ajout à la fin seulement, confirmation à la fermeture dès 2 points, tronçon à la main à la vitesse moyenne (ou 10 km/h), annuler jusqu'à 50 actions sans « Rétablir ».
 - 2026-10-27 — Un point à plus de 200 m environ d'un chemin est refusé (feuille « Aucun chemin trouvé ») : à coder en phase 4.
 - 2026-10-27 — Ne pas vider `~/Library/Caches/org.swift.swiftpm` sur le Mac : le bac à sable de Claude Code empêche SwiftPM de retélécharger valhalla-mobile (ADR 0015 § 6).
 - 2026-10-27 — Niveau de process **maximal** gardé jusqu'à la fin de RutaPulse, volontairement (voir `~/dev_ai/STRATEGIE-NIVEAUX-DE-PROCESS.md`). Ne pas l'alléger.
@@ -84,7 +85,7 @@
 
 ## Prochaine étape
 
-Écrire la spec de la phase 4 (créer et modifier un itinéraire), la faire valider par Émilien, puis la lancer dans une session de phase. À y inclure : création en plein écran (sans barre d'onglets), scène de la maquette 52, refus d'un point à plus de 200 m d'un chemin.
+Suivre la phase 4 dans sa session de phase (spec : [docs/phases/p04-creer-modifier-itineraire.md](docs/phases/p04-creer-modifier-itineraire.md)).
 
 ## Passation du pilotage (27 octobre 2026)
 
