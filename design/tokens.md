@@ -139,6 +139,7 @@ doivent se distinguer de tout cela, par la couleur **et** par l'épaisseur.
 | `carte.point` | fond `#FFFFFF`, bord `#C2007A`, chiffre `#111111` | — | Points de passage numérotés |
 | `carte.point-refuse` | fond `#FFFFFF`, bord en tirets `hn.brun`, « ! » | — | Point touché hors de la zone, en attente d'un choix (52) |
 | `carte.bord-zone` | `hn.brun`, 2,5, tirets 9 / 6 | — | Bord de la zone téléchargée (52) |
+| `carte.liaison` | `carte.itineraire` (`#C2007A`), sans liseré | — | Pointillés entre un marqueur posé hors chemin et le bout du tracé (ajouté le 27 octobre 2026, phase 3, T6) |
 
 ### Carte : fond (reprise du style de l'essai 3)
 
@@ -330,6 +331,7 @@ au zoom 17 (`line-width` en `interpolate` sur le zoom).
 | `trace.itineraire` | 7 | 10 | Trait plein, bouts et angles arrondis |
 | `trace.itineraire-lisere` | 2 de chaque côté | 3 de chaque côté | Dessiné dessous, donc trait total de 11 et 16 |
 | `trace.a-la-main` | 7 | 10 | Même couleur, en tirets 2 × l'épaisseur / 1 × l'épaisseur : on voit que ce tronçon n'est pas calculé |
+| `trace.liaison` | 3 | — | Points ronds de 3, environ 4,5 de vide entre deux points. Droit, du centre du marqueur au bout du tracé. Dessiné sous le liseré de l'itinéraire. Pas dessiné à moins de 5 m. Le suivi : à décider |
 | `trace.parcouru` | — | 8 | Sans liseré |
 | `trace.circuit` | 6 | 6 | Sous l'itinéraire |
 | `trace.circuit-choisi` | 8, liseré 2 | — | |
