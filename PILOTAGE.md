@@ -76,8 +76,7 @@
 
 ## Prochaine étape
 
-Spec de la phase 3 : module natif Valhalla propre, branché sur la zone
-téléchargée ; un itinéraire entre deux points s'affiche sur la carte.
+Émilien valide la spec de la phase 3 ([docs/phases/p03-module-calcul.md](docs/phases/p03-module-calcul.md)).
 
 ## Points connus, hors périmètre pour l'instant
 
