@@ -52,6 +52,7 @@
 - 2026-10-27 — Phase 3 fusionnée dans main : calcul d'itinéraire hors ligne sur l'onglet Carte (départ, arrivée, tracé magenta, distance et durée, feuille hors zone). 10 critères sur 10, 576 tests, CI verte. Tracés de l'app identiques à ceux du Mac sur les 5 références : la question ARM de la phase 1 est réglée.
 - 2026-10-27 — Point posé hors chemin : un trait de liaison en pointillés le relie au tracé. Il n'est pas compté dans la distance, la durée, le suivi ni le GPX pour l'instant (à revoir avant la phase 8). Durée affichée au moins « 1 min ».
 - 2026-10-27 — Spec de la phase 4 (créer et modifier un itinéraire) validée par Émilien, avec les choix du pilotage : ajout à la fin seulement, confirmation à la fermeture dès 2 points, tronçon à la main à la vitesse moyenne (ou 10 km/h), annuler jusqu'à 50 actions sans « Rétablir ».
+- 2026-10-27 — ADR 0016 (itinéraire en création) accepté par Émilien. Glisser un point demande un appui long (obligatoire sur iOS) ; la bulle d'aide le dit sur les deux plateformes. À revoir sur un vrai téléphone.
 - 2026-10-27 — Un point à plus de 200 m environ d'un chemin est refusé (feuille « Aucun chemin trouvé ») : à coder en phase 4.
 - 2026-10-27 — Ne pas vider `~/Library/Caches/org.swift.swiftpm` sur le Mac : le bac à sable de Claude Code empêche SwiftPM de retélécharger valhalla-mobile (ADR 0015 § 6).
 - 2026-10-27 — Niveau de process **maximal** gardé jusqu'à la fin de RutaPulse, volontairement (voir `~/dev_ai/STRATEGIE-NIVEAUX-DE-PROCESS.md`). Ne pas l'alléger.
@@ -80,6 +81,7 @@
 - Android : arrêt d'environ 0,2 s du fil JavaScript au démarrage (dû au démarrage de l'app sur l'émulateur ; petit effet du moteur non exclu). Mémoire du moteur.
 - Consommation de batterie (écran allumé et verrouillé).
 - Précision du GPS en forêt.
+- Glisser un point : confort de l'appui long ; fluidité sur Android (84 à 88 ms d'arrêt sur l'émulateur, pour 100 ms permis).
 - Live Activity iOS avec un compte Apple gratuit (signature : 2 identifiants + App Group, sans push).
 - Suivi verrouillé sur batterie : mode Doze et économies d'énergie des fabricants ; notification visible sur l'écran verrouillé (canal de faible importance).
 
