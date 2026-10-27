@@ -24,7 +24,7 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 🔧 en cours (T1 fait, ADR 0015 accepté) |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 à spécifier |
 
 ## Décisions prises
 
@@ -49,6 +49,10 @@
 - 2026-10-27 — Spec de la phase 3 (module de calcul) validée par Émilien.
 - 2026-10-27 — ADR 0015 (module natif de calcul) accepté par Émilien. Le blocage SwiftPM de l'essai 1 venait du bac à sable du terminal : installation iOS reproductible par `spm_dependency`.
 - 2026-10-27 — Nouvelle session de pilotage ; la phase 3 était déjà lancée par l'ancienne.
+- 2026-10-27 — Phase 3 fusionnée dans main : calcul d'itinéraire hors ligne sur l'onglet Carte (départ, arrivée, tracé magenta, distance et durée, feuille hors zone). 10 critères sur 10, 576 tests, CI verte. Tracés de l'app identiques à ceux du Mac sur les 5 références : la question ARM de la phase 1 est réglée.
+- 2026-10-27 — Point posé hors chemin : un trait de liaison en pointillés le relie au tracé. Il n'est pas compté dans la distance, la durée, le suivi ni le GPX pour l'instant (à revoir avant la phase 8). Durée affichée au moins « 1 min ».
+- 2026-10-27 — Un point à plus de 200 m environ d'un chemin est refusé (feuille « Aucun chemin trouvé ») : à coder en phase 4.
+- 2026-10-27 — Ne pas vider `~/Library/Caches/org.swift.swiftpm` sur le Mac : le bac à sable de Claude Code empêche SwiftPM de retélécharger valhalla-mobile (ADR 0015 § 6).
 - 2026-10-27 — Niveau de process **maximal** gardé jusqu'à la fin de RutaPulse, volontairement (voir `~/dev_ai/STRATEGIE-NIVEAUX-DE-PROCESS.md`). Ne pas l'alléger.
 - 2026-10-27 — Phase 2 fusionnée dans main : onglets Zones et Carte, téléchargement contrôlé et reprise, carte en mode avion bloquée sur la zone (contour, voile, message hors zone), thème années 70. 13 critères sur 13, 409 tests, CI verte. ADR 0013 et 0014 (`shared-data/`) acceptés.
 - 2026-10-26 — Seule la session de pilotage parle à Émilien (règle dans CLAUDE.md).
@@ -71,7 +75,8 @@
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
-- Temps de calcul d'un itinéraire.
+- Temps de calcul d'un itinéraire, et temps d'ouverture du moteur.
+- Android : arrêt d'environ 0,2 s du fil JavaScript au démarrage (dû au démarrage de l'app sur l'émulateur ; petit effet du moteur non exclu). Mémoire du moteur.
 - Consommation de batterie (écran allumé et verrouillé).
 - Précision du GPS en forêt.
 - Live Activity iOS avec un compte Apple gratuit (signature : 2 identifiants + App Group, sans push).
@@ -79,7 +84,7 @@
 
 ## Prochaine étape
 
-Suivre la phase 3 (spec : [docs/phases/p03-module-calcul.md](docs/phases/p03-module-calcul.md)), en cours dans la session « Phase 3 : module de calcul d'itinéraire » (branche `claude/adoring-williamson-4f81fd`). T1 fait, T2 en cours.
+Écrire la spec de la phase 4 (créer et modifier un itinéraire), la faire valider par Émilien, puis la lancer dans une session de phase. À y inclure : création en plein écran (sans barre d'onglets), scène de la maquette 52, refus d'un point à plus de 200 m d'un chemin.
 
 ## Passation du pilotage (27 octobre 2026)
 
@@ -87,9 +92,8 @@ La session de pilotage d'origine (19 au 27 octobre) a été remplacée par une
 nouvelle, pour alléger le contexte. Ce qu'il faut savoir pour reprendre :
 
 **État exact**
-- `main` à jour et poussé. Phases 0, 1 et 2 fusionnées. Rien en cours.
-- Phase 3 : spec validée, pas encore lancée. Le brief de lancement est à
-  reprendre de la spec (déroulé et points d'arrêt ci-dessous).
+- Mise à jour du 27 octobre au soir : phase 3 fusionnée par le nouveau
+  pilotage (session « Pilotage RutaPulse (reprise) », local_4f9d736d).
 - Les anciennes sessions (essais, phases 0 à 2) sont finies ; leurs
   branches locales ne servent plus que de trace.
 
@@ -133,6 +137,7 @@ valide spec, design, architecture et fusion ; tests sur simulateurs.
 - La fabrique dépend de serveurs tiers (Geofabrik, osmdata) ; une zone côtière échoue si osmdata est en panne. Parade possible plus tard : copie des annexes dans une release.
 - Une zone côtière et une 2e zone n'ont pas encore été fabriquées.
 - Fabrique : distinguer les chemins urbains des sentiers dans les tuiles (place Stanislas, halage dessinés en tirets rouges).
+- Avant la phase 8 : le tracé est probablement dessiné par-dessus le point bleu de position ; décider si la liaison compte dans la distance et le GPX.
 - Phase 8 au plus tard : cadrage hors zone avec la position visible ; états « suit ma position » et flèche de cap (maquette 90).
 - Petites tâches : écarts non bloquants de la phase 2, nettoyage des fichiers partiels iOS dans `tmp/`, minuteur Jest.
 - Non testé sur simulateur : geste de pincement, vrai mode avion iOS, gros texte du système sur petits écrans.
