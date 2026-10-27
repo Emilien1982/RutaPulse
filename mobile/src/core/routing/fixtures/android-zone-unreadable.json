@@ -1,0 +1,7 @@
+{
+  "rejected": {
+    "code": "ERR_ZONE_UNREADABLE",
+    "message": "Call to function 'ValhallaRoute.open' has been rejected.\n→ Caused by: Tile file not found: <documents>/zones/nancy/v3/absent.tar",
+    "str": "Error: Call to function 'ValhallaRoute.open' has been rejected.\n→ Caused by: Tile file not found: <documents>/zones/nancy/v3/absent.tar"
+  }
+}

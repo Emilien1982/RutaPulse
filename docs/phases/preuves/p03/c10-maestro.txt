@@ -1,0 +1,67 @@
+# C10 : parcours Maestro p03-itineraire-hors-ligne.yaml, 27/10/2026 15:26 (versions release, scénario avec setLocation Android après launchApp)
+
+## Android, emulator-5554 (mode avion réel pendant le scénario)
+Running on Pixel_6_API_34_arm64
+ > Flow p03-itineraire-hors-ligne
+  > On Flow Complete
+Run flow when Platform is ANDROID...
+  Enable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Launch app "fr.rutapulse.app"... COMPLETED
+Run flow when Platform is ANDROID...
+  Set location (48.672, 6.152)... COMPLETED
+  Assert that id: new-route-button is visible... COMPLETED
+  Set location (48.672, 6.152)... COMPLETED
+  Wait for animation to end within 4000 ms... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Tap on (Optional) "Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*
+Tap on "Carte.*"... COMPLETED
+Assert that "Carte de la zone Nancy" is visible... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Tap on id: new-route-button... COMPLETED
+Assert that "Touchez le départ sur la carte" is visible... COMPLETED
+Run flow when Platform is ANDROID...
+  Swipe from (20%,75%) to (55%,50%) in 500 ms... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Tap on point (50%,50%)... COMPLETED
+Assert that "Touchez l'arrivée sur la carte" is visible... COMPLETED
+Tap on point (50%,30%)... COMPLETED
+Assert that id: route-distance is visible... COMPLETED
+Assert that id: route-distance is visible... COMPLETED
+Assert that id: route-duration is visible... COMPLETED
+Take screenshot captures/p03-itineraire-hors-ligne... COMPLETED
+Run flow when Platform is ANDROID...
+  Disable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+EXIT=0
+
+## iOS, iPhone 17 (pas de mode avion sur simulateur)
+Running on iPhone 17 - iOS 26.5 - DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D
+ > Flow p03-itineraire-hors-ligne
+  > On Flow Complete
+Run flow when Platform is ANDROID...
+Run flow when Platform is ANDROID... SKIPPED
+Launch app "fr.rutapulse.app"... COMPLETED
+Run flow when Platform is ANDROID...
+Run flow when Platform is ANDROID... SKIPPED
+Tap on (Optional) "Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*"... WARNED
+Tap on "Carte.*"... COMPLETED
+Assert that "Carte de la zone Nancy" is visible... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Tap on id: new-route-button... COMPLETED
+Assert that "Touchez le départ sur la carte" is visible... COMPLETED
+Run flow when Platform is ANDROID...
+Run flow when Platform is ANDROID... SKIPPED
+Tap on point (50%,50%)... COMPLETED
+Assert that "Touchez l'arrivée sur la carte" is visible... COMPLETED
+Tap on point (50%,30%)... COMPLETED
+Assert that id: route-distance is visible... COMPLETED
+Assert that id: route-distance is visible... COMPLETED
+Assert that id: route-duration is visible... COMPLETED
+Take screenshot captures/p03-itineraire-hors-ligne... COMPLETED
+Run flow when Platform is ANDROID...
+Run flow when Platform is ANDROID... SKIPPED
+EXIT=0

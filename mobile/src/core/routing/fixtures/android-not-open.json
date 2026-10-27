@@ -1,0 +1,7 @@
+{
+  "rejected": {
+    "code": "ERR_ENGINE_NOT_OPEN",
+    "message": "Call to function 'ValhallaRoute.route' has been rejected.\n→ Caused by: The engine is not open",
+    "str": "Error: Call to function 'ValhallaRoute.route' has been rejected.\n→ Caused by: The engine is not open"
+  }
+}

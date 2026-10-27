@@ -62,6 +62,13 @@ export const mapColors = {
   positionBorder: '#FFFFFF',
   // hn.creme-clair at 88 %, behind the attributions.
   attributionBackground: 'rgba(251, 241, 218, 0.88)',
+  // carte.itineraire, carte.itineraire-lisere, carte.depart, carte.arrivee
+  route: '#C2007A',
+  routeCasing: '#FFFFFF',
+  // carte.liaison: same magenta, no casing.
+  routeLink: '#C2007A',
+  start: '#146C2E',
+  end: '#111111',
   zoneBorder: colors.brown,
   // hn.voile-hors-zone: #CFC8BB at 72 %.
   outsideVeil: '#CFC8BB',

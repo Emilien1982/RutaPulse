@@ -17,6 +17,7 @@ type ButtonProps = {
   // Longer spoken label when the visible one is short.
   accessibilityLabel?: string;
   disabled?: boolean;
+  testID?: string;
 };
 
 export function Button({
@@ -26,6 +27,7 @@ export function Button({
   icon,
   accessibilityLabel,
   disabled,
+  testID,
 }: ButtonProps) {
   const isPrimary = variant === 'primary';
   const height = variant === 'download' ? target.stop : target.mainButton;
@@ -33,6 +35,7 @@ export function Button({
 
   return (
     <Pressable
+      testID={testID}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityState={{ disabled: !!disabled }}

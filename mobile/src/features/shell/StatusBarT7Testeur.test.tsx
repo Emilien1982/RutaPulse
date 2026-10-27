@@ -25,6 +25,9 @@ jest.mock('@/features/shell/FontGate', () => ({
 jest.mock('@/features/shell/QueryProvider', () => ({
   QueryProvider: ({ children }: { children: unknown }) => children,
 }));
+jest.mock('@/features/shell/RoutingEngineStarter', () => ({
+  RoutingEngineStarter: () => null,
+}));
 jest.mock('@/features/zones/ZoneDownloaderStarter', () => ({
   ZoneDownloaderStarter: () => null,
 }));

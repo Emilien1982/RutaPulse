@@ -1,0 +1,89 @@
+# C10 (phase 3) : créer un itinéraire hors ligne dans la forêt de Haye.
+# Prérequis : zone Nancy installée. iOS : position du simulateur réglée dans
+# la forêt de Haye (xcrun simctl location booted set 48.751,5.967), pour que
+# la carte s'ouvre dessus (zoom 14).
+# Pensé pour une version release (sans lanceur Expo).
+# Android : le mode avion est réel. Il est coupé à la fin (onFlowComplete,
+# exécuté aussi en cas d'échec). iOS : le simulateur n'a pas de mode avion,
+# ces étapes sont ignorées.
+appId: fr.rutapulse.app
+onFlowComplete:
+  - runFlow:
+      when:
+        platform: Android
+      commands:
+        - setAirplaneMode: disabled
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setAirplaneMode: enabled
+- launchApp:
+    clearState: false
+    stopApp: true
+# Android: on a cold start the emulator gives no position until it receives
+# an update after the app has started. Without it the map opens zoomed out
+# and the first tap lands outside the zone. So: set the position, wait for
+# the map, set it again. iOS keeps the simctl setting from the header.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setLocation:
+          latitude: 48.672
+          longitude: 6.152
+      - extendedWaitUntil:
+          visible:
+            id: 'new-route-button'
+          timeout: 30000
+      - setLocation:
+          latitude: 48.672
+          longitude: 6.152
+      - waitForAnimationToEnd:
+          timeout: 4000
+# Autorisation de position, si elle est demandée.
+- tapOn:
+    text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
+    optional: true
+- tapOn: 'Carte.*'
+- extendedWaitUntil:
+    visible: 'Carte de la zone Nancy'
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- tapOn:
+    id: 'new-route-button'
+- extendedWaitUntil:
+    visible: 'Touchez le départ sur la carte'
+    timeout: 10000
+# Android : la position de l'émulateur reste à Villers-lès-Nancy. On fait
+# glisser la carte pour amener la forêt de Haye (en bas à gauche) au centre.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - swipe:
+          start: '20%,75%'
+          end: '55%,50%'
+          duration: 500
+# Départ : sur la piste brune à gauche du centre, forêt de Haye.
+- tapOn:
+    point: '50%,50%'
+- extendedWaitUntil:
+    visible: "Touchez l'arrivée sur la carte"
+    timeout: 10000
+# Arrivée : plus haut sur la carte.
+- tapOn:
+    point: '50%,30%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+    timeout: 60000
+- assertVisible:
+    id: 'route-distance'
+- assertVisible:
+    id: 'route-duration'
+- takeScreenshot: captures/p03-itineraire-hors-ligne

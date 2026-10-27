@@ -42,3 +42,6 @@ yarn-error.*
 
 # Maestro screenshots (kept in docs/phases/captures/)
 /e2e/captures/
+
+# Gradle output of local native modules
+/modules/*/android/build/

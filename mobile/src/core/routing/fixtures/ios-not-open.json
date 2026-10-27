@@ -1,0 +1,7 @@
+{
+  "rejected": {
+    "code": "ERR_ENGINE_NOT_OPEN",
+    "message": "Calling the 'route' function has failed\n→ Caused by: The engine is not open",
+    "str": "Error: Calling the 'route' function has failed\n→ Caused by: The engine is not open"
+  }
+}
