@@ -25,8 +25,11 @@ export type EngineState = 'closed' | 'opening' | 'open' | 'failed';
 export type RoutingEngine = {
   /** Opens the engine on this zone; null closes it. */
   setZone(zone: Zone | null): void;
-  /** Never rejects. Calls wait in line, one at a time. */
-  route(points: RoutePoint[]): Promise<RouteResult>;
+  /**
+   * Never rejects. Calls wait in line, one at a time. A call whose signal is
+   * aborted before its turn is skipped: no native call, 'failed' result.
+   */
+  route(points: RoutePoint[], signal?: AbortSignal): Promise<RouteResult>;
   getState(): EngineState;
 };
 
@@ -96,9 +99,10 @@ export function createRoutingEngine(
       });
     },
 
-    route(points) {
+    route(points, signal) {
       return enqueue(async (): Promise<RouteResult> => {
         try {
+          if (signal?.aborted) return failure('failed');
           if (run.state === 'failed' && run.openError) return run.openError;
           if (run.state !== 'open' || !run.bbox) {
             return failure('engineUnavailable');

@@ -85,8 +85,9 @@ describe('parseRouteResponse with real outputs', () => {
   });
 
   it.each([
-    ['ios-171.json', 'outOfZone'],
-    ['android-171.json', 'outOfZone'],
+    // ADR 0016 section 5: code 171 is now farFromPath (before: outOfZone).
+    ['ios-171.json', 'farFromPath'],
+    ['android-171.json', 'farFromPath'],
     ['ios-442.json', 'noRoute'],
     ['android-442.json', 'noRoute'],
   ])('reads the refusal %s', (name, error) => {

@@ -2,7 +2,12 @@
 // section 5). Only the `code` is read, never the text of a message.
 
 export type RouteErrorKind =
-  'outOfZone' | 'noRoute' | 'engineUnavailable' | 'zoneUnreadable' | 'failed';
+  | 'outOfZone'
+  | 'farFromPath'
+  | 'noRoute'
+  | 'engineUnavailable'
+  | 'zoneUnreadable'
+  | 'failed';
 
 export type RouteSuccess = {
   ok: true;
@@ -47,7 +52,7 @@ export function decodePolyline6(encoded: string): [number, number][] {
 
 /** Error kind for a Valhalla refusal code. */
 export function kindFromValhallaCode(code: number): RouteErrorKind {
-  if (code === 171) return 'outOfZone';
+  if (code === 171) return 'farFromPath';
   if (code === 442 || code === 441 || code === 170) return 'noRoute';
   return 'failed';
 }

@@ -130,6 +130,10 @@ export function RouteSummarySheet({
 
 const MESSAGES: Record<RouteErrorKind, { title: TextKey; text: TextKey }> = {
   outOfZone: { title: 'route.outOfZoneTitle', text: 'route.outOfZoneText' },
+  farFromPath: {
+    title: 'route.farFromPathTitle',
+    text: 'route.farFromPathText',
+  },
   noRoute: { title: 'route.noRouteTitle', text: 'route.noRouteText' },
   engineUnavailable: {
     title: 'route.engineUnavailableTitle',

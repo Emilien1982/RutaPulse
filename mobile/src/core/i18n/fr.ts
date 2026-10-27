@@ -27,6 +27,9 @@ export const fr = {
   'route.endMarker': 'Arrivée',
   'route.rejectedMarker': 'Point refusé',
   'route.removePoint': 'Retirer ce point',
+  'route.farFromPathTitle': 'Aucun chemin trouvé',
+  'route.farFromPathText':
+    'Ce point est à plus de 200 m d’un chemin. Choisissez-en un plus proche.',
   'route.outOfZoneTitle': 'Point hors de votre zone',
   'route.outOfZoneText':
     "Le calcul par les chemins ne marche que dans une zone téléchargée. Ce point n'est dans aucune zone de RutaPulse pour l'instant.",
