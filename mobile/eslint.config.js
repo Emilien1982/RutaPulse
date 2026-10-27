@@ -16,6 +16,7 @@ function group(message, ...names) {
 
 const features = group('Not allowed from this folder.', 'features');
 const modules = group('Not allowed from this folder.', 'modules');
+modules.group.push('@modules', '@modules/*');
 const ui = group('Not allowed from this folder.', 'ui');
 const core = group('Not allowed from this folder.', 'core');
 const app = group('Not allowed from this folder.', 'app');

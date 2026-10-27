@@ -1,0 +1,7 @@
+{
+  "rejected": {
+    "code": "ERR_ZONE_UNREADABLE",
+    "message": "Calling the 'open' function has failed\n→ Caused by: Tile file not found: <documents>/zones/nancy/v3/absent.tar",
+    "str": "Error: Calling the 'open' function has failed\n→ Caused by: Tile file not found: <documents>/zones/nancy/v3/absent.tar"
+  }
+}

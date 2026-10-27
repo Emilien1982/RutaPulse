@@ -1,0 +1,24 @@
+plugins {
+  id 'com.android.library'
+  id 'expo-module-gradle-plugin'
+}
+
+group = 'fr.vttnav.valhallaroute'
+version = '0.1.0'
+
+android {
+  namespace "fr.vttnav.valhallaroute"
+  defaultConfig {
+    versionCode 1
+    versionName "0.1.0"
+  }
+  lintOptions {
+    abortOnError false
+  }
+}
+
+dependencies {
+  implementation "io.github.rallista:valhalla-mobile:0.6.4"
+  implementation "io.github.rallista:valhalla-models:0.6.0"
+  implementation "io.github.rallista:valhalla-models-config:0.6.0"
+}

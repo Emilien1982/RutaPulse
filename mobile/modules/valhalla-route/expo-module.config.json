@@ -1,0 +1,9 @@
+{
+  "platforms": ["apple", "android"],
+  "apple": {
+    "modules": ["ValhallaRouteModule"]
+  },
+  "android": {
+    "modules": ["fr.vttnav.valhallaroute.ValhallaRouteModule"]
+  }
+}
