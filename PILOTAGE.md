@@ -24,7 +24,7 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 à spécifier |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 🔧 en cours (T1 fait, ADR 0015 accepté) |
 
 ## Décisions prises
 
@@ -47,6 +47,8 @@
 - 2026-10-20 — Cadrage modifié : recalcul en direct, tracé à la main par tronçon, circuits VTT balisés d'OSM (fonction 9). Génération de boucles : plus tard.
 - 2026-10-20 — Essai 3 : carte hors ligne prouvée (MapLibre + PMTiles, 29 Mo pour Nancy), circuits balisés dans le paquet (2 seulement autour de Nancy), GitHub Actions jugé faisable.
 - 2026-10-27 — Spec de la phase 3 (module de calcul) validée par Émilien.
+- 2026-10-27 — ADR 0015 (module natif de calcul) accepté par Émilien. Le blocage SwiftPM de l'essai 1 venait du bac à sable du terminal : installation iOS reproductible par `spm_dependency`.
+- 2026-10-27 — Nouvelle session de pilotage ; la phase 3 était déjà lancée par l'ancienne.
 - 2026-10-27 — Niveau de process **maximal** gardé jusqu'à la fin de RutaPulse, volontairement (voir `~/dev_ai/STRATEGIE-NIVEAUX-DE-PROCESS.md`). Ne pas l'alléger.
 - 2026-10-27 — Phase 2 fusionnée dans main : onglets Zones et Carte, téléchargement contrôlé et reprise, carte en mode avion bloquée sur la zone (contour, voile, message hors zone), thème années 70. 13 critères sur 13, 409 tests, CI verte. ADR 0013 et 0014 (`shared-data/`) acceptés.
 - 2026-10-26 — Seule la session de pilotage parle à Émilien (règle dans CLAUDE.md).
@@ -77,7 +79,7 @@
 
 ## Prochaine étape
 
-Lancer la phase 3 (spec validée : [docs/phases/p03-module-calcul.md](docs/phases/p03-module-calcul.md)) dans une session de phase.
+Suivre la phase 3 (spec : [docs/phases/p03-module-calcul.md](docs/phases/p03-module-calcul.md)), en cours dans la session « Phase 3 : module de calcul d'itinéraire » (branche `claude/adoring-williamson-4f81fd`). T1 fait, T2 en cours.
 
 ## Passation du pilotage (27 octobre 2026)
 
