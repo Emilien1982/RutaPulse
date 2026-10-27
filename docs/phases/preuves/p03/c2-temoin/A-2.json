@@ -1,0 +1,648 @@
+{
+  "plateforme": "android",
+  "build": "release",
+  "horodatage": "2026-10-27T13:30:59.001Z",
+  "c2": {
+    "demarrage_vu_ms": 70.9,
+    "etat_a_la_demande_de_R1": "opening",
+    "demarrage_detecte": true,
+    "ouverture_ms_depuis_lancement_banc": 768.1,
+    "ouverture_ms_depuis_etat_opening": 697.2,
+    "etat_final": "open",
+    "plus_grand_ecart_tics_16ms": 155.5,
+    "R1_reponse_ms_depuis_lancement_banc": 768.1,
+    "R1_reponse_ms_depuis_demande": 697.2,
+    "R1_reussi": true,
+    "R1_erreur": null
+  },
+  "c5": {
+    "R1": {
+      "ok": true,
+      "points": 12,
+      "requete": {
+        "locations": [
+          {
+            "lat": 48.727358,
+            "lon": 5.978104,
+            "type": "break"
+          },
+          {
+            "lat": 48.727067,
+            "lon": 5.960582,
+            "type": "through"
+          },
+          {
+            "lat": 48.736598,
+            "lon": 5.973731,
+            "type": "through"
+          },
+          {
+            "lat": 48.745898,
+            "lon": 5.971272,
+            "type": "through"
+          },
+          {
+            "lat": 48.753767,
+            "lon": 5.964021,
+            "type": "through"
+          },
+          {
+            "lat": 48.754348,
+            "lon": 5.98185,
+            "type": "through"
+          },
+          {
+            "lat": 48.752436,
+            "lon": 5.986851,
+            "type": "through"
+          },
+          {
+            "lat": 48.747161,
+            "lon": 6.001441,
+            "type": "through"
+          },
+          {
+            "lat": 48.755438,
+            "lon": 6.007899,
+            "type": "through"
+          },
+          {
+            "lat": 48.741665,
+            "lon": 5.99745,
+            "type": "through"
+          },
+          {
+            "lat": 48.72857,
+            "lon": 5.980882,
+            "type": "through"
+          },
+          {
+            "lat": 48.727511,
+            "lon": 5.977282,
+            "type": "break"
+          }
+        ],
+        "costing": "bicycle",
+        "costing_options": {
+          "bicycle": {
+            "bicycle_type": "mountain",
+            "use_roads": 0
+          }
+        },
+        "directions_options": {
+          "language": "fr-FR",
+          "units": "kilometers"
+        }
+      },
+      "distance_km": 20.532,
+      "duree_s": 5268.239,
+      "nb_coordonnees": 904,
+      "calcul_ms": 12.3
+    },
+    "R2": {
+      "ok": true,
+      "points": 19,
+      "requete": {
+        "locations": [
+          {
+            "lat": 48.89231,
+            "lon": 6.052058,
+            "type": "break"
+          },
+          {
+            "lat": 48.87679,
+            "lon": 6.042201,
+            "type": "through"
+          },
+          {
+            "lat": 48.862697,
+            "lon": 6.05047,
+            "type": "through"
+          },
+          {
+            "lat": 48.849303,
+            "lon": 6.055367,
+            "type": "through"
+          },
+          {
+            "lat": 48.836104,
+            "lon": 6.040311,
+            "type": "through"
+          },
+          {
+            "lat": 48.82516,
+            "lon": 6.020215,
+            "type": "through"
+          },
+          {
+            "lat": 48.830769,
+            "lon": 6.000475,
+            "type": "through"
+          },
+          {
+            "lat": 48.82922,
+            "lon": 5.97502,
+            "type": "through"
+          },
+          {
+            "lat": 48.837541,
+            "lon": 5.955694,
+            "type": "through"
+          },
+          {
+            "lat": 48.843225,
+            "lon": 5.937795,
+            "type": "through"
+          },
+          {
+            "lat": 48.854862,
+            "lon": 5.936181,
+            "type": "through"
+          },
+          {
+            "lat": 48.869192,
+            "lon": 5.938592,
+            "type": "through"
+          },
+          {
+            "lat": 48.877926,
+            "lon": 5.956938,
+            "type": "through"
+          },
+          {
+            "lat": 48.879024,
+            "lon": 5.979103,
+            "type": "through"
+          },
+          {
+            "lat": 48.886958,
+            "lon": 6.003103,
+            "type": "through"
+          },
+          {
+            "lat": 48.896328,
+            "lon": 6.025786,
+            "type": "through"
+          },
+          {
+            "lat": 48.90308,
+            "lon": 6.043001,
+            "type": "through"
+          },
+          {
+            "lat": 48.898852,
+            "lon": 6.052156,
+            "type": "through"
+          },
+          {
+            "lat": 48.892523,
+            "lon": 6.052179,
+            "type": "break"
+          }
+        ],
+        "costing": "bicycle",
+        "costing_options": {
+          "bicycle": {
+            "bicycle_type": "mountain",
+            "use_roads": 0
+          }
+        },
+        "directions_options": {
+          "language": "fr-FR",
+          "units": "kilometers"
+        }
+      },
+      "distance_km": 35.172,
+      "duree_s": 8821.197,
+      "nb_coordonnees": 1343,
+      "calcul_ms": 9.4
+    },
+    "R3": {
+      "ok": true,
+      "points": 14,
+      "requete": {
+        "locations": [
+          {
+            "lat": 48.72804,
+            "lon": 6.15515,
+            "type": "break"
+          },
+          {
+            "lat": 48.72056,
+            "lon": 6.135159,
+            "type": "through"
+          },
+          {
+            "lat": 48.727154,
+            "lon": 6.136798,
+            "type": "through"
+          },
+          {
+            "lat": 48.731561,
+            "lon": 6.120511,
+            "type": "through"
+          },
+          {
+            "lat": 48.730603,
+            "lon": 6.097682,
+            "type": "through"
+          },
+          {
+            "lat": 48.727306,
+            "lon": 6.078517,
+            "type": "through"
+          },
+          {
+            "lat": 48.727597,
+            "lon": 6.054743,
+            "type": "through"
+          },
+          {
+            "lat": 48.711029,
+            "lon": 6.05472,
+            "type": "through"
+          },
+          {
+            "lat": 48.712517,
+            "lon": 6.081196,
+            "type": "through"
+          },
+          {
+            "lat": 48.712642,
+            "lon": 6.102927,
+            "type": "through"
+          },
+          {
+            "lat": 48.709059,
+            "lon": 6.12266,
+            "type": "through"
+          },
+          {
+            "lat": 48.716805,
+            "lon": 6.146093,
+            "type": "through"
+          },
+          {
+            "lat": 48.725769,
+            "lon": 6.167018,
+            "type": "through"
+          },
+          {
+            "lat": 48.72822,
+            "lon": 6.15603,
+            "type": "break"
+          }
+        ],
+        "costing": "bicycle",
+        "costing_options": {
+          "bicycle": {
+            "bicycle_type": "mountain",
+            "use_roads": 0
+          }
+        },
+        "directions_options": {
+          "language": "fr-FR",
+          "units": "kilometers"
+        }
+      },
+      "distance_km": 26.981,
+      "duree_s": 6810.2,
+      "nb_coordonnees": 579,
+      "calcul_ms": 41.9
+    },
+    "R4": {
+      "ok": true,
+      "points": 22,
+      "requete": {
+        "locations": [
+          {
+            "lat": 48.6682,
+            "lon": 6.14972,
+            "type": "break"
+          },
+          {
+            "lat": 48.656903,
+            "lon": 6.131933,
+            "type": "through"
+          },
+          {
+            "lat": 48.648839,
+            "lon": 6.153334,
+            "type": "through"
+          },
+          {
+            "lat": 48.638373,
+            "lon": 6.164028,
+            "type": "through"
+          },
+          {
+            "lat": 48.629228,
+            "lon": 6.158597,
+            "type": "through"
+          },
+          {
+            "lat": 48.632229,
+            "lon": 6.152726,
+            "type": "through"
+          },
+          {
+            "lat": 48.633368,
+            "lon": 6.152075,
+            "type": "through"
+          },
+          {
+            "lat": 48.639396,
+            "lon": 6.132641,
+            "type": "through"
+          },
+          {
+            "lat": 48.644903,
+            "lon": 6.136143,
+            "type": "through"
+          },
+          {
+            "lat": 48.651087,
+            "lon": 6.124819,
+            "type": "through"
+          },
+          {
+            "lat": 48.642703,
+            "lon": 6.11021,
+            "type": "through"
+          },
+          {
+            "lat": 48.652857,
+            "lon": 6.104134,
+            "type": "through"
+          },
+          {
+            "lat": 48.64158,
+            "lon": 6.097368,
+            "type": "through"
+          },
+          {
+            "lat": 48.633591,
+            "lon": 6.11033,
+            "type": "through"
+          },
+          {
+            "lat": 48.634926,
+            "lon": 6.126089,
+            "type": "through"
+          },
+          {
+            "lat": 48.627115,
+            "lon": 6.124876,
+            "type": "through"
+          },
+          {
+            "lat": 48.623207,
+            "lon": 6.130849,
+            "type": "through"
+          },
+          {
+            "lat": 48.623466,
+            "lon": 6.147715,
+            "type": "through"
+          },
+          {
+            "lat": 48.633754,
+            "lon": 6.157932,
+            "type": "through"
+          },
+          {
+            "lat": 48.650083,
+            "lon": 6.159677,
+            "type": "through"
+          },
+          {
+            "lat": 48.662562,
+            "lon": 6.15123,
+            "type": "through"
+          },
+          {
+            "lat": 48.66827,
+            "lon": 6.15,
+            "type": "break"
+          }
+        ],
+        "costing": "bicycle",
+        "costing_options": {
+          "bicycle": {
+            "bicycle_type": "mountain",
+            "use_roads": 0
+          }
+        },
+        "directions_options": {
+          "language": "fr-FR",
+          "units": "kilometers"
+        }
+      },
+      "distance_km": 42.123,
+      "duree_s": 10375.861,
+      "nb_coordonnees": 1560,
+      "calcul_ms": 17
+    },
+    "R5": {
+      "ok": true,
+      "points": 24,
+      "requete": {
+        "locations": [
+          {
+            "lat": 48.76838,
+            "lon": 6.1139,
+            "type": "break"
+          },
+          {
+            "lat": 48.774092,
+            "lon": 6.108613,
+            "type": "through"
+          },
+          {
+            "lat": 48.775447,
+            "lon": 6.093027,
+            "type": "through"
+          },
+          {
+            "lat": 48.77401,
+            "lon": 6.089246,
+            "type": "through"
+          },
+          {
+            "lat": 48.780497,
+            "lon": 6.081974,
+            "type": "through"
+          },
+          {
+            "lat": 48.784069,
+            "lon": 6.079447,
+            "type": "through"
+          },
+          {
+            "lat": 48.78327,
+            "lon": 6.074152,
+            "type": "through"
+          },
+          {
+            "lat": 48.780085,
+            "lon": 6.091117,
+            "type": "through"
+          },
+          {
+            "lat": 48.787749,
+            "lon": 6.092604,
+            "type": "through"
+          },
+          {
+            "lat": 48.793351,
+            "lon": 6.076469,
+            "type": "through"
+          },
+          {
+            "lat": 48.79593,
+            "lon": 6.068967,
+            "type": "through"
+          },
+          {
+            "lat": 48.801977,
+            "lon": 6.06831,
+            "type": "through"
+          },
+          {
+            "lat": 48.801593,
+            "lon": 6.083286,
+            "type": "through"
+          },
+          {
+            "lat": 48.80436,
+            "lon": 6.105317,
+            "type": "through"
+          },
+          {
+            "lat": 48.810418,
+            "lon": 6.098099,
+            "type": "through"
+          },
+          {
+            "lat": 48.80276,
+            "lon": 6.089508,
+            "type": "through"
+          },
+          {
+            "lat": 48.809152,
+            "lon": 6.073374,
+            "type": "through"
+          },
+          {
+            "lat": 48.799467,
+            "lon": 6.059005,
+            "type": "through"
+          },
+          {
+            "lat": 48.786305,
+            "lon": 6.065444,
+            "type": "through"
+          },
+          {
+            "lat": 48.775387,
+            "lon": 6.073519,
+            "type": "through"
+          },
+          {
+            "lat": 48.762338,
+            "lon": 6.07067,
+            "type": "through"
+          },
+          {
+            "lat": 48.765833,
+            "lon": 6.088524,
+            "type": "through"
+          },
+          {
+            "lat": 48.769061,
+            "lon": 6.108908,
+            "type": "through"
+          },
+          {
+            "lat": 48.76824,
+            "lon": 6.11346,
+            "type": "break"
+          }
+        ],
+        "costing": "bicycle",
+        "costing_options": {
+          "bicycle": {
+            "bicycle_type": "mountain",
+            "use_roads": 0
+          }
+        },
+        "directions_options": {
+          "language": "fr-FR",
+          "units": "kilometers"
+        }
+      },
+      "distance_km": 40.353,
+      "duree_s": 10780.528,
+      "nb_coordonnees": 1241,
+      "calcul_ms": 29.9
+    }
+  },
+  "c7": {
+    "requete": {
+      "locations": [
+        {
+          "lat": 48.89231,
+          "lon": 6.052058,
+          "type": "break"
+        },
+        {
+          "lat": 48.82516,
+          "lon": 6.020215,
+          "type": "through"
+        },
+        {
+          "lat": 48.843225,
+          "lon": 5.937795,
+          "type": "through"
+        },
+        {
+          "lat": 48.886958,
+          "lon": 6.003103,
+          "type": "through"
+        },
+        {
+          "lat": 48.892523,
+          "lon": 6.052179,
+          "type": "break"
+        }
+      ],
+      "costing": "bicycle",
+      "costing_options": {
+        "bicycle": {
+          "bicycle_type": "mountain",
+          "use_roads": 0
+        }
+      },
+      "directions_options": {
+        "language": "fr-FR",
+        "units": "kilometers"
+      }
+    },
+    "temps_ms": [
+      11.7,
+      17.9,
+      27,
+      7,
+      4.8,
+      9.7,
+      8.3,
+      16.9,
+      9.6,
+      30.1
+    ],
+    "mediane_ms": 10.7,
+    "distance_km": 32.257,
+    "reussites": 10
+  },
+  "fenetre_1500ms_plus_grand_ecart": 155.5
+}
