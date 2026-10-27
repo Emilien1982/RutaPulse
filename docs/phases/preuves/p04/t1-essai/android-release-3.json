@@ -1,0 +1,170 @@
+[
+  {
+    "plateforme": "android",
+    "build": "release",
+    "voie": "a",
+    "horodatage": "2026-10-27T21:34:53.308Z",
+    "duree_geste_ms": 2021,
+    "evenements_glisser": 70,
+    "premier_evt_ms": 15.4,
+    "dernier_evt_ms": 1999.9,
+    "calculs_pendant_geste": 9,
+    "max_calculs_par_seconde": 5,
+    "calcul_final_au_relachement": true,
+    "calcul_final_ms": 5.6,
+    "calculs": [
+      {
+        "at": 15.4,
+        "ms": 6.8,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 268.5,
+        "ms": 5.4,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 507.5,
+        "ms": 32.1,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 723.8,
+        "ms": 3.2,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 970,
+        "ms": 3.1,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 1171.3,
+        "ms": 7.6,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 1404,
+        "ms": 8.2,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 1612.2,
+        "ms": 4.2,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 1816.7,
+        "ms": 10.5,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 2021.1,
+        "ms": 5.6,
+        "ok": true,
+        "final": true
+      }
+    ],
+    "arret_max_fil_js_ms_jusqua_relachement": 83.8,
+    "arret_max_fil_js_ms_jusqua_fin_calcul_final": 83.8,
+    "arret_max_a_ms_depuis_debut": 1230.8,
+    "mouvements_carte_pendant_geste": 0,
+    "centre_debut": [
+      5.973731000000016,
+      48.736598
+    ],
+    "centre_fin": [
+      5.973731000000016,
+      48.736598
+    ],
+    "position_finale": {
+      "lon": 5.977765042308448,
+      "lat": 48.73929822538486
+    },
+    "pixel_final_dp": [
+      300,
+      314.0952453613281
+    ],
+    "evts_dates": [
+      15.4,
+      27,
+      43.2,
+      60.2,
+      77.5,
+      94.1,
+      113.3,
+      153.8,
+      178.5,
+      205.7,
+      268.5,
+      287,
+      302.8,
+      378.6,
+      412.4,
+      427,
+      446.8,
+      460.8,
+      507.5,
+      531.4,
+      550.5,
+      573.9,
+      602.3,
+      611.3,
+      637.5,
+      653.3,
+      678.4,
+      723.8,
+      749.5,
+      772.2,
+      851.5,
+      860.4,
+      879.2,
+      894.4,
+      911,
+      970,
+      988.1,
+      1035.8,
+      1042.6,
+      1060.6,
+      1111.2,
+      1128.9,
+      1147,
+      1171.3,
+      1230.8,
+      1271.3,
+      1276.7,
+      1303.1,
+      1311,
+      1364.9,
+      1403.9,
+      1412.1,
+      1469.2,
+      1502.1,
+      1512.4,
+      1567.1,
+      1579.3,
+      1612.1,
+      1627.8,
+      1656.6,
+      1728.5,
+      1743.3,
+      1762.3,
+      1793.2,
+      1816.7,
+      1842.9,
+      1893.4,
+      1926.6,
+      1945.8,
+      1999.9
+    ]
+  }
+]

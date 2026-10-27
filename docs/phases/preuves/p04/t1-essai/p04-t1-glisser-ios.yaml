@@ -1,0 +1,16 @@
+# THROWAWAY (phase 4, T1). Drag the middle marker, 2 s, iOS iPhone 17 (402x874 pt).
+# Marker at the map center: (201, 390). Replay:
+#   maestro --device DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D test e2e/p04-t1-glisser-ios.yaml
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: "Voie A"
+    timeout: 30000
+- waitForAnimationToEnd
+- swipe:
+    start: 201, 390
+    end: 261, 330
+    duration: 6000

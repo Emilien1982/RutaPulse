@@ -1,0 +1,445 @@
+// THROWAWAY (phase 4, T1). Never merged into main.
+// Trial: drag the middle point of A-B-C, recompute the two neighbour legs
+// through a TanStack Pacer throttler (200 ms), measure the JS thread.
+import {
+  GeoJSONSource,
+  Layer,
+  Marker,
+  ViewAnnotation,
+  type MapRef,
+} from '@maplibre/maplibre-react-native';
+import { useThrottler } from '@tanstack/react-pacer';
+import { Directory, File, Paths } from 'expo-file-system';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type RefObject,
+} from 'react';
+import {
+  PanResponder,
+  Platform,
+  Pressable,
+  Text,
+  View,
+} from 'react-native';
+
+import valhalla from '@modules/valhalla-route';
+
+import { decodePolyline6 } from '@/core/routing/routeResponse';
+import { buildRouteRequest, type RoutePoint } from '@/core/routing/routeRequest';
+import { computeRoute } from '@/shared-data/routing/computeRoute';
+import { routingEngine } from '@/shared-data/routing/routingEngine';
+
+const A: RoutePoint = { lat: 48.727358, lon: 5.978104 };
+const B0: RoutePoint = { lat: 48.736598, lon: 5.973731 };
+const C: RoutePoint = { lat: 48.745898, lon: 5.971272 };
+export const TRIAL_CENTER: [number, number] = [B0.lon, B0.lat];
+
+const now = () => performance.now();
+const round = (x: number) => Math.round(x * 10) / 10;
+type Shape = [number, number][];
+type Variant = 'a' | 'b';
+
+type Gesture = {
+  variant: Variant;
+  t0: number;
+  dragEventsAt: number[];
+  ticks: { at: number; ms: number; ok: boolean; final: boolean }[];
+  regionChanges: number;
+  centerStart?: [number, number];
+  maxGap: number;
+  maxGapAt: number;
+  maxGapAtRelease?: number;
+  releaseAt?: number;
+  finalPos?: RoutePoint;
+};
+
+function meters(a: RoutePoint, b: RoutePoint) {
+  return Math.hypot(
+    (a.lat - b.lat) * 111320,
+    (a.lon - b.lon) * 111320 * Math.cos((a.lat * Math.PI) / 180),
+  );
+}
+
+function save(name: string, data: unknown) {
+  const dir = new Directory(Paths.document, 'essai');
+  if (!dir.exists) dir.create({ intermediates: true });
+  const f = new File(dir, name);
+  if (!f.exists) f.create();
+  f.write(JSON.stringify(data, null, 2));
+}
+
+const dot = (color: string, size = 40) => (
+  <View
+    style={{
+      width: size,
+      height: size,
+      borderRadius: size / 2,
+      backgroundColor: color,
+      borderWidth: 3,
+      borderColor: '#fff',
+    }}
+  />
+);
+
+export function useDragTrial(mapRef: RefObject<MapRef | null>) {
+  const [variant, setVariant] = useState<Variant>('a');
+  const [pos, setPos] = useState<RoutePoint>(B0);
+  const [shapes, setShapes] = useState<[Shape, Shape]>([[], []]);
+  const [status, setStatus] = useState('');
+  const posRef = useRef(B0);
+  const gesture = useRef<Gesture | null>(null);
+  const ticker = useRef<ReturnType<typeof setInterval> | null>(null);
+  const requestId = useRef(0);
+  const results = useRef<unknown[]>([]);
+  const maybeCount = useRef(0);
+
+  // One calculation = the two neighbour legs of the middle point.
+  const recompute = useCallback(async (p: RoutePoint, final = false) => {
+    const id = ++requestId.current;
+    const g = gesture.current;
+    const t = now();
+    const [r1, r2] = await Promise.all([
+      computeRoute([A, p]),
+      computeRoute([p, C]),
+    ]);
+    const ms = now() - t;
+    g?.ticks.push({ at: round(t - g.t0), ms: round(ms), ok: r1.ok && r2.ok, final });
+    // Only the answer to the last request is shown; a failure keeps the old line.
+    if (id !== requestId.current) return;
+    if (r1.ok && r2.ok) setShapes([r1.shape, r2.shape]);
+  }, []);
+
+  const recomputeRef = useRef(recompute);
+  recomputeRef.current = recompute;
+  const throttler = useThrottler(
+    (p: RoutePoint) => void recomputeRef.current(p),
+    { wait: 200, leading: true, trailing: true },
+  );
+
+  // First calculation, once the engine is open.
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      while (!cancelled && routingEngine.getState() !== 'open') {
+        await new Promise((r) => setTimeout(r, 300));
+      }
+      if (!cancelled) await recompute(B0);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [recompute]);
+
+  // Control: same ticker, 2 s, no gesture, 20 s after the opening.
+  useEffect(() => {
+    const id = setTimeout(() => {
+      let maxGap = 0;
+      let last = now();
+      const t0 = last;
+      const tk = setInterval(() => {
+        const t = now();
+        maxGap = Math.max(maxGap, t - last);
+        last = t;
+        if (t - t0 > 2000) {
+          clearInterval(tk);
+          save('repos.json', {
+            plateforme: Platform.OS,
+            arret_max_fil_js_ms_sans_geste_2s: round(maxGap),
+          });
+        }
+      }, 16);
+    }, 20000);
+    return () => clearTimeout(id);
+  }, []);
+
+  function begin(v: Variant) {
+    const g: Gesture = {
+      variant: v,
+      t0: now(),
+      dragEventsAt: [],
+      ticks: [],
+      regionChanges: 0,
+      maxGap: 0,
+      maxGapAt: 0,
+    };
+    gesture.current = g;
+    maybeCount.current = 0;
+    void mapRef.current?.getCenter().then((c) => {
+      g.centerStart = c as [number, number];
+    });
+    let last = now();
+    ticker.current = setInterval(() => {
+      const t = now();
+      if (t - last > g.maxGap) {
+        g.maxGap = t - last;
+        g.maxGapAt = t - g.t0;
+      }
+      last = t;
+    }, 16);
+  }
+
+  function move(p: RoutePoint) {
+    const g = gesture.current;
+    if (!g) return;
+    g.dragEventsAt.push(round(now() - g.t0));
+    posRef.current = p;
+    maybeCount.current++;
+    throttler.maybeExecute(p);
+    setStatus(`${g.dragEventsAt.length} evts, ${g.ticks.length} calculs`);
+  }
+
+  async function end(p: RoutePoint) {
+    const g = gesture.current;
+    if (!g) return;
+    g.releaseAt = now() - g.t0;
+    g.maxGapAtRelease = g.maxGap;
+    posRef.current = p;
+    g.finalPos = p;
+    throttler.cancel();
+    setPos(p);
+    await recompute(p, true);
+    // let the tracks draw before stopping the ticker
+    await new Promise((r) => setTimeout(r, 100));
+    if (ticker.current) clearInterval(ticker.current);
+    const centerEnd = await mapRef.current?.getCenter();
+    const px = await mapRef.current?.project([p.lon, p.lat]);
+    const finalTick = g.ticks[g.ticks.length - 1];
+    const normal = g.ticks.filter((t) => !t.final);
+    let perSecond = 0;
+    for (const t of normal) {
+      perSecond = Math.max(
+        perSecond,
+        normal.filter((u) => u.at >= t.at && u.at < t.at + 1000).length,
+      );
+    }
+    results.current.push({
+      plateforme: Platform.OS,
+      build: __DEV__ ? 'debug' : 'release',
+      voie: g.variant,
+      horodatage: new Date().toISOString(),
+      duree_geste_ms: round(g.releaseAt),
+      evenements_glisser: g.dragEventsAt.length,
+      premier_evt_ms: g.dragEventsAt[0],
+      dernier_evt_ms: g.dragEventsAt[g.dragEventsAt.length - 1],
+      calculs_pendant_geste: normal.length,
+      max_calculs_par_seconde: perSecond,
+      calcul_final_au_relachement: finalTick?.final ?? false,
+      calcul_final_ms: finalTick?.ms,
+      calculs: g.ticks,
+      arret_max_fil_js_ms_jusqua_relachement: round(g.maxGapAtRelease ?? 0),
+      arret_max_fil_js_ms_jusqua_fin_calcul_final: round(g.maxGap),
+      arret_max_a_ms_depuis_debut: round(g.maxGapAt),
+      mouvements_carte_pendant_geste: g.regionChanges,
+      centre_debut: g.centerStart,
+      centre_fin: centerEnd,
+      position_finale: p,
+      pixel_final_dp: px,
+      evts_dates: g.dragEventsAt.slice(0, 400),
+    });
+    save('glisser.json', results.current);
+    gesture.current = null;
+    setStatus(`fini: ${normal.length} calculs + 1 final`);
+  }
+
+  // ---- Variant (b): Marker + PanResponder ----
+  const startPx = useRef<[number, number] | null>(null);
+  const busy = useRef(false);
+  const pan = useMemo(
+    () =>
+      PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onMoveShouldSetPanResponder: () => true,
+        onPanResponderTerminationRequest: () => false,
+        onPanResponderGrant: () => {
+          begin('b');
+          startPx.current = null;
+          void mapRef.current
+            ?.project([posRef.current.lon, posRef.current.lat])
+            .then((px) => {
+              startPx.current = px as [number, number];
+            });
+        },
+        onPanResponderMove: (_e, s) => {
+          const sp = startPx.current;
+          if (!sp || busy.current) return;
+          busy.current = true;
+          void mapRef.current
+            ?.unproject([sp[0] + s.dx, sp[1] + s.dy])
+            .then((ll) => {
+              const p = { lon: ll[0], lat: ll[1] };
+              move(p);
+              setPos(p);
+            })
+            .finally(() => {
+              busy.current = false;
+            });
+        },
+        onPanResponderRelease: (_e, s) => {
+          const sp = startPx.current;
+          if (!sp) return;
+          void mapRef.current
+            ?.unproject([sp[0] + s.dx, sp[1] + s.dy])
+            .then((ll) => end({ lon: ll[0], lat: ll[1] }));
+        },
+      }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
+  // ---- Snap test (question a and b of the report) ----
+  async function snapTest() {
+    const base = B0;
+    const off = (dn: number, de: number): RoutePoint => ({
+      lat: base.lat + dn / 111320,
+      lon: base.lon + de / (111320 * Math.cos((base.lat * Math.PI) / 180)),
+    });
+    const cases: [string, RoutePoint][] = [
+      ['sur-B', base],
+      ['W600', off(0, -600)],
+      ['W1000', off(0, -1000)],
+      ['S2000', off(-2000, 0)],
+      ['N2000', off(2000, 0)],
+    ];
+    const out: unknown[] = [];
+    for (const [name, p] of cases) {
+      for (const extra of [
+        {},
+        { search_cutoff: 200 },
+        { search_cutoff: 100 },
+        { radius: 200 },
+      ]) {
+        const req = JSON.parse(buildRouteRequest([A, p]));
+        Object.assign(req.locations[1], extra);
+        const t = now();
+        const raw = await valhalla.route(JSON.stringify(req));
+        const ms = round(now() - t);
+        let r: Record<string, unknown> = { raw: raw.slice(0, 300) };
+        try {
+          const j = JSON.parse(raw);
+          if (j.trip) {
+            const shape = decodePolyline6(j.trip.legs[j.trip.legs.length - 1].shape);
+            const end = shape[shape.length - 1];
+            r = {
+              ok: true,
+              entree: p,
+              fin_du_trace: { lat: end[1], lon: end[0] },
+              locations_reponse: j.trip.locations[j.trip.locations.length - 1],
+              distance_point_vers_chemin_m: round(
+                meters(p, { lat: end[1], lon: end[0] }),
+              ),
+            };
+          } else {
+            r = { ok: false, brut: raw.slice(0, 300) };
+          }
+        } catch {
+          // keep raw
+        }
+        out.push({ cas: name, option: extra, ms, ...r });
+      }
+    }
+    save('snap.json', out);
+    setStatus('snap ecrit');
+  }
+
+  const mapChildren = (
+    <>
+      {[0, 1].map((i) => (
+        <GeoJSONSource
+          key={i}
+          id={`trial-seg${i}`}
+          data={
+            shapes[i].length > 1
+              ? {
+                  type: 'Feature',
+                  properties: {},
+                  geometry: { type: 'LineString', coordinates: shapes[i] },
+                }
+              : { type: 'FeatureCollection', features: [] }
+          }
+        >
+          <Layer
+            id={`trial-line${i}`}
+            type="line"
+            layout={{ 'line-cap': 'round', 'line-join': 'round' }}
+            paint={{ 'line-color': i ? '#d6006f' : '#0057d6', 'line-width': 6 }}
+          />
+        </GeoJSONSource>
+      ))}
+      <Marker id="trial-a" lngLat={[A.lon, A.lat]}>
+        {dot('#2e8b3a', 28)}
+      </Marker>
+      <Marker id="trial-c" lngLat={[C.lon, C.lat]}>
+        {dot('#111', 28)}
+      </Marker>
+      {variant === 'a' ? (
+        <ViewAnnotation
+          key="va"
+          id="trial-b-a"
+          draggable
+          lngLat={[pos.lon, pos.lat]}
+          onDragStart={() => begin('a')}
+          onDrag={(e) => {
+            const [lon, lat] = e.nativeEvent.lngLat;
+            move({ lon, lat });
+          }}
+          onDragEnd={(e) => {
+            const [lon, lat] = e.nativeEvent.lngLat;
+            void end({ lon, lat });
+          }}
+        >
+          {dot('#e8a400')}
+        </ViewAnnotation>
+      ) : (
+        <Marker key="mb" id="trial-b-b" lngLat={[pos.lon, pos.lat]}>
+          <View {...pan.panHandlers}>{dot('#e8a400')}</View>
+        </Marker>
+      )}
+    </>
+  );
+
+  const overlay = (
+    <View
+      pointerEvents="box-none"
+      style={{ position: 'absolute', top: 70, left: 8 }}
+    >
+      <View style={{ flexDirection: 'row', gap: 6 }}>
+        {(['a', 'b'] as const).map((v) => (
+          <Pressable
+            key={v}
+            accessibilityLabel={`Voie ${v.toUpperCase()}`}
+            onPress={() => setVariant(v)}
+            style={{
+              padding: 10,
+              backgroundColor: variant === v ? '#e8a400' : '#fff',
+              borderWidth: 1,
+            }}
+          >
+            <Text>{`Voie ${v.toUpperCase()}`}</Text>
+          </Pressable>
+        ))}
+        <Pressable
+          accessibilityLabel="Snap"
+          onPress={() => void snapTest()}
+          style={{ padding: 10, backgroundColor: '#fff', borderWidth: 1 }}
+        >
+          <Text>Snap</Text>
+        </Pressable>
+      </View>
+      <Text style={{ backgroundColor: '#fff', marginTop: 4 }}>
+        {`Voie ${variant.toUpperCase()} | ${status}`}
+      </Text>
+    </View>
+  );
+
+  return {
+    mapChildren,
+    overlay,
+    onRegionChanging: () => {
+      if (gesture.current) gesture.current.regionChanges++;
+    },
+  };
+}
