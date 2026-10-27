@@ -1,6 +1,6 @@
 # ADR 0014 — Un dossier `src/shared-data/` pour les données partagées entre fonctionnalités
 
-- Statut : Accepté le 2026-10-26 (nom du dossier changé par Émilien : shared-data)
+- Statut : Accepté le 2026-10-26 (nom du dossier changé par Émilien : shared-data) ; tableau de dépendances remplacé par l'[ADR 0015](0015-module-natif-calcul.md) le 2026-10-27 (`shared-data/` importe le module natif, les fonctionnalités ne le peuvent plus)
 - Date : 2026-10-24 (phase 2, tâche T1 de [p02-carte-hors-ligne](../phases/p02-carte-hors-ligne.md))
 - Modifie l'ADR 0011, §§ 2 et 3 (structure du code et règle de
   dépendance). Né de l'[ADR 0013](0013-telechargement-zones.md).
@@ -51,7 +51,8 @@ en gras) :
 | `modules/` | ses fichiers, `expo-modules-core` | tout `src/` |
 
 - `shared-data/` n'importe pas `modules/` : aucun besoin connu. On l'ouvrira par
-  un nouvel ADR si une phase en a besoin.
+  un nouvel ADR si une phase en a besoin. *(Ouvert par l'ADR 0015, le
+  2026-10-27 : `shared-data/routing/` est le seul importateur du module natif.)*
 - Tests : une fonction de `shared-data/` qui a une logique (condition, boucle) a
   un test Jest, avec une imitation (mock) des modules `expo-*`. Un hook qui
   ne fait qu'appeler `useQuery` n'en a pas besoin : les tests d'écran le

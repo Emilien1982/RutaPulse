@@ -1,6 +1,6 @@
 # ADR 0015 — Le module natif de calcul `valhalla-route`
 
-- Statut : Proposé
+- Statut : Accepté le 2026-10-27 par Émilien
 - Date : 2026-10-27 (phase 3, tâche T1 de [p03-module-calcul](../phases/p03-module-calcul.md))
 - Précise l'ADR 0002 (fonctions du module). Modifie le tableau de
   dépendances de l'[ADR 0014](0014-dossier-shared-data.md).
