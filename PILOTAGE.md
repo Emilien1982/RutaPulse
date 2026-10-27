@@ -24,7 +24,7 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 à spécifier |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 à spécifier |
 
 ## Décisions prises
 
@@ -46,6 +46,8 @@
 - 2026-10-20 — Essai 1-bis : aucun réglage ne rend les itinéraires plus « VTT ». Valhalla cherche le chemin le moins coûteux entre les points, pas une belle boucle. On garde Valhalla et son réglage de l'essai 1.
 - 2026-10-20 — Cadrage modifié : recalcul en direct, tracé à la main par tronçon, circuits VTT balisés d'OSM (fonction 9). Génération de boucles : plus tard.
 - 2026-10-20 — Essai 3 : carte hors ligne prouvée (MapLibre + PMTiles, 29 Mo pour Nancy), circuits balisés dans le paquet (2 seulement autour de Nancy), GitHub Actions jugé faisable.
+- 2026-10-27 — Phase 2 fusionnée dans main : onglets Zones et Carte, téléchargement contrôlé et reprise, carte en mode avion bloquée sur la zone (contour, voile, message hors zone), thème années 70. 13 critères sur 13, 409 tests, CI verte. ADR 0013 et 0014 (`shared-data/`) acceptés.
+- 2026-10-26 — Seule la session de pilotage parle à Émilien (règle dans CLAUDE.md).
 - 2026-10-23 — Lancement à la main du workflow par Émilien : run réussi, release zone-nancy-v3, catalogue en version 3. Phase 1 entièrement prouvée.
 - 2026-10-22 — Phase 1 fusionnée dans main : zone Nancy v2 fabriquée sur une machine ARM de GitHub et publiée (release zone-nancy-v2, catalogue à adresse fixe), 10 critères sur 10. ADR 0003 (format, ARM, serveurs tiers) et 0012 (Python pour la fabrique) acceptés.
 - 2026-10-22 — Les données de calcul dépendent du type de processeur : les zones se fabriquent sur ARM, comme le Mac de référence.
@@ -61,7 +63,7 @@
 
 ## Décisions en attente
 
-- Valider la spec de la phase 2 (carte hors ligne dans l'app).
+- Valider la spec de la phase 3 (module de calcul d'itinéraire).
 - Combien de versions de zone garder sur GitHub (3 releases de 110 Mo déjà).
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
@@ -74,7 +76,8 @@
 
 ## Prochaine étape
 
-Émilien valide la spec de la phase 2 ([docs/phases/p02-carte-hors-ligne.md](docs/phases/p02-carte-hors-ligne.md)).
+Spec de la phase 3 : module natif Valhalla propre, branché sur la zone
+téléchargée ; un itinéraire entre deux points s'affiche sur la carte.
 
 ## Points connus, hors périmètre pour l'instant
 
@@ -82,3 +85,7 @@
 - À vérifier en phase 3 : ce que calcule le téléphone (ARM) avec les tuiles publiées.
 - La fabrique dépend de serveurs tiers (Geofabrik, osmdata) ; une zone côtière échoue si osmdata est en panne. Parade possible plus tard : copie des annexes dans une release.
 - Une zone côtière et une 2e zone n'ont pas encore été fabriquées.
+- Fabrique : distinguer les chemins urbains des sentiers dans les tuiles (place Stanislas, halage dessinés en tirets rouges).
+- Phase 8 au plus tard : cadrage hors zone avec la position visible ; états « suit ma position » et flèche de cap (maquette 90).
+- Petites tâches : écarts non bloquants de la phase 2, nettoyage des fichiers partiels iOS dans `tmp/`, minuteur Jest.
+- Non testé sur simulateur : geste de pincement, vrai mode avion iOS, gros texte du système sur petits écrans.
