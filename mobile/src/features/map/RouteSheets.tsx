@@ -146,13 +146,20 @@ const MESSAGES: Record<RouteErrorKind, { title: TextKey; text: TextKey }> = {
 export function RouteErrorSheet({
   kind,
   onRemove,
+  onHeight,
 }: {
   kind: RouteErrorKind;
   onRemove: () => void;
+  onHeight?: (height: number) => void;
 }) {
   const message = MESSAGES[kind];
   return (
-    <View testID="route-error" accessibilityRole="alert" style={styles.sheet}>
+    <View
+      testID="route-error"
+      accessibilityRole="alert"
+      style={styles.sheet}
+      onLayout={(e) => onHeight?.(e.nativeEvent.layout.height)}
+    >
       <Svg
         width="100%"
         height={106}

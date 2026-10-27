@@ -4,6 +4,7 @@ import Svg, { Path } from 'react-native-svg';
 
 import { t } from '@/core/i18n/t';
 import type { RoutePoint } from '@/core/routing/routeRequest';
+import { linkSegments } from '@/core/routing/routeLink';
 import { colors, mapColors } from '@/ui/theme';
 
 import type { RouteCreation } from './useRouteCreation';
@@ -31,37 +32,71 @@ function lngLat(p: RoutePoint): [number, number] {
 // Start, end, refused point and the magenta line, inside the map.
 export function RouteLayer({ state }: { state: RouteCreation }) {
   const { start, end, route, problem } = state;
+  // Dotted link marker -> route, only with a route shown (tokens: trace.liaison).
+  const links =
+    route && start && end && !problem
+      ? linkSegments(start, end, route.shape)
+      : [];
   return (
     <>
-      {route && (
-        <GeoJSONSource
-          id="route"
-          data={{
+      {/* Always mounted (empty when there is no link), and placed under the
+          casing by beforeId: MapLibre puts a new layer on top otherwise. */}
+      <GeoJSONSource
+        id="route-link"
+        data={{
+          type: 'FeatureCollection',
+          features: links.map((coordinates) => ({
             type: 'Feature',
             properties: {},
-            geometry: { type: 'LineString', coordinates: route.shape },
+            geometry: { type: 'LineString', coordinates },
+          })),
+        }}
+      >
+        <Layer
+          id="route-link-line"
+          type="line"
+          beforeId="route-casing"
+          layout={{ 'line-cap': 'round', 'line-join': 'round' }}
+          paint={{
+            'line-color': mapColors.routeLink,
+            'line-width': widthByZoom(3),
+            'line-dasharray': [0.1, 2.5],
           }}
-        >
-          <Layer
-            id="route-casing"
-            type="line"
-            layout={{ 'line-cap': 'round', 'line-join': 'round' }}
-            paint={{
-              'line-color': mapColors.routeCasing,
-              'line-width': widthByZoom(11),
-            }}
-          />
-          <Layer
-            id="route-line"
-            type="line"
-            layout={{ 'line-cap': 'round', 'line-join': 'round' }}
-            paint={{
-              'line-color': mapColors.route,
-              'line-width': widthByZoom(7),
-            }}
-          />
-        </GeoJSONSource>
-      )}
+        />
+      </GeoJSONSource>
+      {/* Also always mounted (empty without a route): route-casing must exist
+          from the opening, or iOS forgets the link layer waiting for it. */}
+      <GeoJSONSource
+        id="route"
+        data={
+          route
+            ? {
+                type: 'Feature',
+                properties: {},
+                geometry: { type: 'LineString', coordinates: route.shape },
+              }
+            : { type: 'FeatureCollection', features: [] }
+        }
+      >
+        <Layer
+          id="route-casing"
+          type="line"
+          layout={{ 'line-cap': 'round', 'line-join': 'round' }}
+          paint={{
+            'line-color': mapColors.routeCasing,
+            'line-width': widthByZoom(11),
+          }}
+        />
+        <Layer
+          id="route-line"
+          type="line"
+          layout={{ 'line-cap': 'round', 'line-join': 'round' }}
+          paint={{
+            'line-color': mapColors.route,
+            'line-width': widthByZoom(7),
+          }}
+        />
+      </GeoJSONSource>
       {start && (
         <Marker id="route-start" lngLat={lngLat(start)}>
           <View

@@ -33,6 +33,9 @@ import { useRouteCreation } from './useRouteCreation';
 const RECENTER_ZOOM = 15;
 // First position inside the zone: the map opens on it, at this zoom.
 const OPEN_ZOOM = 14;
+// The camera keeps its padding: every move says it, so that the margin of the
+// error sheet never stays after it is gone.
+const NO_PADDING = { top: 0, bottom: 0, left: 0, right: 0 };
 
 // The map of a ready zone (mockup 90). The glyphs must already be on the disk.
 export function ZoneMap({ zone }: { zone: Zone }) {
@@ -47,7 +50,10 @@ export function ZoneMap({ zone }: { zone: Zone }) {
   const { state: route } = creation;
   // Height of the top bar of the creation, measured by the bar itself.
   const [barHeight, setBarHeight] = useState(112);
-  const topOffset = route.creating ? barHeight + spacing.s4 : 60;
+  // Height of the error sheet, measured by the sheet itself.
+  const [sheetHeight, setSheetHeight] = useState(0);
+  // In creation the button sits under the bubble (mockup 10: bar + 64).
+  const topOffset = route.creating ? barHeight + 64 : 60;
 
   const style = useMemo(
     () =>
@@ -105,20 +111,22 @@ export function ZoneMap({ zone }: { zone: Zone }) {
     camera.current?.easeTo({
       center: [lon, lat],
       zoom: OPEN_ZOOM,
+      padding: NO_PADDING,
       duration: 300,
     });
   }, [lon, lat, zone.bbox]);
 
-  // The error sheet covers the lower half: the refused point goes to the
-  // center of the map, which stays above the sheet.
+  // The refused point goes to the center of the visible part: under the top
+  // bar and above the error sheet (padding = what is covered).
   const problemPoint = route.problem?.point;
   useEffect(() => {
     if (!problemPoint) return;
     camera.current?.easeTo({
       center: [problemPoint.lon, problemPoint.lat],
+      padding: { top: barHeight, bottom: sheetHeight, left: 0, right: 0 },
       duration: 300,
     });
-  }, [problemPoint]);
+  }, [problemPoint, barHeight, sheetHeight]);
 
   function askForPermission() {
     if (!canAskAgain.current) {
@@ -147,6 +155,7 @@ export function ZoneMap({ zone }: { zone: Zone }) {
     camera.current?.easeTo({
       center: clampToBbox(zone.bbox, lon, lat),
       zoom: Math.max(zoom.current, RECENTER_ZOOM),
+      padding: NO_PADDING,
       duration: 500,
     });
   }
@@ -274,6 +283,7 @@ export function ZoneMap({ zone }: { zone: Zone }) {
           <RouteErrorSheet
             kind={route.problem.kind}
             onRemove={creation.removeProblemPoint}
+            onHeight={setSheetHeight}
           />
         ) : (
           route.route && (

@@ -65,6 +65,8 @@ export const mapColors = {
   // carte.itineraire, carte.itineraire-lisere, carte.depart, carte.arrivee
   route: '#C2007A',
   routeCasing: '#FFFFFF',
+  // carte.liaison: same magenta, no casing.
+  routeLink: '#C2007A',
   start: '#146C2E',
   end: '#111111',
   zoneBorder: colors.brown,
