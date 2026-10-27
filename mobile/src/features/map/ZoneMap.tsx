@@ -13,13 +13,22 @@ import { Alert, AppState, Linking, StyleSheet, Text, View } from 'react-native';
 import { t } from '@/core/i18n/t';
 import type { Zone } from '@/core/zones/catalogue';
 import { clampToBbox, isInsideBbox } from '@/core/zones/activeZone';
+import { Button } from '@/ui/Button';
 import { zoneFileUri } from '@/shared-data/zones/zoneFileUri';
 import { FloatingButton } from '@/ui/FloatingButton';
 import { LocateIcon, LocateOffIcon } from '@/ui/icons';
 import { border, colors, mapColors, radius, spacing, text } from '@/ui/theme';
 
 import { buildMapStyle, MAX_ZOOM, MIN_ZOOM } from './mapStyle';
+import { RouteLayer } from './RouteLayer';
+import {
+  RouteBubble,
+  RouteErrorSheet,
+  RouteSummarySheet,
+  RouteTopBar,
+} from './RouteSheets';
 import { glyphsDirUri } from './useGlyphsReady';
+import { useRouteCreation } from './useRouteCreation';
 
 const RECENTER_ZOOM = 15;
 // First position inside the zone: the map opens on it, at this zoom.
@@ -34,6 +43,11 @@ export function ZoneMap({ zone }: { zone: Zone }) {
   const touched = useRef(false);
   const opened = useRef(false);
   const position = useCurrentPosition({ enabled: granted });
+  const creation = useRouteCreation(zone.bbox);
+  const { state: route } = creation;
+  // Height of the top bar of the creation, measured by the bar itself.
+  const [barHeight, setBarHeight] = useState(112);
+  const topOffset = route.creating ? barHeight + spacing.s4 : 60;
 
   const style = useMemo(
     () =>
@@ -95,6 +109,17 @@ export function ZoneMap({ zone }: { zone: Zone }) {
     });
   }, [lon, lat, zone.bbox]);
 
+  // The error sheet covers the lower half: the refused point goes to the
+  // center of the map, which stays above the sheet.
+  const problemPoint = route.problem?.point;
+  useEffect(() => {
+    if (!problemPoint) return;
+    camera.current?.easeTo({
+      center: [problemPoint.lon, problemPoint.lat],
+      duration: 300,
+    });
+  }, [problemPoint]);
+
   function askForPermission() {
     if (!canAskAgain.current) {
       Alert.alert(t('map.locationOffTitle'), t('map.locationOffText'), [
@@ -141,6 +166,10 @@ export function ZoneMap({ zone }: { zone: Zone }) {
         compass={false}
         touchRotate={false}
         touchPitch={false}
+        onPress={(e) => {
+          const [lon, lat] = e.nativeEvent.lngLat;
+          creation.touch({ lon, lat });
+        }}
         onRegionDidChange={(e) => {
           zoom.current = e.nativeEvent.zoom;
           if (e.nativeEvent.userInteraction) touched.current = true;
@@ -178,9 +207,10 @@ export function ZoneMap({ zone }: { zone: Zone }) {
             />
           </UserLocation>
         )}
+        {route.creating && <RouteLayer state={route} />}
       </Map>
 
-      <View style={styles.button}>
+      <View style={[styles.button, { top: topOffset }]}>
         <FloatingButton
           accessibilityLabel={t('map.recenter')}
           onPress={recenter}
@@ -195,13 +225,64 @@ export function ZoneMap({ zone }: { zone: Zone }) {
       </View>
 
       {outside && (
-        <View accessibilityRole="alert" style={styles.notice}>
+        <View
+          accessibilityRole="alert"
+          style={[styles.notice, { top: topOffset }]}
+        >
           <Text style={text.secondary}>{t('map.outsideZone')}</Text>
         </View>
       )}
 
-      <View style={styles.attribution} pointerEvents="none">
-        <Text style={text.attribution}>{t('map.attribution')}</Text>
+      {route.creating && (
+        <>
+          <RouteTopBar onClose={creation.close} onHeight={setBarHeight} />
+          {route.computing ? (
+            <RouteBubble
+              top={barHeight + spacing.s3}
+              testID="route-computing"
+              label={t('route.computing')}
+            />
+          ) : (
+            !route.problem &&
+            !route.route && (
+              <RouteBubble
+                top={barHeight + spacing.s3}
+                testID="route-hint"
+                label={t(route.start ? 'route.hintEnd' : 'route.hintStart')}
+              />
+            )
+          )}
+        </>
+      )}
+
+      <View style={styles.bottom} pointerEvents="box-none">
+        {!route.creating && (
+          <View style={styles.newRoute}>
+            <Button
+              testID="new-route-button"
+              variant="secondary"
+              label={t('route.new')}
+              accessibilityLabel={t('route.newLabel')}
+              onPress={creation.open}
+            />
+          </View>
+        )}
+        <View style={styles.attribution} pointerEvents="none">
+          <Text style={text.attribution}>{t('map.attribution')}</Text>
+        </View>
+        {route.problem ? (
+          <RouteErrorSheet
+            kind={route.problem.kind}
+            onRemove={creation.removeProblemPoint}
+          />
+        ) : (
+          route.route && (
+            <RouteSummarySheet
+              distanceKm={route.route.distanceKm}
+              durationS={route.route.durationS}
+            />
+          )
+        )}
       </View>
     </View>
   );
@@ -210,10 +291,9 @@ export function ZoneMap({ zone }: { zone: Zone }) {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.cream },
   map: { flex: 1 },
-  button: { position: 'absolute', top: 60, right: spacing.s4 },
+  button: { position: 'absolute', right: spacing.s4 },
   notice: {
     position: 'absolute',
-    top: 60,
     left: spacing.s4,
     right: 80,
     backgroundColor: colors.creamLight,
@@ -223,10 +303,12 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.s2,
     paddingHorizontal: spacing.s3,
   },
+  bottom: { position: 'absolute', left: 0, right: 0, bottom: 0 },
+  newRoute: { alignSelf: 'center', marginBottom: spacing.s3 },
   attribution: {
-    position: 'absolute',
-    left: spacing.s2,
-    bottom: spacing.s2,
+    alignSelf: 'flex-start',
+    marginLeft: spacing.s2,
+    marginBottom: spacing.s2,
     backgroundColor: mapColors.attributionBackground,
     paddingHorizontal: 5,
     borderRadius: 4,
