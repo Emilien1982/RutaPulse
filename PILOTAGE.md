@@ -46,6 +46,8 @@
 - 2026-10-20 — Essai 1-bis : aucun réglage ne rend les itinéraires plus « VTT ». Valhalla cherche le chemin le moins coûteux entre les points, pas une belle boucle. On garde Valhalla et son réglage de l'essai 1.
 - 2026-10-20 — Cadrage modifié : recalcul en direct, tracé à la main par tronçon, circuits VTT balisés d'OSM (fonction 9). Génération de boucles : plus tard.
 - 2026-10-20 — Essai 3 : carte hors ligne prouvée (MapLibre + PMTiles, 29 Mo pour Nancy), circuits balisés dans le paquet (2 seulement autour de Nancy), GitHub Actions jugé faisable.
+- 2026-10-27 — Spec de la phase 3 (module de calcul) validée par Émilien.
+- 2026-10-27 — Niveau de process **maximal** gardé jusqu'à la fin de RutaPulse, volontairement (voir `~/dev_ai/STRATEGIE-NIVEAUX-DE-PROCESS.md`). Ne pas l'alléger.
 - 2026-10-27 — Phase 2 fusionnée dans main : onglets Zones et Carte, téléchargement contrôlé et reprise, carte en mode avion bloquée sur la zone (contour, voile, message hors zone), thème années 70. 13 critères sur 13, 409 tests, CI verte. ADR 0013 et 0014 (`shared-data/`) acceptés.
 - 2026-10-26 — Seule la session de pilotage parle à Émilien (règle dans CLAUDE.md).
 - 2026-10-23 — Lancement à la main du workflow par Émilien : run réussi, release zone-nancy-v3, catalogue en version 3. Phase 1 entièrement prouvée.
@@ -63,7 +65,6 @@
 
 ## Décisions en attente
 
-- Valider la spec de la phase 3 (module de calcul d'itinéraire).
 - Combien de versions de zone garder sur GitHub (3 releases de 110 Mo déjà).
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
@@ -76,7 +77,52 @@
 
 ## Prochaine étape
 
-Émilien valide la spec de la phase 3 ([docs/phases/p03-module-calcul.md](docs/phases/p03-module-calcul.md)).
+Lancer la phase 3 (spec validée : [docs/phases/p03-module-calcul.md](docs/phases/p03-module-calcul.md)) dans une session de phase.
+
+## Passation du pilotage (27 octobre 2026)
+
+La session de pilotage d'origine (19 au 27 octobre) a été remplacée par une
+nouvelle, pour alléger le contexte. Ce qu'il faut savoir pour reprendre :
+
+**État exact**
+- `main` à jour et poussé. Phases 0, 1 et 2 fusionnées. Rien en cours.
+- Phase 3 : spec validée, pas encore lancée. Le brief de lancement est à
+  reprendre de la spec (déroulé et points d'arrêt ci-dessous).
+- Les anciennes sessions (essais, phases 0 à 2) sont finies ; leurs
+  branches locales ne servent plus que de trace.
+
+**Rôle du pilotage**
+- Seule session qui parle à Émilien. Il ne veut qu'un interlocuteur.
+- Lancer chaque phase dans une session à part (worktree), avec un brief
+  complet : spec, circuit `/phase`, sous-agents un par un, réveil programmé
+  quand on attend, captures sur version finale, pas de push sur `main`,
+  pas de modification de `PILOTAGE.md`, résultats dans
+  `docs/phases/pNN-*-resultats.md`, questions au pilotage par SendMessage
+  (jamais à Émilien), **message de fin de phase obligatoire au pilotage**.
+- Trancher soi-même les choix techniques et les détails ; ne remonter à
+  Émilien que les vraies décisions de produit et de design, et la fusion
+  de chaque phase (toujours demander son accord).
+- Vérifier soi-même chaque compte rendu (tests, CI par l'API publique,
+  captures, fichiers) avant de le présenter.
+- Après une fusion : relancer `npm run verify` et `pytest` sur `main`,
+  audit des secrets et des e-mails, mise à jour de ce fichier, push.
+
+**Leçons du pilotage**
+- Une session de phase peut finir sans prévenir : vérifier régulièrement
+  l'état des sessions liées.
+- Après une limite d'utilisation, relancer soi-même les sessions dès la
+  réinitialisation (minuterie en arrière-plan qui réveille le pilotage).
+- Une boîte de fin de tour avec une question reste affichée tant qu'une
+  nouvelle ne la remplace pas : les sessions de phase n'y mettent jamais
+  de question.
+- Une capture peut tromper (menu de développement d'Expo) ; un relecteur
+  peut juger un vieux fichier : toujours donner le chemin exact de la
+  preuve.
+
+**Préférences d'Émilien** (aussi dans la mémoire de Claude) : français
+simple, termes anglais traduits entre parenthèses ; bande de carrés bleus
+avant le résumé ; notification sur son téléphone à chaque question ; il
+valide spec, design, architecture et fusion ; tests sur simulateurs.
 
 ## Points connus, hors périmètre pour l'instant
 
