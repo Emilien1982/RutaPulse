@@ -1,0 +1,363 @@
+// THROWAWAY (phase 4, T6). Never merged into main.
+// Bench of criteria C3 (drag: at most 5 calculations per second, a final one,
+// the other legs untouched) and C11 (no JS thread stall over 100 ms).
+// Active only when <documents>/banc-p04-demande.json exists; without it every
+// function below does nothing. Results: <documents>/banc-p04/geste-N.json and
+// temoin-N.json, and pret.json when the route is built.
+import { Directory, File, Paths } from 'expo-file-system';
+import { Platform } from 'react-native';
+
+import type { RoutePoint } from '@/core/routing/routeRequest';
+import type { RouteResult } from '@/core/routing/routeResponse';
+
+import { routingEngine } from './routingEngine';
+
+type Request = {
+  points?: RoutePoint[];
+  center?: [number, number];
+  zoom?: number;
+  // Present: run the control (no gesture) for this long, once the route is built.
+  temoin_ms?: number;
+};
+
+const now = () => performance.now();
+const round = (x: number) => Math.round(x * 10) / 10;
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+const same = (a: RoutePoint, b: RoutePoint) =>
+  Math.abs(a.lon - b.lon) < 1e-7 && Math.abs(a.lat - b.lat) < 1e-7;
+
+let cached: Request | null | undefined;
+
+/** The request file, read once; null when absent (the bench is off). */
+export function bancRequest(): Request | null {
+  if (cached !== undefined) return cached;
+  try {
+    const f = new File(Paths.document, 'banc-p04-demande.json');
+    cached = f.exists ? (JSON.parse(f.textSync()) as Request) : null;
+  } catch {
+    cached = null;
+  }
+  return cached;
+}
+
+function save(name: string, data: unknown) {
+  const dir = new Directory(Paths.document, 'banc-p04');
+  if (!dir.exists) dir.create({ intermediates: true });
+  const f = new File(dir, name);
+  if (!f.exists) f.create();
+  f.write(JSON.stringify(data, null, 2));
+}
+
+function nextIndex(prefix: string): number {
+  const dir = new Directory(Paths.document, 'banc-p04');
+  if (!dir.exists) return 1;
+  return dir.list().filter((e) => e.name.startsWith(prefix)).length + 1;
+}
+
+// ---- Engine calls (wrapper of computeRoute) ----
+
+type Call = {
+  t: number;
+  end?: number;
+  points: RoutePoint[];
+  ok?: boolean;
+  error?: string;
+  aborted?: boolean;
+};
+const calls: Call[] = [];
+let inflight = 0;
+let lastActivity = 0;
+
+/** Records a call and its end. Does not touch the promise it is given. */
+export function bancTrackCompute(
+  points: RoutePoint[],
+  signal: AbortSignal | undefined,
+  result: Promise<RouteResult>,
+): void {
+  if (!bancRequest()) return;
+  const call: Call = { t: now(), points: points.map((p) => ({ ...p })) };
+  calls.push(call);
+  inflight++;
+  lastActivity = call.t;
+  void result.then((r) => {
+    call.end = now();
+    call.ok = r.ok;
+    if (!r.ok) call.error = String(r.error);
+    call.aborted = signal?.aborted ?? false;
+    inflight--;
+    lastActivity = call.end;
+  });
+}
+
+// ---- Map movement ----
+
+let regionEvents: { t: number; center: [number, number]; zoom: number }[] = [];
+
+/** Called by the screen at each end of a map movement. */
+export function bancRegionChanged(center: [number, number], zoom: number) {
+  if (!bancRequest()) return;
+  regionEvents.push({ t: now(), center, zoom });
+}
+
+// ---- Build of the route (points added by the bench) ----
+
+/** Waits until the calls have been quiet for `quietMs`. */
+async function waitQuiet(quietMs: number, timeoutMs: number): Promise<boolean> {
+  const t0 = now();
+  for (;;) {
+    if (inflight === 0 && now() - lastActivity >= quietMs) return true;
+    if (now() - t0 > timeoutMs) return false;
+    await sleep(50);
+  }
+}
+
+/**
+ * Adds the points of the request one by one, waits for the legs, writes
+ * pret.json, then runs the control if the request asks for it.
+ */
+export async function bancBuild(
+  add: (p: RoutePoint) => void,
+  count: () => number,
+): Promise<void> {
+  const req = bancRequest();
+  if (!req) return;
+  const points = req.points ?? [];
+  if (points.length > 0) {
+    // The engine must be open, as when a person starts to draw.
+    while (routingEngine.getState() !== 'open') await sleep(300);
+    for (const p of points) {
+      add(p);
+      await sleep(150);
+    }
+    await sleep(500);
+    await waitQuiet(1000, 60000);
+  }
+  const okCalls = calls.filter((c) => c.ok).length;
+  save('pret.json', {
+    horodatage: new Date().toISOString(),
+    plateforme: Platform.OS,
+    build: __DEV__ ? 'debug' : 'release',
+    points_demandes: points.length,
+    points_dans_l_itineraire: count(),
+    appels_moteur: calls.length,
+    appels_reussis: okCalls,
+    appels_en_echec: calls.filter((c) => c.ok === false).map((c) => c.error),
+  });
+  if (req.temoin_ms) await runControl(req.temoin_ms, count());
+}
+
+async function runControl(ms: number, nPoints: number) {
+  const callsBefore = calls.length;
+  let maxGap = 0;
+  let last = now();
+  const t0 = last;
+  let ticks = 0;
+  const tick = setInterval(() => {
+    const t = now();
+    maxGap = Math.max(maxGap, t - last);
+    last = t;
+    ticks++;
+  }, 16);
+  await sleep(ms);
+  clearInterval(tick);
+  save(`temoin-${nextIndex('temoin-')}.json`, {
+    plateforme: Platform.OS,
+    build: __DEV__ ? 'debug' : 'release',
+    horodatage: new Date().toISOString(),
+    points: nPoints,
+    duree_ms: round(now() - t0),
+    ticks,
+    arret_max_fil_js_ms: round(maxGap),
+    appels_moteur_pendant: calls.length - callsBefore,
+  });
+}
+
+// ---- One drag gesture ----
+
+type Gesture = {
+  id: number;
+  index: number;
+  original: RoutePoint[];
+  t0: number;
+  dragAt: number[];
+  maxGap: number;
+  maxGapAt: number;
+  maxGapAtRelease: number;
+  releaseAt?: number;
+  releasePos?: RoutePoint;
+  callsFrom: number;
+  regionFrom: number;
+  centerStart?: [number, number];
+  tick: ReturnType<typeof setInterval>;
+};
+let gesture: Gesture | null = null;
+
+/** A drag starts on point `id`; `points` is the draft before the gesture. */
+export function bancDragStart(
+  id: number,
+  points: ({ id: number } & RoutePoint)[],
+) {
+  const req = bancRequest();
+  if (!req || gesture) return;
+  const last = regionEvents[regionEvents.length - 1];
+  const t0 = now();
+  const g: Gesture = {
+    id,
+    index: points.findIndex((p) => p.id === id),
+    original: points.map(({ lon, lat }) => ({ lon, lat })),
+    t0,
+    dragAt: [],
+    maxGap: 0,
+    maxGapAt: 0,
+    maxGapAtRelease: 0,
+    callsFrom: calls.length,
+    regionFrom: regionEvents.length,
+    centerStart: last?.center ?? req.center,
+    tick: setInterval(() => {
+      const t = now();
+      if (t - prev > g.maxGap) {
+        g.maxGap = t - prev;
+        g.maxGapAt = t - g.t0;
+      }
+      prev = t;
+    }, 16),
+  };
+  let prev = t0;
+  gesture = g;
+}
+
+export function bancDragMove() {
+  if (gesture) gesture.dragAt.push(round(now() - gesture.t0));
+}
+
+/** The release, with the position of the end event. */
+export function bancDragEnd(p: RoutePoint) {
+  const g = gesture;
+  if (!g || g.releaseAt !== undefined) return;
+  g.releaseAt = now() - g.t0;
+  g.maxGapAtRelease = g.maxGap;
+  g.releasePos = { lon: p.lon, lat: p.lat };
+  void finishGesture(g);
+}
+
+async function finishGesture(g: Gesture) {
+  // Until the final calculation has answered and everything is quiet.
+  const releaseT = g.t0 + (g.releaseAt ?? 0);
+  lastActivity = Math.max(lastActivity, releaseT);
+  await sleep(300);
+  await waitQuiet(400, 8000);
+  clearInterval(g.tick);
+  gesture = null;
+
+  const rel = g.releaseAt ?? 0;
+  const mine = calls.slice(g.callsFrom).map((c) => ({
+    ...c,
+    at: c.t - g.t0,
+    phase: c.t - g.t0 <= rel ? 'geste' : 'apres_relachement',
+  }));
+
+  // Legit calls: one end is the neighbour of the dragged point, the other end
+  // is the moving point (its start position, or a new one).
+  const before = g.original[g.index - 1];
+  const after = g.original[g.index + 1];
+  const start = g.original[g.index];
+  const isOriginal = (p: RoutePoint) => g.original.some((o) => same(o, p));
+  const moving = (p: RoutePoint) => same(p, start) || !isOriginal(p);
+  const neighbour = (c: { points: RoutePoint[] }) => {
+    const [a, b] = c.points;
+    if (c.points.length !== 2) return false;
+    return (
+      (before !== undefined && same(a, before) && moving(b)) ||
+      (after !== undefined && same(b, after) && moving(a))
+    );
+  };
+  const others = mine.filter((c) => !neighbour(c));
+
+  // Bursts: calls that start within 30 ms of each other are one calculation
+  // of the throttled function (it asks for the two neighbour legs together).
+  type Burst = { at: number; n: number; ms: number };
+  const bursts: Burst[] = [];
+  for (const c of mine.filter((m) => m.phase === 'geste')) {
+    const lastBurst = bursts[bursts.length - 1];
+    const ms = (c.end ?? c.t) - c.t;
+    if (lastBurst && c.at - lastBurst.at < 30) {
+      lastBurst.n++;
+      lastBurst.ms = Math.max(lastBurst.ms, ms);
+    } else {
+      bursts.push({ at: c.at, n: 1, ms });
+    }
+  }
+  const gaps = bursts.slice(1).map((b, i) => b.at - bursts[i].at);
+  let perSecond = 0;
+  for (const b of bursts) {
+    perSecond = Math.max(
+      perSecond,
+      bursts.filter((u) => u.at >= b.at && u.at < b.at + 1000).length,
+    );
+  }
+
+  const finals = mine.filter((c) => c.phase === 'apres_relachement');
+  const finalEnd = Math.max(0, ...finals.map((c) => (c.end ?? 0) - g.t0));
+  const finalStart = finals.length ? Math.min(...finals.map((c) => c.at)) : 0;
+  const regions = regionEvents.slice(g.regionFrom);
+  const lastRegion = regions[regions.length - 1];
+
+  save(`geste-${nextIndex('geste-')}.json`, {
+    plateforme: Platform.OS,
+    build: __DEV__ ? 'debug' : 'release',
+    horodatage: new Date().toISOString(),
+    points_itineraire: g.original.length,
+    index_point_glisse: g.index,
+    duree_geste_ms: round(rel),
+    evenements_glisser: g.dragAt.length,
+    premier_evt_ms: g.dragAt[0],
+    dernier_evt_ms: g.dragAt[g.dragAt.length - 1],
+    arret_max_fil_js_ms_jusqua_relachement: round(g.maxGapAtRelease),
+    arret_max_fil_js_ms_jusqua_calcul_final: round(g.maxGap),
+    arret_max_a_ms_depuis_debut: round(g.maxGapAt),
+    calculs_pendant_geste: bursts.length,
+    calculs: bursts,
+    ecart_min_entre_calculs_ms: gaps.length ? round(Math.min(...gaps)) : null,
+    max_calculs_par_seconde: perSecond,
+    calcul_final: {
+      present: finals.length > 0,
+      appels: finals.length,
+      debut_ms_apres_relachement: round(finalStart - rel),
+      fin_ms_apres_relachement: round(finalEnd - rel),
+      duree_moteur_ms: round(
+        Math.max(0, ...finals.map((c) => (c.end ?? c.t) - c.t)),
+      ),
+      reussis: finals.filter((c) => c.ok).length,
+      position_relachement: g.releasePos,
+      // Every final call uses the position of the end event.
+      a_la_position_du_relachement:
+        finals.length > 0 &&
+        finals.every((c) =>
+          c.points.some((q) => g.releasePos && same(q, g.releasePos)),
+        ),
+      appels_detail: finals.map((c) => ({
+        at: round(c.at),
+        ok: c.ok,
+        points: c.points,
+      })),
+    },
+    autres_troncons_recalcules: others.length,
+    autres_troncons_detail: others.map((c) => ({
+      at: round(c.at),
+      points: c.points,
+    })),
+    appels_tous: mine.map((c) => ({
+      at: round(c.at),
+      ms: round((c.end ?? c.t) - c.t),
+      phase: c.phase,
+      ok: c.ok,
+      annule: c.aborted,
+    })),
+    carte_bougee: regions.length > 0,
+    evenements_carte: regions.length,
+    centre_debut: g.centerStart,
+    centre_fin: lastRegion?.center,
+    evts_dates: g.dragAt.slice(0, 600),
+  });
+  regionEvents = [];
+}
