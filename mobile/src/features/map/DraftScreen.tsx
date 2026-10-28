@@ -259,6 +259,13 @@ function DraftView({ zone, opening }: { zone: Zone; opening?: OpeningView }) {
     setShown(summary);
   }
   const computing = legs.some((leg) => leg.status === 'pending');
+  // No figure is known until a first complete summary: dashes until then,
+  // and again under 2 points.
+  const [hasFigures, setHasFigures] = useState(false);
+  if (draft.points.length >= 2 && summary.complete && !hasFigures) {
+    setHasFigures(true);
+  }
+  if (draft.points.length < 2 && hasFigures) setHasFigures(false);
 
   // Leaving: from 2 points on, a native dialog asks first (also for the back
   // button of Android).
@@ -295,6 +302,13 @@ function DraftView({ zone, opening }: { zone: Zone; opening?: OpeningView }) {
       },
       onDragStart: (id) => {
         touchedAnnotation();
+        // The choice of another point goes away now. Only the key of that
+        // other point changes, not the key of the dragged one: the gesture
+        // goes on.
+        const current = store.state.selected;
+        if (current !== null && current !== id) {
+          dispatch({ type: 'select', id: null });
+        }
         dragging.current = id;
         // Empties the preview of a previous gesture.
         clearPreview();
@@ -308,6 +322,9 @@ function DraftView({ zone, opening }: { zone: Zone; opening?: OpeningView }) {
         // The move first: the preview must not be judged on the old legs.
         release(id, p.lon, p.lat);
         setGesturing(false);
+        // The dragged point becomes the chosen one. Its key changes only now,
+        // after the gesture.
+        dispatch({ type: 'select', id });
       },
       onGone: dragLost,
     };
@@ -420,6 +437,7 @@ function DraftView({ zone, opening }: { zone: Zone; opening?: OpeningView }) {
             distanceKm={shown.distanceKm}
             durationS={shown.durationS}
             pending={computing}
+            empty={!hasFigures}
           >
             <ModePicker
               mode={nextMode}

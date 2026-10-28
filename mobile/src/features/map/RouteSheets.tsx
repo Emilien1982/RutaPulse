@@ -81,24 +81,36 @@ function Figure({
   value,
   label,
   testID,
+  accessibilityLabel,
 }: {
   value: string;
   label: string;
   testID: string;
+  /** Set when the value alone says too little (no route yet). */
+  accessibilityLabel?: string;
 }) {
   const parts = value.split(/(\d+(?:,\d+)?)/).filter(Boolean);
+  // A value without digit (the dash) is a value, not a unit.
+  const hasDigit = parts.some((part) => /^\d/.test(part));
   return (
-    <View style={styles.figure}>
+    // One element for the reader: the label replaces value and caption.
+    <View
+      style={styles.figure}
+      accessible={accessibilityLabel ? true : undefined}
+      accessibilityLabel={accessibilityLabel}
+    >
       <Text testID={testID} style={styles.figureValue}>
-        {parts.map((part, i) =>
-          /^\d/.test(part) ? (
-            part
-          ) : (
-            <Text key={i} style={styles.figureUnit}>
-              {part}
-            </Text>
-          ),
-        )}
+        {!hasDigit
+          ? value
+          : parts.map((part, i) =>
+              /^\d/.test(part) ? (
+                part
+              ) : (
+                <Text key={i} style={styles.figureUnit}>
+                  {part}
+                </Text>
+              ),
+            )}
       </Text>
       <Text style={text.caption}>{label}</Text>
     </View>
@@ -112,11 +124,14 @@ export function RouteSummarySheet({
   distanceKm,
   durationS,
   pending,
+  empty,
   children,
 }: {
   distanceKm: number;
   durationS: number;
   pending?: boolean;
+  /** No route yet (under 2 points): a dash instead of the figures. */
+  empty?: boolean;
   children?: ReactNode;
 }) {
   const insets = useSafeAreaInsets();
@@ -131,13 +146,15 @@ export function RouteSummarySheet({
       >
         <Figure
           testID="route-distance"
-          value={formatDistance(distanceKm)}
+          value={empty ? t('route.noFigure') : formatDistance(distanceKm)}
           label={t('route.distance')}
+          accessibilityLabel={empty ? t('route.distanceEmptyLabel') : undefined}
         />
         <Figure
           testID="route-duration"
-          value={formatDuration(durationS)}
+          value={empty ? t('route.noFigure') : formatDuration(durationS)}
           label={t('route.duration')}
+          accessibilityLabel={empty ? t('route.durationEmptyLabel') : undefined}
         />
       </View>
       {children}

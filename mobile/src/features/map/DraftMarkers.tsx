@@ -207,12 +207,13 @@ function ZoneEdgeLabel({ point, bbox }: { point: Position; bbox: Bbox }) {
   const side = (Object.keys(over) as (keyof typeof over)[]).reduce((a, b) =>
     over[b] > over[a] ? b : a,
   );
-  // The label starts 10 away from the edge, on the outside.
+  // The label starts 10 away from the edge, on the outside, and 24 along the
+  // edge from the point: under it in the mockup, never on top of it.
   const placement = {
-    right: { anchor: 'left', offset: [10, 0] },
-    left: { anchor: 'right', offset: [-10, 0] },
-    top: { anchor: 'bottom', offset: [0, -10] },
-    bottom: { anchor: 'top', offset: [0, 10] },
+    right: { anchor: 'top-left', offset: [10, 24] },
+    left: { anchor: 'top-right', offset: [-10, 24] },
+    top: { anchor: 'bottom-left', offset: [24, -10] },
+    bottom: { anchor: 'top-left', offset: [24, 10] },
   } as const;
   const { anchor, offset } = placement[side];
   return (
@@ -300,6 +301,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     paddingVertical: 3,
     paddingHorizontal: 6,
+    maxWidth: 84,
   },
   edgeLabelText: {
     fontSize: 13,

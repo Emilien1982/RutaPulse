@@ -156,8 +156,7 @@ export function DraftTools({
 
 const styles = StyleSheet.create({
   heading: {
-    ...text.caption,
-    letterSpacing: 1.2,
+    ...text.sectionLabel,
     marginTop: 13,
     marginBottom: 6,
     marginLeft: 3,

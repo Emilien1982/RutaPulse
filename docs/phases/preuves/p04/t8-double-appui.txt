@@ -1,0 +1,22 @@
+# sh mobile/e2e/p04-double-appui-android.sh (emulator-5554, release, 2026-10-28 08:22)
+== Doubles appuis (même endroit) : aucun point ne doit être posé ==
+- pause demandée 0.05 s, écart réel (fin de tap à fin de tap) 111 ms
+  OK    résumé : dash
+  OK    consigne : départ
+- pause demandée 0.10 s, écart réel (fin de tap à fin de tap) 170 ms
+  OK    résumé : dash
+  OK    consigne : départ
+- pause demandée 0.15 s, écart réel (fin de tap à fin de tap) 260 ms
+  OK    résumé : dash
+  OK    consigne : départ
+- pause demandée 0.20 s, écart réel (fin de tap à fin de tap) 274 ms
+  OK    résumé : dash
+  OK    consigne : départ
+- pause demandée 0.25 s, écart réel (fin de tap à fin de tap) 387 ms
+  --    écart réel >= 300 ms : deux touches séparées, non jugé (résumé lu : text="0 m")
+- pause demandée 0.29 s, écart réel (fin de tap à fin de tap) 367 ms
+  --    écart réel >= 300 ms : deux touches séparées, non jugé (résumé lu : text="0 m")
+== Deux touches espacées de 0,4 s, à deux endroits : 2 points ==
+- écart mesuré 471 ms ; résumé lu : text="22,2 km"
+  OK    2 points : le résumé affiche des chiffres
+RESULTAT : OK

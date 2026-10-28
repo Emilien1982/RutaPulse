@@ -180,9 +180,9 @@ describe('opening', () => {
     await renderScreen();
     expect(screen.getByText('Nouvel itinéraire')).toBeTruthy();
     expect(screen.getByText('Touchez le départ sur la carte')).toBeTruthy();
-    expect(screen.getByTestId('route-distance')).toHaveTextContent('0 m');
-    // The minimal duration is one minute.
-    expect(screen.getByTestId('route-duration')).toHaveTextContent('1 min');
+    // p04-t7 A4: a dash, not "0 m" and "1 min", while no figure is known.
+    expect(screen.getByTestId('route-distance')).toHaveTextContent('—');
+    expect(screen.getByTestId('route-duration')).toHaveTextContent('—');
     expect(screen.getByText('PROCHAIN TRONÇON')).toBeTruthy();
     expect(screen.getByText('Par les chemins')).toBeTruthy();
     expect(screen.getByText('À la main')).toBeTruthy();
@@ -753,7 +753,8 @@ describe('leaving', () => {
     expect(mockPrevent?.value).toBe(true);
     mockPrevent?.callback({ data: { action: {} }, repeat: mockRepeat });
     expect(alert).toHaveBeenCalledTimes(1);
-    expect(alert.mock.calls[0]?.[0]).toBe('Abandonner cet itinéraire ?');
+    // p04-t7 M3: narrow no-break space (U+202F) before the "?".
+    expect(alert.mock.calls[0]?.[0]).toBe('Abandonner cet itinéraire\u202F?');
     const buttons = alert.mock.calls[0]?.[2] ?? [];
     expect(buttons.map((b) => b.text)).toEqual(['Continuer', 'Abandonner']);
     // "Continuer" does nothing; "Abandonner" repeats the blocked action.

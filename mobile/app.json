@@ -40,7 +40,8 @@
           "locationWhenInUsePermission": "RutaPulse utilise votre position pour l'afficher sur la carte, seulement quand l'app est ouverte."
         }
       ],
-      "expo-status-bar"
+      "expo-status-bar",
+      "./plugins/withAndroidAccent"
     ],
     "experiments": {
       "typedRoutes": true

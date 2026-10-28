@@ -271,7 +271,8 @@ describe('C1: full screen, no tab bar, the cross and the confirmation', () => {
       string,
       { text: string; style?: string; onPress?: () => void }[],
     ];
-    expect(title).toBe('Abandonner cet itinéraire ?');
+    // p04-t7 M3: narrow no-break space (U+202F) before the "?".
+    expect(title).toBe('Abandonner cet itinéraire\u202F?');
     expect(buttons.map((b) => b.text)).toEqual(['Continuer', 'Abandonner']);
     expect(buttons[0]?.style).toBe('cancel');
     // Continuer: nothing leaves.
@@ -517,8 +518,9 @@ describe('C4: deleting', () => {
     await pressTool('route-delete');
     expect(pointIds()).toHaveLength(0);
     expect(screen.getByText('Touchez le départ sur la carte')).toBeTruthy();
-    expect(distance()).toBe(`0${NNBSP}m`);
-    expect(duration()).toBe(`1${NNBSP}min`);
+    // p04-t7 A4: a dash under 2 points, no more "0 m" and "1 min".
+    expect(distance()).toBe('—');
+    expect(duration()).toBe('—');
   });
 });
 
@@ -635,8 +637,9 @@ describe('C10: the summary', () => {
       { km: 9, s: 9 },
     );
     await renderScreen();
-    expect(distance()).toBe(`0${NNBSP}m`);
-    expect(duration()).toBe(`1${NNBSP}min`);
+    // p04-t7 A4: a dash under 2 points, no more "0 m" and "1 min".
+    expect(distance()).toBe('—');
+    expect(duration()).toBe('—');
     await addPoints(A, B);
     expect(distance()).toBe(`2,0${NNBSP}km`); // 2.0 km
     expect(duration()).toBe(`10${NNBSP}min`); // 600 s
