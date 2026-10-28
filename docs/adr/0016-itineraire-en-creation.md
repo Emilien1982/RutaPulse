@@ -1,6 +1,7 @@
 # ADR 0016 — L'itinéraire en création : modèle, recalcul par tronçon, glisser, plein écran
 
 - Statut : Accepté le 2026-10-27 par Émilien (via le pilotage)
+- Complété le 2026-10-28 (fin de phase 4) : ce qui a été construit.
 - Date : 2026-10-27 (phase 4, tâche T1 de [p04-creer-modifier-itineraire](../phases/p04-creer-modifier-itineraire.md))
 - Précise l'[ADR 0007](0007-donnees-locales-et-etat.md) (clé de Query,
   Pacer) et l'[ADR 0015](0015-module-natif-calcul.md) (code 171, abandon
@@ -36,7 +37,7 @@ d'architecture).
 ```ts
 type LegMode = 'path' | 'hand';  // par les chemins / à la main
 type DraftPoint = { id: number; lon: number; lat: number };
-type Draft = { points: DraftPoint[]; modes: LegMode[] }; // modes[i] : tronçon i -> i+1
+type Draft = { points: DraftPoint[]; modes: LegMode[]; linked?: number[] }; // modes[i] : tronçon i -> i+1
 type DraftState = { draft: Draft; past: Draft[]; nextMode: LegMode; selected: number | null; nextId: number };
 // DraftAction : add, move, remove, loop, setLegMode, undo ; chooseMode et select (hors historique)
 function reduceDraft(state: DraftState, action: DraftAction): DraftState;
@@ -50,11 +51,17 @@ function summarize(draft: Draft, legs: (LegResult | undefined)[]): { distanceKm:
   sinon « par les chemins ». Supprimer le départ ou l'arrivée retire aussi
   son tronçon.
 - **Boucler** : copie du départ à la fin (nouvel `id`), avec `nextMode`.
-  Sans effet sous 2 points.
+  Sans effet sous 2 points, ni si l'arrivée est déjà sur le départ
+  (`canLoop`).
 - **Changer le mode d'un tronçon** (`setLegMode`) : pour « Relier ce point
-  à la main » (§ 5).
+  à la main » (§ 5). L'action prend une liste `indices` et un
+  `linkedPointId` optionnel : une seule action pour tous les tronçons et le
+  point, qu'un seul « Annuler » défait.
+- **`linked`** (optionnel, absent si vide) : les `id` des points acceptés
+  par « Relier ce point à la main ». Il fait partie de `Draft`, donc de
+  l'historique. Supprimer un point le retire de `linked`.
 - **Annuler** : reprend le dernier `Draft` de `past`. Pas de « Rétablir ».
-- **Dans l'historique** : une copie de `Draft` (points et modes) avant
+- **Dans l'historique** : une copie de `Draft` (points, modes, `linked`) avant
   chaque action, 50 au plus ; au-delà, la plus ancienne part.
 - **Hors de l'historique** : `nextMode`, le point choisi, et **les
   résultats des calculs**. Après « Annuler », ils reviennent du cache de
@@ -72,7 +79,7 @@ function summarize(draft: Draft, legs: (LegResult | undefined)[]): { distanceKm:
 
 | Dossier | Contenu |
 |---|---|
-| `core/draft/` | `reduceDraft`, `summarize`, `handLeg` (tronçon à la main), tests Jest |
+| `core/draft/` | `reduceDraft`, `summarize`, `handLeg` (tronçon à la main), `findProblem` (cible de la feuille d'erreur, § 5), tests Jest |
 | `core/routing/` | `search_cutoff` et `MAX_SNAP_METERS` (§ 5) ; sorte d'erreur `farFromPath` ; demande sautée si son `AbortSignal` (signal d'abandon) est coupé (§ 4) |
 | `shared-data/routing/` | `computeRoute(points, signal?)` : seul changement |
 | `features/map/` | L'écran de création, son Store, les requêtes par tronçon, l'aperçu du glisser, les couches, la barre d'outils, les feuilles |
@@ -94,6 +101,8 @@ function summarize(draft: Draft, legs: (LegResult | undefined)[]): { distanceKm:
   - c'est le rôle donné à Store par l'ADR 0007.
 - Le Store reste dans `features/map/` tant qu'un seul écran s'en sert
   (ADR 0014).
+- Construit : Pacer n'est importé que par `features/map/useDragThrottle.ts`.
+  L'aperçu du glisser a son propre petit store (§ 4).
 
 ### 3. Le recalcul par tronçon, avec TanStack Query
 
@@ -146,6 +155,17 @@ function summarize(draft: Draft, legs: (LegResult | undefined)[]): { distanceKm:
 - **Couches** : une source GeoJSON (format de données géographiques) pour
   tous les tronçons, le mode en propriété (trait plein ou tirets). Une
   seconde pour l'aperçu. Pendant le geste, seule la seconde change.
+- **Construit** :
+  - l'aperçu ne vit pas dans l'état local du hook, mais dans un petit store
+    à part (`useDragPreviewStore`, dans `useDragPreview.ts`). Un seul
+    composant le lit, la couche `PreviewLayer` : une réponse du moteur ne
+    redessine pas l'écran ;
+  - au début du glisser d'un autre point, le choix est vidé. Après le
+    relâchement, le point glissé devient le point choisi ;
+  - une touche sur la carte attend 120 ms (`MAP_TOUCH_DELAY_MS`) avant
+    d'ajouter un point. Raison : sur iOS, toucher un point envoie aussi une
+    touche fantôme à la carte. Toucher un point vide cette attente, et la
+    carte ignore les touches des 300 ms suivantes.
 
 ### 5. Le seuil de 200 m
 
@@ -164,6 +184,19 @@ function summarize(draft: Draft, legs: (LegResult | undefined)[]): { distanceKm:
   - « Relier ce point à la main » = `setLegMode` « à la main » sur ses
     tronçons en échec, hors zone compris (C9) ;
   - « Retirer ce point » = `remove`. Les deux s'annulent.
+- **Construit : la cible est calculée par `findProblem`**
+  (`core/draft/problem.ts`, logique pure) :
+  - un premier point seul hors zone est testé dès l'ajout, avec le même
+    rectangle que le moteur : la feuille n'attend pas le point 2 ;
+  - « Aucun chemin trouvé » (`farFromPath`) vise d'abord un point retenu
+    (`linked`) touché par un tronçon en échec, puis le point commun à deux
+    tronçons en échec, sinon le point de la dernière action ;
+  - hors zone (`outOfZone`) : le test du rectangle décide quel bout est
+    visé.
+- **Limite connue** : le code 171 ne dit pas lequel des deux bouts est loin
+  d'un chemin. Avec deux points de suite loin d'un chemin, l'erreur peut
+  viser un point bon. Une vraie correction demande d'interroger le moteur
+  bout par bout, après un essai jetable.
 - La liaison en pointillés (`linkSegments`, phase 3) se dessine aux deux
   bouts de chaque tronçon calculé.
 
@@ -199,6 +232,13 @@ function summarize(draft: Draft, legs: (LegResult | undefined)[]): { distanceKm:
   2. un seul voisin en aperçu pendant le geste, l'autre au relâchement ;
   3. sinon, le pilotage décide (par exemple remesurer sur un vrai
      téléphone).
+- **Résultat de T6** (release, 11 points, 3 gestes par plateforme) :
+  - arrêt maximal du fil JavaScript : iOS de 26,8 à 30,8 ms, Android de
+    51,2 à 71,1 ms. Témoins sans geste : 25,3 ms (iOS) et 39,4 ms
+    (Android). Seuil de 100 ms tenu ;
+  - 5 calculs par seconde au plus, sur les deux plateformes (C3) ;
+  - aucune parade n'a été nécessaire ;
+  - preuves : [analyse.txt](../phases/preuves/p04/t6-mesures/analyse.txt).
 
 ### 9. Pacer en 0.x
 
@@ -247,6 +287,11 @@ function summarize(draft: Draft, legs: (LegResult | undefined)[]): { distanceKm:
   fonctionnalité affiche une carte.
 - À l'acceptation : l'ADR 0007 reçoit la mention « clé de Query par
   tronçon et version de Pacer : ADR 0016 ».
+- Construit : le dossier `mobile/plugins/` contient des plugins de
+  configuration Expo (config plugins : petits scripts appliqués quand Expo
+  génère les dossiers natifs). Exemple : `withAndroidAccent.js`, la couleur
+  d'accent d'Android (boutons des boîtes natives). C'est la seule façon de
+  changer `mobile/android/`, qui est généré. Signalé dans l'ADR 0011 (§ 1).
 
 ## Contrôles avant de bâtir dessus
 

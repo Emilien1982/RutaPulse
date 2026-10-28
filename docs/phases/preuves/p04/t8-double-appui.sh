@@ -5,7 +5,7 @@
 # de 0,4 s posent bien 2 points.
 #
 # Appareil : emulator-5554 uniquement. Version release installée, zone Nancy
-# installée. Usage : sh mobile/e2e/p04-double-appui-android.sh
+# installée. Usage : sh docs/phases/preuves/p04/t8-double-appui.sh
 # Code de sortie : 0 si tout est conforme, 1 sinon.
 #
 # Limite : chaque "input tap" démarre un processus Java sur l'appareil, ce qui
