@@ -7,7 +7,16 @@ export type LegMode = 'path' | 'hand';
 export type DraftPoint = { id: number; lon: number; lat: number };
 
 /** modes[i] is the leg from points[i] to points[i + 1]. */
-export type Draft = { points: DraftPoint[]; modes: LegMode[] };
+export type Draft = {
+  points: DraftPoint[];
+  modes: LegMode[];
+  /**
+   * Ids of the points kept by "Relier ce point à la main" although the engine
+   * refused them (far from a path, or outside the zone). Absent when empty.
+   * Part of the draft, so "undo" brings it back with the modes.
+   */
+  linked?: number[];
+};
 
 export type DraftState = {
   draft: Draft;
@@ -25,7 +34,13 @@ export type DraftAction =
   | { type: 'move'; id: number; lon: number; lat: number }
   | { type: 'remove'; id: number }
   | { type: 'loop' }
-  | { type: 'setLegMode'; indices: number[]; mode: LegMode }
+  | {
+      type: 'setLegMode';
+      indices: number[];
+      mode: LegMode;
+      /** The point kept by hand, in the same action (one "undo"). */
+      linkedPointId?: number;
+    }
   | { type: 'undo' }
   | { type: 'chooseMode'; mode: LegMode }
   | { type: 'select'; id: number | null };
@@ -50,6 +65,12 @@ function commit(
 ): DraftState {
   const past = [...state.past, state.draft].slice(-MAX_HISTORY);
   return { ...state, ...extra, draft, past };
+}
+
+/** The draft with this `linked` list (left out when empty). */
+function withLinked(draft: Draft, linked: number[]): Draft {
+  const { points, modes } = draft;
+  return linked.length > 0 ? { points, modes, linked } : { points, modes };
 }
 
 function removePoint(draft: Draft, index: number): Draft {
@@ -83,7 +104,7 @@ export function reduceDraft(
           : [...draft.modes, state.nextMode];
       return commit(
         state,
-        { points: [...draft.points, point], modes },
+        { ...draft, points: [...draft.points, point], modes },
         { nextId: state.nextId + 1 },
       );
     }
@@ -96,14 +117,22 @@ export function reduceDraft(
       const points = draft.points.map((p, i) =>
         i === index ? { id: p.id, lon: action.lon, lat: action.lat } : p,
       );
-      return commit(state, { points, modes: draft.modes });
+      return commit(state, { ...draft, points, modes: draft.modes });
     }
     case 'remove': {
       const index = draft.points.findIndex((p) => p.id === action.id);
       if (index < 0) return state;
-      return commit(state, removePoint(draft, index), {
-        selected: state.selected === action.id ? null : state.selected,
-      });
+      const removed = removePoint(draft, index);
+      return commit(
+        state,
+        withLinked(
+          removed,
+          (draft.linked ?? []).filter((id) => id !== action.id),
+        ),
+        {
+          selected: state.selected === action.id ? null : state.selected,
+        },
+      );
     }
     case 'loop': {
       const first = draft.points[0];
@@ -112,6 +141,7 @@ export function reduceDraft(
       return commit(
         state,
         {
+          ...draft,
           points: [...draft.points, copy],
           modes: [...draft.modes, state.nextMode],
         },
@@ -129,11 +159,22 @@ export function reduceDraft(
             draft.modes[i] !== action.mode,
         ),
       );
-      if (changed.size === 0) return state;
+      const linked = draft.linked ?? [];
+      const newLink =
+        action.linkedPointId !== undefined &&
+        draft.points.some((p) => p.id === action.linkedPointId) &&
+        !linked.includes(action.linkedPointId);
+      if (changed.size === 0 && !newLink) return state;
       const modes = draft.modes.map((m, i) =>
         changed.has(i) ? action.mode : m,
       );
-      return commit(state, { points: draft.points, modes });
+      return commit(
+        state,
+        withLinked(
+          { points: draft.points, modes },
+          newLink ? [...linked, action.linkedPointId as number] : linked,
+        ),
+      );
     }
     case 'undo': {
       const previous = state.past[state.past.length - 1];

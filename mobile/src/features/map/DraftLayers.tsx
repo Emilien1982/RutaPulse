@@ -27,6 +27,52 @@ function widthByZoom(at15: number) {
 }
 
 const ROUND = { 'line-cap': 'round', 'line-join': 'round' } as const;
+// Dashes keep square ends, like the mockup 11 (stroke-linecap butt).
+const BUTT = { 'line-cap': 'butt', 'line-join': 'round' } as const;
+
+const IS_HAND = ['==', ['get', 'mode'], 'hand'] as never;
+const IS_PATH = ['!=', ['get', 'mode'], 'hand'] as never;
+
+// The three layers of a collection of legs: the white casing under all of
+// them, the plain line of the 'path' legs, and the dashed line of the 'hand'
+// legs (`trace.a-la-main`: dashes 2 x the width, gaps 1 x the width, so 14 / 7
+// for the line of 7 of the mockup 11).
+function LegLines({ prefix }: { prefix: string }) {
+  return (
+    <>
+      <Layer
+        id={`${prefix}-casing`}
+        type="line"
+        layout={ROUND}
+        paint={{
+          'line-color': mapColors.routeCasing,
+          'line-width': widthByZoom(11),
+        }}
+      />
+      <Layer
+        id={`${prefix}-line`}
+        type="line"
+        filter={IS_PATH}
+        layout={ROUND}
+        paint={{
+          'line-color': mapColors.route,
+          'line-width': widthByZoom(7),
+        }}
+      />
+      <Layer
+        id={`${prefix}-hand`}
+        type="line"
+        filter={IS_HAND}
+        layout={BUTT}
+        paint={{
+          'line-color': mapColors.route,
+          'line-width': widthByZoom(7),
+          'line-dasharray': [2, 1],
+        }}
+      />
+    </>
+  );
+}
 
 // The lines of the draft: one source for all the legs, one for the dotted
 // links, one for the preview of the dragged point. Only the last one changes
@@ -57,24 +103,7 @@ export const DraftLayers = memo(function DraftLayers({
         />
       </GeoJSONSource>
       <GeoJSONSource id="draft-legs" data={lines}>
-        <Layer
-          id="draft-casing"
-          type="line"
-          layout={ROUND}
-          paint={{
-            'line-color': mapColors.routeCasing,
-            'line-width': widthByZoom(11),
-          }}
-        />
-        <Layer
-          id="draft-line"
-          type="line"
-          layout={ROUND}
-          paint={{
-            'line-color': mapColors.route,
-            'line-width': widthByZoom(7),
-          }}
-        />
+        <LegLines prefix="draft" />
       </GeoJSONSource>
     </>
   );
@@ -100,24 +129,7 @@ export const PreviewLayer = memo(function PreviewLayer({
   );
   return (
     <GeoJSONSource id="draft-preview" data={data}>
-      <Layer
-        id="draft-preview-casing"
-        type="line"
-        layout={ROUND}
-        paint={{
-          'line-color': mapColors.routeCasing,
-          'line-width': widthByZoom(11),
-        }}
-      />
-      <Layer
-        id="draft-preview-line"
-        type="line"
-        layout={ROUND}
-        paint={{
-          'line-color': mapColors.route,
-          'line-width': widthByZoom(7),
-        }}
-      />
+      <LegLines prefix="draft-preview" />
     </GeoJSONSource>
   );
 });

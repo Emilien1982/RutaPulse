@@ -39,6 +39,28 @@ export function findProblem(
     return kind && from && to ? [{ index, kind, from, to }] : [];
   });
   if (failed.length === 0) return undefined;
+  // A point kept by "Relier" comes first for "far from a path": a failed leg
+  // that touches it is about it, not about the point that was added next.
+  // Not for "outside the zone": the rectangle tells which end is outside.
+  const linked = new Set(draft.linked ?? []);
+  const viaLinked = failed.find(
+    (f) =>
+      f.kind === 'farFromPath' &&
+      (linked.has(f.from.id) || linked.has(f.to.id)),
+  );
+  if (viaLinked) {
+    const kept = [viaLinked.from, viaLinked.to].filter((p) => linked.has(p.id));
+    const keptPoint = kept.find((p) => p.id === target) ?? kept[0];
+    if (keptPoint) {
+      return {
+        kind: viaLinked.kind,
+        pointId: keptPoint.id,
+        legIndices: failed
+          .filter((f) => f.from.id === keptPoint.id || f.to.id === keptPoint.id)
+          .map((f) => f.index),
+      };
+    }
+  }
   const chosen =
     failed.find((f) => f.from.id === target || f.to.id === target) ??
     failed[failed.length - 1];
@@ -46,8 +68,22 @@ export function findProblem(
   const outside = (p: { lon: number; lat: number }) =>
     !isInsideBbox(bbox, p.lon, p.lat);
   const ends = [chosen.from, chosen.to];
+  // Two neighbouring failed legs share a point: that point is the problem,
+  // even when the last action was on the other end of one of them (two quick
+  // touches near a point far from a path).
+  // Only for errors about a point: "no route" is about a pair of points.
+  const aboutPoint =
+    chosen.kind === 'farFromPath' || chosen.kind === 'outOfZone';
+  const shared = failed
+    .filter((f) => aboutPoint && f !== chosen && f.kind === chosen.kind)
+    .flatMap((f) => ends.filter((p) => p.id === f.from.id || p.id === f.to.id))
+    // Outside the zone, the shared point must really be outside.
+    .filter((p) => chosen.kind !== 'outOfZone' || outside(p));
+  const common = shared.find((p) => p.id === target) ?? shared[0];
   let pointId: number;
-  if (chosen.kind === 'outOfZone') {
+  if (common) {
+    pointId = common.id;
+  } else if (chosen.kind === 'outOfZone') {
     // The engine refuses the leg because one end is outside: mark that one.
     const refused =
       ends.find((p) => p.id === target && outside(p)) ?? ends.find(outside);

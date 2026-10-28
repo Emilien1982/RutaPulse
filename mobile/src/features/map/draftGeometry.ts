@@ -39,8 +39,8 @@ function isDragged(leg: Leg, draggedId: number | null) {
 }
 
 /**
- * - `lines`: every leg that has a shape. "By hand" legs are straight lines
- *   (drawn as plain lines for now: dashes come with the hand-drawn task).
+ * - `lines`: every leg that has a shape. "By hand" legs are straight lines;
+ *   the `mode` property tells the layers to draw them dashed.
  * - `links`: the dotted links at both ends of each computed leg.
  * The two legs next to the dragged point are left out: see `previewGeometry`.
  */

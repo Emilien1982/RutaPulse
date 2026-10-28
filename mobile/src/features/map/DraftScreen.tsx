@@ -319,18 +319,29 @@ function DraftView({ zone, opening }: { zone: Zone; opening?: OpeningView }) {
     onDragEnd: (id, p) => latest.current?.onDragEnd(id, p),
     onGone: (id) => latest.current?.onGone(id),
   }));
+  // The bubble of the gesture (mockup 10): it changes twice per gesture, at
+  // its start and at its end, never per move event.
+  const dragNumber =
+    gesturing && draggedId !== null
+      ? draft.points.findIndex((p) => p.id === draggedId) + 1
+      : 0;
   const hint = problem
     ? undefined
-    : chosenId !== null
-      ? { id: 'route-hint-drag', label: t('route.hintDrag') }
-      : draft.points.length < 2
-        ? {
-            id: 'route-hint',
-            label: t(
-              draft.points.length === 0 ? 'route.hintStart' : 'route.hintEnd',
-            ),
-          }
-        : undefined;
+    : dragNumber > 0
+      ? {
+          id: 'route-bubble-drag',
+          label: t('route.dragBubble', { n: dragNumber }),
+        }
+      : chosenId !== null
+        ? { id: 'route-hint-drag', label: t('route.hintDrag') }
+        : draft.points.length < 2
+          ? {
+              id: 'route-hint',
+              label: t(
+                draft.points.length === 0 ? 'route.hintStart' : 'route.hintEnd',
+              ),
+            }
+          : undefined;
 
   return (
     <View style={styles.screen}>
@@ -391,6 +402,17 @@ function DraftView({ zone, opening }: { zone: Zone; opening?: OpeningView }) {
           <RouteErrorSheet
             kind={problem.kind}
             onRemove={() => act({ type: 'remove', id: problem.pointId })}
+            onRelink={
+              problem.legIndices.length > 0
+                ? () =>
+                    act({
+                      type: 'setLegMode',
+                      indices: problem.legIndices,
+                      mode: 'hand',
+                      linkedPointId: problem.pointId,
+                    })
+                : undefined
+            }
             onHeight={setSheetHeight}
           />
         ) : (

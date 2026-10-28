@@ -6,10 +6,11 @@ import Svg from 'react-native-svg';
 import type { TextKey } from '@/core/i18n/fr';
 import { t } from '@/core/i18n/t';
 import { formatDistance, formatDuration } from '@/core/routing/formatRoute';
+import { MAX_SNAP_METERS } from '@/core/routing/routeRequest';
 import type { RouteErrorKind } from '@/core/routing/routeResponse';
 import { Button } from '@/ui/Button';
 import { CyclistErrorScene } from '@/ui/CyclistErrorScene';
-import { CloseIcon } from '@/ui/icons';
+import { CloseIcon, HandModeIcon } from '@/ui/icons';
 import { Stripes } from '@/ui/Stripes';
 import {
   border,
@@ -162,18 +163,27 @@ const MESSAGES: Record<RouteErrorKind, { title: TextKey; text: TextKey }> = {
   failed: { title: 'route.failedTitle', text: 'route.failedText' },
 };
 
-// Error sheet of the mockup 52: the cyclist, a title, a sentence, one exit.
-// "Relier ce point à la main" (task T5) goes above "Retirer ce point".
+// Error sheet of the mockup 52: the cyclist, a title, a sentence, then the
+// ways out: "Relier ce point à la main" (a secondary button, only where it
+// makes sense) above "Retirer ce point" (an underlined link, no download
+// button: there is only one zone).
 export function RouteErrorSheet({
   kind,
   onRemove,
+  onRelink,
   onHeight,
 }: {
   kind: RouteErrorKind;
   onRemove: () => void;
+  /** Absent when there is no leg to draw by hand. */
+  onRelink?: () => void;
   onHeight?: (height: number) => void;
 }) {
   const message = MESSAGES[kind];
+  // "Relier" only where it makes sense; then "Retirer" is an underlined link
+  // (M7), otherwise it is the one secondary button.
+  const canRelink =
+    !!onRelink && (kind === 'farFromPath' || kind === 'outOfZone');
   const insets = useSafeAreaInsets();
   return (
     <View
@@ -197,15 +207,40 @@ export function RouteErrorSheet({
       >
         {t(message.title)}
       </Text>
-      <Text style={[text.secondary, styles.errText]}>{t(message.text)}</Text>
-      <View style={styles.errButton}>
-        <Button
-          testID="route-error-remove"
-          variant="secondary"
-          label={t('route.removePoint')}
-          onPress={onRemove}
-        />
-      </View>
+      <Text style={[text.secondary, styles.errText]}>
+        {t(message.text, { m: MAX_SNAP_METERS })}
+      </Text>
+      {canRelink ? (
+        <>
+          <View style={styles.errButton}>
+            <Button
+              testID="route-error-relink"
+              variant="secondary"
+              label={t('route.relinkHand')}
+              icon={(color) => <HandModeIcon color={color} />}
+              onPress={() => onRelink?.()}
+            />
+          </View>
+          <Pressable
+            testID="route-error-remove"
+            accessibilityRole="button"
+            accessibilityLabel={t('route.removePoint')}
+            onPress={onRemove}
+            style={styles.errLink}
+          >
+            <Text style={styles.errLinkText}>{t('route.removePoint')}</Text>
+          </Pressable>
+        </>
+      ) : (
+        <View style={styles.errButton}>
+          <Button
+            testID="route-error-remove"
+            variant="secondary"
+            label={t('route.removePoint')}
+            onPress={onRemove}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -276,4 +311,16 @@ const styles = StyleSheet.create({
   errTitle: { marginHorizontal: 3, marginTop: 4 },
   errText: { marginHorizontal: 3, marginTop: 6 },
   errButton: { marginTop: spacing.s3 },
+  // Underlined link (`texte.bouton`: 17, 600), a target of 48.
+  errLink: {
+    height: target.stop,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  errLinkText: {
+    fontSize: 17,
+    fontWeight: '600',
+    color: colors.brown,
+    textDecorationLine: 'underline',
+  },
 });

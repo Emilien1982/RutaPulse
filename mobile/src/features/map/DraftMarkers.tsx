@@ -29,9 +29,9 @@ function PointMarker({
 }) {
   const label =
     role === 'start'
-      ? t('route.startMarker')
+      ? t(chosen ? 'route.startMarkerChosen' : 'route.startMarker')
       : role === 'end'
-        ? t('route.endMarker')
+        ? t(chosen ? 'route.endMarkerChosen' : 'route.endMarker')
         : t(chosen ? 'route.pointLabelSelected' : 'route.pointLabel', {
             n: String(number),
           });
