@@ -1,6 +1,6 @@
 # ADR 0017 — Infos de l'itinéraire : altitudes, terrain, calcul par tronçon, écran Infos
 
-- Statut : **Proposé**, en attente de l'accord d'Émilien
+- Statut : Accepté le 2026-10-28
 - Date : 2026-10-28 (phase 5, tâche T1 de [p05-infos-itineraire](../phases/p05-infos-itineraire.md))
 - Précise l'[ADR 0005](0005-infos-itineraire.md) (le profil vient de
   `height`, plus de `elevation_interval`), l'[ADR 0015](0015-module-natif-calcul.md)
@@ -325,16 +325,13 @@ lèvent jamais d'erreur ; les textes sont dans `fr.ts`.
   méthode qu'en phase 4.
 - Non prouvé : la cause des sauts d'arêtes de R4 ; un vrai téléphone.
 
-## Questions pour Émilien
+## Réponses d'Émilien (28 octobre 2026)
 
-1. **Altitudes manquantes.** Recommandation : tout ou rien. Si une altitude
-   manque, l'écran dit « Altitudes indisponibles » et montre le reste. Ça
-   n'arrive qu'avec un point relié à la main hors de la zone. L'autre
-   choix : un D+ partiel avec une note (« sans 0,4 km hors zone »), plus de
-   textes et de tests pour un cas rare.
-2. **Couleur de la part « À la main »** : aucun jeton `terrain.*` ne l'a.
-   Recommandation : le designer la propose en T8 (par exemple le magenta
-   des tirets du tracé à la main) ; Émilien la valide avec les captures.
+1. **Altitudes manquantes** : tout ou rien. L'écran dit « Altitudes
+   indisponibles » et montre le reste.
+2. **Couleur de la part « À la main »** : le magenta des tirets en
+   attendant. Le designer la confirme ou en propose une autre en T8, sur
+   les captures.
 
 ## Sources (relevées le 28 octobre 2026)
 
