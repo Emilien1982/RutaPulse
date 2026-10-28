@@ -1,0 +1,65 @@
+› Using --device DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D
+Using src/app as the root directory for Expo Router.
+Starting Metro Bundler
+
+warning: Bundler cache is empty, rebuilding (this may take a minute)
+iOS Bundled 2939ms node_modules/expo-router/entry.js (1570 modules)
+Writing bundle output to: /var/folders/yn/j8px28rs5jz8cyc4rqpzg31m0000gp/T/2b4c2lj3ni9/main.jsbundle
+Copying 35 asset files
+Done writing bundle output
+› Planning build
+› Executing react-native Pods/ReactNativeDependencies » [CP-User] [RNDeps] Replace React Native Dependencies for the right configuration, if needed
+› Executing react-native Pods/React-Core-prebuilt » [CP-User] [RNCore] Replace React Native Core for the right configuration, if needed
+› Executing react-native Pods/hermes-engine » [CP-User] [Hermes] Replace Hermes for the right configuration, if needed
+› Preparing Pods/React-timing-React-timing_privacy » ResourceBundle-React-timing_privacy-React-timing-Info.plist
+› Preparing Pods/React-cxxreact-React-cxxreact_privacy » ResourceBundle-React-cxxreact_privacy-React-cxxreact-Info.plist
+› Executing expo-modules-jsi Pods/ExpoModulesJSI » [CP-User] Build ExpoModulesJSI xcframework
+› Executing react-native Pods/React-RCTFBReactNativeSpec » [CP-User] [RN]Check FBReactNativeSpec
+› Executing expo-modules-core Pods/ExpoModulesCore » [CP-User] [Expo] Switch ExpoModulesCore XCFramework for build configuration
+› Preparing Pods/EXConstants-ExpoConstants_privacy » ResourceBundle-ExpoConstants_privacy-EXConstants-Info.plist
+› Preparing expo-constants Pods/EXConstants-EXConstants » ResourceBundle-EXConstants-EXConstants-Info.plist
+› Executing expo-constants Pods/EXConstants » [CP-User] Generate app.config for prebuilt Constants.manifest
+› Preparing ValhallaMobile/ValhallaMobile_Valhalla » empty-ValhallaMobile_Valhalla.plist
+› Packaging rutapulse Pods/ValhallaRoute » libValhallaRoute.a
+› Packaging rutapulse Pods/ValhallaRoute » libValhallaRoute.a
+› Preparing Pods/RNSVG-RNSVGFilters » ResourceBundle-RNSVGFilters-RNSVG-Info.plist
+› Executing expo-modules-core Pods/ExpoModulesWorklets » [CP-User] [Expo] Switch ExpoModulesWorklets XCFramework for build configuration
+› Executing expo-font Pods/ExpoFont » [CP-User] [Expo] Switch ExpoFont XCFramework for build configuration
+› Preparing Pods/ExpoFileSystem-ExpoFileSystem_privacy » ResourceBundle-ExpoFileSystem_privacy-ExpoFileSystem-Info.plist
+› Executing expo-file-system Pods/ExpoFileSystem » [CP-User] [Expo] Switch ExpoFileSystem XCFramework for build configuration
+› Preparing Pods/expo-dev-menu-EXDevMenu » ResourceBundle-EXDevMenu-expo-dev-menu-Info.plist
+› Preparing Pods/expo-dev-launcher-EXDevLauncher » ResourceBundle-EXDevLauncher-expo-dev-launcher-Info.plist
+⚠️  Script has ambiguous dependencies causing it to run on every build.
+   To fix, go to: Xcode » RutaPulse/RutaPulse » Build Phases » '[Expo Dev Launcher] Strip Local Network Keys for Release'
+   Either: Uncheck "Based on dependency analysis", or select output files to trigger the script
+
+› Executing RutaPulse » [Expo] Configure project
+    The @ExpoModule class 'CoreModule' (/Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/phase-0-socle-db4136/mobile/node_modules/expo-modules-core/ios/Core/Modules/CoreModule.swift) is internal, so the generated modules provider cannot reference it. Declare it public to link it automatically, or use a lower access level such as private to opt it out of linking.
+› Preparing RutaPulse » Info.plist
+› Linking   RutaPulse » RutaPulse
+› Linking   RutaPulse » RutaPulse
+⚠️  search path '/Users/utilisateur/Library/Developer/Xcode/DerivedData/RutaPulse-goivjbzueczryhhkpvzaomlpgbmn/Build/Products/Release-iphonesimulator/ValhallaRoute' not found
+   └─/Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/phase-0-socle-db4136/mobile/ios/RutaPulse.xcodeproj: RutaPulse: ld
+› Executing RutaPulse » Bundle React Native code and images
+    Eager bundle does not match new options, bundling again.
+⚠️  search path '/Users/utilisateur/Library/Developer/Xcode/DerivedData/RutaPulse-goivjbzueczryhhkpvzaomlpgbmn/Build/Products/Release-iphonesimulator/ValhallaRoute' not found
+   └─/Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/phase-0-socle-db4136/mobile/ios/RutaPulse.xcodeproj: RutaPulse: ld
+› Executing RutaPulse » [CP] Copy Pods Resources
+› Executing RutaPulse » [Expo Dev Launcher] Strip Local Network Keys for Release
+› Executing RutaPulse » [MapLibre React Native] Remove MapLibre.xcframework-ios.signature
+› Generating debug RutaPulse » RutaPulse.app.dSYM
+› Signing   RutaPulse » RutaPulse.app
+› Build Succeeded
+
+› 0 error(s), and 5 warning(s)
+
+Starting Metro Bundler
+
+Waiting on http://localhost:8081
+› Installing /Users/utilisateur/Library/Developer/Xcode/DerivedData/RutaPulse-goivjbzueczryhhkpvzaomlpgbmn/Build/Products/Release-iphonesimulator/RutaPulse.app
+› Installing on iPhone 17
+› Opening on iPhone 17 (fr.rutapulse.app)
+› Opening exp+rutapulse://?__expo_url=http%3A%2F%2F192.168.1.77%3A8081&__expo_disable_fab=1&__expo_disable_auto_launch=1&__expo_disable_onboarding=1 on iPhone 17
+
+› Logs for your project will appear below.
+[RutaPulse] [MLRNOfflineModule] No packs need migration

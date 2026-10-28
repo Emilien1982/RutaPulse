@@ -60,6 +60,9 @@ route(requestJson: string): Promise<string>
   testé.
 - `height` est abandonné : le profil d'altitude vient de `route` avec
   `elevation_interval` (ADR 0005).
+- **Mis à jour le 2026-10-28** : `height` et `traceAttributes` sont ajoutés
+  en phase 5, sur le modèle de `route` ; le profil vient de `height`
+  (ADR 0017).
 - La conversion en types à nous se fait **dans `core/routing/`** :
   construction de la requête (réglage C4 de l'ADR 0002) et lecture de la
   réponse (tracé décodé, distance, durée). Ce code se teste sans
@@ -164,7 +167,7 @@ stable (`error.code` côté JavaScript, convention d'Expo).
 
 | Code natif | Quand |
 |---|---|
-| `ERR_ENGINE_NOT_OPEN` | `route` sans moteur ouvert, ou après `close` |
+| `ERR_ENGINE_NOT_OPEN` | `route`, `height` ou `traceAttributes` sans moteur ouvert, ou après `close` |
 | `ERR_ZONE_UNREADABLE` | `open` : fichier absent, configuration refusée |
 | `ERR_ENGINE` | Toute autre erreur native imprévue |
 

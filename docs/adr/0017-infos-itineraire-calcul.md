@@ -66,15 +66,16 @@ traceAttributes(requestJson: string): Promise<string>
 - **Codes connus**, tous traduits en `failed` par `kindFromValhallaCode`
   (déjà le cas d'un code inconnu) : 312 (`height`, forme vide ou absente),
   114 (`trace`, forme vide), 123 (un seul point), 444 (hors tuiles, ou
-  ligne droite), 443 (`edge_walk`, non utilisé), −1 (JSON invalide, ou code
-  illisible sur Android). Aucune sorte d'erreur nouvelle : pour les infos,
+  ligne droite), 443 (`edge_walk`, non utilisé), −1 ou 100 pour une requête
+  illisible, selon la requête et la plateforme (relevés de T1 et T2 ; −1
+  aussi pour un code illisible sur Android). Aucune sorte d'erreur nouvelle : pour les infos,
   seul compte « présent ou manquant » (§ 8).
 
 ### 2. Où vit chaque morceau
 
 | Dossier | Contenu |
 |---|---|
-| `core/routing/` | `routingEngine` gagne `height(shape, signal?)` et `traceAttributes(shape, signal?)`, **dans la même file** que `route`, avec le même saut d'une demande abandonnée. `infoRequest.ts` : `buildHeightRequest`, `buildTraceRequest`. `infoResponse.ts` : `parseHeightResponse` → `ProfilePoint[]` (`[distanceM, heightM \| null]`), `parseTraceResponse` → `TerrainEdge[]` (`{ use, density, lengthKm }`). Ne lèvent jamais d'erreur |
+| `core/routing/` | `routingEngine` gagne `height(shape, signal?)` et `traceAttributes(shape, signal?)`, **dans la même file** que `route`, avec le même saut d'une demande abandonnée. `infoRequest.ts` : `buildHeightRequest`, `buildTraceRequest`. `infoResponse.ts` : `parseHeightResponse` → `HeightResult` (succès avec `ProfilePoint[]` = `[distanceM, heightM \| null]`, ou `RouteFailure`), `parseTraceResponse` → `TraceResult` (succès avec `TerrainEdge[]` = `{ use, density, lengthKm }`, ou `RouteFailure`). Ne lèvent jamais d'erreur. Dans `NativeRouting`, `height` et `traceAttributes` sont facultatifs, pour les faux modules des tests déjà écrits ; absents, ils donnent `failed` (T2) |
 | `core/route-info/` (nouveau) | `elevation.ts` : `ascentDescent`, `RESAMPLE_M = 30`, `ELEVATION_THRESHOLD_M = 5`. `profile.ts` : `joinProfiles`, altitudes basse et haute (§ 4). `terrain.ts` : `classifyEdge`, `terrainSegments`, `terrainShares`, `roundShares` (§ 3). `legShape.ts` : `infoShape(leg, route, bbox)` (§ 5). `routeInfo.ts` : `summarizeInfo(legs)`, avec les données manquantes (§ 8) |
 | `shared-data/routing/` | `computeHeights(shape, signal?)` et `computeTerrain(shape, signal?)`, aussi minces que `computeRoute` |
 | `features/map/` | Hook (fonction React réutilisable) `useLegInfos`, à côté de `useLegResults` (§ 6). `DraftSession.tsx` (§ 7). `RouteInfoScreen.tsx`, son profil `ElevationProfile.tsx` (react-native-svg, déjà installé), sa carte en arche. Le D+ dans `RouteSummarySheet` |

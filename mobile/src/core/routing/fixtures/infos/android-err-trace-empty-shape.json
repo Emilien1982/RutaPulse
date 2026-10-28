@@ -1,0 +1,1 @@
+{"step":"err-trace-empty-shape","request":{"shape":[],"costing":"bicycle","costing_options":{"bicycle":{"bicycle_type":"mountain","use_roads":0}},"shape_match":"walk_or_snap"},"ms":[1.1,0.5,0.4],"response":{"code":114,"message":"ValhallaError(code=114, Insufficiently specified required parameter 'shape' or 'encoded_polyline')"}}

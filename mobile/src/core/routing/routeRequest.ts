@@ -5,6 +5,12 @@ export type RoutePoint = { lon: number; lat: number };
 /** A point farther than this from a path is refused by Valhalla (ADR 0016). */
 export const MAX_SNAP_METERS = 200;
 
+/** Costing of every request, route or trace (ADR 0002, ADR 0017). */
+export const ROUTE_COSTING = {
+  costing: 'bicycle',
+  costing_options: { bicycle: { bicycle_type: 'mountain', use_roads: 0 } },
+} as const;
+
 /** JSON text of the request. First and last points are `break`, others `through`. */
 export function buildRouteRequest(points: RoutePoint[]): string {
   const last = points.length - 1;
@@ -15,8 +21,7 @@ export function buildRouteRequest(points: RoutePoint[]): string {
       type: i === 0 || i === last ? 'break' : 'through',
       search_cutoff: MAX_SNAP_METERS,
     })),
-    costing: 'bicycle',
-    costing_options: { bicycle: { bicycle_type: 'mountain', use_roads: 0 } },
+    ...ROUTE_COSTING,
     directions_options: { language: 'fr-FR', units: 'kilometers' },
   });
 }

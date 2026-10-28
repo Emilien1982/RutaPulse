@@ -1,0 +1,1 @@
+{"height":{"rejected":{"code":"ERR_ENGINE_NOT_OPEN","message":"Calling the 'height' function has failed\n→ Caused by: The engine is not open"}},"trace":{"rejected":{"code":"ERR_ENGINE_NOT_OPEN","message":"Calling the 'traceAttributes' function has failed\n→ Caused by: The engine is not open"}}}
