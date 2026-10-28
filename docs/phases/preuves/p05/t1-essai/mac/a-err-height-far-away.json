@@ -1,0 +1,1 @@
+{"step": "err-height-far-away", "request": {"shape": [{"lat": 10, "lon": 10}]}, "ms_with_docker_start": 217, "response": {"shape": [{"lat": 10.0, "lon": 10.0}], "height": [null]}}

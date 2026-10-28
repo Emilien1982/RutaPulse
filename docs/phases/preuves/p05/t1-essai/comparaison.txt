@@ -1,0 +1,105 @@
+step | ios=android | ios=mac
+AB-route-base                      True   True
+AB-route-elev30                    True   True
+AB-height-resample30               False  False
+AB-height-resample30-p1            False  False
+AB-height-resample30-range         False  False
+AB-trace-walk_or_snap              True   True
+AB-trace-edge_walk                 True   True
+AB-height-shape-array              True   True
+AB-height-noresample               True   True
+AB-trace-map_snap                  True   True
+AB-trace-nofilters                 True   True
+hand-height-resample30-range       True   True
+hand-height-resample30             True   True
+hand-trace-walk_or_snap            True   False
+err-height-empty-shape             True   False
+err-height-no-shape                True   False
+err-height-not-json                True   non lancé
+err-height-one-point               True   True
+err-height-out-of-hgt              True   True
+err-height-in-hgt-out-of-zone      True   True
+err-height-mixed                   True   True
+err-height-far-away                True   True
+err-trace-empty-shape              True   False
+err-trace-out-of-zone              True   False
+err-trace-one-point                True   False
+P3-route-base                      False  True
+P3-route-elev30                    False  True
+P3-height-resample30               False  False
+P3-height-resample30-p1            False  False
+P3-height-resample30-range         False  False
+P3-trace-walk_or_snap              True   True
+P3-trace-edge_walk                 True   True
+R4-route-base                      False  True
+R4-route-elev30                    False  True
+R4-height-resample30               False  False
+R4-height-resample30-p1            False  False
+R4-height-resample30-range         False  False
+R4-trace-walk_or_snap              True   True
+R4-trace-edge_walk                 True   False
+R1-route-base                      False  True
+R1-route-elev30                    False  True
+R1-height-resample30               False  False
+R1-height-resample30-p1            False  False
+R1-height-resample30-range         False  False
+R1-trace-walk_or_snap              True   True
+R1-trace-edge_walk                 True   False
+R2-route-base                      False  True
+R2-route-elev30                    False  True
+R2-height-resample30               False  False
+R2-height-resample30-p1            False  False
+R2-height-resample30-range         False  False
+R2-trace-walk_or_snap              True   True
+R2-trace-edge_walk                 True   False
+R3-route-base                      False  True
+R3-route-elev30                    False  True
+R3-height-resample30               False  False
+R3-height-resample30-p1            False  False
+R3-height-resample30-range         False  False
+R3-trace-walk_or_snap              True   True
+R3-trace-edge_walk                 True   False
+R5-route-base                      False  True
+R5-route-elev30                    False  True
+R5-height-resample30               False  False
+R5-height-resample30-p1            False  False
+R5-height-resample30-range         False  False
+R5-trace-walk_or_snap              True   True
+R5-trace-edge_walk                 True   False
+
+Elevation: route elevation_interval 30 vs height resample 30 (precision 0 and 1), iOS
+tag | n route/n height | max |diff| route-height(p1) | max |diff| route-height(p0) | D+ D- route | D+ D- p1 | D+ D- p0
+AB 51 51 0.5 0.7 (10.8, 0.0) (10.9, 0.0) (10.0, 0.0)
+P3 218 218 0.9 1.1 (110.2, 81.5) (113.8, 81.6) (105.0, 76.0)
+R1 686 686 1.6 1.7 (221.9, 222.2) (235.0, 240.2) (243.0, 244.0)
+R2 1174 1174 1.5 1.6 (428.6, 425.4) (438.7, 437.7) (462.0, 459.0)
+R3 901 901 2.0 1.8 (484.9, 482.9) (484.9, 482.3) (489.0, 490.0)
+R4 1406 1406 2.1 2.3 (638.6, 641.4) (677.3, 681.8) (671.0, 676.0)
+R5 1347 1347 1.4 1.5 (689.5, 689.8) (689.7, 690.3) (702.0, 700.0)
+
+Trace coverage (sum edge.length / route length), walk_or_snap, iOS
+AB 1.492 1.492 100.0 %
+P3 6.49 6.49 100.0 %
+R1 20.532 20.529 99.99 %
+R2 35.172 35.165 99.98 %
+R3 26.981 26.978 99.99 %
+R4 42.123 41.72 99.04 %
+R5 40.353 40.346 99.98 %
+
+D+ / D- (seuil 5 m) per platform, from height resample 30: precision 0 | precision 1 ; and from route elevation_interval 30
+AB ios: p0 (10.0, 0.0) | p1 (10.9, 0.0) | route (10.8, 0.0) ;; android: p0 (10.0, 0.0) | p1 (10.9, 0.0) | route (10.8, 0.0) ;; mac: p0 (10.0, 0.0) | p1 (10.9, 0.0) | route (10.8, 0.0)
+P3 ios: p0 (105.0, 76.0) | p1 (113.8, 81.6) | route (110.2, 81.5) ;; android: p0 (105.0, 76.0) | p1 (113.8, 81.6) | route (110.2, 81.5) ;; mac: p0 (105.0, 76.0) | p1 (113.8, 81.6) | route (110.2, 81.5)
+R1 ios: p0 (243.0, 244.0) | p1 (235.0, 240.2) | route (221.9, 222.2) ;; android: p0 (243.0, 244.0) | p1 (235.0, 240.2) | route (221.9, 222.2) ;; mac: p0 (243.0, 244.0) | p1 (235.0, 240.2) | route (221.9, 222.2)
+R2 ios: p0 (462.0, 459.0) | p1 (438.7, 437.7) | route (428.6, 425.4) ;; android: p0 (462.0, 459.0) | p1 (438.7, 437.7) | route (428.6, 425.4) ;; mac: p0 (462.0, 459.0) | p1 (438.7, 437.7) | route (428.6, 425.4)
+R3 ios: p0 (489.0, 490.0) | p1 (484.9, 482.3) | route (484.9, 482.9) ;; android: p0 (489.0, 490.0) | p1 (484.9, 482.3) | route (484.9, 482.9) ;; mac: p0 (489.0, 490.0) | p1 (484.9, 482.3) | route (484.9, 482.9)
+R4 ios: p0 (671.0, 676.0) | p1 (677.3, 681.8) | route (638.6, 641.4) ;; android: p0 (671.0, 676.0) | p1 (676.9, 681.4) | route (638.6, 641.4) ;; mac: p0 (671.0, 676.0) | p1 (677.5, 682.0) | route (638.6, 641.4)
+R5 ios: p0 (702.0, 700.0) | p1 (689.7, 690.3) | route (689.5, 689.8) ;; android: p0 (702.0, 700.0) | p1 (690.1, 690.7) | route (689.5, 689.8) ;; mac: p0 (702.0, 700.0) | p1 (690.1, 690.7) | route (689.5, 689.8)
+
+Reference of essay 1 on the Mac (own resample 30 m + height): D+ D-  | route elevation_interval | height resample30 p0 | p1  (iOS)
+AB (10.0, 0.0) (10.8, 0.0) (10.0, 0.0) (10.9, 0.0)
+P3 (102.0, 72.0) (110.2, 81.5) (105.0, 76.0) (113.8, 81.6)
+R1 (242.0, 242.0) (221.9, 222.2) (243.0, 244.0) (235.0, 240.2)
+R2 (454.0, 453.0) (428.6, 425.4) (462.0, 459.0) (438.7, 437.7)
+R3 (480.0, 478.0) (484.9, 482.9) (489.0, 490.0) (484.9, 482.3)
+R4 (665.0, 669.0) (638.6, 641.4) (671.0, 676.0) (677.3, 681.8)
+R5 (706.0, 706.0) (689.5, 689.8) (702.0, 700.0) (689.7, 690.3)

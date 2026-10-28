@@ -1,0 +1,1 @@
+{"step":"err-height-in-hgt-out-of-zone","request":{"shape":[{"lat":48.95,"lon":6},{"lat":48.951,"lon":6}],"resample_distance":30},"ms":[0.2,0.1,0.1],"response":{"shape":[{"lat":48.95,"lon":6},{"lat":48.950269,"lon":6},{"lat":48.950538,"lon":6},{"lat":48.950808,"lon":6},{"lat":48.951,"lon":6}],"height":[274,279,283,288,293]}}

@@ -1,0 +1,1 @@
+{"step": "err-trace-one-point", "request": {"shape": [{"lat": 48.736598, "lon": 5.973731}], "costing": "bicycle", "costing_options": {"bicycle": {"bicycle_type": "mountain", "use_roads": 0}}, "shape_match": "walk_or_snap"}, "ms_with_docker_start": 210, "response": {"error_code": 123, "error": "Insufficient shape provided", "status_code": 400, "status": "Bad Request"}}

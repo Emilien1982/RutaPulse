@@ -1,0 +1,31 @@
+// THROWAWAY (phase 5, T1). Reads <documents>/essai/demande.json at start-up
+// and runs the request: {"run":"a"} (height / trace_attributes) or
+// {"run":"b","variant":"inner|outer|chosen|keychange"} (drag trial screen).
+import { router } from 'expo-router';
+import { useEffect } from 'react';
+
+import { readRequest, runA, writeJson } from './trialP05';
+
+export function TrialStarter() {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      let demande;
+      try {
+        demande = readRequest();
+      } catch (e) {
+        writeJson('erreur-demande.json', { error: String(e) });
+        return;
+      }
+      if (!demande) return;
+      if (demande.run === 'a') {
+        runA().catch((e) =>
+          writeJson('a-erreur.json', { error: String(e), stack: e?.stack }),
+        );
+      } else if (demande.run === 'b') {
+        router.push(`/essai-b?variant=${demande.variant ?? 'inner'}` as never);
+      }
+    }, 2500);
+    return () => clearTimeout(timer);
+  }, []);
+  return null;
+}
