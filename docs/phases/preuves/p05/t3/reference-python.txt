@@ -1,0 +1,8 @@
+android-AB-height-resample30-range.json: n=51 dplus=10 dminus=0 min=230 max=246
+ios-AB-height-resample30-range.json: n=51 dplus=10 dminus=0 min=230 max=246
+ios-R4-height-resample30-range.json: n=1406 dplus=671 dminus=676 min=255 max=423
+ios-hand-height-resample30-range.json: n=12 dplus=0 dminus=0 min=240 max=245
+ios-height-range-null.json: n/a
+android-AB-trace-walk_or_snap.json: shares(road,track,trail)={'road': 62, 'track': 38, 'trail': 0}
+ios-AB-trace-walk_or_snap.json: shares(road,track,trail)={'road': 62, 'track': 38, 'trail': 0}
+ios-R4-trace-walk_or_snap.json: shares(road,track,trail)={'road': 25, 'track': 13, 'trail': 62}

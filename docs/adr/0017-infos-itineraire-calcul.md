@@ -269,7 +269,8 @@ lèvent jamais d'erreur ; les textes sont dans `fr.ts`.
 - Un point non choisi saisi directement reste à 28 sur Android pendant le
   geste. Accepté : le relâchement le choisit, donc l'agrandit.
 - A2 et A3 : la note « À la main : 0,6 km » lit la longueur à la main,
-  ajoutée à `summarize`.
+  donnée par `handLengthKm` de `core/route-info/routeInfo.ts`
+  (`summarize` ne change pas : précision de la session de phase en T3).
 
 ## Alternatives rejetées
 
