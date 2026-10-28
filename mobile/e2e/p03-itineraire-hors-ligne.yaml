@@ -1,4 +1,5 @@
-# C10 (phase 3) : créer un itinéraire hors ligne dans la forêt de Haye.
+# C10 (phase 3), adapté en phase 4 (T4) à l'écran de création plein écran :
+# créer un itinéraire hors ligne dans la forêt de Haye.
 # Prérequis : zone Nancy installée. iOS : position du simulateur réglée dans
 # la forêt de Haye (xcrun simctl location booted set 48.751,5.967), pour que
 # la carte s'ouvre dessus (zoom 14).
@@ -59,6 +60,8 @@ onFlowComplete:
 - extendedWaitUntil:
     visible: 'Touchez le départ sur la carte'
     timeout: 10000
+# Création en plein écran : plus de barre d'onglets.
+- assertNotVisible: 'Itinéraires'
 # Android : la position de l'émulateur reste à Villers-lès-Nancy. On fait
 # glisser la carte pour amener la forêt de Haye (en bas à gauche) au centre.
 - runFlow:
@@ -81,9 +84,50 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       id: 'route-distance'
+      text: '.*[1-9].*'
     timeout: 60000
-- assertVisible:
-    id: 'route-distance'
+- assertNotVisible:
+    id: 'route-error'
 - assertVisible:
     id: 'route-duration'
-- takeScreenshot: captures/p03-itineraire-hors-ligne
+# Un troisième point : seul le nouveau tronçon est calculé.
+- tapOn:
+    point: '65%,40%'
+- waitForAnimationToEnd:
+    timeout: 8000
+- takeScreenshot: captures/p04-itineraire-hors-ligne-3-points
+# Annuler défait le troisième point.
+- tapOn:
+    id: 'route-undo'
+- waitForAnimationToEnd:
+    timeout: 3000
+# Boucler ajoute le départ comme dernier point (bouton grisé sous 2 points).
+- tapOn:
+    id: 'route-loop'
+- waitForAnimationToEnd:
+    timeout: 8000
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- assertNotVisible:
+    id: 'route-error'
+# La croix demande confirmation dès 2 points ; Continuer garde l'itinéraire.
+- tapOn:
+    id: 'route-close'
+- extendedWaitUntil:
+    visible: 'Abandonner cet itinéraire.*'
+    timeout: 5000
+- tapOn: 'Continuer'
+- assertVisible:
+    id: 'route-distance'
+    text: '.*[1-9].*'
+# Abandonner ramène à la carte.
+- tapOn:
+    id: 'route-close'
+- tapOn: 'Abandonner'
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 10000

@@ -1,0 +1,16 @@
+# THROWAWAY (phase 4, T1). Same as p04-t1-glisser-ios.yaml but with way B
+# (Marker + PanResponder). Normal 2 s swipe (no long press needed for B).
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible: "Voie A"
+    timeout: 30000
+- tapOn: "Voie B"
+- waitForAnimationToEnd
+- swipe:
+    start: 201, 390
+    end: 291, 300
+    duration: 2000

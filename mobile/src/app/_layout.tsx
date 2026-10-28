@@ -15,6 +15,15 @@ export default function RootLayout() {
         <RoutingEngineStarter />
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          {/* Creation of a route: full screen, no tab bar (ADR 0016, section 6). */}
+          <Stack.Screen
+            name="draft"
+            options={{
+              presentation: 'fullScreenModal',
+              headerShown: false,
+              gestureEnabled: false,
+            }}
+          />
         </Stack>
       </FontGate>
     </QueryProvider>

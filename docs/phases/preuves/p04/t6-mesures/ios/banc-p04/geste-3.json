@@ -1,0 +1,772 @@
+{
+  "plateforme": "ios",
+  "build": "release",
+  "horodatage": "2026-10-28T03:34:39.142Z",
+  "points_itineraire": 11,
+  "index_point_glisse": 5,
+  "duree_geste_ms": 5611.7,
+  "evenements_glisser": 167,
+  "premier_evt_ms": 17.8,
+  "dernier_evt_ms": 5578.4,
+  "arret_max_fil_js_ms_jusqua_relachement": 26.8,
+  "arret_max_fil_js_ms_jusqua_calcul_final": 26.8,
+  "arret_max_a_ms_depuis_debut": 26.8,
+  "calculs_pendant_geste": 27,
+  "calculs": [
+    {
+      "at": 17.991416931152344,
+      "n": 2,
+      "ms": 7.8771257400512695
+    },
+    {
+      "at": 226.5679168701172,
+      "n": 2,
+      "ms": 4.832708358764648
+    },
+    {
+      "at": 427.92299938201904,
+      "n": 2,
+      "ms": 5.381375312805176
+    },
+    {
+      "at": 628.3770837783813,
+      "n": 2,
+      "ms": 4.218625068664551
+    },
+    {
+      "at": 844.3713750839233,
+      "n": 2,
+      "ms": 4.272708892822266
+    },
+    {
+      "at": 1059.742208480835,
+      "n": 2,
+      "ms": 4.125166893005371
+    },
+    {
+      "at": 1261.1682090759277,
+      "n": 2,
+      "ms": 4.144874572753906
+    },
+    {
+      "at": 1476.4249172210693,
+      "n": 2,
+      "ms": 4.095250129699707
+    },
+    {
+      "at": 1693.1370840072632,
+      "n": 2,
+      "ms": 4.63800048828125
+    },
+    {
+      "at": 1894.4912090301514,
+      "n": 2,
+      "ms": 4.230457305908203
+    },
+    {
+      "at": 2109.92670917511,
+      "n": 2,
+      "ms": 1.6123332977294922
+    },
+    {
+      "at": 2310.2129163742065,
+      "n": 2,
+      "ms": 3.710749626159668
+    },
+    {
+      "at": 2511.0013751983643,
+      "n": 2,
+      "ms": 4.5959577560424805
+    },
+    {
+      "at": 2711.107542037964,
+      "n": 2,
+      "ms": 5.261375427246094
+    },
+    {
+      "at": 2911.5769996643066,
+      "n": 2,
+      "ms": 5.209291458129883
+    },
+    {
+      "at": 3111.823624610901,
+      "n": 2,
+      "ms": 4.787625312805176
+    },
+    {
+      "at": 3326.5190000534058,
+      "n": 2,
+      "ms": 5.419125556945801
+    },
+    {
+      "at": 3527.03458404541,
+      "n": 2,
+      "ms": 6.1254167556762695
+    },
+    {
+      "at": 3728.5598335266113,
+      "n": 2,
+      "ms": 4.871500015258789
+    },
+    {
+      "at": 3928.4776248931885,
+      "n": 2,
+      "ms": 4.764499664306641
+    },
+    {
+      "at": 4143.116209030151,
+      "n": 2,
+      "ms": 5.188958168029785
+    },
+    {
+      "at": 4345.022541999817,
+      "n": 2,
+      "ms": 4.843874931335449
+    },
+    {
+      "at": 4559.861791610718,
+      "n": 2,
+      "ms": 7.011916160583496
+    },
+    {
+      "at": 4776.522292137146,
+      "n": 2,
+      "ms": 5.552207946777344
+    },
+    {
+      "at": 4977.774333953857,
+      "n": 2,
+      "ms": 5.579750061035156
+    },
+    {
+      "at": 5193.192500114441,
+      "n": 2,
+      "ms": 5.630708694458008
+    },
+    {
+      "at": 5409.805417060852,
+      "n": 2,
+      "ms": 4.418667793273926
+    }
+  ],
+  "ecart_min_entre_calculs_ms": 199.9,
+  "max_calculs_par_seconde": 5,
+  "calcul_final": {
+    "present": true,
+    "appels": 2,
+    "debut_ms_apres_relachement": 9.3,
+    "fin_ms_apres_relachement": 13.2,
+    "duree_moteur_ms": 3.9,
+    "reussis": 2,
+    "position_relachement": {
+      "lon": 5.96968371357238,
+      "lat": 48.75003345471586
+    },
+    "a_la_position_du_relachement": true,
+    "appels_detail": [
+      {
+        "at": 5620.9,
+        "ok": true,
+        "points": [
+          {
+            "id": 5,
+            "lon": 5.971272,
+            "lat": 48.745898
+          },
+          {
+            "id": 6,
+            "lon": 5.96968371357238,
+            "lat": 48.75003345471586
+          }
+        ]
+      },
+      {
+        "at": 5621,
+        "ok": true,
+        "points": [
+          {
+            "id": 6,
+            "lon": 5.96968371357238,
+            "lat": 48.75003345471586
+          },
+          {
+            "id": 7,
+            "lon": 5.972936,
+            "lat": 48.754058
+          }
+        ]
+      }
+    ]
+  },
+  "autres_troncons_recalcules": 0,
+  "autres_troncons_detail": [],
+  "appels_tous": [
+    {
+      "at": 18,
+      "ms": 6.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 18,
+      "ms": 7.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 226.6,
+      "ms": 2.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 226.6,
+      "ms": 4.8,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 427.9,
+      "ms": 3.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 427.9,
+      "ms": 5.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 628.4,
+      "ms": 2.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 628.4,
+      "ms": 4.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 844.4,
+      "ms": 2.5,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 844.4,
+      "ms": 4.3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1059.7,
+      "ms": 2.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1059.8,
+      "ms": 4.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1261.2,
+      "ms": 2.3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1261.2,
+      "ms": 4.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1476.4,
+      "ms": 2.3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1476.4,
+      "ms": 4.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1693.1,
+      "ms": 2.7,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1693.1,
+      "ms": 4.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1894.5,
+      "ms": 2.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1894.5,
+      "ms": 4.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2109.9,
+      "ms": 0.8,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2109.9,
+      "ms": 1.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2310.2,
+      "ms": 2.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2310.2,
+      "ms": 3.7,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2511,
+      "ms": 2.7,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2511,
+      "ms": 4.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2711.1,
+      "ms": 3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2711.1,
+      "ms": 5.3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2911.6,
+      "ms": 2.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2911.6,
+      "ms": 5.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3111.8,
+      "ms": 2.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3111.8,
+      "ms": 4.8,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3326.5,
+      "ms": 3.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3326.5,
+      "ms": 5.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3527,
+      "ms": 3.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3527.1,
+      "ms": 6.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3728.6,
+      "ms": 2.7,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3728.6,
+      "ms": 4.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3928.5,
+      "ms": 2.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3928.5,
+      "ms": 4.8,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4143.1,
+      "ms": 3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4143.1,
+      "ms": 5.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4345,
+      "ms": 2.7,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4345,
+      "ms": 4.8,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4559.9,
+      "ms": 4.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4559.9,
+      "ms": 7,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4776.5,
+      "ms": 3.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4776.5,
+      "ms": 5.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4977.8,
+      "ms": 3.3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4977.8,
+      "ms": 5.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5193.2,
+      "ms": 3.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5193.2,
+      "ms": 5.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5409.8,
+      "ms": 2.5,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5409.8,
+      "ms": 4.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5620.9,
+      "ms": 2.2,
+      "phase": "apres_relachement",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5621,
+      "ms": 3.9,
+      "phase": "apres_relachement",
+      "ok": true,
+      "annule": false
+    }
+  ],
+  "carte_bougee": false,
+  "evenements_carte": 0,
+  "centre_debut": [
+    5.973717000010197,
+    48.73554699998443
+  ],
+  "evts_dates": [
+    17.8,
+    48.5,
+    81.3,
+    114.6,
+    166.6,
+    200.8,
+    234.5,
+    267.4,
+    283.7,
+    334.4,
+    361.1,
+    377.6,
+    427.7,
+    444.2,
+    477.5,
+    528.2,
+    561,
+    577.6,
+    628.2,
+    661.3,
+    677.6,
+    727.8,
+    761.2,
+    777.8,
+    827.7,
+    861.1,
+    877.7,
+    927.7,
+    961.1,
+    994.6,
+    1011.3,
+    1027.7,
+    1061,
+    1111.2,
+    1144.4,
+    1177.9,
+    1194.4,
+    1227.7,
+    1261,
+    1294.6,
+    1327.9,
+    1344.4,
+    1377.7,
+    1411.2,
+    1444.4,
+    1461,
+    1511,
+    1544.7,
+    1577.9,
+    1594.5,
+    1627.8,
+    1661.2,
+    1694.7,
+    1711.1,
+    1727.7,
+    1761,
+    1794.3,
+    1844.3,
+    1894.3,
+    1928.7,
+    1960.8,
+    1993.2,
+    2009.8,
+    2043.1,
+    2076.5,
+    2109.9,
+    2143.3,
+    2160,
+    2193.2,
+    2226.5,
+    2260.1,
+    2276.7,
+    2310.1,
+    2344.3,
+    2377.9,
+    2394.6,
+    2428.2,
+    2444.6,
+    2495.1,
+    2528,
+    2545.1,
+    2578.7,
+    2611.8,
+    2645.2,
+    2661.8,
+    2677.9,
+    2711.8,
+    2761.8,
+    2795,
+    2811.9,
+    2845.4,
+    2878.6,
+    2911.4,
+    2945,
+    2978.1,
+    3028.3,
+    3045,
+    3095.3,
+    3111.7,
+    3145.1,
+    3178.5,
+    3211.8,
+    3245.2,
+    3262.1,
+    3295.1,
+    3328.3,
+    3344.4,
+    3378.4,
+    3428.4,
+    3445.2,
+    3478.3,
+    3511.7,
+    3544.4,
+    3578.5,
+    3611.8,
+    3645.1,
+    3661.3,
+    3677.9,
+    3728.4,
+    3744.4,
+    3795.2,
+    3828.4,
+    3861.8,
+    3878.3,
+    3928.3,
+    3944.5,
+    3978.2,
+    4011.9,
+    4027.9,
+    4078.6,
+    4111.1,
+    4127.9,
+    4178.5,
+    4194.6,
+    4227.7,
+    4278.3,
+    4294.3,
+    4344.9,
+    4361.1,
+    4428.6,
+    4461.9,
+    4478.1,
+    4511.8,
+    4561.9,
+    4577.8,
+    4611.8,
+    4678.3,
+    4711.9,
+    4745,
+    4778.5,
+    4828.7,
+    4862.1,
+    4878,
+    4945,
+    4978.6,
+    5028.6,
+    5044.7,
+    5112.1,
+    5161.7,
+    5195.1,
+    5245.3,
+    5278.2,
+    5345.2,
+    5378.4,
+    5461.9,
+    5495.1,
+    5578.4
+  ]
+}

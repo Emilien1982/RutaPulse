@@ -35,6 +35,10 @@ vtt-nav/
 - Un seul `package.json`, dans `mobile/`. Toutes les commandes de l'app se
   lancent depuis `mobile/`, la CI aussi (`working-directory: mobile`).
 - `mobile/android/` et `mobile/ios/` sont générés et ignorés par git.
+- Ajout du 2026-10-28 ([ADR 0016](0016-itineraire-en-creation.md)) :
+  `mobile/plugins/` contient nos plugins de configuration Expo, déclarés
+  dans `app.json`. Pour changer un réglage natif, on écrit un plugin ici,
+  jamais dans `mobile/android/` ni `mobile/ios/`.
 
 ### 2. L'app, à la fin de la phase 0
 

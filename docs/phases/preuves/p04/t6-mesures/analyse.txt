@@ -1,0 +1,13 @@
+| Fichier | Plat. | Build | Durée (ms) | Évts | Arrêt max (ms) | Calculs | Max/s | Écart min (ms) | Final (ms) | Final à la position | Autres tronçons | Carte bougée | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| ios/banc-p04/geste-1.json | ios | release | 5616.5 | 168 | 30.8 | 27 | 5 | 199.8 | 13.8 | oui | 0 | non | ok |
+| ios/banc-p04/geste-2.json | ios | release | 5610.1 | 168 | 27.3 | 27 | 5 | 199.9 | 11.7 | oui | 0 | non | ok |
+| ios/banc-p04/geste-3.json | ios | release | 5611.7 | 167 | 26.8 | 27 | 5 | 199.9 | 13.2 | oui | 0 | non | ok |
+| android/banc-p04/geste-1.json | android | release | 1999 | 111 | 67.5 | 10 | 5 | 201.7 | 20 | oui | 0 | non | ok |
+| android/banc-p04/geste-2.json | android | release | 1998.3 | 117 | 51.2 | 10 | 5 | 202.1 | 14.7 | oui | 0 | non | ok |
+| android/banc-p04/geste-3.json | android | release | 1992.4 | 112 | 71.1 | 10 | 5 | 202.1 | 6.1 | oui | 0 | non | ok |
+
+| Témoin | Plat. | Build | Points | Durée (ms) | Arrêt max (ms) | Appels moteur |
+|---|---|---|---|---|---|---|
+| ios/banc-p04/temoin-1.json | ios | release | 11 | 3013.8 | 25.3 | 0 |
+| android/banc-p04/temoin-1.json | android | release | 11 | 3022.7 | 39.4 | 0 |

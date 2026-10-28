@@ -1,0 +1,36 @@
+# prebuild 1
+- Clearing android
+✔ Cleared android code
+- Creating native directory (./android)
+✔ Created native directory
+- Updating package.json
+✔ Updated package.json | no changes
+- Running prebuild
+» android: userInterfaceStyle: Install expo-system-ui in your project to enable this feature.
+- Running prebuild
+✔ Finished prebuild
+--- colorAccent
+7:    <item name="colorAccent">#3A1F0F</item>
+--- md5 styles
+069c381379b9ee8b8f7d9491ebae252f
+ffb8b2a4e83644191d86ec87abe1f64e
+
+# prebuild 2
+- Clearing android
+✔ Cleared android code
+- Creating native directory (./android)
+✔ Created native directory
+- Updating package.json
+✔ Updated package.json | no changes
+- Running prebuild
+» android: userInterfaceStyle: Install expo-system-ui in your project to enable this feature.
+- Running prebuild
+✔ Finished prebuild
+--- colorAccent
+7:    <item name="colorAccent">#3A1F0F</item>
+--- md5 styles
+069c381379b9ee8b8f7d9491ebae252f
+ffb8b2a4e83644191d86ec87abe1f64e
+
+# diff styles.xml entre les 2 passages: identiques (diff sans sortie)
+# empreinte de l'arbre android/ (hors .gradle et build): identique, voir les deux dernieres lignes de chaque passage

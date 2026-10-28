@@ -1,0 +1,174 @@
+[
+  {
+    "plateforme": "android",
+    "build": "release",
+    "voie": "a",
+    "horodatage": "2026-10-27T21:34:10.541Z",
+    "duree_geste_ms": 2030.7,
+    "evenements_glisser": 68,
+    "premier_evt_ms": 19.7,
+    "dernier_evt_ms": 2030.6,
+    "calculs_pendant_geste": 10,
+    "max_calculs_par_seconde": 5,
+    "calcul_final_au_relachement": true,
+    "calcul_final_ms": 10.2,
+    "calculs": [
+      {
+        "at": 19.8,
+        "ms": 4.5,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 234.3,
+        "ms": 7.4,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 440.2,
+        "ms": 4.2,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 654.5,
+        "ms": 4.3,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 886.1,
+        "ms": 3.4,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 1116.5,
+        "ms": 8.1,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 1337.2,
+        "ms": 4.1,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 1542.6,
+        "ms": 3.6,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 1751.2,
+        "ms": 9.4,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 1963.5,
+        "ms": 4.6,
+        "ok": true,
+        "final": false
+      },
+      {
+        "at": 2030.8,
+        "ms": 10.2,
+        "ok": true,
+        "final": true
+      }
+    ],
+    "arret_max_fil_js_ms_jusqua_relachement": 85.3,
+    "arret_max_fil_js_ms_jusqua_fin_calcul_final": 85.3,
+    "arret_max_a_ms_depuis_debut": 1599.5,
+    "mouvements_carte_pendant_geste": 0,
+    "centre_debut": [
+      5.973731000000016,
+      48.736598
+    ],
+    "centre_fin": [
+      5.973731000000016,
+      48.736598
+    ],
+    "position_finale": {
+      "lon": 5.977781390958995,
+      "lat": 48.73930900708555
+    },
+    "pixel_final_dp": [
+      300.3809509277344,
+      313.71429443359375
+    ],
+    "evts_dates": [
+      19.7,
+      30.5,
+      46.3,
+      63.6,
+      82,
+      107.2,
+      130.9,
+      165.8,
+      218.6,
+      234.2,
+      259.9,
+      314.5,
+      343.7,
+      354,
+      409.6,
+      440.2,
+      455.9,
+      480.9,
+      529.9,
+      555.9,
+      573.2,
+      630.9,
+      654.5,
+      667.6,
+      731.1,
+      756.9,
+      775.4,
+      823.9,
+      886.1,
+      897.3,
+      919.6,
+      936.1,
+      1001.6,
+      1022.4,
+      1036,
+      1064.2,
+      1116.4,
+      1142.7,
+      1189.1,
+      1206.1,
+      1225.2,
+      1277.1,
+      1296.5,
+      1315.2,
+      1337.2,
+      1346.7,
+      1406.6,
+      1425.7,
+      1443,
+      1498.9,
+      1514.1,
+      1542.6,
+      1599.3,
+      1621.2,
+      1642.1,
+      1663.6,
+      1714,
+      1737.9,
+      1751.2,
+      1789.4,
+      1800.2,
+      1820.3,
+      1840.4,
+      1899.4,
+      1913.3,
+      1942.6,
+      1963.4,
+      2030.6
+    ]
+  }
+]

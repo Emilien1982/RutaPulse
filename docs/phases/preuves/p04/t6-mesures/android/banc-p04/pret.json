@@ -1,0 +1,10 @@
+{
+  "horodatage": "2026-10-28T03:37:25.874Z",
+  "plateforme": "android",
+  "build": "release",
+  "points_demandes": 11,
+  "points_dans_l_itineraire": 11,
+  "appels_moteur": 10,
+  "appels_reussis": 10,
+  "appels_en_echec": []
+}

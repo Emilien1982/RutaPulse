@@ -272,7 +272,8 @@ describe('T4 C5, delete with confirmation', () => {
         name: 'Actions de la zone Nancy : supprimer',
       }),
     );
-    expect(alert.mock.calls[0][0]).toBe('Supprimer la zone Nancy ?');
+    // p04-t7 M3: narrow no-break space (U+202F) before the "?".
+    expect(alert.mock.calls[0][0]).toBe('Supprimer la zone Nancy\u202F?');
     const buttons = alert.mock.calls[0][2] ?? [];
     expect(buttons.map((b) => b.text)).toEqual(['Garder', 'Supprimer']);
     buttons.find((b) => b.text === 'Garder')?.onPress?.();

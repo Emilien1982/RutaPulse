@@ -1,0 +1,200 @@
+# C14 (phase 4) : créer puis modifier un itinéraire, hors ligne.
+# 3 points calculés, supprimer un point, annuler, tracer un tronçon à la
+# main, et à chaque étape lire la distance : elle doit changer, être non
+# nulle, sans message d'erreur. Puis fermer avec confirmation.
+# Prérequis : zone Nancy installée. iOS : position du simulateur réglée dans
+# la forêt de Haye (xcrun simctl location booted set 48.751,5.967), pour que
+# la carte s'ouvre dessus (zoom 14).
+# Pensé pour une version release (sans lanceur Expo).
+# Android : le mode avion est réel. Il est coupé à la fin (onFlowComplete,
+# exécuté aussi en cas d'échec). iOS : le simulateur n'a pas de mode avion,
+# ces étapes sont ignorées.
+#
+# Lecture de la distance : « 850 m » ou « 1,2 km », convertie en mètres.
+# La garde de chaque étape est un assertTrue sur ces mètres (pas seulement
+# « du texte est visible »).
+appId: fr.rutapulse.app
+onFlowComplete:
+  - runFlow:
+      when:
+        platform: Android
+      commands:
+        - setAirplaneMode: disabled
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setAirplaneMode: enabled
+- launchApp:
+    clearState: false
+    stopApp: true
+# Android: on a cold start the emulator gives no position until it receives
+# an update after the app has started. Without it the map opens zoomed out
+# and the first tap lands outside the zone. So: set the position, wait for
+# the map, set it again. iOS keeps the simctl setting from the header.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setLocation:
+          latitude: 48.672
+          longitude: 6.152
+      - extendedWaitUntil:
+          visible:
+            id: 'new-route-button'
+          timeout: 30000
+      - setLocation:
+          latitude: 48.672
+          longitude: 6.152
+      - waitForAnimationToEnd:
+          timeout: 4000
+# Autorisation de position, si elle est demandée.
+- tapOn:
+    text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
+    optional: true
+- tapOn: 'Carte.*'
+- extendedWaitUntil:
+    visible: 'Carte de la zone Nancy'
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+# Étape 1 : nouvel itinéraire, plein écran.
+- tapOn:
+    id: 'new-route-button'
+- extendedWaitUntil:
+    visible: 'Touchez le départ sur la carte'
+    timeout: 10000
+- assertNotVisible: 'Itinéraires'
+# Android : la position de l'émulateur reste à Villers-lès-Nancy. On fait
+# glisser la carte pour amener la forêt de Haye (en bas à gauche) au centre.
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - swipe:
+          start: '20%,75%'
+          end: '55%,50%'
+          duration: 500
+# Étape 2 : départ puis arrivée, le premier tronçon est calculé.
+- tapOn:
+    point: '50%,50%'
+- extendedWaitUntil:
+    visible: "Touchez l'arrivée sur la carte"
+    timeout: 10000
+- tapOn:
+    point: '50%,30%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- assertNotVisible:
+    id: 'route-error'
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.d2 = maestro.copiedText}'
+- evalScript: "${output.m2 = (function (s) { var n = parseFloat(s.replace(',', '.')); return /km/.test(s) ? n * 1000 : n; })(output.d2)}"
+- assertTrue:
+    condition: ${output.m2 > 0}
+    label: 'La distance à 2 points est lue et non nulle'
+# Étape 3 : un troisième point, la distance augmente.
+- tapOn:
+    point: '65%,40%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertNotVisible:
+    id: 'route-error'
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.d3 = maestro.copiedText}'
+- evalScript: "${output.m3 = (function (s) { var n = parseFloat(s.replace(',', '.')); return /km/.test(s) ? n * 1000 : n; })(output.d3)}"
+- assertTrue:
+    condition: ${output.m3 > output.m2}
+    label: 'Le troisième point allonge la distance'
+- takeScreenshot: captures/p04-creer-modifier-3-points
+# Étape 4 : choisir le point 2 (milieu) et le supprimer.
+# Les repères de la carte ne sont pas visibles pour Maestro : on touche le
+# point 2 à sa position (celle du deuxième appui plus haut).
+- tapOn:
+    point: '50%,30%'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: 'route-delete'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertNotVisible:
+    id: 'route-error'
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.dDel = maestro.copiedText}'
+- evalScript: "${output.mDel = (function (s) { var n = parseFloat(s.replace(',', '.')); return /km/.test(s) ? n * 1000 : n; })(output.dDel)}"
+- assertTrue:
+    condition: ${output.mDel > 0 && output.mDel != output.m3}
+    label: 'Supprimer un point change la distance'
+# Étape 5 : Annuler rend le point, la distance revient à celle de 3 points.
+- tapOn:
+    id: 'route-undo'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertNotVisible:
+    id: 'route-error'
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.dUndo = maestro.copiedText}'
+- evalScript: "${output.mUndo = (function (s) { var n = parseFloat(s.replace(',', '.')); return /km/.test(s) ? n * 1000 : n; })(output.dUndo)}"
+- assertTrue:
+    condition: ${output.mUndo > 0 && output.mUndo != output.mDel && output.mUndo == output.m3}
+    label: 'Annuler change la distance et rend celle de 3 points'
+# Étape 6 : « À la main », un point de plus, tronçon à la main.
+- tapOn:
+    id: 'route-mode-hand'
+- tapOn:
+    point: '30%,45%'
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertNotVisible:
+    id: 'route-error'
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.dHand = maestro.copiedText}'
+- evalScript: "${output.mHand = (function (s) { var n = parseFloat(s.replace(',', '.')); return /km/.test(s) ? n * 1000 : n; })(output.dHand)}"
+- assertTrue:
+    condition: ${output.mHand > output.mUndo}
+    label: 'Le tronçon à la main allonge la distance'
+- takeScreenshot: captures/p04-creer-modifier-a-la-main
+# Étape 7 : fermer avec confirmation. Continuer garde l'itinéraire.
+- tapOn:
+    id: 'route-close'
+- extendedWaitUntil:
+    visible: 'Abandonner cet itinéraire.*'
+    timeout: 5000
+- tapOn: 'Continuer'
+- assertVisible:
+    id: 'route-distance'
+    text: '.*[1-9].*'
+- tapOn:
+    id: 'route-close'
+- tapOn: 'Abandonner'
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 10000

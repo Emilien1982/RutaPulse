@@ -32,6 +32,24 @@ export const shadow = {
   elevation: 4,
 } as const;
 
+// Sheet laid over the map (mockup 10): 0 -2 10, brown at 22 %.
+export const sheetShadow = {
+  shadowColor: colors.brown,
+  shadowOffset: { width: 0, height: -2 },
+  shadowOpacity: 0.22,
+  shadowRadius: 10,
+  elevation: 8,
+} as const;
+
+// Markers of the route (mockup 10): 0 1 3, black at 35 %.
+export const markerShadow = {
+  shadowColor: '#000000',
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.35,
+  shadowRadius: 3,
+  elevation: 3,
+} as const;
+
 // Colors of the map ("carte.*"). Source: design/tokens.md and
 // design/style-carte.md.
 export const mapColors = {

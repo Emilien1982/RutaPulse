@@ -293,7 +293,8 @@ describe('routing engine errors (C6)', () => {
     JSON.stringify({ code, message: 'whatever' });
 
   it.each([
-    [171, 'outOfZone'],
+    // ADR 0016 section 5: code 171 is now farFromPath (before: outOfZone).
+    [171, 'farFromPath'],
     [442, 'noRoute'],
     [441, 'noRoute'],
     [170, 'noRoute'],
