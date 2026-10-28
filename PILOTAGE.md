@@ -24,7 +24,7 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 🔧 en cours ([spec](docs/phases/p04-creer-modifier-itineraire.md)) |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 à spécifier |
 
 ## Décisions prises
 
@@ -53,6 +53,8 @@
 - 2026-10-27 — Point posé hors chemin : un trait de liaison en pointillés le relie au tracé. Il n'est pas compté dans la distance, la durée, le suivi ni le GPX pour l'instant (à revoir avant la phase 8). Durée affichée au moins « 1 min ».
 - 2026-10-27 — Spec de la phase 4 (créer et modifier un itinéraire) validée par Émilien, avec les choix du pilotage : ajout à la fin seulement, confirmation à la fermeture dès 2 points, tronçon à la main à la vitesse moyenne (ou 10 km/h), annuler jusqu'à 50 actions sans « Rétablir ».
 - 2026-10-27 — ADR 0016 (itinéraire en création) accepté par Émilien. Glisser un point demande un appui long (obligatoire sur iOS) ; la bulle d'aide le dit sur les deux plateformes. À revoir sur un vrai téléphone.
+- 2026-10-28 — Phase 4 fusionnée dans main : création en plein écran, ajouter, glisser (recalcul en direct, 5 calculs par seconde au plus), supprimer, annuler, Boucler, tracé à la main, seuil de 200 m, feuilles d'erreur complètes. 15 critères tenus (écarts expliqués sur C9 et C14), 893 tests, CI verte. Fluidité en release : 31 ms au plus sur iOS, 71 ms sur Android (100 ms permis). ADR 0016 complété ; ADR 0011 : `mobile/plugins/` pour les réglages natifs.
+- 2026-10-28 — Détails tranchés par le pilotage en phase 4 : point glissé = point choisi ; « — » sur l'écran vide ; « Relier ce point à la main » en une action ; le double appui sur Android n'est pas un défaut (artefact de Maestro, preuve adb rejouable).
 - 2026-10-27 — Un point à plus de 200 m environ d'un chemin est refusé (feuille « Aucun chemin trouvé ») : à coder en phase 4.
 - 2026-10-27 — Ne pas vider `~/Library/Caches/org.swift.swiftpm` sur le Mac : le bac à sable de Claude Code empêche SwiftPM de retélécharger valhalla-mobile (ADR 0015 § 6).
 - 2026-10-27 — Niveau de process **maximal** gardé jusqu'à la fin de RutaPulse, volontairement (voir `~/dev_ai/STRATEGIE-NIVEAUX-DE-PROCESS.md`). Ne pas l'alléger.
@@ -81,13 +83,13 @@
 - Android : arrêt d'environ 0,2 s du fil JavaScript au démarrage (dû au démarrage de l'app sur l'émulateur ; petit effet du moteur non exclu). Mémoire du moteur.
 - Consommation de batterie (écran allumé et verrouillé).
 - Précision du GPS en forêt.
-- Glisser un point : confort de l'appui long ; fluidité sur Android (84 à 88 ms d'arrêt sur l'émulateur, pour 100 ms permis).
+- Glisser un point : confort de l'appui long ; fluidité sur Android (jusqu'à 71 ms d'arrêt sur l'émulateur, pour 100 ms permis) ; double appui pour zoomer.
 - Live Activity iOS avec un compte Apple gratuit (signature : 2 identifiants + App Group, sans push).
 - Suivi verrouillé sur batterie : mode Doze et économies d'énergie des fabricants ; notification visible sur l'écran verrouillé (canal de faible importance).
 
 ## Prochaine étape
 
-Suivre la phase 4 dans sa session de phase (spec : [docs/phases/p04-creer-modifier-itineraire.md](docs/phases/p04-creer-modifier-itineraire.md)).
+Écrire la spec de la phase 5 (infos de l'itinéraire), la faire valider par Émilien, puis la lancer dans une session de phase. Y regarder les trois écarts « plus tard » de la phase 4.
 
 ## Passation du pilotage (27 octobre 2026)
 
@@ -140,7 +142,9 @@ valide spec, design, architecture et fusion ; tests sur simulateurs.
 - La fabrique dépend de serveurs tiers (Geofabrik, osmdata) ; une zone côtière échoue si osmdata est en panne. Parade possible plus tard : copie des annexes dans une release.
 - Une zone côtière et une 2e zone n'ont pas encore été fabriquées.
 - Fabrique : distinguer les chemins urbains des sentiers dans les tuiles (place Stanislas, halage dessinés en tirets rouges).
-- Avant la phase 8 : le tracé est probablement dessiné par-dessus le point bleu de position ; décider si la liaison compte dans la distance et le GPX.
+- Plus tard (comparaison p04-t7) : point glissé agrandi avec halo (essai MapLibre d'abord) ; bulle « À la main », à chaque passage en mode « À la main » jusqu'à la première touche ; note « À la main : 0,6 km » de la maquette 11.
+- Limite connue : deux points de suite loin d'un chemin, l'erreur peut viser le mauvais point (code 171 ambigu).
+- Avant la phase 8 : décider si la liaison compte dans la distance et le GPX.
 - Phase 8 au plus tard : cadrage hors zone avec la position visible ; états « suit ma position » et flèche de cap (maquette 90).
 - Petites tâches : écarts non bloquants de la phase 2, nettoyage des fichiers partiels iOS dans `tmp/`, minuteur Jest.
 - Non testé sur simulateur : geste de pincement, vrai mode avion iOS, gros texte du système sur petits écrans.
