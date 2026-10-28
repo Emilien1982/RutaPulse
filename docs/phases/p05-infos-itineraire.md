@@ -1,7 +1,7 @@
-# Phase 5 — Infos de l'itinéraire (spec, à valider)
+# Phase 5 — Infos de l'itinéraire (spec validée)
 
-> 28 octobre 2026. Spec de la session de pilotage, **à valider par Émilien**
-> avant tout code. Découpage : [docs/05](../05-decoupage-v1.md), ligne 5.
+> 28 octobre 2026. Spec de la session de pilotage, **validée par Émilien
+> le 28 octobre 2026**, avec les choix déjà faits. Difficulté VTT : phase 5b. Découpage : [docs/05](../05-decoupage-v1.md), ligne 5.
 > Fonction du cadrage : 3. S'appuie sur l'ADR 0005 (sources des infos),
 > l'ADR 0015 (module de calcul), l'ADR 0016 (itinéraire en création), la
 > méthode de dénivelé de l'essai 1, la maquette v1/20 et les écarts laissés
@@ -38,7 +38,7 @@ par où il passe, et sur quel terrain.
 | C8 | Le profil d'altitude suit la maquette 20 : bandes, altitudes basse et haute, terrain coloré dessous. La carte en arche montre le tracé en entier, avec l'attribution courte et le bouton « i » | Captures release ; comparaison du designer |
 | C9 | Les infos d'un itinéraire de 40 km s'affichent en moins de 1 s sur simulateur, en version finale. Le glisser de la phase 4 reste fluide : aucun arrêt du fil JavaScript de plus de 100 ms | Mesures en release, mêmes méthodes qu'en phase 4 |
 | C10 | Jamais de plantage. Si les altitudes ou le terrain manquent, l'écran Infos le dit en français et montre le reste | Tests |
-| C11 | La ligne « Difficulté » n'apparaît pas encore (voir la question 1 plus bas) | Test |
+| C11 | La ligne « Difficulté » n'apparaît pas encore (phase 5b) | Test |
 | C12 | `npm run verify` passe, la CI est verte | Sortie de `verify` et run GitHub |
 | C13 | Un parcours Maestro, en mode avion : créer un itinéraire, ouvrir les infos, voir le D+ et les parts de terrain, revenir par « Modifier » | Réussi sur Android ; sur iOS, sans mode avion |
 | C14 | Les trois écarts « plus tard » de la phase 4 sont faits : point glissé agrandi avec un halo (après un essai sur MapLibre), bulle « À la main » à chaque passage dans ce mode jusqu'à la première touche, note « À la main : 0,6 km » de la maquette 11 | Captures release ; comparaison du designer |
@@ -46,7 +46,8 @@ par où il passe, et sur quel terrain.
 
 ## Hors périmètre
 
-- **La difficulté VTT** (`mtb:scale`) : voir la question 1.
+- **La difficulté VTT** (`mtb:scale`) : phase 5b, avec la mise à jour des
+  zones (décision d'Émilien, 28 octobre).
 - L'enregistrement, le nom et la liste « Mes itinéraires » : phase 6.
 - « Démarrer le suivi » : phase 8.
 - Recaler la durée sur la pente ou le terrain : la durée reste celle de
@@ -73,8 +74,9 @@ des écarts bloquants.
 
 ## Coût et risques
 
-- **Taille : M à G**, soit 2 à 3 sessions, enchaînées dans une session de
-  phase.
+- **Taille : M à G**, soit 2 à 3 sessions de travail, enchaînées dans une
+  session de phase. Échelle de docs/05 : P = 1 session, M = 2 sessions,
+  G = 3 sessions ou plus.
 - **Risque 1** : valhalla-mobile expose `height` et `traceAttributes` dans
   son code Swift (vérifié par le pilotage). Il reste à prouver qu'elles
   marchent hors ligne sur les deux plateformes. L'essai de T1 le fait avant
@@ -86,7 +88,7 @@ des écarts bloquants.
 - **Ce que tu devras faire** : valider cette spec, répondre à la
   question 1, puis valider la fusion.
 
-## Question 1 pour toi : la difficulté VTT
+## Question 1 : la difficulté VTT (tranchée : phase 5b)
 
 La difficulté `mtb:scale` n'est **pas** dans les zones publiées. Pour
 l'afficher, il faut :
@@ -100,7 +102,7 @@ l'afficher, il faut :
 Et autour de Nancy, la difficulté n'est connue que sur environ 4 % des
 chemins.
 
-**Ma recommandation** : sortir la difficulté de la phase 5, et en faire une
+**Décision d'Émilien (28 octobre)** : sortir la difficulté de la phase 5, et en faire une
 petite phase à part (5b), avec la mise à jour des zones, qu'il faudra de
 toute façon un jour. La phase 5 reste ainsi de taille M à G, sans
 manipulation de ta part.

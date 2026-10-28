@@ -24,7 +24,7 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 à spécifier |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 spécifiée ([spec](docs/phases/p05-infos-itineraire.md)) ; phase 5b ajoutée (difficulté VTT et mise à jour des zones) |
 
 ## Décisions prises
 
@@ -53,6 +53,8 @@
 - 2026-10-27 — Point posé hors chemin : un trait de liaison en pointillés le relie au tracé. Il n'est pas compté dans la distance, la durée, le suivi ni le GPX pour l'instant (à revoir avant la phase 8). Durée affichée au moins « 1 min ».
 - 2026-10-27 — Spec de la phase 4 (créer et modifier un itinéraire) validée par Émilien, avec les choix du pilotage : ajout à la fin seulement, confirmation à la fermeture dès 2 points, tronçon à la main à la vitesse moyenne (ou 10 km/h), annuler jusqu'à 50 actions sans « Rétablir ».
 - 2026-10-27 — ADR 0016 (itinéraire en création) accepté par Émilien. Glisser un point demande un appui long (obligatoire sur iOS) ; la bulle d'aide le dit sur les deux plateformes. À revoir sur un vrai téléphone.
+- 2026-10-28 — Spec de la phase 5 (infos de l'itinéraire) validée par Émilien : 4e part de terrain « À la main », écran Infos ouvert depuis le résumé, calcul après chaque action.
+- 2026-10-28 — Nouvelle phase 5b, après la 5 : difficulté VTT (`mtb:scale`), avec une table ajoutée par la fabrique, une zone Nancy v4 et la mise à jour d'une zone dans l'app.
 - 2026-10-28 — Phase 4 fusionnée dans main : création en plein écran, ajouter, glisser (recalcul en direct, 5 calculs par seconde au plus), supprimer, annuler, Boucler, tracé à la main, seuil de 200 m, feuilles d'erreur complètes. 15 critères tenus (écarts expliqués sur C9 et C14), 893 tests, CI verte. Fluidité en release : 31 ms au plus sur iOS, 71 ms sur Android (100 ms permis). ADR 0016 complété ; ADR 0011 : `mobile/plugins/` pour les réglages natifs.
 - 2026-10-28 — Détails tranchés par le pilotage en phase 4 : point glissé = point choisi ; « — » sur l'écran vide ; « Relier ce point à la main » en une action ; le double appui sur Android n'est pas un défaut (artefact de Maestro, preuve adb rejouable).
 - 2026-10-27 — Un point à plus de 200 m environ d'un chemin est refusé (feuille « Aucun chemin trouvé ») : à coder en phase 4.
@@ -89,7 +91,7 @@
 
 ## Prochaine étape
 
-Écrire la spec de la phase 5 (infos de l'itinéraire), la faire valider par Émilien, puis la lancer dans une session de phase. Y regarder les trois écarts « plus tard » de la phase 4.
+Lancer la phase 5 (spec validée : [docs/phases/p05-infos-itineraire.md](docs/phases/p05-infos-itineraire.md)) dans une session de phase. Ensuite : spec de la phase 5b.
 
 ## Passation du pilotage (27 octobre 2026)
 
