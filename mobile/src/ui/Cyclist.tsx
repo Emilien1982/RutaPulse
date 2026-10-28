@@ -4,7 +4,7 @@ import { characterColors, colors } from './theme';
 
 const { skin, skinShadow, jerseyShadow } = characterColors;
 
-function Wheel({ x }: { x: number }) {
+export function Wheel({ x }: { x: number }) {
   return (
     <G transform={`translate(${x} -2)`}>
       <Circle r={27} fill="none" stroke={colors.brown} strokeWidth={6} />

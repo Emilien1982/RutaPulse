@@ -142,3 +142,58 @@ export function WifiOffIcon(props: IconProps) {
     </Icon>
   );
 }
+
+export function PlusIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon {...props} size={size} strokeWidth={2.8}>
+      <Path d="M12 5v14M5 12h14" />
+    </Icon>
+  );
+}
+
+// Tools of the creation sheet (mockup 10).
+export function UndoIcon({ size = 22, ...props }: IconProps) {
+  return (
+    <Icon {...props} size={size} strokeWidth={2.5}>
+      <Path d="M9 5L4 10l5 5" />
+      <Path d="M4 10h10a6 6 0 0 1 6 6v2" />
+    </Icon>
+  );
+}
+
+export function LoopIcon({ size = 22, ...props }: IconProps) {
+  return (
+    <Icon {...props} size={size} strokeWidth={2.5}>
+      <Path d="M20 12a8 8 0 1 1-3-6.2" />
+      <Path d="M17.5 2.5v4h-4" />
+      <Circle cx="12" cy="12" r="2.2" fill={props.color} stroke="none" />
+    </Icon>
+  );
+}
+
+export function TrashIcon({ size = 22, ...props }: IconProps) {
+  return (
+    <Icon {...props} size={size} strokeWidth={2.3}>
+      <Path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13" />
+    </Icon>
+  );
+}
+
+// Modes of the next leg: along the paths, by hand.
+export function PathModeIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon {...props} size={size} strokeWidth={2.3}>
+      <Path d="M6 18c0-7 12-5 12-12" />
+      <Circle cx="6" cy="19" r="2" fill={props.color} />
+      <Circle cx="18" cy="5" r="2" fill={props.color} />
+    </Icon>
+  );
+}
+
+export function HandModeIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon {...props} size={size} strokeWidth={2.3}>
+      <Path d="M4 20l4-1 11-11-3-3L5 16z" />
+    </Icon>
+  );
+}

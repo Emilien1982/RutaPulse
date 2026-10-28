@@ -1,3 +1,4 @@
+// Narrow no-break space (U+202F) before the unit: gap M1 of design/comparaisons/p03-t6.md.
 // Tester tests, written from the spec (phase 4: C2, C4-C8, C10) and ADR 0016
 // section 1, plus the pilot decisions (middle removal, loop at departure,
 // multi-leg setLegMode).
@@ -485,14 +486,14 @@ describe('summarize (C7, C8, C10)', () => {
     expect(d.durationS).toBe(0);
   });
   it('minimum duration displays "1 min" (0 s and 20 s)', () => {
-    expect(formatDuration(0)).toBe('1 min');
+    expect(formatDuration(0)).toBe('1\u202Fmin');
     const r = summarize(run([add(0, 0), add(0.0001, 0)]).draft, [
       leg(0.01, 20),
     ]);
-    expect(formatDuration(r.durationS)).toBe('1 min');
+    expect(formatDuration(r.durationS)).toBe('1\u202Fmin');
     expect(
       formatDuration(summarize(createDraftState().draft, []).durationS),
-    ).toBe('1 min');
+    ).toBe('1\u202Fmin');
   });
   it('summary follows each action (scenario)', () => {
     const s0 = four();

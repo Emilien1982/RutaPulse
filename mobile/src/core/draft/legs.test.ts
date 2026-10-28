@@ -1,3 +1,4 @@
+// Narrow no-break space (U+202F) before the unit: gap M1 of design/comparaisons/p03-t6.md.
 import {
   reduceDraft,
   createDraftState,
@@ -158,7 +159,9 @@ describe('summarize', () => {
   it('ends up as "1 min" when the sum is under a minute', () => {
     const s = summarize(line(['path']), [{ distanceKm: 0.05, durationS: 20 }]);
     expect(s.durationS).toBe(20);
-    expect(formatDuration(s.durationS)).toBe('1 min');
-    expect(formatDuration(summarize(line([]), []).durationS)).toBe('1 min');
+    expect(formatDuration(s.durationS)).toBe('1\u202Fmin');
+    expect(formatDuration(summarize(line([]), []).durationS)).toBe(
+      '1\u202Fmin',
+    );
   });
 });

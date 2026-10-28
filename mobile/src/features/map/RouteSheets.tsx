@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg from 'react-native-svg';
@@ -7,7 +8,7 @@ import { t } from '@/core/i18n/t';
 import { formatDistance, formatDuration } from '@/core/routing/formatRoute';
 import type { RouteErrorKind } from '@/core/routing/routeResponse';
 import { Button } from '@/ui/Button';
-import { CyclistScene } from '@/ui/Cyclist';
+import { CyclistErrorScene } from '@/ui/CyclistErrorScene';
 import { CloseIcon } from '@/ui/icons';
 import { Stripes } from '@/ui/Stripes';
 import {
@@ -15,6 +16,7 @@ import {
   colors,
   radius,
   shadow,
+  sheetShadow,
   spacing,
   target,
   text,
@@ -102,17 +104,30 @@ function Figure({
   );
 }
 
-// Bottom sheet of the mockup 10, reduced to distance and duration.
+// Bottom sheet of the mockup 10: distance and duration, then what the caller
+// puts under them (mode of the next leg, tools). The figures stay on screen,
+// a little faded, while a leg is being computed.
 export function RouteSummarySheet({
   distanceKm,
   durationS,
+  pending,
+  children,
 }: {
   distanceKm: number;
   durationS: number;
+  pending?: boolean;
+  children?: ReactNode;
 }) {
+  const insets = useSafeAreaInsets();
   return (
-    <View testID="route-summary" style={styles.sheet}>
-      <View style={styles.summary}>
+    <View
+      testID="route-summary"
+      style={[styles.sheet, { paddingBottom: insets.bottom + spacing.s3 }]}
+    >
+      <View
+        testID="route-figures"
+        style={[styles.summary, pending && styles.pending]}
+      >
         <Figure
           testID="route-distance"
           value={formatDistance(distanceKm)}
@@ -124,6 +139,7 @@ export function RouteSummarySheet({
           label={t('route.duration')}
         />
       </View>
+      {children}
     </View>
   );
 }
@@ -147,6 +163,7 @@ const MESSAGES: Record<RouteErrorKind, { title: TextKey; text: TextKey }> = {
 };
 
 // Error sheet of the mockup 52: the cyclist, a title, a sentence, one exit.
+// "Relier ce point à la main" (task T5) goes above "Retirer ce point".
 export function RouteErrorSheet({
   kind,
   onRemove,
@@ -157,21 +174,22 @@ export function RouteErrorSheet({
   onHeight?: (height: number) => void;
 }) {
   const message = MESSAGES[kind];
+  const insets = useSafeAreaInsets();
   return (
     <View
       testID="route-error"
       accessibilityRole="alert"
-      style={styles.sheet}
+      style={[styles.sheet, { paddingBottom: insets.bottom + spacing.s3 }]}
       onLayout={(e) => onHeight?.(e.nativeEvent.layout.height)}
     >
       <Svg
         width="100%"
         height={106}
-        viewBox="50 262 290 162"
+        viewBox="0 0 358 106"
         preserveAspectRatio="xMidYMid meet"
         accessible={false}
       >
-        <CyclistScene />
+        <CyclistErrorScene limit={kind === 'outOfZone'} />
       </Svg>
       <Text
         accessibilityRole="header"
@@ -242,9 +260,10 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 28,
     paddingTop: 13,
     paddingHorizontal: 13,
-    paddingBottom: spacing.s4,
+    ...sheetShadow,
   },
-  summary: { flexDirection: 'row', gap: spacing.s6, paddingLeft: 3 },
+  summary: { flexDirection: 'row', gap: spacing.s4, paddingLeft: 3 },
+  pending: { opacity: 0.55 },
   figure: { flexShrink: 0 },
   figureValue: {
     fontSize: 28,
