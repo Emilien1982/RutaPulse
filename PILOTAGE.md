@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-02 — Phase 5b, T1 : maquette 41 (mise à jour d'une zone) et ADR 0018 validés par Émilien. Date de la carte plutôt que « v4 » ; pas de pastille sur l'onglet en v1 ; pas de bouton « Ignorer » ; pas de confirmation pour annuler une mise à jour ; un itinéraire gardé (phase 6) a ses infos recalculées sur la zone en service, son tracé ne change jamais.
 - 2026-11-02 — Spec de la phase 5b (difficulté VTT `mtb:scale` et mise à jour des zones) validée par Émilien, avec les choix du pilotage. Garder sur GitHub les 2 dernières versions d'une zone ; Émilien efface lui-même les plus anciennes après la fusion.
 - 2026-11-02 — Nouvelle session de pilotage (passation après la phase 5).
 - 2026-10-19 — Dossier du projet : `~/dev_ai/vtt-nav` (nom provisoire).
