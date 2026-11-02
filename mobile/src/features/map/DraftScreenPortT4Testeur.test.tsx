@@ -291,6 +291,9 @@ describe('port: creating a route (RouteCreation.test, RouteCreationT4Testeur)', 
     ).toBeLessThan(1);
     await act(async () => finish(SUCCESS));
     await flush();
+    // The summary changes in one go: the altitudes (here an engine without
+    // `height`, so a failure) answer one turn after the route (ADR 0017, 6).
+    await flush();
     expect(
       StyleSheet.flatten(screen.getByTestId('route-figures').props.style)
         .opacity,
@@ -308,17 +311,17 @@ describe('port: creating a route (RouteCreation.test, RouteCreationT4Testeur)', 
     });
   });
 
-  it('full path: title, one call, figures, the cross asks nothing wrong, "Enregistrer" and "D+" absent', async () => {
+  it('full path: title, one call, figures, the cross asks nothing wrong, "Enregistrer" absent, "D+" shown', async () => {
     await renderDraft();
     expect(screen.getByText('Nouvel itinéraire')).toBeTruthy();
     await addPoints(HAYE, NANCY);
     expect(mockComputeRoute).toHaveBeenCalledTimes(1);
     expect(screen.getByTestId('route-distance')).toHaveTextContent('25,1 km');
     expect(screen.getByTestId('route-duration')).toHaveTextContent('1 h 35');
-    // Out of the phase 4 scope (spec): no save button, no elevation.
-    for (const word of ['Enregistrer', 'D\\+']) {
-      expect(screen.queryByText(new RegExp(word))).toBeNull();
-    }
+    // Out of the phase 4 scope (spec): no save button. The ascent (D+) is
+    // shown since phase 5 (spec C6, ADR 0017): its label is there.
+    expect(screen.queryByText(/Enregistrer/)).toBeNull();
+    expect(screen.getByText('Montée (D+)')).toBeTruthy();
     // 2 points: the way out is guarded.
     expect(mockPrevent?.value).toBe(true);
     await fireEvent.press(screen.getByTestId('route-close'));

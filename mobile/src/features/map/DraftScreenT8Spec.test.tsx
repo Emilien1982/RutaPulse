@@ -279,6 +279,8 @@ describe('A4: the dash', () => {
       answer(success(2, 600));
     });
     await flush();
+    // The altitudes answer one turn after the route (ADR 0017, section 6).
+    await flush();
     expect(screen.getByTestId('route-distance')).toHaveTextContent('2,0 km');
     expect(screen.getByTestId('route-duration')).toHaveTextContent('10 min');
   });

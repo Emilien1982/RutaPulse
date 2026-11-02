@@ -213,6 +213,8 @@ describe('relink by hand (T5)', () => {
     const calls = mockComputeRoute.mock.calls.length;
 
     await fireEvent.press(screen.getByTestId('route-error-relink'));
+    // The altitudes of the hand legs come asynchronously (ADR 0017, 6).
+    await flush();
     expect(screen.queryByTestId('route-error')).toBeNull();
     // The engine is not called for the hand legs.
     expect(mockComputeRoute.mock.calls).toHaveLength(calls);

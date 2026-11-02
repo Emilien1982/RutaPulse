@@ -176,7 +176,10 @@ Règle de l'essai 1-bis (`classify`), arête par arête :
 - **Jamais pendant un glisser** : les calculs de l'aperçu passent à côté du
   cache (ADR 0016, § 4) et n'ont pas d'infos. `useLegInfos` lit le tracé
   du TanStack Store (magasin d'état), qui ne change qu'au relâchement. Le
-  résumé garde son D+ précédent, grisé, comme la distance.
+  résumé garde son D+ précédent, comme la distance : pas grisé pendant le
+  geste (maquette 10, comportement de la phase 4), grisé après le
+  relâchement tant que distance ou altitudes sont en calcul (précision de
+  la session de phase en T4).
 - Après une action : ajouter calcule 1 tronçon (route, altitudes, terrain),
   déplacer 2, supprimer 1. Ces appels suivent les routes dans la file du
   moteur : un seul calcul natif à la fois (ADR 0015).

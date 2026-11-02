@@ -20,3 +20,8 @@ export function formatDuration(seconds: number): string {
   const m = String(total % 60).padStart(2, '0');
   return t('format.hoursMinutes', { h: String(h), m });
 }
+
+/** Ascent in whole meters ("421 m"), never in kilometers. */
+export function formatAscent(meters: number): string {
+  return t('format.m', { n: String(Math.round(meters)) });
+}

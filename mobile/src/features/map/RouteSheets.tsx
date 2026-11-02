@@ -5,7 +5,11 @@ import Svg from 'react-native-svg';
 
 import type { TextKey } from '@/core/i18n/fr';
 import { t } from '@/core/i18n/t';
-import { formatDistance, formatDuration } from '@/core/routing/formatRoute';
+import {
+  formatAscent,
+  formatDistance,
+  formatDuration,
+} from '@/core/routing/formatRoute';
 import { MAX_SNAP_METERS } from '@/core/routing/routeRequest';
 import type { RouteErrorKind } from '@/core/routing/routeResponse';
 import { Button } from '@/ui/Button';
@@ -123,12 +127,15 @@ function Figure({
 export function RouteSummarySheet({
   distanceKm,
   durationS,
+  ascentM,
   pending,
   empty,
   children,
 }: {
   distanceKm: number;
   durationS: number;
+  /** Ascent (D+) in m; null when the altitudes are missing. */
+  ascentM?: number | null;
   pending?: boolean;
   /** No route yet (under 2 points): a dash instead of the figures. */
   empty?: boolean;
@@ -149,6 +156,22 @@ export function RouteSummarySheet({
           value={empty ? t('route.noFigure') : formatDistance(distanceKm)}
           label={t('route.distance')}
           accessibilityLabel={empty ? t('route.distanceEmptyLabel') : undefined}
+        />
+        <Figure
+          testID="route-ascent"
+          value={
+            empty || ascentM === null || ascentM === undefined
+              ? t('route.noFigure')
+              : formatAscent(ascentM)
+          }
+          label={t('route.ascent')}
+          accessibilityLabel={
+            empty
+              ? t('route.ascentEmptyLabel')
+              : ascentM === null
+                ? t('route.ascentMissingLabel')
+                : undefined
+          }
         />
         <Figure
           testID="route-duration"

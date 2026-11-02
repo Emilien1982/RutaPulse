@@ -6,6 +6,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { canLoop, canUndo, type DraftAction } from '@/core/draft/draft';
 import { summarize } from '@/core/draft/legs';
+import { summarizeInfo } from '@/core/route-info/routeInfo';
 import { findProblem } from '@/core/draft/problem';
 import { t } from '@/core/i18n/t';
 import { pickActiveZone } from '@/core/zones/activeZone';
@@ -35,6 +36,7 @@ import {
 } from './MapPosition';
 import { useDragPreviewStore } from './useDragPreview';
 import { useGlyphsReady } from './useGlyphsReady';
+import { useLegInfos } from './useLegInfos';
 import { useLegResults, type LegState } from './useLegResults';
 import { ZoneBaseMap, type OpeningView } from './ZoneBaseMap';
 
@@ -250,19 +252,28 @@ function DraftView({ zone, opening }: { zone: Zone; opening?: OpeningView }) {
     draft,
     legs.map((leg) => (leg.status === 'done' ? leg.result : undefined)),
   );
-  const [shown, setShown] = useState(summary);
+  // The ascent comes with them, in one go: when the distance and the
+  // altitudes are known, or failed (ADR 0017, section 6).
+  const info = summarizeInfo(useLegInfos(draft, zone, rawLegs));
+  const altitudes = info.altitudes;
+  const ascentM = altitudes.status === 'ready' ? altitudes.ascentM : null;
+  const settled = summary.complete && altitudes.status !== 'pending';
+  const [shown, setShown] = useState({ ...summary, ascentM });
   if (
-    summary.complete &&
+    settled &&
     (shown.distanceKm !== summary.distanceKm ||
-      shown.durationS !== summary.durationS)
+      shown.durationS !== summary.durationS ||
+      shown.ascentM !== ascentM)
   ) {
-    setShown(summary);
+    setShown({ ...summary, ascentM });
   }
-  const computing = legs.some((leg) => leg.status === 'pending');
+  const computing =
+    legs.some((leg) => leg.status === 'pending') ||
+    (summary.complete && altitudes.status === 'pending');
   // No figure is known until a first complete summary: dashes until then,
   // and again under 2 points.
   const [hasFigures, setHasFigures] = useState(false);
-  if (draft.points.length >= 2 && summary.complete && !hasFigures) {
+  if (draft.points.length >= 2 && settled && !hasFigures) {
     setHasFigures(true);
   }
   if (draft.points.length < 2 && hasFigures) setHasFigures(false);
@@ -436,6 +447,7 @@ function DraftView({ zone, opening }: { zone: Zone; opening?: OpeningView }) {
           <RouteSummarySheet
             distanceKm={shown.distanceKm}
             durationS={shown.durationS}
+            ascentM={shown.ascentM}
             pending={computing}
             empty={!hasFigures}
           >
