@@ -5,10 +5,12 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { canLoop, canUndo, type DraftAction } from '@/core/draft/draft';
-import { summarize } from '@/core/draft/legs';
-import { summarizeInfo } from '@/core/route-info/routeInfo';
+import { listLegs, summarize } from '@/core/draft/legs';
+import { handLengthKm, summarizeInfo } from '@/core/route-info/routeInfo';
 import { findProblem } from '@/core/draft/problem';
 import { t } from '@/core/i18n/t';
+import { HelpCard } from '@/ui/HelpCard';
+import { HandModeIcon } from '@/ui/icons';
 import { colors, mapColors, spacing, text } from '@/ui/theme';
 
 import { DraftLayers, PreviewLayer } from './DraftLayers';
@@ -105,6 +107,9 @@ function DraftView({ opening }: { opening?: OpeningView }) {
 
   // The point of the last action, for the error sheet.
   const [target, setTarget] = useState<number | null>(null);
+  // The help of the "À la main" mode: from each entry in the mode until the
+  // first touch on the map in that mode (mockup 11).
+  const [handTouched, setHandTouched] = useState(false);
   function act(action: DraftAction) {
     const before = store.state.draft.points;
     dispatch(action);
@@ -126,6 +131,8 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   // Id of the point being dragged (null: no gesture).
   const dragging = useRef<number | null>(null);
   function touchedAnnotation() {
+    // Touching or dragging a point is also a first touch in the hand mode.
+    if (nextMode === 'hand') setHandTouched(true);
     annotationAt.current = Date.now();
     pending.current.forEach(clearTimeout);
     pending.current.clear();
@@ -339,6 +346,8 @@ function DraftView({ opening }: { opening?: OpeningView }) {
             }
           : undefined;
 
+  const showHandHelp = !problem && nextMode === 'hand' && !handTouched;
+
   return (
     <View style={styles.screen}>
       <ZoneBaseMap
@@ -350,6 +359,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
         }}
         onPress={(e) => {
           if (problem) return;
+          if (nextMode === 'hand') setHandTouched(true);
           const [lon, lat] = e.nativeEvent.lngLat;
           touchMap(lon, lat);
         }}
@@ -382,7 +392,16 @@ function DraftView({ opening }: { opening?: OpeningView }) {
         onPress={recenter}
       />
       <RouteTopBar onClose={() => router.back()} onHeight={setBarHeight} />
-      {hint && (
+      {showHandHelp && (
+        <HelpCard
+          top={barHeight + spacing.s3}
+          testID="route-hand-help"
+          icon={<HandModeIcon size={16} color={colors.brown} />}
+          lead={t('route.handHelpLead')}
+          text={t('route.handHelpText')}
+        />
+      )}
+      {hint && !showHandHelp && (
         <RouteBubble
           top={barHeight + spacing.s3}
           testID={hint.id}
@@ -422,7 +441,13 @@ function DraftView({ opening }: { opening?: OpeningView }) {
           >
             <ModePicker
               mode={nextMode}
-              onChoose={(mode) => dispatch({ type: 'chooseMode', mode })}
+              handKm={handLengthKm(listLegs(draft))}
+              onChoose={(mode) => {
+                if (mode === 'hand' && nextMode !== 'hand') {
+                  setHandTouched(false);
+                }
+                dispatch({ type: 'chooseMode', mode });
+              }}
             />
             <DraftTools
               canUndo={undoable}

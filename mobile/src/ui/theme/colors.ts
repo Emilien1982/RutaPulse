@@ -50,6 +50,15 @@ export const markerShadow = {
   elevation: 3,
 } as const;
 
+// Dragged or chosen point (mockup 10, `.point.deplace`): 0 6 12, black at 35 %.
+export const markerShadowRaised = {
+  shadowColor: '#000000',
+  shadowOffset: { width: 0, height: 6 },
+  shadowOpacity: 0.35,
+  shadowRadius: 12,
+  elevation: 8,
+} as const;
+
 // Colors of the map ("carte.*"). Source: design/tokens.md and
 // design/style-carte.md.
 export const mapColors = {

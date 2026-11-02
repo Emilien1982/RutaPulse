@@ -41,6 +41,10 @@ export const fr = {
   'route.nextLeg': 'Prochain tronçon',
   'route.modePath': 'Par les chemins',
   'route.modeHand': 'À la main',
+  'route.handHelpLead': 'À la main',
+  'route.handHelpText':
+    '\u00A0: chaque touche ajoute un point, relié au précédent en ligne droite.',
+  'route.handNote': 'À la main\u00A0: {km}',
   'route.undo': 'Annuler',
   'route.undoLabel': 'Annuler la dernière action',
   'route.loop': 'Boucler',
