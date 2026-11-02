@@ -16,6 +16,8 @@ export type TerrainEdge = {
   /** 0 when Valhalla gives none. */
   density: number;
   lengthKm: number;
+  /** OSM way id; absent when Valhalla gives none or an invalid one. */
+  wayId?: number;
 };
 
 export type HeightResult = { ok: true; profile: ProfilePoint[] } | RouteFailure;
@@ -75,10 +77,14 @@ export function parseTraceResponse(text: string): TraceResult {
     if (!isObject(edge) || typeof edge.length !== 'number') {
       return failure('failed');
     }
+    const wayId = edge.way_id;
     edges.push({
       use: typeof edge.use === 'string' ? edge.use : '',
       density: typeof edge.density === 'number' ? edge.density : 0,
       lengthKm: edge.length,
+      ...(typeof wayId === 'number' && Number.isSafeInteger(wayId) && wayId >= 1
+        ? { wayId }
+        : {}),
     });
   }
   return { ok: true, edges };

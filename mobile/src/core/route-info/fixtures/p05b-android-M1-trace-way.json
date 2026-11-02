@@ -1,0 +1,82 @@
+{
+  "step": "M1-trace-way",
+  "request": {
+    "encoded_polyline": "ezs_|Ag|gtJiGjDyTbMeW~FeUxPoU~VrEze@bBnXr@zFn@jFnMvf@`Sfu@zLrg@rByBve@jzA`On[fBx@XuCfBqHnKkA|G_AhGl@fKr@pLhElHjGrBtEhAvEvBhEdAv@b@ZjEdCz@rADbE?v@p@bHrAbFlCfKzDxKhCrApEzA|Fn@pG`JlF|MdFbMfJlFrKt@ZbElCCvL_DnRuCzBeHvOfRrDrHtIv`@hFfMhFxD|CbGnAl]fEb`A~@nn@jIxb@[jRAHiAlQjApQbF~R|B~`@pFzd@A`]jKp^rF~v@xAfPeCrKqIjKoJjEaWfEgc@vI|@xNeIzHgFlMip@vLo]nGH~AvC`x@`Efx@lBxZnHnlAvAtEPdElGn}@xFxy@NjEN`E~Dbc@TzRn@xe@BlJm@~G|BvJsFzLeF~OqEfKqAxGmApAyEl@iDRu@dAmAlGiBtFeAzBuAhAoCzAyB}Em@kGugDdv@vCji@moA|TsAgCiiA~wAg@iAyC}Gmm@pu@oU|]mLz}@MjJaDnIiH~EiHdCcCtMeTkXoKoG_NeIaF{LeMak@mBqFwBkDeDqDmS_Py{@in@kz@kl@waAis@}C}Ba[kT{MqJaHeFkT|n@sXpk@kPfQ}DdFvAfY@EqBxHaVhc@sGpLyJh\\oDzUzDbRbLtQvS|YwRzn@oF|RcCtIe@fKsDnP}Clb@aEx_@oDzXiExJs@`JkKU{VaQeC}EwJzeA",
+    "costing": "bicycle",
+    "costing_options": {
+      "bicycle": { "bicycle_type": "mountain", "use_roads": 0 }
+    },
+    "shape_match": "walk_or_snap",
+    "filters": {
+      "attributes": ["edge.use", "edge.density", "edge.length", "edge.way_id"],
+      "action": "include"
+    }
+  },
+  "ms": [7.8, 1.9],
+  "response": {
+    "units": "kilometers",
+    "edges": [
+      {
+        "density": 3,
+        "way_id": 340172445,
+        "use": "path",
+        "length": 0.016,
+        "source_percent_along": 0.873
+      },
+      { "density": 3, "way_id": 340172445, "use": "path", "length": 0.131 },
+      { "density": 3, "way_id": 340172446, "use": "path", "length": 0.049 },
+      { "density": 3, "way_id": 308641826, "use": "track", "length": 0.078 },
+      { "density": 3, "way_id": 308641826, "use": "track", "length": 0.01 },
+      { "density": 3, "way_id": 308641826, "use": "track", "length": 0.189 },
+      { "density": 3, "way_id": 308646356, "use": "track", "length": 0.008 },
+      { "density": 2, "way_id": 340171815, "use": "path", "length": 0.172 },
+      { "density": 2, "way_id": 1305093662, "use": "path", "length": 0.006 },
+      { "density": 2, "way_id": 1305093663, "use": "track", "length": 0.006 },
+      { "density": 2, "way_id": 588923731, "use": "track", "length": 0.013 },
+      { "density": 2, "way_id": 790955291, "use": "path", "length": 0.272 },
+      { "density": 2, "way_id": 781380716, "use": "path", "length": 0.107 },
+      { "density": 2, "way_id": 308648746, "use": "track", "length": 0.007 },
+      { "density": 2, "way_id": 790955290, "use": "path", "length": 0.081 },
+      { "density": 2, "way_id": 340171810, "use": "path", "length": 0.053 },
+      { "density": 2, "way_id": 340171810, "use": "path", "length": 0.093 },
+      { "density": 2, "way_id": 340171810, "use": "path", "length": 0.734 },
+      { "density": 1, "way_id": 311891751, "use": "path", "length": 0.019 },
+      { "density": 1, "way_id": 781380713, "use": "path", "length": 0.043 },
+      { "density": 1, "way_id": 776494596, "use": "path", "length": 0.145 },
+      { "density": 1, "way_id": 340171813, "use": "track", "length": 0.274 },
+      { "density": 1, "way_id": 1137937028, "use": "track", "length": 0.167 },
+      { "density": 1, "way_id": 1137937026, "use": "track", "length": 0.137 },
+      { "density": 1, "way_id": 776085551, "use": "track", "length": 0.016 },
+      { "density": 1, "way_id": 788131352, "use": "path", "length": 0.146 },
+      { "density": 1, "way_id": 1137937030, "use": "track", "length": 0.021 },
+      { "density": 1, "way_id": 788131338, "use": "path", "length": 0.307 },
+      { "density": 1, "way_id": 1137937032, "use": "path", "length": 0.05 },
+      { "density": 1, "way_id": 788131339, "use": "path", "length": 0.146 },
+      { "density": 1, "way_id": 311891748, "use": "path", "length": 0.007 },
+      { "density": 1, "way_id": 782102649, "use": "path", "length": 0.169 },
+      { "density": 1, "way_id": 311891745, "use": "track", "length": 0.017 },
+      { "density": 0, "way_id": 1137937019, "use": "path", "length": 0.159 },
+      { "density": 0, "way_id": 1137937019, "use": "path", "length": 0.161 },
+      { "density": 0, "way_id": 317995706, "use": "track", "length": 0.692 },
+      { "density": 0, "way_id": 1305088897, "use": "track", "length": 0.048 },
+      { "density": 0, "way_id": 340171838, "use": "path", "length": 0.188 },
+      { "density": 0, "way_id": 340171838, "use": "path", "length": 0.103 },
+      { "density": 0, "way_id": 340171838, "use": "path", "length": 0.091 },
+      { "density": 0, "way_id": 1239077250, "use": "track", "length": 0.057 },
+      { "density": 0, "way_id": 311582260, "use": "track", "length": 0.049 },
+      { "density": 0, "way_id": 1469854953, "use": "path", "length": 0.145 },
+      { "density": 0, "way_id": 777486798, "use": "path", "length": 0.146 },
+      { "density": 0, "way_id": 1469854950, "use": "track", "length": 0.022 },
+      { "density": 0, "way_id": 1469854950, "use": "track", "length": 0.048 },
+      { "density": 0, "way_id": 1469854950, "use": "track", "length": 0.011 },
+      {
+        "density": 0,
+        "way_id": 340171837,
+        "use": "path",
+        "length": 0.085,
+        "target_percent_along": 0.281
+      }
+    ],
+    "alternate_paths": []
+  }
+}

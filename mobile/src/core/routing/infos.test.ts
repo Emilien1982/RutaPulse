@@ -74,6 +74,7 @@ describe.each(platforms)('infos, relevé $name', (p) => {
       use: 'road',
       density: 2,
       lengthKm: 0.022,
+      wayId: 133545853,
     });
     const total = result.edges.reduce((sum, e) => sum + e.lengthKm, 0);
     // Sum measured on the raw answer: 33 edges, 1.492 km.
@@ -220,7 +221,7 @@ describe('requests', () => {
       costing_options: { bicycle: { bicycle_type: 'mountain', use_roads: 0 } },
       shape_match: 'walk_or_snap',
       filters: {
-        attributes: ['edge.use', 'edge.density', 'edge.length'],
+        attributes: ['edge.use', 'edge.density', 'edge.length', 'edge.way_id'],
         action: 'include',
       },
     });

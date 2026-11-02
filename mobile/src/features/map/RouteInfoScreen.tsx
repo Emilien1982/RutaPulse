@@ -12,6 +12,10 @@ import {
   formatDuration,
   groupThousands,
 } from '@/core/routing/formatRoute';
+import {
+  summarizeDifficulty,
+  type DifficultyInfo,
+} from '@/core/route-info/difficulty';
 import { summarizeInfo } from '@/core/route-info/routeInfo';
 import { Button } from '@/ui/Button';
 import { DashedStroke } from '@/ui/DashedStroke';
@@ -30,6 +34,7 @@ import { mainGeometry } from './draftGeometry';
 import { useDraftSession } from './DraftSession';
 import { ElevationProfile } from './ElevationProfile';
 import { RouteInfoMap } from './RouteInfoMap';
+import { useDifficultyTable } from './useDifficultyTable';
 import { useLegInfos } from './useLegInfos';
 import { sameLegs, useLegResults } from './useLegResults';
 
@@ -75,6 +80,53 @@ function InfoCell({
   );
 }
 
+// The "Difficulté" line of mockup 20: known levels, then "unknown" in the
+// secondary color. Without any known level, one sentence.
+function DifficultyLine({ shares }: { shares: DifficultyInfo['shares'] }) {
+  const known = shares.filter((share) => share.part !== 'unknown');
+  const unknown = shares.find((share) => share.part === 'unknown');
+  if (known.length === 0) {
+    return (
+      <Text testID="info-difficulty" style={[text.secondary, styles.line]}>
+        {t('info.difficultyUnknown')}
+      </Text>
+    );
+  }
+  const knownText = known
+    .map((share) =>
+      t(
+        share.percent === 0
+          ? 'info.difficultyShareLow'
+          : 'info.difficultyShare',
+        {
+          level: t(`info.difficultyLevel.${share.part as 0}`),
+          n: share.percent,
+        },
+      ),
+    )
+    .join(t('info.difficultySeparator'));
+  return (
+    <Text testID="info-difficulty" style={[text.secondary, styles.line]}>
+      <Text style={styles.bold}>{t('info.difficultyLabel')}</Text>
+      {knownText}
+      {unknown ? (
+        <Text style={styles.secondaryColor}>
+          {t('info.difficultySeparator')}
+          {t(
+            unknown.percent === 0
+              ? 'info.difficultyUnknownShareLow'
+              : 'info.difficultyUnknownShare',
+            { n: unknown.percent },
+          )}
+          {t('info.difficultyRarely')}
+        </Text>
+      ) : (
+        t('info.difficultyEnd')
+      )}
+    </Text>
+  );
+}
+
 function Message({
   testID,
   children,
@@ -102,7 +154,8 @@ export function RouteInfoScreen() {
   // nothing changed, so that the geometry below is not computed again.
   const [legs, setLegs] = useState(rawLegs);
   if (legs !== rawLegs && !sameLegs(legs, rawLegs)) setLegs(rawLegs);
-  const info = summarizeInfo(useLegInfos(draft, zone, rawLegs, true));
+  const legInfos = useLegInfos(draft, zone, rawLegs, true);
+  const info = summarizeInfo(legInfos);
   const summary = summarize(
     draft,
     legs.map((leg) => (leg.status === 'done' ? leg.result : undefined)),
@@ -111,6 +164,7 @@ export function RouteInfoScreen() {
     () => mainGeometry(draft, legs, null),
     [draft, legs],
   );
+  const difficulty = summarizeDifficulty(legInfos, useDifficultyTable(zone));
   const { altitudes, terrain } = info;
   const known = summary.complete;
   const bandsDrawn = terrain.status === 'ready' ? terrain.segments : null;
@@ -239,6 +293,18 @@ export function RouteInfoScreen() {
         ) : (
           <Message testID="info-terrain-pending">{t('info.pending')}</Message>
         )}
+
+        {difficulty.status === 'ready' ? (
+          <DifficultyLine shares={difficulty.shares} />
+        ) : difficulty.status === 'missing' ? (
+          <Message testID="info-difficulty-missing">
+            {t('info.difficultyMissing')}
+          </Message>
+        ) : (
+          <Message testID="info-difficulty-pending">
+            {t('info.pending')}
+          </Message>
+        )}
       </ScrollView>
       <View
         style={[styles.actions, { paddingBottom: insets.bottom + spacing.s3 }]}
@@ -307,6 +373,9 @@ const styles = StyleSheet.create({
     rowGap: 4,
     marginTop: spacing.s2,
   },
+  line: { color: colors.brown, marginTop: 6 },
+  bold: { fontWeight: '700' },
+  secondaryColor: { color: colors.brown2 },
   legendText: { color: colors.brown },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   dot: {

@@ -345,36 +345,37 @@ describe('C7: the summary opens Infos, "Modifier" comes back', () => {
   });
 });
 
-describe('C11: no "Difficulté" line (phase 5b)', () => {
-  async function expectNoDifficulty() {
+describe('C7 and C8: "Difficulté" line of a zone without table (phase 5b)', () => {
+  const unknownText = 'Difficulté inconnue, la carte la donne rarement.';
+  async function expectUnknownDifficulty() {
     expect(screen.getByTestId('info-distance')).toBeTruthy();
-    expect(screen.queryByText(/difficult/i)).toBeNull();
-    expect(screen.queryByText(/mtb/i)).toBeNull();
+    expect(screen.getByText(unknownText)).toBeTruthy();
   }
 
-  it('is absent with complete data', async () => {
+  it('says unknown with complete data', async () => {
     await renderApp();
     await addPoints(P1, P2);
     await openInfos();
-    await expectNoDifficulty();
+    await expectUnknownDifficulty();
   });
 
-  it('is absent when altitudes and terrain are missing', async () => {
+  it('says unavailable when altitudes and terrain are missing', async () => {
     mockHeights.mockResolvedValue(failed);
     mockTerrain.mockResolvedValue(failed);
     await renderApp();
     await addPoints(P1, P2);
     await openInfos();
-    await expectNoDifficulty();
+    expect(screen.getByTestId('info-distance')).toBeTruthy();
+    expect(screen.getByText('Difficulté indisponible')).toBeTruthy();
   });
 
-  it('is absent with a hand leg', async () => {
+  it('says unknown with a hand leg', async () => {
     await renderApp();
     await addPoints(P1, P2);
     await fireEvent.press(screen.getByTestId('route-mode-hand'));
     await addPoints(P3);
     await openInfos();
-    await expectNoDifficulty();
+    await expectUnknownDifficulty();
   });
 });
 

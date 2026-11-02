@@ -197,10 +197,9 @@ describe('Infos screen (mockup 20)', () => {
     expect(screen.getByTestId('info-band-hand')).toBeTruthy();
   });
 
-  it('has no "Démarrer le suivi" and no "Difficulté"', async () => {
+  it('has no "Démarrer le suivi"', async () => {
     await renderReady([P1, P2]);
     expect(screen.queryByText(/Démarrer le suivi/)).toBeNull();
-    expect(screen.queryByText(/Difficulté/)).toBeNull();
   });
 
   it('"Modifier" goes back', async () => {

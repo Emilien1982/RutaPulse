@@ -24,7 +24,7 @@ export function useRoutingEngine(): void {
 
   // Declared first: the first `update` below must find the listener.
   useEffect(() => {
-    return zoneService.subscribe(() => {
+    const follow = () => {
       const zone = zoneService.current();
       if (zone === undefined) return;
       // No `await` between the switch and `setZone`: same step of JavaScript.
@@ -35,7 +35,11 @@ export function useRoutingEngine(): void {
         .then(() =>
           queryClient.invalidateQueries({ queryKey: installedZonesQueryKey }),
         );
-    });
+    };
+    // A child may have fed the service before this effect: do not miss it.
+    // `setZone` does nothing when the engine already follows this zone.
+    if (zoneService.current()) follow();
+    return zoneService.subscribe(follow);
   }, [queryClient]);
 
   useEffect(() => {

@@ -76,6 +76,7 @@ describe('ADR 0017 section 1: requests', () => {
       'edge.use',
       'edge.density',
       'edge.length',
+      'edge.way_id',
     ]);
     expect(request.costing).toBe('bicycle');
     expect(request.costing_options.bicycle.bicycle_type).toBe('mountain');
