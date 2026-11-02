@@ -1,0 +1,58 @@
+Running on iPhone 17 - iOS 26.5 - DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D
+ > Flow pile-ios
+Launch app "fr.rutapulse.app"... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Wait for animation to end within 4000 ms... COMPLETED
+Tap on (Optional) "Lors de l.utilisation.*|Pendant l.utilisation.*|While Using.*|Allow While.*"... WARNED
+Tap on "Carte.*"... COMPLETED
+Tap on id: new-route-button... COMPLETED
+Assert that "Touchez le départ sur la carte" is visible... COMPLETED
+Tap on point (50%,50%)... COMPLETED
+Assert that "Touchez l'arrivée sur la carte" is visible... COMPLETED
+Tap on point (50%,38%)... COMPLETED
+Assert that ".*[1-9].*", id: route-distance is visible... COMPLETED
+Tap on point (65%,40%)... COMPLETED
+Wait for animation to end within 8000 ms... COMPLETED
+Assert that ".*[1-9].*", id: route-ascent is visible... COMPLETED
+Take screenshot pile-0-creation... COMPLETED
+Tap on id: route-open-infos... COMPLETED
+Assert that id: info-modify is visible... COMPLETED
+Wait for animation to end within 3000 ms... COMPLETED
+Take screenshot pile-1-infos... COMPLETED
+Swipe from (0%,50%) to (80%,50%) in 400 ms... COMPLETED
+Wait for animation to end within 3000 ms... COMPLETED
+Assert that "Abandonner cet itinéraire.*" is not visible... COMPLETED
+Assert that id: route-distance is visible... COMPLETED
+Assert that id: route-close is visible... COMPLETED
+Take screenshot pile-2-apres-glissement... COMPLETED
+Tap on id: route-open-infos... COMPLETED
+Assert that id: info-modify is visible... COMPLETED
+Tap on id: info-modify... COMPLETED
+Wait for animation to end within 3000 ms... COMPLETED
+Assert that "Abandonner cet itinéraire.*" is not visible... COMPLETED
+Assert that id: route-distance is visible... COMPLETED
+Take screenshot pile-3-apres-modifier... COMPLETED
+Tap on id: route-close... COMPLETED
+Assert that "Abandonner cet itinéraire.*" is visible... COMPLETED
+Take screenshot pile-4-croix... COMPLETED
+Tap on "Continuer"... COMPLETED
+Wait for animation to end within 2000 ms... COMPLETED
+Tap on id: route-open-infos... COMPLETED
+Assert that id: info-modify is visible... COMPLETED
+Swipe from (0%,50%) to (80%,50%) in 400 ms... COMPLETED
+Wait for animation to end within 3000 ms... COMPLETED
+Tap on id: route-close... COMPLETED
+Assert that "Abandonner cet itinéraire.*" is visible... COMPLETED
+Take screenshot pile-5-croix-apres-aller-retour... COMPLETED
+Tap on "Continuer"... COMPLETED
+Wait for animation to end within 2000 ms... COMPLETED
+Tap on id: route-open-infos... COMPLETED
+Assert that id: info-modify is visible... COMPLETED
+Tap on id: info-modify... COMPLETED
+Wait for animation to end within 3000 ms... COMPLETED
+Tap on id: route-close... COMPLETED
+Assert that "Abandonner cet itinéraire.*" is visible... COMPLETED
+Take screenshot pile-6-croix-apres-modifier... COMPLETED
+Tap on "Abandonner"... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Take screenshot pile-7-apres-abandon... COMPLETED

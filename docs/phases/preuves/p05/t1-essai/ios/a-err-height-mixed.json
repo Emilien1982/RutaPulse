@@ -1,0 +1,1 @@
+{"step":"err-height-mixed","request":{"shape":[{"lat":48.736598,"lon":5.973731},{"lat":48.9,"lon":6},{"lat":47.5,"lon":6}]},"ms":[0.2,0.1,0.1],"response":{"shape":[{"lat":48.736598,"lon":5.973731},{"lat":48.9,"lon":6},{"lat":47.5,"lon":6}],"height":[244,281,null]}}

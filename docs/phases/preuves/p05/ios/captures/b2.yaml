@@ -1,0 +1,6 @@
+appId: fr.rutapulse.app
+---
+- tapOn:
+    point: '30%,45%'
+- waitForAnimationToEnd:
+    timeout: 4000

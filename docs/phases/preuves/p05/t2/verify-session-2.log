@@ -1,0 +1,47 @@
+
+> rutapulse@1.0.0 verify
+> npm run typecheck && npm run lint && npm run test
+
+
+> rutapulse@1.0.0 typecheck
+> tsc --noEmit
+
+
+> rutapulse@1.0.0 lint
+> eslint --max-warnings 0 && prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> rutapulse@1.0.0 test
+> jest
+
+watchman warning: Recrawled this watch 57 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/utilisateur/dev_ai/vtt-nav' ; watchman watch-project '/Users/utilisateur/dev_ai/vtt-nav'`
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.
+
+Test Suites: 81 passed, 81 total
+Tests:       938 passed, 938 total
+Snapshots:   0 total
+Time:        21.575 s
+Ran all test suites.

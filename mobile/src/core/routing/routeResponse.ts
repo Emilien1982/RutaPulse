@@ -50,6 +50,30 @@ export function decodePolyline6(encoded: string): [number, number][] {
   return points;
 }
 
+/** Valhalla polyline with 6 decimals, from [lon, lat] points. */
+export function encodePolyline6(points: [number, number][]): string {
+  let out = '';
+  let lat = 0;
+  let lon = 0;
+  const put = (delta: number) => {
+    let value = delta < 0 ? -2 * delta - 1 : 2 * delta;
+    while (value >= 0x20) {
+      out += String.fromCharCode(((value % 0x20) | 0x20) + 63);
+      value = Math.floor(value / 0x20);
+    }
+    out += String.fromCharCode(value + 63);
+  };
+  for (const [x, y] of points) {
+    const nextLat = Math.round(y * 1e6);
+    const nextLon = Math.round(x * 1e6);
+    put(nextLat - lat);
+    put(nextLon - lon);
+    lat = nextLat;
+    lon = nextLon;
+  }
+  return out;
+}
+
 /** Error kind for a Valhalla refusal code. */
 export function kindFromValhallaCode(code: number): RouteErrorKind {
   if (code === 171) return 'farFromPath';

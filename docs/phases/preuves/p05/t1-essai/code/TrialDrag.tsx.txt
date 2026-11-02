@@ -1,0 +1,178 @@
+// THROWAWAY (phase 5, T1). Part B: can a ViewAnnotation that is being dragged
+// grow from 28 to 40 and get a halo, without changing its React key?
+import type { CameraRef } from '@maplibre/maplibre-react-native';
+import { ViewAnnotation } from '@maplibre/maplibre-react-native';
+import { useLocalSearchParams } from 'expo-router';
+import { useRef, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+
+import { pickActiveZone } from '@/core/zones/activeZone';
+import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
+
+import { writeJson } from './trialP05';
+import { useGlyphsReady } from './useGlyphsReady';
+import { ZoneBaseMap } from './ZoneBaseMap';
+
+const CENTER: [number, number] = [5.973731, 48.736598];
+const POINTS = [
+  { id: 1, lngLat: CENTER },
+  { id: 2, lngLat: [5.9695, 48.7385] as [number, number] },
+  { id: 3, lngLat: [5.9779, 48.7345] as [number, number] },
+];
+
+function Marker({
+  n,
+  big,
+  outer,
+}: {
+  n: number;
+  big: boolean;
+  outer: boolean;
+}) {
+  // `outer`: the root view itself changes size (32 -> 56). Otherwise the root
+  // is a fixed cell of 56 and only its content changes.
+  const root = outer ? (big ? 56 : 32) : 56;
+  const size = big ? 40 : 28;
+  return (
+    <View
+      testID={`trial-marker-${n}`}
+      style={{
+        width: root,
+        height: root,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      {big && <View style={styles.halo} />}
+      <View
+        style={[
+          styles.round,
+          { width: size, height: size, borderRadius: size / 2 },
+          big && styles.shadow,
+        ]}
+      >
+        <Text style={{ fontSize: big ? 18 : 15, fontWeight: '800' }}>{n}</Text>
+      </View>
+    </View>
+  );
+}
+
+const clock = () => performance.now();
+
+export function TrialDrag() {
+  const { variant = 'inner' } = useLocalSearchParams<{ variant?: string }>();
+  const installed = useInstalledZones();
+  const glyphsReady = useGlyphsReady();
+  const camera = useRef<CameraRef>(null);
+  const [dragging, setDragging] = useState<number | null>(null);
+  const [chosen, setChosen] = useState<number | null>(null);
+  const log = useRef<Record<string, unknown>[]>([]);
+  const t0 = useRef(0);
+  const drags = useRef(0);
+  const dragsAfterStyle = useRef(0);
+
+  const zone = installed.data ? pickActiveZone(installed.data) : null;
+  if (!zone || !glyphsReady) return <View style={styles.screen} />;
+
+  const now = () => Math.round(clock() - t0.current);
+  const save = (event: string, extra: object = {}) => {
+    log.current.push({ event, t: now(), ...extra });
+    writeJson(`b-${variant}.json`, {
+      variant,
+      drags: drags.current,
+      dragsAfterStyle: dragsAfterStyle.current,
+      log: log.current,
+    });
+  };
+
+  return (
+    <View style={styles.screen}>
+      <ZoneBaseMap
+        zone={zone}
+        cameraRef={camera}
+        opening={{ center: CENTER, zoom: 15 }}
+      >
+        {POINTS.map((p) => {
+          const isBig =
+            variant === 'chosen' ? chosen === p.id : dragging === p.id;
+          // `keychange` is the control: the key changes during the gesture.
+          const key =
+            variant === 'chosen'
+              ? `${p.id}-${chosen === p.id}`
+              : variant === 'keychange'
+                ? `${p.id}-${dragging === p.id}`
+                : `${p.id}`;
+          return (
+            <ViewAnnotation
+              key={key}
+              id={`trial-${p.id}`}
+              draggable
+              lngLat={p.lngLat}
+              onPress={() => {
+                setChosen(p.id);
+                save('press', { id: p.id });
+              }}
+              onDragStart={() => {
+                t0.current = clock();
+                drags.current = 0;
+                dragsAfterStyle.current = 0;
+                log.current = [];
+                setDragging(p.id);
+                save('dragStart', { id: p.id });
+              }}
+              onDrag={(e) => {
+                drags.current += 1;
+                if (now() > 300) dragsAfterStyle.current += 1;
+                if (drags.current % 10 === 1) {
+                  save('drag', { lngLat: e.nativeEvent.lngLat });
+                }
+              }}
+              onDragEnd={(e) => {
+                save('dragEnd', {
+                  id: p.id,
+                  lngLat: e.nativeEvent.lngLat,
+                });
+                setDragging(null);
+              }}
+            >
+              <Marker n={p.id} big={isBig} outer={variant === 'outer'} />
+            </ViewAnnotation>
+          );
+        })}
+      </ZoneBaseMap>
+      <Text style={styles.label}>{`essai B : ${variant}`}</Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: '#fbf1da' },
+  label: {
+    position: 'absolute',
+    top: 70,
+    left: 12,
+    backgroundColor: '#fff',
+    padding: 4,
+  },
+  halo: {
+    position: 'absolute',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(194, 0, 122, 0.22)',
+  },
+  round: {
+    borderWidth: 3,
+    borderColor: '#c2007a',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 6,
+  },
+});

@@ -14,6 +14,8 @@ export const colors = {
   success: '#0F5223',
   olive: '#A9B56A',
   petrol: '#2D6A66',
+  // Android ripple on a touchable: brown at 12 %.
+  ripple: 'rgba(58, 31, 15, 0.12)',
 } as const;
 
 // Colors of the cyclist ("perso.*"). Source: design/tokens.md.
@@ -48,6 +50,15 @@ export const markerShadow = {
   shadowOpacity: 0.35,
   shadowRadius: 3,
   elevation: 3,
+} as const;
+
+// Dragged or chosen point (mockup 10, `.point.deplace`): 0 6 12, black at 35 %.
+export const markerShadowRaised = {
+  shadowColor: '#000000',
+  shadowOffset: { width: 0, height: 6 },
+  shadowOpacity: 0.35,
+  shadowRadius: 12,
+  elevation: 8,
 } as const;
 
 // Colors of the map ("carte.*"). Source: design/tokens.md and
@@ -91,4 +102,14 @@ export const mapColors = {
   // hn.voile-hors-zone: #CFC8BB at 72 %.
   outsideVeil: '#CFC8BB',
   outsideVeilOpacity: 0.72,
+} as const;
+
+// Terrain of the route ("terrain.*"). Source: design/tokens.md. "À la main"
+// takes the magenta of the dashes (decision of Émilien, ADR 0017, answer 2,
+// to be confirmed by the designer).
+export const terrainColors = {
+  road: '#5A5A5A',
+  track: mapColors.track,
+  trail: mapColors.path,
+  hand: mapColors.route,
 } as const;

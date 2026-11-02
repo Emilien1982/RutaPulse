@@ -1,0 +1,6 @@
+appId: fr.rutapulse.app
+---
+- tapOn:
+    id: 'info-modify'
+- waitForAnimationToEnd:
+    timeout: 3000

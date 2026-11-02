@@ -1,0 +1,21 @@
+| Geste | Plat. | Build | Durée (ms) | Évts | Arrêt max (ms, jusqu'à la fin des infos) | Calculs | Max/s | Écart min | Final fin (ms) | Infos pendant | Infos après | Fin de tout (ms) | Autres tronçons | Carte | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| ../ios/c9-geste/geste-1/banc-p05/geste-1.json | ios | release | 5615.6 | 168 | 0 | 27 | 5 | 199.9 | 25.4 | 0 | 4 | 38 | 0 | immobile | ok |
+| ../ios/c9-geste/geste-2/banc-p05/geste-1.json | ios | release | 5616.3 | 168 | 0 | 28 | 5 | 199.9 | 21.9 | 0 | 4 | 34 | 0 | immobile | ok |
+| ../ios/c9-geste/geste-3/banc-p05/geste-1.json | ios | release | 5615.3 | 168 | 0 | 27 | 5 | 200.1 | 24 | 0 | 4 | 39.3 | 0 | immobile | ok |
+
+| Affichage | Plat. | Build | Cache | Montage (ms) | Chiffres validés (ms) | Chiffres dessinés (ms) | Appels natifs (route/alt/terrain) | D+ | Verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| ../ios/c9-affichage/froid-1/banc-p05/affichage-1.json | ios | release | froid | 27.5 | 92.5 | 116.2 | 21/21/21 | 659 | < 1 s |
+| ../ios/c9-affichage/froid-2/banc-p05/affichage-1.json | ios | release | froid | 22.3 | 94.3 | 115.9 | 21/21/21 | 659 | < 1 s |
+| ../ios/c9-affichage/froid-3/banc-p05/affichage-1.json | ios | release | froid | 21.7 | 91.8 | 116.4 | 21/21/21 | 659 | < 1 s |
+| ../ios/c9-affichage/chaud-1/banc-p05/affichage-1.json | ios | release | chaud | 48.5 | 48.5 | 65.5 | 0/0/0 | 659 | < 1 s |
+| ../ios/c9-affichage/chaud-2/banc-p05/affichage-1.json | ios | release | chaud | 30.5 | 30.5 | 49 | 0/0/0 | 659 | < 1 s |
+| ../ios/c9-affichage/chaud-3/banc-p05/affichage-1.json | ios | release | chaud | 33 | 33 | 49.1 | 0/0/0 | 659 | < 1 s |
+
+| Témoin | Plat. | Build | Points | Durée (ms) | Arrêt max (ms) | Appels moteur |
+|---|---|---|---|---|---|---|
+| ../ios/c9-geste/temoin-1/banc-p05/temoin-1.json | ios | release | 11 | 3003.1 | 17.3 | 0 |
+
+| Référence | Plat. | Tronçons | D+ | D− | Basse | Haute | Parts |
+|---|---|---|---|---|---|---|---|

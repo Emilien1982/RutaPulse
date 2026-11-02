@@ -196,6 +196,13 @@ Mêmes teintes que la carte, pour qu'on n'ait qu'une légende à apprendre.
 | `terrain.piste` | `#7A4A1E` | Part de piste |
 | `terrain.sentier` | `#C62828` | Part de sentier |
 | `terrain.inconnu` | hachures `#BDBDBD` | Difficulté inconnue |
+| `terrain.a-la-main` | `#C2007A` (= `carte.itineraire`), **toujours en tirets**, jamais en aplat | Part « À la main » : tronçons tracés à la main, dont on ne connaît pas le terrain. Bande sous le profil : fond `#FFFFFF` (= `carte.itineraire-lisere`) sur toute la hauteur de la bande (12), tirets `#C2007A` sur toute cette hauteur, 12 de long, 6 de vide. Légende et note de la création : trait de 22 × 8, épaisseur 4, tirets 6 / 3, à la place du rond de couleur |
+
+Ajouté le 2 novembre 2026 (phase 5, T8, `comparaisons/p05-t8.md`) :
+`terrain.a-la-main`. Les tirets ne sont pas un décor : le magenta et
+`terrain.sentier` ont presque la même luminance (contraste de 1,05:1). La
+forme les distingue pour les daltoniens et au soleil. C'est le même signe
+que le tracé à la main sur la carte (`trace.a-la-main`).
 
 ## Typographie
 
@@ -224,6 +231,7 @@ Une seule graisse de Jost suffit en v1 (700).
 | `texte.titre-barre` | 18 | 700 | Jost | Titre de la barre du haut (« Nouvel itinéraire ») |
 | `texte.chiffre-cle` | 28 | 800 | système | Distance, D+, durée, à l'arrêt |
 | `texte.chiffre-cle-unite` | 17 | 700 | système | Unité à côté d'un chiffre clé (« km », « m », « h ») |
+| `texte.chiffre-cle-compact` / `-unite` | 24 / 15 | 800 / 700 | système | Résumé de la création sur un écran étroit (largeur ÷ échelle du texte < 390). Ajouté le 2 novembre 2026 (phase 5, T9) |
 | `texte.bouton-action` | 17 (20 sur l'écran « Arrivée ») | 700 | Jost | Libellé d'un bouton principal ou secondaire |
 | `texte.bouton` | 17 | 600 | système | Segments, interrupteurs, liens soulignés |
 | `texte.outil` | 15 | 600 | système | Libellé sous l'icône d'un outil (Annuler, Boucler, Supprimer) |
@@ -231,7 +239,7 @@ Une seule graisse de Jost suffit en v1 (700).
 | `texte.corps` | 17 | 400 | système | Texte courant |
 | `texte.secondaire` | 15 | 400 | système | Ligne d'explication, en `hn.brun-2` |
 | `texte.legende` | 13 | 500 | système | Unités sous un chiffre, axes du profil. Minimum hors carte. |
-| `texte.attribution` | 11 | 400 | système | Attributions de la carte seulement (imposé par les licences) |
+| `texte.attribution` | 11 | 400 | système | Attributions de la carte seulement (imposé par les licences). **Ne suit pas** la taille de texte du système (`maxFontSizeMultiplier` 1) : sa boîte est calée dans la carte (arche : marge du bas de 32). La liste complète, ouverte par « i », la suit. Ajouté le 2 novembre 2026 (phase 5, passe iOS) |
 
 Étiquettes **dans** la carte (ajoutées le 24 octobre 2026) : police **Noto
 Sans** en glyphes locaux (MapLibre ne sait pas utiliser la police du
@@ -359,8 +367,9 @@ passent par ces valeurs au zoom 15.
 |---|---|
 | `marqueur.position` | Flèche de cap de 32 à l'arrêt, 40 en suivi, bord blanc de 3 |
 | `marqueur.point` | Rond de 28, bord de 3, chiffre de 15 en gras |
-| `marqueur.point-deplace` | Rond de 40 avec un halo, pendant qu'on le glisse |
+| `marqueur.point-deplace` | Rond de 40, chiffre de 18, halo de 8 (`carte.itineraire` à 22 %), ombre 0 6 12 noir à 35 %. Aspect du **point choisi** : il l'a pendant qu'on le glisse, et après, tant qu'il reste choisi (le point glissé devient le point choisi, phase 4). Précisé le 2 novembre 2026 (phase 5, passe iOS) |
 | `marqueur.depart-arrivee` | Rond de 32 |
+| `marqueur.depart-arrivee-vignette` | Rond de 16 (MapLibre : `circle-radius` 8), bord `#FFFFFF` de 2 (`circle-stroke-width` 2), fond `carte.depart` ou `carte.arrivee`, **sans pictogramme**. Petites cartes seulement (arche de l'écran 20) : un rond de 32 y cacherait un tracé de quelques km. Ajouté le 2 novembre 2026 (phase 5, T8) |
 
 ## Ombres
 

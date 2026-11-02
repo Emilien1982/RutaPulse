@@ -1,0 +1,351 @@
+/* eslint-disable no-restricted-imports */
+// THROWAWAY (phase 5, T1). Part A: height and trace_attributes, offline.
+// Never merged. Writes raw answers to <documents>/essai/a-*.json.
+import { Directory, File, Paths } from 'expo-file-system';
+
+import valhalla from '@modules/valhalla-route';
+
+import { computeRoute } from '@/shared-data/routing/computeRoute';
+
+import r1 from './trialR1.json';
+import r2 from './trialR2.json';
+import r3 from './trialR3.json';
+import r4 from './trialR4.json';
+import r5 from './trialR5.json';
+
+type Pt = { lat: number; lon: number };
+
+const A: Pt = { lat: 48.727358, lon: 5.978104 };
+const B: Pt = { lat: 48.736598, lon: 5.973731 };
+// Phase 3 route (Haye, about 6 km).
+const P3A: Pt = { lat: 48.6905, lon: 6.108 };
+const P3B: Pt = { lat: 48.718, lon: 6.075 };
+
+const COSTING = {
+  costing: 'bicycle',
+  costing_options: { bicycle: { bicycle_type: 'mountain', use_roads: 0 } },
+};
+
+const FILTERS = {
+  attributes: [
+    'edge.use',
+    'edge.road_class',
+    'edge.surface',
+    'edge.density',
+    'edge.length',
+    'edge.way_id',
+    'edge.begin_shape_index',
+    'edge.end_shape_index',
+    'shape',
+  ],
+  action: 'include',
+};
+
+function dir() {
+  const d = new Directory(Paths.document, 'essai');
+  if (!d.exists) d.create();
+  return d;
+}
+
+export function readRequest(): any | null {
+  const f = new File(Paths.document, 'essai/demande.json');
+  if (!f.exists) return null;
+  const text = f.textSync();
+  f.delete();
+  return JSON.parse(text);
+}
+
+export function writeJson(name: string, data: unknown) {
+  dir();
+  const f = new File(Paths.document, `essai/${name}`);
+  if (f.exists) f.delete();
+  f.create();
+  f.write(JSON.stringify(data));
+}
+
+// Encoded polyline, precision 6.
+export function decode6(s: string): Pt[] {
+  const pts: Pt[] = [];
+  let i = 0;
+  let lat = 0;
+  let lon = 0;
+  while (i < s.length) {
+    for (let axis = 0; axis < 2; axis++) {
+      let shift = 0;
+      let result = 0;
+      let b: number;
+      do {
+        b = s.charCodeAt(i++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+      const d = result & 1 ? ~(result >> 1) : result >> 1;
+      if (axis === 0) lat += d;
+      else lon += d;
+    }
+    pts.push({ lat: lat / 1e6, lon: lon / 1e6 });
+  }
+  return pts;
+}
+
+export function encode6(pts: Pt[]): string {
+  let out = '';
+  let pl = 0;
+  let pn = 0;
+  const put = (v: number) => {
+    let x = v < 0 ? ~(v << 1) : v << 1;
+    while (x >= 0x20) {
+      out += String.fromCharCode((0x20 | (x & 0x1f)) + 63);
+      x >>= 5;
+    }
+    out += String.fromCharCode(x + 63);
+  };
+  for (const p of pts) {
+    const la = Math.round(p.lat * 1e6);
+    const lo = Math.round(p.lon * 1e6);
+    put(la - pl);
+    put(lo - pn);
+    pl = la;
+    pn = lo;
+  }
+  return out;
+}
+
+type Fn = (json: string) => Promise<string>;
+export type Row = {
+  step: string;
+  file: string;
+  ms: number[];
+  bytes: number;
+  errorCode?: number | string;
+  rejected?: string;
+};
+
+const rows: Row[] = [];
+
+// Calls the native function `times` times, keeps the first answer.
+async function call(
+  step: string,
+  fn: Fn,
+  request: unknown,
+  times = 3,
+): Promise<any> {
+  const text = JSON.stringify(request);
+  const ms: number[] = [];
+  let first = '';
+  let rejected: string | undefined;
+  for (let i = 0; i < times; i++) {
+    const t0 = performance.now();
+    try {
+      const out = await fn(text);
+      ms.push(Math.round((performance.now() - t0) * 10) / 10);
+      if (i === 0) first = out;
+    } catch (e: any) {
+      ms.push(Math.round((performance.now() - t0) * 10) / 10);
+      rejected = `${e?.code ?? ''} ${e?.message ?? e}`;
+      if (i === 0) first = '';
+    }
+  }
+  let parsed: any = first;
+  try {
+    parsed = JSON.parse(first);
+  } catch {
+    // keep raw text
+  }
+  const file = `a-${step}.json`;
+  writeJson(file, { step, request, ms, response: parsed, rejected });
+  rows.push({
+    step,
+    file,
+    ms,
+    bytes: first.length,
+    errorCode:
+      parsed && typeof parsed === 'object' && 'code' in parsed
+        ? parsed.code
+        : undefined,
+    rejected,
+  });
+  writeJson('a-resume.json', rows);
+  return parsed;
+}
+
+const route = (name: string, pts: Pt[], extra: object = {}) =>
+  call(
+    name,
+    valhalla.route,
+    {
+      locations: pts.map((p, i) => ({
+        ...p,
+        type: i === 0 || i === pts.length - 1 ? 'break' : 'through',
+        search_cutoff: 200,
+      })),
+      ...COSTING,
+      directions_options: { language: 'fr-FR', units: 'kilometers' },
+      ...extra,
+    },
+    3,
+  );
+
+async function scenario(tag: string, pts: Pt[]) {
+  await route(`${tag}-route-base`, pts);
+  const withElev = await route(`${tag}-route-elev30`, pts, {
+    elevation_interval: 30,
+  });
+  const legs: any[] = withElev?.trip?.legs ?? [];
+  // All legs joined (a trip may have several legs).
+  const shape: Pt[] = [];
+  for (const leg of legs) {
+    const seg = decode6(leg.shape);
+    shape.push(...(shape.length ? seg.slice(1) : seg));
+  }
+  if (!shape.length) return null;
+  const encoded = encode6(shape);
+  await call(`${tag}-height-resample30`, valhalla.height, {
+    encoded_polyline: encoded,
+    resample_distance: 30,
+    id: tag,
+  });
+  await call(`${tag}-height-resample30-p1`, valhalla.height, {
+    encoded_polyline: encoded,
+    resample_distance: 30,
+    height_precision: 1,
+  });
+  await call(`${tag}-height-resample30-range`, valhalla.height, {
+    encoded_polyline: encoded,
+    resample_distance: 30,
+    range: true,
+  });
+  const trace = (shapeMatch: string) => ({
+    encoded_polyline: encoded,
+    ...COSTING,
+    shape_match: shapeMatch,
+    filters: FILTERS,
+  });
+  await call(
+    `${tag}-trace-walk_or_snap`,
+    valhalla.traceAttributes,
+    trace('walk_or_snap'),
+  );
+  await call(
+    `${tag}-trace-edge_walk`,
+    valhalla.traceAttributes,
+    trace('edge_walk'),
+  );
+  return { shape, encoded };
+}
+
+export async function runA() {
+  rows.length = 0;
+  // Wait for the engine (opened at start-up by RoutingEngineStarter).
+  const warm = await computeRoute([A, B]);
+  writeJson('a-warm.json', { keys: Object.keys(warm) });
+
+  const ab = await scenario('AB', [A, B]);
+  if (ab) {
+    const { shape, encoded } = ab;
+    // Same shape as an array of points (instead of encoded_polyline).
+    await call('AB-height-shape-array', valhalla.height, {
+      shape: shape.slice(0, 40),
+      resample_distance: 30,
+    });
+    // No resampling: one height per vertex.
+    await call('AB-height-noresample', valhalla.height, {
+      encoded_polyline: encoded,
+    });
+    // trace_attributes: map_snap, and the same without filters.
+    await call('AB-trace-map_snap', valhalla.traceAttributes, {
+      encoded_polyline: encoded,
+      ...COSTING,
+      shape_match: 'map_snap',
+      filters: FILTERS,
+    });
+    await call('AB-trace-nofilters', valhalla.traceAttributes, {
+      encoded_polyline: encoded,
+      ...COSTING,
+      shape_match: 'walk_or_snap',
+    });
+  }
+
+  // A straight line drawn by hand, about 400 m, near B.
+  const hand = [B, { lat: 48.7385, lon: 5.977 }];
+  await call('hand-height-resample30-range', valhalla.height, {
+    shape: hand,
+    resample_distance: 30,
+    range: true,
+  });
+  await call('hand-height-resample30', valhalla.height, {
+    shape: hand,
+    resample_distance: 30,
+  });
+  await call('hand-trace-walk_or_snap', valhalla.traceAttributes, {
+    shape: hand,
+    ...COSTING,
+    shape_match: 'walk_or_snap',
+    filters: FILTERS,
+  });
+
+  // Errors and missing data.
+  await call('err-height-empty-shape', valhalla.height, { shape: [] });
+  await call('err-height-no-shape', valhalla.height, {});
+  await call('err-height-not-json', valhalla.height as Fn, '{oops' as any);
+  await call('err-height-one-point', valhalla.height, { shape: [B] });
+  await call('err-height-out-of-hgt', valhalla.height, {
+    shape: [
+      { lat: 47.5, lon: 6.0 },
+      { lat: 47.51, lon: 6.0 },
+    ],
+    resample_distance: 30,
+  });
+  await call('err-height-in-hgt-out-of-zone', valhalla.height, {
+    shape: [
+      { lat: 48.95, lon: 6.0 },
+      { lat: 48.951, lon: 6.0 },
+    ],
+    resample_distance: 30,
+  });
+  await call('err-height-mixed', valhalla.height, {
+    shape: [B, { lat: 48.9, lon: 6.0 }, { lat: 47.5, lon: 6.0 }],
+  });
+  await call('err-height-far-away', valhalla.height, {
+    shape: [{ lat: 10, lon: 10 }],
+  });
+  await call('err-trace-empty-shape', valhalla.traceAttributes, {
+    shape: [],
+    ...COSTING,
+    shape_match: 'walk_or_snap',
+  });
+  await call('err-trace-out-of-zone', valhalla.traceAttributes, {
+    shape: [
+      { lat: 47.5, lon: 6.0 },
+      { lat: 47.505, lon: 6.0 },
+    ],
+    ...COSTING,
+    shape_match: 'walk_or_snap',
+    filters: FILTERS,
+  });
+  await call('err-trace-one-point', valhalla.traceAttributes, {
+    shape: [B],
+    ...COSTING,
+    shape_match: 'walk_or_snap',
+  });
+
+  await scenario('P3', [P3A, P3B]);
+
+  // Long routes: R1 to R5 of essay 1 (12 to 24 points, 20 to 44 km), the exact app requests.
+  const refs: [string, any][] = [
+    ['R4', r4],
+    ['R1', r1],
+    ['R2', r2],
+    ['R3', r3],
+    ['R5', r5],
+  ];
+  for (const [name, req] of refs) {
+    const pts: Pt[] = req.locations.map((l: any) => ({
+      lat: l.lat,
+      lon: l.lon,
+    }));
+    await scenario(name, pts);
+  }
+  writeJson('a-resume.json', rows);
+  writeJson('a-fini.json', { done: true, steps: rows.length });
+}

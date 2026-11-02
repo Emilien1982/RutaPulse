@@ -11,7 +11,7 @@ import iosSuccess from '@/core/routing/fixtures/ios-success.json';
 import { createRoutingEngine } from '@/core/routing/routingEngine';
 import type { ReadyMarker } from '@/core/zones/zoneLayout';
 
-import { DraftScreen } from './DraftScreen';
+import { DraftInSession } from './testing/DraftInSession';
 
 let mockMapProps: Record<string, unknown> = {};
 const mockAnnotations: Record<string, any> = {};
@@ -93,7 +93,7 @@ const FAR_EAST: [number, number] = [7.5, 48.6];
 async function renderDraft() {
   await render(
     <QueryClientProvider client={new QueryClient()}>
-      <DraftScreen />
+      <DraftInSession />
     </QueryClientProvider>,
   );
   await act(async () => {});

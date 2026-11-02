@@ -1,0 +1,10 @@
+{
+  "plateforme": "ios",
+  "build": "release",
+  "horodatage": "2026-11-02T17:12:41.792Z",
+  "points": 11,
+  "duree_ms": 3003.1,
+  "ticks": 180,
+  "arret_max_fil_js_ms": 17.3,
+  "appels_moteur_pendant": 0
+}

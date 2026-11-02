@@ -1,13 +1,13 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import type { ReactNode } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { Alert, Dimensions, StyleSheet } from 'react-native';
 
 import { t } from '@/core/i18n/t';
 import type { RouteResult } from '@/core/routing/routeResponse';
 import type { ReadyMarker } from '@/core/zones/zoneLayout';
 
-import { DraftScreen } from './DraftScreen';
+import { DraftInSession } from './testing/DraftInSession';
 
 // MapLibre, the router, the disk and the engine are replaced.
 let mockMapProps: Record<string, unknown> = {};
@@ -125,7 +125,7 @@ function success(distanceKm = 2, durationS = 600): RouteResult {
 async function renderScreen() {
   await render(
     <QueryClientProvider client={new QueryClient()}>
-      <DraftScreen />
+      <DraftInSession />
     </QueryClientProvider>,
   );
   await act(async () => {});
@@ -170,7 +170,15 @@ const event = (at: [number, number]) => ({
   nativeEvent: { lngLat: at, point: { x: 0, y: 0 } },
 });
 
+// The summary is compact under 390 dp (p05-t8, decision 2); these suites
+// check the normal summary, on a usual phone (411 dp, text scale 1).
+let windowSpy: jest.SpyInstance;
+afterEach(() => windowSpy.mockRestore());
+
 beforeEach(() => {
+  windowSpy = jest
+    .spyOn(Dimensions, 'get')
+    .mockReturnValue({ width: 411, height: 900, scale: 1, fontScale: 1 });
   jest.clearAllMocks();
   mockInstalled = [nancy];
   mockParams = {};
@@ -278,6 +286,8 @@ describe('A4: the dash', () => {
     await act(async () => {
       answer(success(2, 600));
     });
+    await flush();
+    // The altitudes answer one turn after the route (ADR 0017, section 6).
     await flush();
     expect(screen.getByTestId('route-distance')).toHaveTextContent('2,0 km');
     expect(screen.getByTestId('route-duration')).toHaveTextContent('10 min');

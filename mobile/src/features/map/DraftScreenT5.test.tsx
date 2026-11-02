@@ -10,7 +10,7 @@ import { handLeg } from '@/core/draft/legs';
 import { formatDistance, formatDuration } from '@/core/routing/formatRoute';
 import { MAX_SNAP_METERS } from '@/core/routing/routeRequest';
 
-import { DraftScreen } from './DraftScreen';
+import { DraftInSession } from './testing/DraftInSession';
 
 // MapLibre, the router, the disk and the engine are replaced.
 let mockMapProps: Record<string, unknown> = {};
@@ -123,7 +123,7 @@ async function renderScreen() {
   client = new QueryClient();
   await render(
     <QueryClientProvider client={client}>
-      <DraftScreen />
+      <DraftInSession />
     </QueryClientProvider>,
   );
   await act(async () => {});
@@ -213,6 +213,8 @@ describe('relink by hand (T5)', () => {
     const calls = mockComputeRoute.mock.calls.length;
 
     await fireEvent.press(screen.getByTestId('route-error-relink'));
+    // The altitudes of the hand legs come asynchronously (ADR 0017, 6).
+    await flush();
     expect(screen.queryByTestId('route-error')).toBeNull();
     // The engine is not called for the hand legs.
     expect(mockComputeRoute.mock.calls).toHaveLength(calls);

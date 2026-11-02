@@ -1,0 +1,4595 @@
+{
+  "reference": "R1",
+  "plateforme": "ios",
+  "build": "release",
+  "horodatage": "2026-11-02T17:04:51.700Z",
+  "points": [
+    {
+      "lon": 5.978104,
+      "lat": 48.727358
+    },
+    {
+      "lon": 5.960582,
+      "lat": 48.727067
+    },
+    {
+      "lon": 5.973731,
+      "lat": 48.736598
+    },
+    {
+      "lon": 5.971272,
+      "lat": 48.745898
+    },
+    {
+      "lon": 5.964021,
+      "lat": 48.753767
+    },
+    {
+      "lon": 5.98185,
+      "lat": 48.754348
+    },
+    {
+      "lon": 5.986851,
+      "lat": 48.752436
+    },
+    {
+      "lon": 6.001441,
+      "lat": 48.747161
+    },
+    {
+      "lon": 6.007899,
+      "lat": 48.755438
+    },
+    {
+      "lon": 5.99745,
+      "lat": 48.741665
+    },
+    {
+      "lon": 5.980882,
+      "lat": 48.72857
+    },
+    {
+      "lon": 5.977282,
+      "lat": 48.727511
+    }
+  ],
+  "troncons": [
+    {
+      "index": 0,
+      "de": {
+        "lon": 5.978104,
+        "lat": 48.727358
+      },
+      "vers": {
+        "lon": 5.960582,
+        "lat": 48.727067
+      },
+      "route": {
+        "ok": true,
+        "distance_km": 1.657,
+        "duree_s": 362.768,
+        "points_forme": 67,
+        "requete": {
+          "locations": [
+            {
+              "lat": 48.727358,
+              "lon": 5.978104,
+              "type": "break",
+              "search_cutoff": 200
+            },
+            {
+              "lat": 48.727067,
+              "lon": 5.960582,
+              "type": "break",
+              "search_cutoff": 200
+            }
+          ],
+          "costing": "bicycle",
+          "costing_options": {
+            "bicycle": {
+              "bicycle_type": "mountain",
+              "use_roads": 0
+            }
+          },
+          "directions_options": {
+            "language": "fr-FR",
+            "units": "kilometers"
+          }
+        }
+      },
+      "altitudes": {
+        "ok": true,
+        "points": 57,
+        "points_null": 0,
+        "brut": {
+          "request": {
+            "encoded_polyline": "{ra}{Ao~zkJeBtPw@rGsC`Xy@tH]|C}E|b@y@rFoC|QeBfIa@tB}CfK}HzQqAvE]jAoGyD{m@k`@[lAc@~AyKfd@gHjViMr^oAbDWdBKnACdB?lCRrDzB`TjCvWlEnd@lD|ZhBjSv@bJpE`i@bFpj@xDtb@fDjYvF|a@jB~MhAzDtAtDxDxGdGtHhS|`@|d@f}@j_@rt@pHxOrBjFfPjd@t^beAp@xCVpC@pBSdCy@jD}BpJ{AhGmArF_ClIaC~Fwo@~kAaCvFs@pEKjCNjEbAlF",
+            "resample_distance": 30,
+            "range": true
+          },
+          "ms": 0.7306251525878906,
+          "response": {
+            "encoded_polyline": "{ra}{Ao~zkJqCpWqCpWuCpWuCnWqDbW_FdVwHvSwIbMgNwIgNyIgN{I}IzGyFrUkGbUgHjTqH|Sg@nWnCrWhCtWfCtWrCpWhCtW|BxWzBzW~BvW`CxW~BxWlCrW`DhWjDfWlElVxJ~P|JzPjJzQjJxQlJvQlJvQjJxQjJxQjJxQbJdR`InSrH|SpH~SnH`TpH`TfG~TkDpVyFrUgIbSuJjQsJlQuJlQoJtQkBpVr@vD",
+            "range_height": [
+              [
+                0,
+                232
+              ],
+              [
+                30,
+                232
+              ],
+              [
+                60,
+                231
+              ],
+              [
+                90,
+                231
+              ],
+              [
+                120,
+                231
+              ],
+              [
+                150,
+                232
+              ],
+              [
+                180,
+                231
+              ],
+              [
+                210,
+                231
+              ],
+              [
+                235,
+                231
+              ],
+              [
+                265,
+                231
+              ],
+              [
+                295,
+                230
+              ],
+              [
+                325,
+                230
+              ],
+              [
+                347,
+                233
+              ],
+              [
+                377,
+                235
+              ],
+              [
+                407,
+                234
+              ],
+              [
+                437,
+                234
+              ],
+              [
+                467,
+                233
+              ],
+              [
+                496,
+                233
+              ],
+              [
+                526,
+                231
+              ],
+              [
+                556,
+                229
+              ],
+              [
+                586,
+                228
+              ],
+              [
+                616,
+                228
+              ],
+              [
+                646,
+                228
+              ],
+              [
+                676,
+                228
+              ],
+              [
+                706,
+                228
+              ],
+              [
+                736,
+                228
+              ],
+              [
+                766,
+                228
+              ],
+              [
+                796,
+                229
+              ],
+              [
+                826,
+                229
+              ],
+              [
+                856,
+                230
+              ],
+              [
+                886,
+                230
+              ],
+              [
+                916,
+                231
+              ],
+              [
+                946,
+                231
+              ],
+              [
+                976,
+                230
+              ],
+              [
+                1006,
+                229
+              ],
+              [
+                1036,
+                228
+              ],
+              [
+                1066,
+                228
+              ],
+              [
+                1096,
+                228
+              ],
+              [
+                1126,
+                228
+              ],
+              [
+                1156,
+                227
+              ],
+              [
+                1186,
+                226
+              ],
+              [
+                1216,
+                225
+              ],
+              [
+                1246,
+                224
+              ],
+              [
+                1276,
+                223
+              ],
+              [
+                1306,
+                223
+              ],
+              [
+                1336,
+                222
+              ],
+              [
+                1366,
+                220
+              ],
+              [
+                1395,
+                219
+              ],
+              [
+                1425,
+                220
+              ],
+              [
+                1455,
+                220
+              ],
+              [
+                1485,
+                219
+              ],
+              [
+                1515,
+                220
+              ],
+              [
+                1545,
+                221
+              ],
+              [
+                1575,
+                221
+              ],
+              [
+                1605,
+                221
+              ],
+              [
+                1633,
+                221
+              ],
+              [
+                1640,
+                221
+              ]
+            ]
+          }
+        }
+      },
+      "terrain": {
+        "ok": true,
+        "aretes": 24,
+        "longueur_aretes_km": 1.6560000000000001,
+        "brut": {
+          "request": {
+            "encoded_polyline": "{ra}{Ao~zkJeBtPw@rGsC`Xy@tH]|C}E|b@y@rFoC|QeBfIa@tB}CfK}HzQqAvE]jAoGyD{m@k`@[lAc@~AyKfd@gHjViMr^oAbDWdBKnACdB?lCRrDzB`TjCvWlEnd@lD|ZhBjSv@bJpE`i@bFpj@xDtb@fDjYvF|a@jB~MhAzDtAtDxDxGdGtHhS|`@|d@f}@j_@rt@pHxOrBjFfPjd@t^beAp@xCVpC@pBSdCy@jD}BpJ{AhGmArF_ClIaC~Fwo@~kAaCvFs@pEKjCNjEbAlF",
+            "costing": "bicycle",
+            "costing_options": {
+              "bicycle": {
+                "bicycle_type": "mountain",
+                "use_roads": 0
+              }
+            },
+            "shape_match": "walk_or_snap",
+            "filters": {
+              "attributes": [
+                "edge.use",
+                "edge.density",
+                "edge.length"
+              ],
+              "action": "include"
+            }
+          },
+          "ms": 0.4938335418701172,
+          "response": {
+            "units": "kilometers",
+            "edges": [
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.022
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.041
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.012
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.05
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.01
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.042
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.045
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.012
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.017
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.092
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.007
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.049
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.077
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.011
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.003
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.004
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.113
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.034
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.025
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.013
+              },
+              {
+                "density": 1,
+                "use": "road",
+                "length": 0.146
+              },
+              {
+                "density": 1,
+                "use": "road",
+                "length": 0.144
+              },
+              {
+                "density": 1,
+                "use": "road",
+                "length": 0.494
+              },
+              {
+                "density": 1,
+                "use": "road",
+                "length": 0.193,
+                "target_percent_along": 0.659
+              }
+            ],
+            "alternate_paths": []
+          }
+        }
+      }
+    },
+    {
+      "index": 1,
+      "de": {
+        "lon": 5.960582,
+        "lat": 48.727067
+      },
+      "vers": {
+        "lon": 5.973731,
+        "lat": 48.736598
+      },
+      "route": {
+        "ok": true,
+        "distance_km": 2.003,
+        "duree_s": 511.026,
+        "points_forme": 67,
+        "requete": {
+          "locations": [
+            {
+              "lat": 48.727067,
+              "lon": 5.960582,
+              "type": "break",
+              "search_cutoff": 200
+            },
+            {
+              "lat": 48.736598,
+              "lon": 5.973731,
+              "type": "break",
+              "search_cutoff": 200
+            }
+          ],
+          "costing": "bicycle",
+          "costing_options": {
+            "bicycle": {
+              "bicycle_type": "mountain",
+              "use_roads": 0
+            }
+          },
+          "directions_options": {
+            "language": "fr-FR",
+            "units": "kilometers"
+          }
+        }
+      },
+      "altitudes": {
+        "ok": true,
+        "points": 68,
+        "points_null": 0,
+        "brut": {
+          "request": {
+            "encoded_polyline": "u`a}{AkwxjJDRxBxJnNdj@tArIjA~HmHvDoQfLwItFuLvKkK~JwKpKaGvHyUr]wYna@{HlL}EvIoF~K}B~EqAwFw@gGGmDL}CHyCCsBQeC_AqEiMsb@_Mgd@cQqn@kHgVqKc[mKeZmGuPwGuQ{HgSst@_lBwI{TwKwYkEyMsCyJmIwY{Ue{@mBkGY}@oOcg@cLo]{Ks\\uJaZmAoFm@wEYoGSaL]cGMiAYwB}AaHuCiJkYgz@_KiYsSil@nFkJmWij@}KiVeDwGam@qfAkFqJ",
+            "resample_distance": 30,
+            "range": true
+          },
+          "ms": 0.3277912139892578,
+          "response": {
+            "encoded_polyline": "u`a}{AkwxjJtFtU`GlU|EdVqGlMgNzIcNfJiMlLcMxLwLvMuKvOsK|OyKpO{KnOmKdPmJvQ{G{@YcXyFoUwGyTkGeUkGeUkGaUoGaU{GwTmHcTqHaTuHySyHwS}HsSaIoSaIoSaImSaIoScImSaIoS_IqSyHuS_HsTqG}ToGaUkGcUmGcU{GwT{GuTaHoTgHkTgHiTgHkTaGgUeAgXoD}VeHkTmHcTmHeToHaTqH_TsH_TwAcSwB}Q_JmR{ImR}ImRuJmQwJgQwJgQyJiQuGsL",
+            "range_height": [
+              [
+                0,
+                221
+              ],
+              [
+                30,
+                222
+              ],
+              [
+                60,
+                222
+              ],
+              [
+                90,
+                222
+              ],
+              [
+                113,
+                222
+              ],
+              [
+                143,
+                222
+              ],
+              [
+                173,
+                223
+              ],
+              [
+                203,
+                222
+              ],
+              [
+                233,
+                220
+              ],
+              [
+                263,
+                220
+              ],
+              [
+                293,
+                220
+              ],
+              [
+                323,
+                220
+              ],
+              [
+                353,
+                221
+              ],
+              [
+                383,
+                221
+              ],
+              [
+                413,
+                220
+              ],
+              [
+                443,
+                218
+              ],
+              [
+                459,
+                218
+              ],
+              [
+                488,
+                220
+              ],
+              [
+                518,
+                220
+              ],
+              [
+                548,
+                220
+              ],
+              [
+                578,
+                220
+              ],
+              [
+                608,
+                221
+              ],
+              [
+                638,
+                222
+              ],
+              [
+                668,
+                223
+              ],
+              [
+                698,
+                223
+              ],
+              [
+                728,
+                224
+              ],
+              [
+                758,
+                224
+              ],
+              [
+                788,
+                224
+              ],
+              [
+                818,
+                224
+              ],
+              [
+                848,
+                225
+              ],
+              [
+                878,
+                226
+              ],
+              [
+                908,
+                227
+              ],
+              [
+                938,
+                227
+              ],
+              [
+                968,
+                226
+              ],
+              [
+                998,
+                228
+              ],
+              [
+                1028,
+                229
+              ],
+              [
+                1058,
+                230
+              ],
+              [
+                1088,
+                232
+              ],
+              [
+                1118,
+                232
+              ],
+              [
+                1148,
+                232
+              ],
+              [
+                1178,
+                232
+              ],
+              [
+                1208,
+                233
+              ],
+              [
+                1238,
+                233
+              ],
+              [
+                1268,
+                234
+              ],
+              [
+                1298,
+                234
+              ],
+              [
+                1328,
+                235
+              ],
+              [
+                1358,
+                236
+              ],
+              [
+                1388,
+                236
+              ],
+              [
+                1418,
+                236
+              ],
+              [
+                1448,
+                237
+              ],
+              [
+                1478,
+                237
+              ],
+              [
+                1508,
+                239
+              ],
+              [
+                1538,
+                239
+              ],
+              [
+                1568,
+                239
+              ],
+              [
+                1598,
+                239
+              ],
+              [
+                1628,
+                238
+              ],
+              [
+                1658,
+                239
+              ],
+              [
+                1688,
+                241
+              ],
+              [
+                1712,
+                243
+              ],
+              [
+                1735,
+                242
+              ],
+              [
+                1765,
+                242
+              ],
+              [
+                1795,
+                242
+              ],
+              [
+                1825,
+                243
+              ],
+              [
+                1855,
+                243
+              ],
+              [
+                1885,
+                243
+              ],
+              [
+                1915,
+                243
+              ],
+              [
+                1945,
+                243
+              ],
+              [
+                1967,
+                244
+              ]
+            ]
+          }
+        }
+      },
+      "terrain": {
+        "ok": true,
+        "aretes": 16,
+        "longueur_aretes_km": 2.002,
+        "brut": {
+          "request": {
+            "encoded_polyline": "u`a}{AkwxjJDRxBxJnNdj@tArIjA~HmHvDoQfLwItFuLvKkK~JwKpKaGvHyUr]wYna@{HlL}EvIoF~K}B~EqAwFw@gGGmDL}CHyCCsBQeC_AqEiMsb@_Mgd@cQqn@kHgVqKc[mKeZmGuPwGuQ{HgSst@_lBwI{TwKwYkEyMsCyJmIwY{Ue{@mBkGY}@oOcg@cLo]{Ks\\uJaZmAoFm@wEYoGSaL]cGMiAYwB}AaHuCiJkYgz@_KiYsSil@nFkJmWij@}KiVeDwGam@qfAkFqJ",
+            "costing": "bicycle",
+            "costing_options": {
+              "bicycle": {
+                "bicycle_type": "mountain",
+                "use_roads": 0
+              }
+            },
+            "shape_match": "walk_or_snap",
+            "filters": {
+              "attributes": [
+                "edge.use",
+                "edge.density",
+                "edge.length"
+              ],
+              "action": "include"
+            }
+          },
+          "ms": 0.14908313751220703,
+          "response": {
+            "units": "kilometers",
+            "edges": [
+              {
+                "density": 1,
+                "use": "road",
+                "length": 0.099,
+                "source_percent_along": 0.659
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.018
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.336
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.011
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.01
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.403
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.16
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.237
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.003
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.234
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.116
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.038
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.065
+              },
+              {
+                "density": 1,
+                "use": "road",
+                "length": 0.019
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.103
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.15,
+                "target_percent_along": 0.414
+              }
+            ],
+            "alternate_paths": []
+          }
+        }
+      }
+    },
+    {
+      "index": 2,
+      "de": {
+        "lon": 5.973731,
+        "lat": 48.736598
+      },
+      "vers": {
+        "lon": 5.971272,
+        "lat": 48.745898
+      },
+      "route": {
+        "ok": true,
+        "distance_km": 1.435,
+        "duree_s": 335.275,
+        "points_forme": 73,
+        "requete": {
+          "locations": [
+            {
+              "lat": 48.736598,
+              "lon": 5.973731,
+              "type": "break",
+              "search_cutoff": 200
+            },
+            {
+              "lat": 48.745898,
+              "lon": 5.971272,
+              "type": "break",
+              "search_cutoff": 200
+            }
+          ],
+          "costing": "bicycle",
+          "costing_options": {
+            "bicycle": {
+              "bicycle_type": "mountain",
+              "use_roads": 0
+            }
+          },
+          "directions_options": {
+            "language": "fr-FR",
+            "units": "kilometers"
+          }
+        }
+      },
+      "altitudes": {
+        "ok": true,
+        "points": 49,
+        "points_null": 0,
+        "brut": {
+          "request": {
+            "encoded_polyline": "kts}{AemrkJmp@}lAmXof@eBqEgByFkIzEmXlOuElBkHxB}\\~GgTdEeLhC_LfDaKrDoItEmLlIi]fWuLhJuA~AqCbDaOtQ}^jf@qObTaTb]eJbPkAfDWzB@pB`@xB`ArCjCvGzBjImCvAgC~AwCnBcBbCsC|D}BjEmPxZ{Ytg@yK|RkChDoBv@}@@wDdBqACkBEkBYsA_A_BsE{A}CgCcC}FkImByBs@Kc@@eKhIsBxFaOyJtAqIdA_GZ{CPwDd@cFAsBg@uCiAaEwA_DmGeGgIcM_A{EkEeDcBiI",
+            "resample_distance": 30,
+            "range": true
+          },
+          "ms": 0.7407922744750977,
+          "response": {
+            "encoded_polyline": "kts}{AemrkJuJmQuJkQsJmQuJkQwJiQwJgQmI_S}MvFoN~H{NrGkOrDqO|CoOzCoObDkOdE_OzFgNvI}MxJ{MzJ{MbK}LbMkLpNcL`OaL`O_LhOwKrOgKnPaKxP}GrSvGnT{FbM_L~NqJnQwJjQ}J`Q{J`QwJfQcN|HsMgGqKuOiM}B{KjKoLeKnD_W{@cW}K}NwI}QoHoN",
+            "range_height": [
+              [
+                0,
+                244
+              ],
+              [
+                30,
+                244
+              ],
+              [
+                60,
+                244
+              ],
+              [
+                90,
+                244
+              ],
+              [
+                120,
+                245
+              ],
+              [
+                150,
+                245
+              ],
+              [
+                180,
+                244
+              ],
+              [
+                210,
+                244
+              ],
+              [
+                238,
+                243
+              ],
+              [
+                268,
+                243
+              ],
+              [
+                298,
+                244
+              ],
+              [
+                328,
+                245
+              ],
+              [
+                358,
+                244
+              ],
+              [
+                388,
+                242
+              ],
+              [
+                418,
+                241
+              ],
+              [
+                448,
+                241
+              ],
+              [
+                478,
+                242
+              ],
+              [
+                508,
+                241
+              ],
+              [
+                538,
+                241
+              ],
+              [
+                568,
+                240
+              ],
+              [
+                598,
+                239
+              ],
+              [
+                628,
+                238
+              ],
+              [
+                658,
+                239
+              ],
+              [
+                688,
+                239
+              ],
+              [
+                718,
+                238
+              ],
+              [
+                748,
+                238
+              ],
+              [
+                778,
+                238
+              ],
+              [
+                808,
+                238
+              ],
+              [
+                838,
+                237
+              ],
+              [
+                867,
+                236
+              ],
+              [
+                897,
+                236
+              ],
+              [
+                918,
+                236
+              ],
+              [
+                948,
+                236
+              ],
+              [
+                978,
+                235
+              ],
+              [
+                1008,
+                235
+              ],
+              [
+                1038,
+                234
+              ],
+              [
+                1068,
+                235
+              ],
+              [
+                1098,
+                235
+              ],
+              [
+                1127,
+                235
+              ],
+              [
+                1155,
+                236
+              ],
+              [
+                1185,
+                237
+              ],
+              [
+                1211,
+                238
+              ],
+              [
+                1238,
+                237
+              ],
+              [
+                1266,
+                237
+              ],
+              [
+                1296,
+                239
+              ],
+              [
+                1324,
+                241
+              ],
+              [
+                1354,
+                241
+              ],
+              [
+                1383,
+                241
+              ],
+              [
+                1408,
+                241
+              ]
+            ]
+          }
+        }
+      },
+      "terrain": {
+        "ok": true,
+        "aretes": 10,
+        "longueur_aretes_km": 1.434,
+        "brut": {
+          "request": {
+            "encoded_polyline": "kts}{AemrkJmp@}lAmXof@eBqEgByFkIzEmXlOuElBkHxB}\\~GgTdEeLhC_LfDaKrDoItEmLlIi]fWuLhJuA~AqCbDaOtQ}^jf@qObTaTb]eJbPkAfDWzB@pB`@xB`ArCjCvGzBjImCvAgC~AwCnBcBbCsC|D}BjEmPxZ{Ytg@yK|RkChDoBv@}@@wDdBqACkBEkBYsA_A_BsE{A}CgCcC}FkImByBs@Kc@@eKhIsBxFaOyJtAqIdA_GZ{CPwDd@cFAsBg@uCiAaEwA_DmGeGgIcM_A{EkEeDcBiI",
+            "costing": "bicycle",
+            "costing_options": {
+              "bicycle": {
+                "bicycle_type": "mountain",
+                "use_roads": 0
+              }
+            },
+            "shape_match": "walk_or_snap",
+            "filters": {
+              "attributes": [
+                "edge.use",
+                "edge.density",
+                "edge.length"
+              ],
+              "action": "include"
+            }
+          },
+          "ms": 0.15983295440673828,
+          "response": {
+            "units": "kilometers",
+            "edges": [
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.211,
+                "source_percent_along": 0.414
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.399
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.006
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.293
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.22
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.011
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.115
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.032
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.036
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.111,
+                "target_percent_along": 0.502
+              }
+            ],
+            "alternate_paths": []
+          }
+        }
+      }
+    },
+    {
+      "index": 3,
+      "de": {
+        "lon": 5.971272,
+        "lat": 48.745898
+      },
+      "vers": {
+        "lon": 5.964021,
+        "lat": 48.753767
+      },
+      "route": {
+        "ok": true,
+        "distance_km": 1.33,
+        "duree_s": 281.601,
+        "points_forme": 91,
+        "requete": {
+          "locations": [
+            {
+              "lat": 48.745898,
+              "lon": 5.971272,
+              "type": "break",
+              "search_cutoff": 200
+            },
+            {
+              "lat": 48.753767,
+              "lon": 5.964021,
+              "type": "break",
+              "search_cutoff": 200
+            }
+          ],
+          "costing": "bicycle",
+          "costing_options": {
+            "bicycle": {
+              "bicycle_type": "mountain",
+              "use_roads": 0
+            }
+          },
+          "directions_options": {
+            "language": "fr-FR",
+            "units": "kilometers"
+          }
+        }
+      },
+      "altitudes": {
+        "ok": true,
+        "points": 46,
+        "points_null": 0,
+        "brut": {
+          "request": {
+            "encoded_polyline": "sye~{AosmkJu@mDiC{JqHcMaQ}VoCyEiBcFy@p@y@FyOr@m@D{@F_Cj@wBt@iCfDmB~Cw@lCmAbLcAnHuBhO_@nBuChDuGzHwEvDsFdCsNpFiRhHiSzF{]jG{Gt@yXpC_TdDql@fJuVbHOHOF[ZYt@O`@i@hCmJn|@cF|]cDbSaDlRcCrJqCpGzDfEnChEjDhIvDdMf@rG?fI_@hH}AzIsBrLoC`PkBzH}BpFiEtGoDtEeB`BiDhCiDdBsAp@qBz@oE`AkF`@gHb@gFPmD?cDYmBa@kBi@mCWoCGeBTaB^gA^{@`@s@l@qAvB_BvAgBt@aDjBcC`CqApB{@|Bi@hC@~CNlE\\jH",
+            "resample_distance": 30,
+            "range": true
+          },
+          "ms": 0.3384580612182617,
+          "response": {
+            "encoded_polyline": "sye~{AosmkJyGoTkKkPsKyOkKuJyOr@aNvHaFpUmDdWiKtO}MnJ_OzFaOvFgOvEmOlDqOnCuOtBuO|AuOpBsObCsObCsO`CmOhDgOpEeEjVqCrWuCnWqDbW_EzVqEnVwBlRvJbQlFpU}@`XiEtV{EfVuJfQgMlL_OrFwOfAyO?sOqBgNdH_NlJmDfU^pI",
+            "range_height": [
+              [
+                0,
+                241
+              ],
+              [
+                30,
+                238
+              ],
+              [
+                60,
+                236
+              ],
+              [
+                90,
+                234
+              ],
+              [
+                116,
+                234
+              ],
+              [
+                146,
+                233
+              ],
+              [
+                175,
+                236
+              ],
+              [
+                204,
+                237
+              ],
+              [
+                234,
+                237
+              ],
+              [
+                264,
+                238
+              ],
+              [
+                293,
+                237
+              ],
+              [
+                323,
+                234
+              ],
+              [
+                353,
+                232
+              ],
+              [
+                383,
+                232
+              ],
+              [
+                413,
+                232
+              ],
+              [
+                443,
+                229
+              ],
+              [
+                473,
+                225
+              ],
+              [
+                503,
+                220
+              ],
+              [
+                533,
+                216
+              ],
+              [
+                563,
+                211
+              ],
+              [
+                593,
+                206
+              ],
+              [
+                623,
+                203
+              ],
+              [
+                653,
+                204
+              ],
+              [
+                683,
+                208
+              ],
+              [
+                713,
+                210
+              ],
+              [
+                743,
+                212
+              ],
+              [
+                773,
+                213
+              ],
+              [
+                803,
+                215
+              ],
+              [
+                833,
+                215
+              ],
+              [
+                863,
+                217
+              ],
+              [
+                887,
+                218
+              ],
+              [
+                916,
+                215
+              ],
+              [
+                946,
+                212
+              ],
+              [
+                976,
+                209
+              ],
+              [
+                1006,
+                207
+              ],
+              [
+                1036,
+                207
+              ],
+              [
+                1065,
+                205
+              ],
+              [
+                1095,
+                204
+              ],
+              [
+                1125,
+                205
+              ],
+              [
+                1155,
+                206
+              ],
+              [
+                1185,
+                203
+              ],
+              [
+                1215,
+                202
+              ],
+              [
+                1244,
+                202
+              ],
+              [
+                1274,
+                203
+              ],
+              [
+                1302,
+                204
+              ],
+              [
+                1315,
+                205
+              ]
+            ]
+          }
+        }
+      },
+      "terrain": {
+        "ok": true,
+        "aretes": 19,
+        "longueur_aretes_km": 1.3300000000000003,
+        "brut": {
+          "request": {
+            "encoded_polyline": "sye~{AosmkJu@mDiC{JqHcMaQ}VoCyEiBcFy@p@y@FyOr@m@D{@F_Cj@wBt@iCfDmB~Cw@lCmAbLcAnHuBhO_@nBuChDuGzHwEvDsFdCsNpFiRhHiSzF{]jG{Gt@yXpC_TdDql@fJuVbHOHOF[ZYt@O`@i@hCmJn|@cF|]cDbSaDlRcCrJqCpGzDfEnChEjDhIvDdMf@rG?fI_@hH}AzIsBrLoC`PkBzH}BpFiEtGoDtEeB`BiDhCiDdBsAp@qBz@oE`AkF`@gHb@gFPmD?cDYmBa@kBi@mCWoCGeBTaB^gA^{@`@s@l@qAvB_BvAgBt@aDjBcC`CqApB{@|Bi@hC@~CNlE\\jH",
+            "costing": "bicycle",
+            "costing_options": {
+              "bicycle": {
+                "bicycle_type": "mountain",
+                "use_roads": 0
+              }
+            },
+            "shape_match": "walk_or_snap",
+            "filters": {
+              "attributes": [
+                "edge.use",
+                "edge.density",
+                "edge.length"
+              ],
+              "action": "include"
+            }
+          },
+          "ms": 0.20308303833007812,
+          "response": {
+            "units": "kilometers",
+            "edges": [
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.111,
+                "source_percent_along": 0.502
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.007
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.03
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.003
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.07
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.02
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.004
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.216
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.182
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.044
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.002
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.004
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.199
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.123
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.199
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.016
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.022
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.006
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.072,
+                "target_percent_along": 0.597
+              }
+            ],
+            "alternate_paths": []
+          }
+        }
+      }
+    },
+    {
+      "index": 4,
+      "de": {
+        "lon": 5.964021,
+        "lat": 48.753767
+      },
+      "vers": {
+        "lon": 5.98185,
+        "lat": 48.754348
+      },
+      "route": {
+        "ok": true,
+        "distance_km": 2.28,
+        "duree_s": 573.233,
+        "points_forme": 139,
+        "requete": {
+          "locations": [
+            {
+              "lat": 48.753767,
+              "lon": 5.964021,
+              "type": "break",
+              "search_cutoff": 200
+            },
+            {
+              "lat": 48.754348,
+              "lon": 5.98185,
+              "type": "break",
+              "search_cutoff": 200
+            }
+          ],
+          "costing": "bicycle",
+          "costing_options": {
+            "bicycle": {
+              "bicycle_type": "mountain",
+              "use_roads": 0
+            }
+          },
+          "directions_options": {
+            "language": "fr-FR",
+            "units": "kilometers"
+          }
+        }
+      },
+      "altitudes": {
+        "ok": true,
+        "points": 78,
+        "points_null": 0,
+        "brut": {
+          "request": {
+            "encoded_polyline": "meu~{Ain_kJ]kHOmEA_Dh@iCz@}BpAqBbCaC`DkBfBu@~AwApAwBr@m@z@a@fA_@`B_@dBUnCFlCVjBh@lB`@bDXlD?fFQfHc@jFa@nEaApB{@rAq@hDeBhDiCdBaBnDuEhEuG|BqFjB{HnCaPrBsL|A{I^iH?gIg@sGwDeMkDiIoCiE{DgEoAjBgTbZqCvDoCrDyC~CkBxAyCxAsEx@mHVkG[oEw@uDcAeCwAeLqGiF{BmE{AwAg@m@_@{ByAq@l@kABcW_FiOaDga@eJuHyB_GoBaGcCmBaA{AqAw@fAy@aEmC{GeAgAqANuMjF{GrAcIdAq@H{D\\oAKaAc@aAwAkBkD_LiWyEwLeCwGpAsHh@}GDsARuL@qLRkLPyPA{L[oJw@}FuAaI{BcIkB}GqA{E{BcHq@qB_@aAsBrC{BwQyCcZuJgqAsCuXaA_JUsDI{B?oDLaD`@yFRmD`AuJdDuXbK}s@lGec@hLo`AhCsT|@cJrFgl@lE{c@zAeQT}DJ{EAgESyFQsCnkAe{@hgAaz@eBuD",
+            "resample_distance": 30,
+            "range": true
+          },
+          "ms": 0.2655000686645508,
+          "response": {
+            "encoded_polyline": "meu~{Ain_kJG_XhLyMtMyJrOItOrAxOw@lOyCfNyIzKkOrGuThEwVvCiWyBeWcIiScLwC{KnO}KjOgMdLsOhBuO}AwN}GwN}GwNoDoOqCqO}CoOgDmOkDkO{DcOiFuKiImLyFeOzEsOtBgMyHsIyRcIkSZgV`@mXXoXFqXaCqW_GmU}GuToFuKmCsWuB}WqB_XqB}W_CyWoCsWFiXbCwW~CkWpDcWnDcWrDaWhDgW|CmW|CmW|CmWhCuWbCwWfCwWhCuWfB_Xh@eV|MyJ|MwJ|MwJ|MwJ~MyJxMaKxMcKxMcKzMcKnIkLk@kA",
+            "range_height": [
+              [
+                0,
+                205
+              ],
+              [
+                29,
+                203
+              ],
+              [
+                59,
+                203
+              ],
+              [
+                88,
+                201
+              ],
+              [
+                118,
+                202
+              ],
+              [
+                148,
+                205
+              ],
+              [
+                178,
+                206
+              ],
+              [
+                208,
+                204
+              ],
+              [
+                238,
+                205
+              ],
+              [
+                268,
+                207
+              ],
+              [
+                297,
+                207
+              ],
+              [
+                327,
+                208
+              ],
+              [
+                357,
+                210
+              ],
+              [
+                386,
+                214
+              ],
+              [
+                416,
+                217
+              ],
+              [
+                440,
+                221
+              ],
+              [
+                470,
+                225
+              ],
+              [
+                500,
+                228
+              ],
+              [
+                530,
+                230
+              ],
+              [
+                560,
+                231
+              ],
+              [
+                590,
+                231
+              ],
+              [
+                620,
+                231
+              ],
+              [
+                650,
+                234
+              ],
+              [
+                678,
+                235
+              ],
+              [
+                708,
+                237
+              ],
+              [
+                738,
+                238
+              ],
+              [
+                768,
+                238
+              ],
+              [
+                798,
+                239
+              ],
+              [
+                828,
+                239
+              ],
+              [
+                858,
+                239
+              ],
+              [
+                884,
+                240
+              ],
+              [
+                910,
+                242
+              ],
+              [
+                940,
+                241
+              ],
+              [
+                970,
+                241
+              ],
+              [
+                997,
+                242
+              ],
+              [
+                1027,
+                244
+              ],
+              [
+                1057,
+                246
+              ],
+              [
+                1085,
+                246
+              ],
+              [
+                1115,
+                246
+              ],
+              [
+                1145,
+                244
+              ],
+              [
+                1175,
+                243
+              ],
+              [
+                1204,
+                243
+              ],
+              [
+                1234,
+                239
+              ],
+              [
+                1264,
+                236
+              ],
+              [
+                1284,
+                234
+              ],
+              [
+                1314,
+                231
+              ],
+              [
+                1344,
+                229
+              ],
+              [
+                1374,
+                227
+              ],
+              [
+                1404,
+                226
+              ],
+              [
+                1434,
+                224
+              ],
+              [
+                1464,
+                224
+              ],
+              [
+                1494,
+                224
+              ],
+              [
+                1524,
+                224
+              ],
+              [
+                1554,
+                225
+              ],
+              [
+                1584,
+                225
+              ],
+              [
+                1614,
+                225
+              ],
+              [
+                1644,
+                225
+              ],
+              [
+                1674,
+                224
+              ],
+              [
+                1704,
+                224
+              ],
+              [
+                1734,
+                224
+              ],
+              [
+                1764,
+                224
+              ],
+              [
+                1794,
+                224
+              ],
+              [
+                1824,
+                223
+              ],
+              [
+                1854,
+                222
+              ],
+              [
+                1884,
+                223
+              ],
+              [
+                1914,
+                224
+              ],
+              [
+                1941,
+                226
+              ],
+              [
+                1971,
+                226
+              ],
+              [
+                2001,
+                225
+              ],
+              [
+                2031,
+                225
+              ],
+              [
+                2061,
+                224
+              ],
+              [
+                2091,
+                224
+              ],
+              [
+                2121,
+                223
+              ],
+              [
+                2151,
+                223
+              ],
+              [
+                2181,
+                222
+              ],
+              [
+                2211,
+                222
+              ],
+              [
+                2236,
+                222
+              ],
+              [
+                2239,
+                222
+              ]
+            ]
+          }
+        }
+      },
+      "terrain": {
+        "ok": true,
+        "aretes": 32,
+        "longueur_aretes_km": 2.2779999999999996,
+        "brut": {
+          "request": {
+            "encoded_polyline": "meu~{Ain_kJ]kHOmEA_Dh@iCz@}BpAqBbCaC`DkBfBu@~AwApAwBr@m@z@a@fA_@`B_@dBUnCFlCVjBh@lB`@bDXlD?fFQfHc@jFa@nEaApB{@rAq@hDeBhDiCdBaBnDuEhEuG|BqFjB{HnCaPrBsL|A{I^iH?gIg@sGwDeMkDiIoCiE{DgEoAjBgTbZqCvDoCrDyC~CkBxAyCxAsEx@mHVkG[oEw@uDcAeCwAeLqGiF{BmE{AwAg@m@_@{ByAq@l@kABcW_FiOaDga@eJuHyB_GoBaGcCmBaA{AqAw@fAy@aEmC{GeAgAqANuMjF{GrAcIdAq@H{D\\oAKaAc@aAwAkBkD_LiWyEwLeCwGpAsHh@}GDsARuL@qLRkLPyPA{L[oJw@}FuAaI{BcIkB}GqA{E{BcHq@qB_@aAsBrC{BwQyCcZuJgqAsCuXaA_JUsDI{B?oDLaD`@yFRmD`AuJdDuXbK}s@lGec@hLo`AhCsT|@cJrFgl@lE{c@zAeQT}DJ{EAgESyFQsCnkAe{@hgAaz@eBuD",
+            "costing": "bicycle",
+            "costing_options": {
+              "bicycle": {
+                "bicycle_type": "mountain",
+                "use_roads": 0
+              }
+            },
+            "shape_match": "walk_or_snap",
+            "filters": {
+              "attributes": [
+                "edge.use",
+                "edge.density",
+                "edge.length"
+              ],
+              "action": "include"
+            }
+          },
+          "ms": 0.24083328247070312,
+          "response": {
+            "units": "kilometers",
+            "edges": [
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.072,
+                "source_percent_along": 0.402
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.006
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.022
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.016
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.199
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.123
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.065
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.15
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.012
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.008
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.008
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.051
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.152
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.004
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.092
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.092
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.013
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.012
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.011
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.003
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.032
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.089
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.026
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.022
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.008
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.008
+              },
+              {
+                "density": 1,
+                "use": "living_street",
+                "length": 0.155
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.062
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.015
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.442
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.3
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.008,
+                "target_percent_along": 0.038
+              }
+            ],
+            "alternate_paths": []
+          }
+        }
+      }
+    },
+    {
+      "index": 5,
+      "de": {
+        "lon": 5.98185,
+        "lat": 48.754348
+      },
+      "vers": {
+        "lon": 5.986851,
+        "lat": 48.752436
+      },
+      "route": {
+        "ok": true,
+        "distance_km": 1.015,
+        "duree_s": 265.618,
+        "points_forme": 54,
+        "requete": {
+          "locations": [
+            {
+              "lat": 48.754348,
+              "lon": 5.98185,
+              "type": "break",
+              "search_cutoff": 200
+            },
+            {
+              "lat": 48.752436,
+              "lon": 5.986851,
+              "type": "break",
+              "search_cutoff": 200
+            }
+          ],
+          "costing": "bicycle",
+          "costing_options": {
+            "bicycle": {
+              "bicycle_type": "mountain",
+              "use_roads": 0
+            }
+          },
+          "directions_options": {
+            "language": "fr-FR",
+            "units": "kilometers"
+          }
+        }
+      },
+      "altitudes": {
+        "ok": true,
+        "points": 35,
+        "points_null": 0,
+        "brut": {
+          "request": {
+            "encoded_polyline": "wiv~{AuhblJACfBxD~H`VhSje@bLvYbPpc@fI`RlM`XlEcQ~BeJfCgHdDoGvCgEvA}BhF_H~EeFzBgB`BsAtA_AdBkAbB_B|AaBlAsB~A{CjAyCdA_E`AoEj@iF|@kJ\\cGP_FBiFIqHOiS@kCFeFTgEh@iGl@mM^iLd@{TWqTcAaSyAaVkAcIwFgWqIg_@kJof@QuARsAde@qPs@_@oq@a]",
+            "resample_distance": 30,
+            "range": true
+          },
+          "ms": 0.07474994659423828,
+          "response": {
+            "encoded_polyline": "wiv~{AuhblJrHpS`IlSpI|RdIhS|HrSvHxShIdS|IlR|H`CbGkU|IgRzKqOhMiL~L{LfHeTdCuWVmXOqXpAeXbAiX`@mXm@mX{AeX}CgWkF_VoF{U}EgVuEmVfLsIbOmFbAgGuNkHuNiH{LgG",
+            "range_height": [
+              [
+                0,
+                222
+              ],
+              [
+                30,
+                221
+              ],
+              [
+                60,
+                220
+              ],
+              [
+                90,
+                218
+              ],
+              [
+                120,
+                219
+              ],
+              [
+                150,
+                219
+              ],
+              [
+                180,
+                218
+              ],
+              [
+                210,
+                216
+              ],
+              [
+                240,
+                214
+              ],
+              [
+                258,
+                213
+              ],
+              [
+                288,
+                213
+              ],
+              [
+                318,
+                213
+              ],
+              [
+                348,
+                213
+              ],
+              [
+                378,
+                212
+              ],
+              [
+                408,
+                210
+              ],
+              [
+                437,
+                207
+              ],
+              [
+                467,
+                205
+              ],
+              [
+                497,
+                205
+              ],
+              [
+                527,
+                204
+              ],
+              [
+                557,
+                205
+              ],
+              [
+                587,
+                206
+              ],
+              [
+                617,
+                206
+              ],
+              [
+                647,
+                207
+              ],
+              [
+                677,
+                207
+              ],
+              [
+                707,
+                208
+              ],
+              [
+                737,
+                208
+              ],
+              [
+                767,
+                208
+              ],
+              [
+                797,
+                206
+              ],
+              [
+                827,
+                206
+              ],
+              [
+                854,
+                205
+              ],
+              [
+                884,
+                205
+              ],
+              [
+                894,
+                206
+              ],
+              [
+                924,
+                207
+              ],
+              [
+                954,
+                208
+              ],
+              [
+                981,
+                209
+              ]
+            ]
+          }
+        }
+      },
+      "terrain": {
+        "ok": true,
+        "aretes": 10,
+        "longueur_aretes_km": 1.014,
+        "brut": {
+          "request": {
+            "encoded_polyline": "wiv~{AuhblJACfBxD~H`VhSje@bLvYbPpc@fI`RlM`XlEcQ~BeJfCgHdDoGvCgEvA}BhF_H~EeFzBgB`BsAtA_AdBkAbB_B|AaBlAsB~A{CjAyCdA_E`AoEj@iF|@kJ\\cGP_FBiFIqHOiS@kCFeFTgEh@iGl@mM^iLd@{TWqTcAaSyAaVkAcIwFgWqIg_@kJof@QuARsAde@qPs@_@oq@a]",
+            "costing": "bicycle",
+            "costing_options": {
+              "bicycle": {
+                "bicycle_type": "mountain",
+                "use_roads": 0
+              }
+            },
+            "shape_match": "walk_or_snap",
+            "filters": {
+              "attributes": [
+                "edge.use",
+                "edge.density",
+                "edge.length"
+              ],
+              "action": "include"
+            }
+          },
+          "ms": 0.13454055786132812,
+          "response": {
+            "units": "kilometers",
+            "edges": [
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.008,
+                "source_percent_along": 0.961
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.25
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.077
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.199
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.005
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.008
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.035
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.262
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.071
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.099,
+                "target_percent_along": 0.229
+              }
+            ],
+            "alternate_paths": []
+          }
+        }
+      }
+    },
+    {
+      "index": 6,
+      "de": {
+        "lon": 5.986851,
+        "lat": 48.752436
+      },
+      "vers": {
+        "lon": 6.001441,
+        "lat": 48.747161
+      },
+      "route": {
+        "ok": true,
+        "distance_km": 2.335,
+        "duree_s": 746.868,
+        "points_forme": 84,
+        "requete": {
+          "locations": [
+            {
+              "lat": 48.752436,
+              "lon": 5.986851,
+              "type": "break",
+              "search_cutoff": 200
+            },
+            {
+              "lat": 48.747161,
+              "lon": 6.001441,
+              "type": "break",
+              "search_cutoff": 200
+            }
+          ],
+          "costing": "bicycle",
+          "costing_options": {
+            "bicycle": {
+              "bicycle_type": "mountain",
+              "use_roads": 0
+            }
+          },
+          "directions_options": {
+            "language": "fr-FR",
+            "units": "kilometers"
+          }
+        }
+      },
+      "altitudes": {
+        "ok": true,
+        "points": 79,
+        "points_null": 0,
+        "brut": {
+          "request": {
+            "encoded_polyline": "grr~{AeallJ{MyGuEgCsBgCyAqDwFmVeM_w@eIiWyKuXaOeWgQsUmIkHuBiBeEqDwTeYtAmDfBgIjM{`@vBcRx@gSOeLw@gKgDiRwOuo@eFiXfv@f{@`bAt~@xCs]LcH_AwNaEqKQ}LpA}E|AgElHuLxE_G~K}GfSeGhOyBxHeAxGf@~Il@|FKrIi@fDiAbLeJnKuLjIiMvC}FnCiCzCwBlCsA|GgBzAg@jJqJbNsJpF{CHCt[uJfUoG|^wDr]eEbLiA~d@tCjFFpGoFhCuA~Am@fDThTxG~NvEaBiN_F{_@{Fwe@}EgXaFyWsI}h@{EeVwJe_@mHoMoFuUmHwZ{CcObAoK",
+            "resample_distance": 30,
+            "range": true
+          },
+          "ms": 0.2570838928222656,
+          "response": {
+            "encoded_polyline": "grr~{AeallJuNiH{KgNoF}U_EyVaE{VcGgUuH{SwIsR}J_Q_LeO{LkMgMoLeL}N{@{QxGwTbGeUrB{WEkXkDcWqFyUwFsUaFeVlDStL|MtLzMtL|M~LdMfMnLhMpLfMpLhMpLjDkR^cXgFkUvBuV~J{PnMuK~NsFlOgDtOyBvOz@xOK|N_FfMqL`LaOlK_PrNeHzMeJxMcKrNiHfOsEhOmEjOuDvOaBtOaBvOkBtOeBvODxO`AxOn@bNqIjOlBfOvErIk@aDkWcDiW}CmW_EyVsEoViEuVaEyVuEmV}FoUqHySkH{SsFwUmF{UGgS",
+            "range_height": [
+              [
+                0,
+                209
+              ],
+              [
+                30,
+                211
+              ],
+              [
+                59,
+                212
+              ],
+              [
+                89,
+                211
+              ],
+              [
+                119,
+                210
+              ],
+              [
+                149,
+                211
+              ],
+              [
+                179,
+                210
+              ],
+              [
+                209,
+                211
+              ],
+              [
+                239,
+                212
+              ],
+              [
+                269,
+                212
+              ],
+              [
+                299,
+                211
+              ],
+              [
+                329,
+                211
+              ],
+              [
+                359,
+                212
+              ],
+              [
+                389,
+                213
+              ],
+              [
+                411,
+                212
+              ],
+              [
+                441,
+                214
+              ],
+              [
+                471,
+                217
+              ],
+              [
+                501,
+                220
+              ],
+              [
+                531,
+                222
+              ],
+              [
+                561,
+                225
+              ],
+              [
+                591,
+                227
+              ],
+              [
+                621,
+                228
+              ],
+              [
+                651,
+                231
+              ],
+              [
+                660,
+                232
+              ],
+              [
+                690,
+                233
+              ],
+              [
+                720,
+                235
+              ],
+              [
+                750,
+                236
+              ],
+              [
+                780,
+                238
+              ],
+              [
+                810,
+                239
+              ],
+              [
+                840,
+                239
+              ],
+              [
+                870,
+                239
+              ],
+              [
+                900,
+                239
+              ],
+              [
+                925,
+                238
+              ],
+              [
+                955,
+                238
+              ],
+              [
+                984,
+                238
+              ],
+              [
+                1012,
+                239
+              ],
+              [
+                1042,
+                240
+              ],
+              [
+                1072,
+                240
+              ],
+              [
+                1102,
+                240
+              ],
+              [
+                1132,
+                240
+              ],
+              [
+                1162,
+                240
+              ],
+              [
+                1192,
+                239
+              ],
+              [
+                1222,
+                238
+              ],
+              [
+                1251,
+                239
+              ],
+              [
+                1281,
+                240
+              ],
+              [
+                1311,
+                240
+              ],
+              [
+                1341,
+                240
+              ],
+              [
+                1371,
+                240
+              ],
+              [
+                1401,
+                241
+              ],
+              [
+                1431,
+                243
+              ],
+              [
+                1460,
+                244
+              ],
+              [
+                1490,
+                246
+              ],
+              [
+                1520,
+                245
+              ],
+              [
+                1550,
+                244
+              ],
+              [
+                1580,
+                244
+              ],
+              [
+                1610,
+                243
+              ],
+              [
+                1640,
+                241
+              ],
+              [
+                1670,
+                239
+              ],
+              [
+                1700,
+                237
+              ],
+              [
+                1730,
+                235
+              ],
+              [
+                1760,
+                234
+              ],
+              [
+                1790,
+                234
+              ],
+              [
+                1819,
+                236
+              ],
+              [
+                1849,
+                236
+              ],
+              [
+                1868,
+                235
+              ],
+              [
+                1898,
+                238
+              ],
+              [
+                1928,
+                239
+              ],
+              [
+                1958,
+                240
+              ],
+              [
+                1988,
+                239
+              ],
+              [
+                2018,
+                239
+              ],
+              [
+                2048,
+                239
+              ],
+              [
+                2078,
+                241
+              ],
+              [
+                2108,
+                243
+              ],
+              [
+                2138,
+                245
+              ],
+              [
+                2168,
+                245
+              ],
+              [
+                2198,
+                246
+              ],
+              [
+                2228,
+                246
+              ],
+              [
+                2258,
+                247
+              ],
+              [
+                2282,
+                248
+              ]
+            ]
+          }
+        }
+      },
+      "terrain": {
+        "ok": true,
+        "aretes": 16,
+        "longueur_aretes_km": 2.333,
+        "brut": {
+          "request": {
+            "encoded_polyline": "grr~{AeallJ{MyGuEgCsBgCyAqDwFmVeM_w@eIiWyKuXaOeWgQsUmIkHuBiBeEqDwTeYtAmDfBgIjM{`@vBcRx@gSOeLw@gKgDiRwOuo@eFiXfv@f{@`bAt~@xCs]LcH_AwNaEqKQ}LpA}E|AgElHuLxE_G~K}GfSeGhOyBxHeAxGf@~Il@|FKrIi@fDiAbLeJnKuLjIiMvC}FnCiCzCwBlCsA|GgBzAg@jJqJbNsJpF{CHCt[uJfUoG|^wDr]eEbLiA~d@tCjFFpGoFhCuA~Am@fDThTxG~NvEaBiN_F{_@{Fwe@}EgXaFyWsI}h@{EeVwJe_@mHoMoFuUmHwZ{CcObAoK",
+            "costing": "bicycle",
+            "costing_options": {
+              "bicycle": {
+                "bicycle_type": "mountain",
+                "use_roads": 0
+              }
+            },
+            "shape_match": "walk_or_snap",
+            "filters": {
+              "attributes": [
+                "edge.use",
+                "edge.density",
+                "edge.length"
+              ],
+              "action": "include"
+            }
+          },
+          "ms": 0.6112079620361328,
+          "response": {
+            "units": "kilometers",
+            "edges": [
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.334,
+                "source_percent_along": 0.229
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.008
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.062
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.268
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.121
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.141
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.25
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.237
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.024
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.251
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.024
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.081
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.11
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.107
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.146
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.169,
+                "target_percent_along": 0.304
+              }
+            ],
+            "alternate_paths": []
+          }
+        }
+      }
+    },
+    {
+      "index": 7,
+      "de": {
+        "lon": 6.001441,
+        "lat": 48.747161
+      },
+      "vers": {
+        "lon": 6.007899,
+        "lat": 48.755438
+      },
+      "route": {
+        "ok": true,
+        "distance_km": 2.001,
+        "duree_s": 573.565,
+        "points_forme": 34,
+        "requete": {
+          "locations": [
+            {
+              "lat": 48.747161,
+              "lon": 6.001441,
+              "type": "break",
+              "search_cutoff": 200
+            },
+            {
+              "lat": 48.755438,
+              "lon": 6.007899,
+              "type": "break",
+              "search_cutoff": 200
+            }
+          ],
+          "costing": "bicycle",
+          "costing_options": {
+            "bicycle": {
+              "bicycle_type": "mountain",
+              "use_roads": 0
+            }
+          },
+          "directions_options": {
+            "language": "fr-FR",
+            "units": "kilometers"
+          }
+        }
+      },
+      "altitudes": {
+        "ok": true,
+        "points": 68,
+        "points_null": 0,
+        "brut": {
+          "request": {
+            "encoded_polyline": "qhh~{AaqhmJh@yF`DqZc@iUwEyP_N{ZuMyUaR_IyL{@iPqDgPqSmQyc@gK}Nq[tv@_Mhh@sLrn@gC~G{DfFaMxGcVpKsHrK{Ybt@Z~HVbGGhBmMv_@iSxh@{]vaA}\\j_A}dAwjFua@koBu`@_lBsu@}oDbf@yZ",
+            "resample_distance": 30,
+            "range": true
+          },
+          "ms": 0.8261251449584961,
+          "response": {
+            "encoded_polyline": "qhh~{AaqhmJjCsWf@cXcEeVmIaSeJaRuK_O}NeGuO{A_O}EgLyNsIuRiIeSqKoLkIdSiIdSoH~SuFtUeF`VuElViG~TqMjKwN~GcNlIsJjQgIhSgIfSEpWkHdTsH|S_IpSyHvSuHzSuH|SuHzSuHzSwHzSgHbM}EiV{EiV}EiV{EiV}EgV}EiV{EiV}EiV{EgV}EiVcFcVeFcVcFeVcFcVcFcVeFcVcFcVeFcVcFcVcFeVeFcVcFcVcFcVcFcVeFeVcFcVcFcVdJaLfN{IjJaG",
+            "range_height": [
+              [
+                0,
+                248
+              ],
+              [
+                30,
+                248
+              ],
+              [
+                60,
+                248
+              ],
+              [
+                89,
+                248
+              ],
+              [
+                119,
+                248
+              ],
+              [
+                149,
+                248
+              ],
+              [
+                178,
+                250
+              ],
+              [
+                208,
+                252
+              ],
+              [
+                238,
+                253
+              ],
+              [
+                268,
+                253
+              ],
+              [
+                298,
+                253
+              ],
+              [
+                328,
+                252
+              ],
+              [
+                358,
+                252
+              ],
+              [
+                385,
+                251
+              ],
+              [
+                415,
+                251
+              ],
+              [
+                445,
+                251
+              ],
+              [
+                475,
+                252
+              ],
+              [
+                505,
+                252
+              ],
+              [
+                535,
+                253
+              ],
+              [
+                565,
+                254
+              ],
+              [
+                595,
+                254
+              ],
+              [
+                624,
+                254
+              ],
+              [
+                654,
+                254
+              ],
+              [
+                684,
+                253
+              ],
+              [
+                714,
+                252
+              ],
+              [
+                744,
+                252
+              ],
+              [
+                774,
+                252
+              ],
+              [
+                803,
+                252
+              ],
+              [
+                833,
+                252
+              ],
+              [
+                863,
+                252
+              ],
+              [
+                893,
+                251
+              ],
+              [
+                923,
+                250
+              ],
+              [
+                953,
+                248
+              ],
+              [
+                983,
+                247
+              ],
+              [
+                1013,
+                247
+              ],
+              [
+                1043,
+                246
+              ],
+              [
+                1073,
+                246
+              ],
+              [
+                1096,
+                246
+              ],
+              [
+                1126,
+                246
+              ],
+              [
+                1156,
+                246
+              ],
+              [
+                1186,
+                249
+              ],
+              [
+                1216,
+                250
+              ],
+              [
+                1246,
+                251
+              ],
+              [
+                1276,
+                252
+              ],
+              [
+                1306,
+                253
+              ],
+              [
+                1336,
+                255
+              ],
+              [
+                1366,
+                255
+              ],
+              [
+                1396,
+                256
+              ],
+              [
+                1426,
+                255
+              ],
+              [
+                1456,
+                254
+              ],
+              [
+                1486,
+                255
+              ],
+              [
+                1516,
+                255
+              ],
+              [
+                1546,
+                256
+              ],
+              [
+                1576,
+                257
+              ],
+              [
+                1606,
+                257
+              ],
+              [
+                1636,
+                258
+              ],
+              [
+                1666,
+                260
+              ],
+              [
+                1696,
+                262
+              ],
+              [
+                1726,
+                263
+              ],
+              [
+                1756,
+                265
+              ],
+              [
+                1786,
+                266
+              ],
+              [
+                1816,
+                268
+              ],
+              [
+                1846,
+                271
+              ],
+              [
+                1876,
+                271
+              ],
+              [
+                1906,
+                269
+              ],
+              [
+                1931,
+                268
+              ],
+              [
+                1961,
+                266
+              ],
+              [
+                1984,
+                266
+              ]
+            ]
+          }
+        }
+      },
+      "terrain": {
+        "ok": true,
+        "aretes": 11,
+        "longueur_aretes_km": 2.0010000000000003,
+        "brut": {
+          "request": {
+            "encoded_polyline": "qhh~{AaqhmJh@yF`DqZc@iUwEyP_N{ZuMyUaR_IyL{@iPqDgPqSmQyc@gK}Nq[tv@_Mhh@sLrn@gC~G{DfFaMxGcVpKsHrK{Ybt@Z~HVbGGhBmMv_@iSxh@{]vaA}\\j_A}dAwjFua@koBu`@_lBsu@}oDbf@yZ",
+            "costing": "bicycle",
+            "costing_options": {
+              "bicycle": {
+                "bicycle_type": "mountain",
+                "use_roads": 0
+              }
+            },
+            "shape_match": "walk_or_snap",
+            "filters": {
+              "attributes": [
+                "edge.use",
+                "edge.density",
+                "edge.length"
+              ],
+              "action": "include"
+            }
+          },
+          "ms": 0.12291717529296875,
+          "response": {
+            "units": "kilometers",
+            "edges": [
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.387,
+                "source_percent_along": 0.304
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.198
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.199
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.025
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.203
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.092
+              },
+              {
+                "density": 0,
+                "use": "path",
+                "length": 0.304
+              },
+              {
+                "density": 0,
+                "use": "path",
+                "length": 0.146
+              },
+              {
+                "density": 0,
+                "use": "path",
+                "length": 0.141
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.229
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.077,
+                "target_percent_along": 0.299
+              }
+            ],
+            "alternate_paths": []
+          }
+        }
+      }
+    },
+    {
+      "index": 8,
+      "de": {
+        "lon": 6.007899,
+        "lat": 48.755438
+      },
+      "vers": {
+        "lon": 5.99745,
+        "lat": 48.741665
+      },
+      "route": {
+        "ok": true,
+        "distance_km": 2.002,
+        "duree_s": 433.765,
+        "points_forme": 97,
+        "requete": {
+          "locations": [
+            {
+              "lat": 48.755438,
+              "lon": 6.007899,
+              "type": "break",
+              "search_cutoff": 200
+            },
+            {
+              "lat": 48.741665,
+              "lon": 5.99745,
+              "type": "break",
+              "search_cutoff": 200
+            }
+          ],
+          "costing": "bicycle",
+          "costing_options": {
+            "bicycle": {
+              "bicycle_type": "mountain",
+              "use_roads": 0
+            }
+          },
+          "directions_options": {
+            "language": "fr-FR",
+            "units": "kilometers"
+          }
+        }
+      },
+      "altitudes": {
+        "ok": true,
+        "points": 68,
+        "points_null": 0,
+        "brut": {
+          "request": {
+            "encoded_polyline": "{mx~{AwdumJxiAct@pDwBdCq@jG}@fAP~Bp@pBfA`DlC~ErFfHxHzCfBrDfAfFn@dZNbf@PrDOzHeBdDgB`CsAhBo@|CaF~Tka@bBcEnBgE|B{DdCcDxC_BfBsAzB_CrBoE~DwJzAhCnHfShBtD`DdEjDtCnDdDnB|BzB|DdC`GlCnEtEbG`QvRvSlUla@vc@xr@bq@jRbT`Zv[rk@jn@xf@hj@xNfR`N~SzEpIhE|IxC`HhC`HfEnMvDdNfSnr@bFxOhApBx@\\p@Ch@o@t@e@`@Uz@Y`AJr@bAzAzD~Lha@|IzYpHzQ`KdU`CfFpCtFtC`FvApBrApBdApBf@|@|KfWb@pBd@lFrC_AxA_@`BAnA^v@j@fAfBnFvKjExJ`F~KvF|MjHzPj@|A",
+            "resample_distance": 30,
+            "range": true
+          },
+          "ms": 0.13295841217041016,
+          "response": {
+            "encoded_polyline": "{mx~{AwdumJfNyIfN{IfNyIfNyIhNyIdOcEpN|GvLxMtNnGxOb@xOFzOFxOFtO}AnNgH|JaQvJkQ`JeR`MoLpJiQjIzJbJ|QdMtLnJpQbL`OrL|MvLxMvLvMvLvMvLtMdMvLdMvLfMvL~L`MtL|MxLtMvLrMxLtMxLrMxLtMtLxMtLzMtLzMfLvNvKvOdKrPbJbRxHtStGzTrG~TrG|T|GrTvL`CjI~QzGtTxGvTxHvSrIxR|IlRbKtPzInRjGjSrNfAbJdRtIvRlI`StF~M",
+            "range_height": [
+              [
+                0,
+                266
+              ],
+              [
+                30,
+                264
+              ],
+              [
+                60,
+                263
+              ],
+              [
+                90,
+                260
+              ],
+              [
+                120,
+                258
+              ],
+              [
+                150,
+                254
+              ],
+              [
+                180,
+                250
+              ],
+              [
+                209,
+                247
+              ],
+              [
+                239,
+                245
+              ],
+              [
+                269,
+                244
+              ],
+              [
+                299,
+                243
+              ],
+              [
+                329,
+                241
+              ],
+              [
+                359,
+                239
+              ],
+              [
+                389,
+                237
+              ],
+              [
+                419,
+                234
+              ],
+              [
+                449,
+                230
+              ],
+              [
+                479,
+                227
+              ],
+              [
+                509,
+                223
+              ],
+              [
+                539,
+                218
+              ],
+              [
+                568,
+                213
+              ],
+              [
+                598,
+                206
+              ],
+              [
+                621,
+                206
+              ],
+              [
+                651,
+                207
+              ],
+              [
+                681,
+                207
+              ],
+              [
+                711,
+                210
+              ],
+              [
+                741,
+                210
+              ],
+              [
+                771,
+                209
+              ],
+              [
+                801,
+                209
+              ],
+              [
+                831,
+                208
+              ],
+              [
+                861,
+                208
+              ],
+              [
+                891,
+                209
+              ],
+              [
+                921,
+                210
+              ],
+              [
+                951,
+                209
+              ],
+              [
+                981,
+                209
+              ],
+              [
+                1011,
+                209
+              ],
+              [
+                1041,
+                209
+              ],
+              [
+                1071,
+                205
+              ],
+              [
+                1101,
+                205
+              ],
+              [
+                1131,
+                205
+              ],
+              [
+                1161,
+                204
+              ],
+              [
+                1191,
+                204
+              ],
+              [
+                1221,
+                205
+              ],
+              [
+                1251,
+                203
+              ],
+              [
+                1281,
+                201
+              ],
+              [
+                1311,
+                200
+              ],
+              [
+                1341,
+                202
+              ],
+              [
+                1371,
+                202
+              ],
+              [
+                1401,
+                202
+              ],
+              [
+                1431,
+                204
+              ],
+              [
+                1461,
+                204
+              ],
+              [
+                1491,
+                204
+              ],
+              [
+                1521,
+                206
+              ],
+              [
+                1551,
+                207
+              ],
+              [
+                1576,
+                204
+              ],
+              [
+                1605,
+                204
+              ],
+              [
+                1635,
+                203
+              ],
+              [
+                1665,
+                201
+              ],
+              [
+                1695,
+                199
+              ],
+              [
+                1725,
+                199
+              ],
+              [
+                1755,
+                198
+              ],
+              [
+                1785,
+                198
+              ],
+              [
+                1815,
+                196
+              ],
+              [
+                1843,
+                197
+              ],
+              [
+                1871,
+                197
+              ],
+              [
+                1901,
+                196
+              ],
+              [
+                1931,
+                196
+              ],
+              [
+                1961,
+                197
+              ],
+              [
+                1983,
+                197
+              ]
+            ]
+          }
+        }
+      },
+      "terrain": {
+        "ok": true,
+        "aretes": 18,
+        "longueur_aretes_km": 2.0009999999999994,
+        "brut": {
+          "request": {
+            "encoded_polyline": "{mx~{AwdumJxiAct@pDwBdCq@jG}@fAP~Bp@pBfA`DlC~ErFfHxHzCfBrDfAfFn@dZNbf@PrDOzHeBdDgB`CsAhBo@|CaF~Tka@bBcEnBgE|B{DdCcDxC_BfBsAzB_CrBoE~DwJzAhCnHfShBtD`DdEjDtCnDdDnB|BzB|DdC`GlCnEtEbG`QvRvSlUla@vc@xr@bq@jRbT`Zv[rk@jn@xf@hj@xNfR`N~SzEpIhE|IxC`HhC`HfEnMvDdNfSnr@bFxOhApBx@\\p@Ch@o@t@e@`@Uz@Y`AJr@bAzAzD~Lha@|IzYpHzQ`KdU`CfFpCtFtC`FvApBrApBdApBf@|@|KfWb@pBd@lFrC_AxA_@`BAnA^v@j@fAfBnFvKjExJ`F~KvF|MjHzPj@|A",
+            "costing": "bicycle",
+            "costing_options": {
+              "bicycle": {
+                "bicycle_type": "mountain",
+                "use_roads": 0
+              }
+            },
+            "shape_match": "walk_or_snap",
+            "filters": {
+              "attributes": [
+                "edge.use",
+                "edge.density",
+                "edge.length"
+              ],
+              "action": "include"
+            }
+          },
+          "ms": 0.15337467193603516,
+          "response": {
+            "units": "kilometers",
+            "edges": [
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.18,
+                "source_percent_along": 0.299
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.345
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.045
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.018
+              },
+              {
+                "density": 1,
+                "use": "track",
+                "length": 0.017
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.007
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.398
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.564
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.006
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.009
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.197
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.018
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.003
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.037
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.005
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.009
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.027
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.116,
+                "target_percent_along": 0.839
+              }
+            ],
+            "alternate_paths": []
+          }
+        }
+      }
+    },
+    {
+      "index": 9,
+      "de": {
+        "lon": 5.99745,
+        "lat": 48.741665
+      },
+      "vers": {
+        "lon": 5.980882,
+        "lat": 48.72857
+      },
+      "route": {
+        "ok": true,
+        "distance_km": 2.001,
+        "duree_s": 474.374,
+        "points_forme": 80,
+        "requete": {
+          "locations": [
+            {
+              "lat": 48.741665,
+              "lon": 5.99745,
+              "type": "break",
+              "search_cutoff": 200
+            },
+            {
+              "lat": 48.72857,
+              "lon": 5.980882,
+              "type": "break",
+              "search_cutoff": 200
+            }
+          ],
+          "costing": "bicycle",
+          "costing_options": {
+            "bicycle": {
+              "bicycle_type": "mountain",
+              "use_roads": 0
+            }
+          },
+          "directions_options": {
+            "language": "fr-FR",
+            "units": "kilometers"
+          }
+        }
+      },
+      "altitudes": {
+        "ok": true,
+        "points": 68,
+        "points_null": 0,
+        "brut": {
+          "request": {
+            "encoded_polyline": "aq}}{Asw`mJtAnDrAvDbAlCfB`EjC|Ej[pu@lL`ZlK|ZvKd[bIdXhFjQxNxf@lMrb@zGpU~DlPfCdJvIpZ|AlGbAzElC`KbKh]tGpTzEjNtEjOnJ`ZvJdYdIxUxHfSdIxRtQpb@lNr\\d@vAXtAVbBV`DXjBb@pBjAbBfA|@jAp@|@J|AdBfAfAtApBrEbIfPrY|Rh\\dMjSzKdOlMnNlLrLdTjSbUpR~OrLvTlQdRzN|JbHbKvGjF~CzEzBfDl@zFf@nDr@rHzBhHzCtQhHxFbC~QzHhObHbV~JvG`Cb{@|UpKlB~JnBtNvBrF^pGXfKIvES",
+            "resample_distance": 30,
+            "range": true
+          },
+          "ms": 0.0870828628540039,
+          "response": {
+            "encoded_polyline": "aq}}{Asw`mJ~HnS|IlRlI`SjI`SdIjSxHvSlHdTnH`TzGtTvGzTtGzTtGzTxGvTvGxThGdUdGhUpG~TxFrUpG~TvGxT|GrTbHlT`HpThHfTnHbTnH`T`InSjI`SnI~RnI~RlI~R~ExUhMtK|J`QvJdQ`KxPbKvPhKnP~KdOvLtM`MdMdMtLlMdLpMxKzM|JvMlKtMjKzMbK`NhJhNpIjOnDlOlD|N`G~N`G|NhGzNpGzNpG|NfGdO|EhOfEjOdEhOfEnO|CrOpCtOhBxOZlKW",
+            "range_height": [
+              [
+                0,
+                197
+              ],
+              [
+                30,
+                197
+              ],
+              [
+                60,
+                197
+              ],
+              [
+                90,
+                197
+              ],
+              [
+                120,
+                198
+              ],
+              [
+                150,
+                200
+              ],
+              [
+                180,
+                199
+              ],
+              [
+                210,
+                199
+              ],
+              [
+                240,
+                200
+              ],
+              [
+                270,
+                200
+              ],
+              [
+                300,
+                199
+              ],
+              [
+                330,
+                199
+              ],
+              [
+                360,
+                199
+              ],
+              [
+                390,
+                200
+              ],
+              [
+                420,
+                202
+              ],
+              [
+                450,
+                204
+              ],
+              [
+                480,
+                203
+              ],
+              [
+                510,
+                200
+              ],
+              [
+                540,
+                202
+              ],
+              [
+                570,
+                202
+              ],
+              [
+                600,
+                202
+              ],
+              [
+                630,
+                203
+              ],
+              [
+                660,
+                205
+              ],
+              [
+                690,
+                205
+              ],
+              [
+                720,
+                205
+              ],
+              [
+                750,
+                207
+              ],
+              [
+                780,
+                205
+              ],
+              [
+                810,
+                204
+              ],
+              [
+                840,
+                204
+              ],
+              [
+                870,
+                205
+              ],
+              [
+                900,
+                204
+              ],
+              [
+                930,
+                203
+              ],
+              [
+                959,
+                204
+              ],
+              [
+                989,
+                201
+              ],
+              [
+                1019,
+                202
+              ],
+              [
+                1049,
+                206
+              ],
+              [
+                1079,
+                204
+              ],
+              [
+                1109,
+                207
+              ],
+              [
+                1139,
+                209
+              ],
+              [
+                1169,
+                208
+              ],
+              [
+                1199,
+                203
+              ],
+              [
+                1229,
+                202
+              ],
+              [
+                1259,
+                204
+              ],
+              [
+                1289,
+                204
+              ],
+              [
+                1319,
+                202
+              ],
+              [
+                1349,
+                202
+              ],
+              [
+                1379,
+                203
+              ],
+              [
+                1409,
+                203
+              ],
+              [
+                1439,
+                202
+              ],
+              [
+                1469,
+                201
+              ],
+              [
+                1499,
+                200
+              ],
+              [
+                1529,
+                199
+              ],
+              [
+                1559,
+                200
+              ],
+              [
+                1589,
+                201
+              ],
+              [
+                1619,
+                202
+              ],
+              [
+                1649,
+                205
+              ],
+              [
+                1679,
+                203
+              ],
+              [
+                1709,
+                199
+              ],
+              [
+                1739,
+                199
+              ],
+              [
+                1769,
+                197
+              ],
+              [
+                1799,
+                198
+              ],
+              [
+                1829,
+                199
+              ],
+              [
+                1859,
+                202
+              ],
+              [
+                1889,
+                204
+              ],
+              [
+                1919,
+                205
+              ],
+              [
+                1949,
+                203
+              ],
+              [
+                1979,
+                201
+              ],
+              [
+                2001,
+                201
+              ]
+            ]
+          }
+        }
+      },
+      "terrain": {
+        "ok": true,
+        "aretes": 7,
+        "longueur_aretes_km": 2.0010000000000003,
+        "brut": {
+          "request": {
+            "encoded_polyline": "aq}}{Asw`mJtAnDrAvDbAlCfB`EjC|Ej[pu@lL`ZlK|ZvKd[bIdXhFjQxNxf@lMrb@zGpU~DlPfCdJvIpZ|AlGbAzElC`KbKh]tGpTzEjNtEjOnJ`ZvJdYdIxUxHfSdIxRtQpb@lNr\\d@vAXtAVbBV`DXjBb@pBjAbBfA|@jAp@|@J|AdBfAfAtApBrEbIfPrY|Rh\\dMjSzKdOlMnNlLrLdTjSbUpR~OrLvTlQdRzN|JbHbKvGjF~CzEzBfDl@zFf@nDr@rHzBhHzCtQhHxFbC~QzHhObHbV~JvG`Cb{@|UpKlB~JnBtNvBrF^pGXfKIvES",
+            "costing": "bicycle",
+            "costing_options": {
+              "bicycle": {
+                "bicycle_type": "mountain",
+                "use_roads": 0
+              }
+            },
+            "shape_match": "walk_or_snap",
+            "filters": {
+              "attributes": [
+                "edge.use",
+                "edge.density",
+                "edge.length"
+              ],
+              "action": "include"
+            }
+          },
+          "ms": 0.13291645050048828,
+          "response": {
+            "units": "kilometers",
+            "edges": [
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.022,
+                "source_percent_along": 0.839
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.256
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.256
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.413
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.027
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.64
+              },
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.387,
+                "target_percent_along": 0.897
+              }
+            ],
+            "alternate_paths": []
+          }
+        }
+      }
+    },
+    {
+      "index": 10,
+      "de": {
+        "lon": 5.980882,
+        "lat": 48.72857
+      },
+      "vers": {
+        "lon": 5.977282,
+        "lat": 48.727511
+      },
+      "route": {
+        "ok": true,
+        "distance_km": 0.792,
+        "duree_s": 256.319,
+        "points_forme": 58,
+        "requete": {
+          "locations": [
+            {
+              "lat": 48.72857,
+              "lon": 5.980882,
+              "type": "break",
+              "search_cutoff": 200
+            },
+            {
+              "lat": 48.727511,
+              "lon": 5.977282,
+              "type": "break",
+              "search_cutoff": 200
+            }
+          ],
+          "costing": "bicycle",
+          "costing_options": {
+            "bicycle": {
+              "bicycle_type": "mountain",
+              "use_roads": 0
+            }
+          },
+          "directions_options": {
+            "language": "fr-FR",
+            "units": "kilometers"
+          }
+        }
+      },
+      "altitudes": {
+        "ok": true,
+        "points": 28,
+        "points_null": 0,
+        "brut": {
+          "request": {
+            "encoded_polyline": "s~c}{Acl`lJfES~Gy@zC_@rCQjBZtAf@zA~A`CrDhEbG}IlJeDpDgCzDm@~BCdBl@`B~@x@tCxAxStEl[nFzCb@zD^lJZbIr@rF~@bDn@fC~@jD|AhIhF|VlQvL|JtC`D~AlCf@~CFpBIfB]nAi@lAu@f@oBV_BOcDs@sYmImc@wJwDg@eDS{CBeCd@kBpAyAzBeA~Cm@rDg@|Dc@|DoCvVeBtPw@rGuC`X",
+            "resample_distance": 30,
+            "range": true
+          },
+          "ms": 0.21345806121826172,
+          "response": {
+            "encoded_polyline": "s~c}{Acl`lJvOwAdO`BjHjOyLrMoAvQfOlEpOzCpOjCtOhBxOz@pOlCrNjHbNlJ|MvJjMdL~BlTaOHiOkEkO{DmOiDqOyCqOj@kHbSuCnWoCrWwCnWw@jH",
+            "range_height": [
+              [
+                0,
+                201
+              ],
+              [
+                30,
+                202
+              ],
+              [
+                59,
+                202
+              ],
+              [
+                85,
+                203
+              ],
+              [
+                115,
+                208
+              ],
+              [
+                137,
+                213
+              ],
+              [
+                167,
+                215
+              ],
+              [
+                197,
+                214
+              ],
+              [
+                227,
+                214
+              ],
+              [
+                257,
+                214
+              ],
+              [
+                287,
+                214
+              ],
+              [
+                317,
+                215
+              ],
+              [
+                347,
+                216
+              ],
+              [
+                377,
+                218
+              ],
+              [
+                407,
+                219
+              ],
+              [
+                437,
+                223
+              ],
+              [
+                463,
+                227
+              ],
+              [
+                492,
+                226
+              ],
+              [
+                522,
+                225
+              ],
+              [
+                552,
+                226
+              ],
+              [
+                582,
+                226
+              ],
+              [
+                612,
+                226
+              ],
+              [
+                641,
+                228
+              ],
+              [
+                670,
+                231
+              ],
+              [
+                700,
+                232
+              ],
+              [
+                730,
+                232
+              ],
+              [
+                760,
+                232
+              ],
+              [
+                771,
+                231
+              ]
+            ]
+          }
+        }
+      },
+      "terrain": {
+        "ok": true,
+        "aretes": 11,
+        "longueur_aretes_km": 0.792,
+        "brut": {
+          "request": {
+            "encoded_polyline": "s~c}{Acl`lJfES~Gy@zC_@rCQjBZtAf@zA~A`CrDhEbG}IlJeDpDgCzDm@~BCdBl@`B~@x@tCxAxStEl[nFzCb@zD^lJZbIr@rF~@bDn@fC~@jD|AhIhF|VlQvL|JtC`D~AlCf@~CFpBIfB]nAi@lAu@f@oBV_BOcDs@sYmImc@wJwDg@eDS{CBeCd@kBpAyAzBeA~Cm@rDg@|Dc@|DoCvVeBtPw@rGuC`X",
+            "costing": "bicycle",
+            "costing_options": {
+              "bicycle": {
+                "bicycle_type": "mountain",
+                "use_roads": 0
+              }
+            },
+            "shape_match": "walk_or_snap",
+            "filters": {
+              "attributes": [
+                "edge.use",
+                "edge.density",
+                "edge.length"
+              ],
+              "action": "include"
+            }
+          },
+          "ms": 0.1384592056274414,
+          "response": {
+            "units": "kilometers",
+            "edges": [
+              {
+                "density": 1,
+                "use": "path",
+                "length": 0.044,
+                "source_percent_along": 0.897
+              },
+              {
+                "density": 2,
+                "use": "path",
+                "length": 0.017
+              },
+              {
+                "density": 2,
+                "use": "path",
+                "length": 0.01
+              },
+              {
+                "density": 2,
+                "use": "path",
+                "length": 0.015
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.051
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.341
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.207
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.044
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.022
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0.041
+              },
+              {
+                "density": 2,
+                "use": "road",
+                "length": 0,
+                "target_percent_along": 0.016
+              }
+            ],
+            "alternate_paths": []
+          }
+        }
+      }
+    }
+  ],
+  "calcul_ts": {
+    "altitudes": "ready",
+    "d_plus_m": 199,
+    "d_moins_m": 203,
+    "alt_basse_m": 196,
+    "alt_haute_m": 271,
+    "points_profil": 644,
+    "terrain": "ready",
+    "parts": [
+      {
+        "part": "road",
+        "percent": 17
+      },
+      {
+        "part": "track",
+        "percent": 55
+      },
+      {
+        "part": "trail",
+        "percent": 28
+      }
+    ],
+    "segments_terrain": 25,
+    "main_km": 0
+  }
+}

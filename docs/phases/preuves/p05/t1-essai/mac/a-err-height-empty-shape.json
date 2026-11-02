@@ -1,0 +1,1 @@
+{"step": "err-height-empty-shape", "request": {"shape": []}, "ms_with_docker_start": 192, "response": {"error_code": 312, "error": "Insufficiently specified required parameter 'shape' or 'encoded_polyline'", "status_code": 400, "status": "Bad Request"}}

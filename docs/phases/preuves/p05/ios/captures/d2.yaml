@@ -1,0 +1,8 @@
+appId: fr.rutapulse.app
+---
+- swipe:
+    start: 50%,70%
+    end: 50%,10%
+    duration: 500
+- waitForAnimationToEnd:
+    timeout: 2000

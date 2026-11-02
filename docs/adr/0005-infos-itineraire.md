@@ -26,7 +26,8 @@ d'architecture).
   décrite par la documentation : à vérifier pendant l'essai 1.
 - **Profil d'altitude** : demandé à Valhalla avec `elevation_interval: 30`
   (une altitude tous les 30 m). Les altitudes viennent des tuiles HGT (grilles
-  d'altitudes) du paquet de zone.
+  d'altitudes) du paquet de zone. **Mis à jour le 2026-10-28** : profil
+  par `height` sur chaque tronçon, dénivelé sur le profil joint (ADR 0017).
 - **Dénivelé** : calculé par notre code TypeScript (JavaScript typé) à
   partir du profil, avec un lissage, car Valhalla ne le fournit pas. La
   méthode est validée contre une référence externe pendant l'essai 1.

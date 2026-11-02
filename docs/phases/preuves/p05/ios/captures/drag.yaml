@@ -1,0 +1,6 @@
+appId: fr.rutapulse.app
+---
+- swipe:
+    start: 201, 332
+    end: 270, 430
+    duration: 7000

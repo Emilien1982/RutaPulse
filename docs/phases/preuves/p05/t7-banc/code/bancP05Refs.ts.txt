@@ -1,0 +1,116 @@
+// THROWAWAY (phase 5, T7). Never merged into main.
+// Measure "references" (C3, C5): for each reference route, one calculated leg
+// per pair of points (like the app), then the real chain computeRoute,
+// computeHeights, computeTerrain, summarizeInfo. One file per reference:
+// refs-<name>.json, with the raw answers of each leg and the figures computed
+// in TypeScript. refs-fini.json at the end.
+import { Platform } from 'react-native';
+
+import type { Leg } from '@/core/draft/legs';
+import type { RoutePoint } from '@/core/routing/routeRequest';
+import { infoShape } from '@/core/route-info/legShape';
+import { summarizeInfo, type LegInfo } from '@/core/route-info/routeInfo';
+import type { Bbox } from '@/core/zones/catalogue';
+
+import { bancRequest, bancSave, nativeLog, type NativeEntry } from './bancP05';
+import { computeHeights, computeTerrain } from './computeInfos';
+import { computeRoute } from './computeRoute';
+
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+const raw = (e: NativeEntry | undefined) => {
+  if (!e) return null;
+  let response: unknown = e.response;
+  try {
+    response = JSON.parse(e.response ?? 'null');
+  } catch {
+    // keep the text
+  }
+  return { request: JSON.parse(e.request) as unknown, ms: e.ms, response };
+};
+
+export async function bancReferences(bbox: Bbox, engineOpen: () => boolean) {
+  const req = bancRequest();
+  if (!req || req.mesure !== 'references') return;
+  while (!engineOpen()) await sleep(300);
+  const names = Object.keys(req.references ?? {}).sort();
+  for (const name of names) {
+    const points: RoutePoint[] = req.references?.[name] ?? [];
+    const infos: LegInfo[] = [];
+    const legsOut: unknown[] = [];
+    for (let i = 0; i + 1 < points.length; i++) {
+      const a = points[i] as RoutePoint;
+      const b = points[i + 1] as RoutePoint;
+      const leg: Leg = {
+        index: i,
+        from: { id: i, ...a },
+        to: { id: i + 1, ...b },
+        mode: 'path',
+      };
+      const from = nativeLog.length;
+      const route = await computeRoute([a, b]);
+      const shape = infoShape(leg, route.ok ? route : undefined, bbox);
+      const height = shape ? await computeHeights(shape) : undefined;
+      const terrain = shape ? await computeTerrain(shape) : undefined;
+      const mine = nativeLog.slice(from);
+      infos.push({ mode: 'path', handKm: 0, height, terrain });
+      legsOut.push({
+        index: i,
+        de: a,
+        vers: b,
+        route: route.ok
+          ? {
+              ok: true,
+              distance_km: route.distanceKm,
+              duree_s: route.durationS,
+              points_forme: route.shape.length,
+              requete: raw(mine.find((e) => e.kind === 'route'))?.request,
+            }
+          : { ok: false, erreur: route.error },
+        altitudes: {
+          ok: !!height?.ok,
+          erreur: height && !height.ok ? height.error : undefined,
+          points: height?.ok ? height.profile.length : 0,
+          points_null: height?.ok
+            ? height.profile.filter((p) => p[1] === null).length
+            : 0,
+          brut: raw(mine.find((e) => e.kind === 'height')),
+        },
+        terrain: {
+          ok: !!terrain?.ok,
+          erreur: terrain && !terrain.ok ? terrain.error : undefined,
+          aretes: terrain?.ok ? terrain.edges.length : 0,
+          longueur_aretes_km: terrain?.ok
+            ? terrain.edges.reduce((s, e) => s + e.lengthKm, 0)
+            : 0,
+          brut: raw(mine.find((e) => e.kind === 'trace')),
+        },
+      });
+    }
+    const info = summarizeInfo(infos);
+    const alt = info.altitudes;
+    const ter = info.terrain;
+    bancSave(`refs-${name}.json`, {
+      reference: name,
+      plateforme: Platform.OS,
+      build: __DEV__ ? 'debug' : 'release',
+      horodatage: new Date().toISOString(),
+      points,
+      troncons: legsOut,
+      // Figures computed in TypeScript by the real code of core/.
+      calcul_ts: {
+        altitudes: alt.status,
+        d_plus_m: alt.status === 'ready' ? alt.ascentM : null,
+        d_moins_m: alt.status === 'ready' ? alt.descentM : null,
+        alt_basse_m: alt.status === 'ready' ? alt.minM : null,
+        alt_haute_m: alt.status === 'ready' ? alt.maxM : null,
+        points_profil: alt.status === 'ready' ? alt.profile.length : null,
+        terrain: ter.status,
+        parts: ter.status === 'ready' ? ter.shares : null,
+        segments_terrain: ter.status === 'ready' ? ter.segments.length : null,
+        main_km: info.handKm,
+      },
+    });
+  }
+  bancSave('refs-fini.json', { fini: true, references: names });
+}

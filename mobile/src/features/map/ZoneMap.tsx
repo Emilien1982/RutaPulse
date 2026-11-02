@@ -108,7 +108,9 @@ export function ZoneMap({ zone }: { zone: Zone }) {
           />
         </View>
         <View style={styles.attribution} pointerEvents="none">
-          <Text style={text.attribution}>{t('map.attribution')}</Text>
+          <Text style={text.attribution} maxFontSizeMultiplier={1}>
+            {t('map.attribution')}
+          </Text>
         </View>
       </View>
     </View>

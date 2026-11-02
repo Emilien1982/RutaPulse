@@ -1,0 +1,10 @@
+appId: fr.rutapulse.app
+---
+- tapOn:
+    id: 'route-open-infos'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 4000

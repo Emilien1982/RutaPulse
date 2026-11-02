@@ -39,6 +39,18 @@ class ValhallaRouteModule : Module() {
     return JSONObject().put("code", code).put("message", text).toString()
   }
 
+  // Same errors for every call: a refusal of Valhalla comes back as JSON.
+  private fun guarded(call: (Valhalla) -> String): String {
+    val engine = currentEngine()
+    return try {
+      call(engine)
+    } catch (e: ValhallaException.Internal) {
+      errorJson(e)
+    } catch (e: Exception) {
+      throw nativeError("ERR_ENGINE", e.message ?: "Engine error", e)
+    }
+  }
+
   override fun definition() = ModuleDefinition {
     Name("ValhallaRoute")
 
@@ -65,15 +77,12 @@ class ValhallaRouteModule : Module() {
 
     AsyncFunction("close") { closeEngine() }
 
-    AsyncFunction("route") { requestJson: String ->
-      val engine = currentEngine()
-      try {
-        engine.routeRaw(requestJson)
-      } catch (e: ValhallaException.Internal) {
-        errorJson(e)
-      } catch (e: Exception) {
-        throw nativeError("ERR_ENGINE", e.message ?: "Engine error", e)
-      }
+    AsyncFunction("route") { requestJson: String -> guarded { it.routeRaw(requestJson) } }
+
+    AsyncFunction("height") { requestJson: String -> guarded { it.heightRaw(requestJson) } }
+
+    AsyncFunction("traceAttributes") { requestJson: String ->
+      guarded { it.traceAttributesRaw(requestJson) }
     }
 
     OnDestroy { closeEngine() }

@@ -10,7 +10,7 @@ import type { RouteResult } from '@/core/routing/routeResponse';
 import type { ReadyMarker } from '@/core/zones/zoneLayout';
 import { mapColors } from '@/ui/theme';
 
-import { DraftScreen } from './DraftScreen';
+import { DraftInSession } from './testing/DraftInSession';
 
 let mockMapProps: Record<string, unknown> = {};
 const mockSources: Record<string, any> = {};
@@ -139,7 +139,7 @@ function engineWith(figures: [LonLat, LonLat, Figures][], fallback: Figures) {
 async function renderScreen() {
   await render(
     <QueryClientProvider client={new QueryClient()}>
-      <DraftScreen />
+      <DraftInSession />
     </QueryClientProvider>,
   );
   await act(async () => {});
@@ -230,7 +230,11 @@ beforeEach(() => {
 describe('C1: full screen, no tab bar, the cross and the confirmation', () => {
   it('is a route of the root stack, outside (tabs), as a full screen modal', () => {
     const app = `${process.cwd()}/src/app`;
-    expect(fs.existsSync(`${app}/draft.tsx`)).toBe(true);
+    expect(fs.existsSync(`${app}/draft/_layout.tsx`)).toBe(true);
+    expect(fs.existsSync(`${app}/draft/index.tsx`)).toBe(true);
+    expect(fs.existsSync(`${app}/draft/infos.tsx`)).toBe(true);
+    expect(fs.existsSync(`${app}/draft.tsx`)).toBe(false);
+    expect(fs.existsSync(`${app}/(tabs)/draft`)).toBe(false);
     expect(fs.existsSync(`${app}/(tabs)/draft.tsx`)).toBe(false);
     const layout = fs.readFileSync(`${app}/_layout.tsx`, 'utf8');
     expect(layout).toMatch(/name="draft"/);

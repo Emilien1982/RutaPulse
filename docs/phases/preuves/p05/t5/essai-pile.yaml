@@ -1,0 +1,105 @@
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- setLocation:
+    latitude: 48.672
+    longitude: 6.152
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- setLocation:
+    latitude: 48.672
+    longitude: 6.152
+- waitForAnimationToEnd:
+    timeout: 4000
+- tapOn:
+    text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
+    optional: true
+- tapOn:
+    id: 'new-route-button'
+- extendedWaitUntil:
+    visible: 'Touchez le départ sur la carte'
+    timeout: 10000
+- swipe:
+    start: '20%,75%'
+    end: '55%,50%'
+    duration: 500
+- tapOn:
+    point: '50%,50%'
+- extendedWaitUntil:
+    visible: "Touchez l'arrivée sur la carte"
+    timeout: 10000
+- tapOn:
+    point: '50%,30%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- tapOn:
+    point: '65%,40%'
+- waitForAnimationToEnd:
+    timeout: 6000
+- takeScreenshot: essai-android-creation
+# a) Infos s'empile
+- tapOn: 'ESSAI-INFOS'
+- extendedWaitUntil:
+    visible: 'INFOS ESSAI'
+    timeout: 10000
+- takeScreenshot: essai-android-infos
+# b) retour Android : pas de dialogue
+- back
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertNotVisible: 'Abandonner cet itinéraire.*'
+- assertVisible:
+    id: 'route-distance'
+- takeScreenshot: essai-android-retour-back
+# c) Modifier : pas de dialogue
+- tapOn: 'ESSAI-INFOS'
+- extendedWaitUntil:
+    visible: 'INFOS ESSAI'
+    timeout: 10000
+- tapOn: 'Modifier'
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertNotVisible: 'Abandonner cet itinéraire.*'
+- assertVisible:
+    id: 'route-distance'
+- takeScreenshot: essai-android-retour-modifier
+# d) croix : dialogue
+- tapOn:
+    id: 'route-close'
+- extendedWaitUntil:
+    visible: 'Abandonner cet itinéraire.*'
+    timeout: 5000
+- takeScreenshot: essai-android-croix
+- tapOn: 'Continuer'
+# e) retour Android depuis la création : dialogue
+- back
+- extendedWaitUntil:
+    visible: 'Abandonner cet itinéraire.*'
+    timeout: 5000
+- takeScreenshot: essai-android-back-creation
+- tapOn: 'Continuer'
+# f) depuis Infos, retour puis croix : toujours le dialogue
+- tapOn: 'ESSAI-INFOS'
+- extendedWaitUntil:
+    visible: 'INFOS ESSAI'
+    timeout: 10000
+- back
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: 'route-close'
+- extendedWaitUntil:
+    visible: 'Abandonner cet itinéraire.*'
+    timeout: 5000
+- tapOn: 'Abandonner'
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 10000

@@ -1,0 +1,12 @@
+{
+  "horodatage": "2026-11-02T11:10:15.405Z",
+  "plateforme": "android",
+  "build": "release",
+  "mesure": "affichage",
+  "points_demandes": 22,
+  "points_dans_l_itineraire": 22,
+  "appels_moteur": 21,
+  "appels_altitudes": 21,
+  "appels_terrain": 21,
+  "appels_en_echec": []
+}

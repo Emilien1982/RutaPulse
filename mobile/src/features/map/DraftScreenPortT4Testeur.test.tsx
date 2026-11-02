@@ -4,12 +4,12 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import type { ReactNode } from 'react';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 import type { RouteResult } from '@/core/routing/routeResponse';
 import type { ReadyMarker } from '@/core/zones/zoneLayout';
 
-import { DraftScreen } from './DraftScreen';
+import { DraftInSession } from './testing/DraftInSession';
 import { MapScreen } from './MapScreen';
 
 // MapLibre, the router, the disk and the engine are replaced.
@@ -139,7 +139,7 @@ const wrap = (node: ReactNode) => (
 );
 
 async function renderDraft() {
-  await render(wrap(<DraftScreen />));
+  await render(wrap(<DraftInSession />));
   await act(async () => {});
 }
 
@@ -206,7 +206,15 @@ async function waitForRemoval() {
   await fireEvent.press(screen.getByTestId('route-error-remove'));
 }
 
+// The summary is compact under 390 dp (p05-t8, decision 2); these suites
+// check the normal summary, on a usual phone (411 dp, text scale 1).
+let windowSpy: jest.SpyInstance;
+afterEach(() => windowSpy.mockRestore());
+
 beforeEach(() => {
+  windowSpy = jest
+    .spyOn(Dimensions, 'get')
+    .mockReturnValue({ width: 411, height: 900, scale: 1, fontScale: 1 });
   jest.clearAllMocks();
   // The queue of `mockResolvedValueOnce` must not leak from a test to the next.
   mockComputeRoute.mockReset();
@@ -291,6 +299,9 @@ describe('port: creating a route (RouteCreation.test, RouteCreationT4Testeur)', 
     ).toBeLessThan(1);
     await act(async () => finish(SUCCESS));
     await flush();
+    // The summary changes in one go: the altitudes (here an engine without
+    // `height`, so a failure) answer one turn after the route (ADR 0017, 6).
+    await flush();
     expect(
       StyleSheet.flatten(screen.getByTestId('route-figures').props.style)
         .opacity,
@@ -308,17 +319,17 @@ describe('port: creating a route (RouteCreation.test, RouteCreationT4Testeur)', 
     });
   });
 
-  it('full path: title, one call, figures, the cross asks nothing wrong, "Enregistrer" and "D+" absent', async () => {
+  it('full path: title, one call, figures, the cross asks nothing wrong, "Enregistrer" absent, "D+" shown', async () => {
     await renderDraft();
     expect(screen.getByText('Nouvel itinéraire')).toBeTruthy();
     await addPoints(HAYE, NANCY);
     expect(mockComputeRoute).toHaveBeenCalledTimes(1);
     expect(screen.getByTestId('route-distance')).toHaveTextContent('25,1 km');
     expect(screen.getByTestId('route-duration')).toHaveTextContent('1 h 35');
-    // Out of the phase 4 scope (spec): no save button, no elevation.
-    for (const word of ['Enregistrer', 'D\\+']) {
-      expect(screen.queryByText(new RegExp(word))).toBeNull();
-    }
+    // Out of the phase 4 scope (spec): no save button. The ascent (D+) is
+    // shown since phase 5 (spec C6, ADR 0017): its label is there.
+    expect(screen.queryByText(/Enregistrer/)).toBeNull();
+    expect(screen.getByText('Montée (D+)')).toBeTruthy();
     // 2 points: the way out is guarded.
     expect(mockPrevent?.value).toBe(true);
     await fireEvent.press(screen.getByTestId('route-close'));
@@ -343,7 +354,7 @@ describe('port: creating a route (RouteCreation.test, RouteCreationT4Testeur)', 
   });
 
   it('a touch right after the screen opens sets the start', async () => {
-    await render(wrap(<DraftScreen />));
+    await render(wrap(<DraftInSession />));
     await act(async () => {
       press(HAYE);
       await new Promise((resolve) => setTimeout(resolve, 150));

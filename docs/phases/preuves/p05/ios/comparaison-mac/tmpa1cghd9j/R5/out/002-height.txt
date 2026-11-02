@@ -1,0 +1,1 @@
+{"encoded_polyline":"wp_`|Amm{rJnHcTxHwSnIcMjLpNjLpNjLpNjLnNhLpNjLpNjLpNjLpNjLpNjLpNeFpNuHzSuHzSwHzSuHzSuH|SwHzSm@bB","range_height":[[0,350],[30,350],[60,348],[85,347],[115,349],[145,349],[175,348],[205,346],[235,345],[265,345],[295,344],[325,344],[355,345],[385,346],[407,346],[437,346],[467,345],[497,344],[527,345],[557,346],[587,346],[592,346]]}

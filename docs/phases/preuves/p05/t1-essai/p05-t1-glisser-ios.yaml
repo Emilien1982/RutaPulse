@@ -1,0 +1,8 @@
+# THROWAWAY (phase 5, T1). Slow swipe on marker 1 (long press then drag on iOS), iPhone 17 (402x874 pt).
+# Marker 1 at the map centre (201, 437). The app must already show the essay screen.
+appId: fr.rutapulse.app
+---
+- swipe:
+    start: 201, 437
+    end: 261, 377
+    duration: 6000

@@ -37,6 +37,20 @@ public class ValhallaRouteModule: Module {
     return text
   }
 
+  // Same errors for every call: a refusal of Valhalla comes back as JSON.
+  private func guarded(_ call: (Valhalla) throws -> String) throws -> String {
+    let engine = try currentEngine()
+    do {
+      return try call(engine)
+    } catch ValhallaError.valhallaError(let code, let message) {
+      return errorJson(code, message)
+    } catch ValhallaError.closed {
+      throw nativeError("ERR_ENGINE_NOT_OPEN", "The engine is closed")
+    } catch {
+      throw nativeError("ERR_ENGINE", String(describing: error))
+    }
+  }
+
   public func definition() -> ModuleDefinition {
     Name("ValhallaRoute")
 
@@ -64,16 +78,15 @@ public class ValhallaRouteModule: Module {
     }
 
     AsyncFunction("route") { (requestJson: String) -> String in
-      let engine = try self.currentEngine()
-      do {
-        return try engine.route(rawRequest: requestJson)
-      } catch ValhallaError.valhallaError(let code, let message) {
-        return self.errorJson(code, message)
-      } catch ValhallaError.closed {
-        throw nativeError("ERR_ENGINE_NOT_OPEN", "The engine is closed")
-      } catch {
-        throw nativeError("ERR_ENGINE", String(describing: error))
-      }
+      try self.guarded { try $0.route(rawRequest: requestJson) }
+    }
+
+    AsyncFunction("height") { (requestJson: String) -> String in
+      try self.guarded { try $0.height(rawRequest: requestJson) }
+    }
+
+    AsyncFunction("traceAttributes") { (requestJson: String) -> String in
+      try self.guarded { try $0.traceAttributes(rawRequest: requestJson) }
     }
 
     OnDestroy {

@@ -1,0 +1,15 @@
+Running on iPhone 17 - iOS 26.5 - DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D
+ > Flow a-creation
+Launch app "fr.rutapulse.app"... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Wait for animation to end within 4000 ms... COMPLETED
+Tap on id: new-route-button... COMPLETED
+Assert that "Touchez le départ sur la carte" is visible... COMPLETED
+Tap on point (50%,50%)... COMPLETED
+Assert that "Touchez l'arrivée sur la carte" is visible... COMPLETED
+Tap on point (50%,38%)... COMPLETED
+Assert that ".*[1-9].*", id: route-distance is visible... COMPLETED
+Tap on point (65%,40%)... COMPLETED
+Wait for animation to end within 8000 ms... COMPLETED
+Assert that ".*[1-9].*", id: route-ascent is visible... COMPLETED
+Take screenshot p05-ios-creation-resume-dplus... COMPLETED

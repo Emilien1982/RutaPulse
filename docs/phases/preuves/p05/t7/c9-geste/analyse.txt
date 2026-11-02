@@ -1,0 +1,10 @@
+| Geste | Plat. | Build | Durée (ms) | Évts | Arrêt max (ms, jusqu'à la fin des infos) | Calculs | Max/s | Écart min | Final fin (ms) | Infos pendant | Infos après | Fin de tout (ms) | Autres tronçons | Carte | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| c9-geste/geste-1/banc-p05/geste-1.json | android | release | 1997.8 | 111 | 50.5 | 10 | 5 | 201 | 22.9 | 0 | 4 | 121.2 | 0 | immobile | ok |
+| c9-geste/geste-2/banc-p05/geste-1.json | android | release | 1995.5 | 112 | 47.6 | 10 | 5 | 202.8 | 18.3 | 0 | 4 | 40.9 | 0 | immobile | ok |
+| c9-geste/geste-3/banc-p05/geste-1.json | android | release | 2009.8 | 110 | 53.2 | 10 | 5 | 199.5 | 15.6 | 0 | 4 | 58.4 | 0 | immobile | ok |
+
+| Témoin | Plat. | Build | Points | Durée (ms) | Arrêt max (ms) | Appels moteur |
+|---|---|---|---|---|---|---|
+| c9-geste/temoin-1/banc-p05/temoin-1.json | android | release | 11 | 3011.8 | 39.9 | 0 |
+

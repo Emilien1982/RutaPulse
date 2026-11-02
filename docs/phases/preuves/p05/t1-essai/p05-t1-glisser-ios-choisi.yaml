@@ -1,0 +1,9 @@
+# THROWAWAY (phase 5, T1). Tap marker 1 (it becomes the chosen point), wait, then slow swipe on it.
+appId: fr.rutapulse.app
+---
+- tapOn:
+    point: 201, 437
+- swipe:
+    start: 201, 437
+    end: 261, 377
+    duration: 6000

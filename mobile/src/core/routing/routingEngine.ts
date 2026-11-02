@@ -4,11 +4,19 @@
 
 import type { Bbox, Zone } from '../zones/catalogue';
 import { isInsideBbox } from '../zones/activeZone';
+import { buildHeightRequest, buildTraceRequest } from './infoRequest';
+import {
+  parseHeightResponse,
+  parseTraceResponse,
+  type HeightResult,
+  type TraceResult,
+} from './infoResponse';
 import { buildRouteRequest, type RoutePoint } from './routeRequest';
 import {
   failure,
   kindFromNativeError,
   parseRouteResponse,
+  type RouteFailure,
   type RouteResult,
 } from './routeResponse';
 
@@ -16,6 +24,9 @@ export type NativeRouting = {
   open(tarPath: string, elevationDir: string): Promise<void>;
   close(): Promise<void>;
   route(requestJson: string): Promise<string>;
+  // Optional so that older fakes still fit; a missing one is a 'failed' result.
+  height?(requestJson: string): Promise<string>;
+  traceAttributes?(requestJson: string): Promise<string>;
 };
 
 export type EnginePaths = { tarPath: string; elevationDir: string };
@@ -30,6 +41,16 @@ export type RoutingEngine = {
    * aborted before its turn is skipped: no native call, 'failed' result.
    */
   route(points: RoutePoint[], signal?: AbortSignal): Promise<RouteResult>;
+  /** Altitudes along a [lon, lat] shape. Same queue and rules as `route`. */
+  height(
+    shape: [number, number][],
+    signal?: AbortSignal,
+  ): Promise<HeightResult>;
+  /** Terrain edges along a [lon, lat] shape. Same queue and rules as `route`. */
+  traceAttributes(
+    shape: [number, number][],
+    signal?: AbortSignal,
+  ): Promise<TraceResult>;
   getState(): EngineState;
 };
 
@@ -57,6 +78,30 @@ export function createRoutingEngine(
 
   function sameZone(a: Zone | null, b: Zone | null): boolean {
     return a?.id === b?.id && a?.version === b?.version;
+  }
+
+  // One info call (height or trace): the queue, the abort, the open state.
+  // The shape comes from the engine itself, so no zone check (ADR 0017, § 2).
+  function infoCall<R extends { ok: boolean }>(
+    shape: [number, number][],
+    signal: AbortSignal | undefined,
+    call: ((requestJson: string) => Promise<string>) | undefined,
+    buildRequest: (shape: [number, number][]) => string,
+    parse: (text: string) => R,
+  ): Promise<R | RouteFailure> {
+    return enqueue(async (): Promise<R | RouteFailure> => {
+      try {
+        if (signal?.aborted) return failure('failed');
+        if (run.state === 'failed' && run.openError && !run.openError.ok) {
+          return run.openError;
+        }
+        if (run.state !== 'open') return failure('engineUnavailable');
+        if (shape.length < 2 || !call) return failure('failed');
+        return parse(await call(buildRequest(shape)));
+      } catch (error) {
+        return failure(kindFromNativeError(error));
+      }
+    });
   }
 
   return {
@@ -118,6 +163,26 @@ export function createRoutingEngine(
           return failure(kindFromNativeError(error));
         }
       });
+    },
+
+    height(shape, signal) {
+      return infoCall(
+        shape,
+        signal,
+        native.height?.bind(native),
+        buildHeightRequest,
+        parseHeightResponse,
+      );
+    },
+
+    traceAttributes(shape, signal) {
+      return infoCall(
+        shape,
+        signal,
+        native.traceAttributes?.bind(native),
+        buildTraceRequest,
+        parseTraceResponse,
+      );
     },
   };
 }

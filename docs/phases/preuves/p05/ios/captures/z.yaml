@@ -1,0 +1,11 @@
+appId: fr.rutapulse.app
+---
+- tapOn:
+    id: 'info-modify'
+- tapOn:
+    id: 'route-close'
+- tapOn: 'Abandonner'
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 10000

@@ -6,7 +6,7 @@ import { Alert } from 'react-native';
 import type { RouteResult } from '@/core/routing/routeResponse';
 import type { ReadyMarker } from '@/core/zones/zoneLayout';
 
-import { DraftScreen } from './DraftScreen';
+import { DraftInSession } from './testing/DraftInSession';
 
 // MapLibre, the router, the disk and the engine are replaced.
 let mockMapProps: Record<string, unknown> = {};
@@ -118,7 +118,7 @@ function success(distanceKm = 2, durationS = 600): RouteResult {
 async function renderScreen() {
   await render(
     <QueryClientProvider client={new QueryClient()}>
-      <DraftScreen />
+      <DraftInSession />
     </QueryClientProvider>,
   );
   await act(async () => {});

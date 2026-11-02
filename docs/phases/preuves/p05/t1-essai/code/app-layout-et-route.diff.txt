@@ -1,0 +1,35 @@
+diff --git a/mobile/src/app/_layout.tsx b/mobile/src/app/_layout.tsx
+index 7906ef3..a764592 100644
+--- a/mobile/src/app/_layout.tsx
++++ b/mobile/src/app/_layout.tsx
+@@ -3,6 +3,7 @@ import { Stack } from 'expo-router';
+ import { AppStatusBar } from '@/features/shell/AppStatusBar';
+ import { FontGate } from '@/features/shell/FontGate';
+ import { QueryProvider } from '@/features/shell/QueryProvider';
++import { TrialStarter } from '@/features/map/TrialStarter';
+ import { RoutingEngineStarter } from '@/features/shell/RoutingEngineStarter';
+ import { ZoneDownloaderStarter } from '@/features/zones/ZoneDownloaderStarter';
+ 
+@@ -13,8 +14,10 @@ export default function RootLayout() {
+         <AppStatusBar />
+         <ZoneDownloaderStarter />
+         <RoutingEngineStarter />
++        <TrialStarter />
+         <Stack>
+           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
++          <Stack.Screen name="essai-b" options={{ headerShown: false }} />
+           {/* Creation of a route: full screen, no tab bar (ADR 0016, section 6). */}
+           <Stack.Screen
+             name="draft"
+diff --git a/mobile/src/app/essai-b.tsx b/mobile/src/app/essai-b.tsx
+new file mode 100644
+index 0000000..d170e4e
+--- /dev/null
++++ b/mobile/src/app/essai-b.tsx
+@@ -0,0 +1,3 @@
++import { TrialDrag } from '@/features/map/TrialDrag';
++
++export default TrialDrag;
+import { TrialDrag } from '@/features/map/TrialDrag';
+
+export default TrialDrag;

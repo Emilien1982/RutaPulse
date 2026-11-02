@@ -112,6 +112,14 @@ export function CloseIcon({ size = 22, ...props }: IconProps) {
   );
 }
 
+export function ChevronIcon({ size = 24, ...props }: IconProps) {
+  return (
+    <Icon {...props} size={size} strokeWidth={2.8}>
+      <Path d="M9 5l7 7-7 7" />
+    </Icon>
+  );
+}
+
 export function PauseIcon({ size = 16, color }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>

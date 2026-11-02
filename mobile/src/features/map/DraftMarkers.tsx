@@ -7,7 +7,12 @@ import type { DraftPoint } from '@/core/draft/draft';
 import { t } from '@/core/i18n/t';
 import { clampToBbox } from '@/core/zones/activeZone';
 import type { Bbox } from '@/core/zones/catalogue';
-import { colors, mapColors, markerShadow } from '@/ui/theme';
+import {
+  colors,
+  mapColors,
+  markerShadow,
+  markerShadowRaised,
+} from '@/ui/theme';
 
 type Role = 'start' | 'end' | 'middle';
 
@@ -16,8 +21,9 @@ function roleOf(index: number, count: number): Role {
   return index === count - 1 ? 'end' : 'middle';
 }
 
-// Every marker sits in a square of 48 (the size of a finger target); the halo
-// of the chosen point is drawn behind it.
+// Every marker sits in a square of 48 (the size of a finger target). The
+// chosen point takes the look of `marqueur.point-deplace` (round of 40, halo
+// of 8, ADR 0017, section 10): a square of 56 holds it.
 function PointMarker({
   role,
   number,
@@ -39,21 +45,35 @@ function PointMarker({
     <View
       testID={`draft-marker-${number}`}
       accessibilityLabel={label}
-      style={styles.cell}
+      style={[styles.cell, chosen && styles.cellChosen]}
     >
       {chosen && <View testID="draft-marker-halo" style={styles.halo} />}
       {role === 'middle' ? (
-        <View style={styles.number}>
-          <Text style={styles.numberText}>{number}</Text>
+        <View style={[styles.number, chosen && styles.bigRound]}>
+          <Text style={[styles.numberText, chosen && styles.bigNumberText]}>
+            {number}
+          </Text>
         </View>
       ) : role === 'start' ? (
-        <View style={[styles.round, { backgroundColor: mapColors.start }]}>
+        <View
+          style={[
+            styles.round,
+            chosen && styles.bigRound,
+            { backgroundColor: mapColors.start },
+          ]}
+        >
           <Svg width={12} height={12} viewBox="0 0 12 12">
             <Path d="M3 1.5 L10.5 6 L3 10.5 Z" fill="#fff" />
           </Svg>
         </View>
       ) : (
-        <View style={[styles.round, { backgroundColor: mapColors.end }]}>
+        <View
+          style={[
+            styles.round,
+            chosen && styles.bigRound,
+            { backgroundColor: mapColors.end },
+          ]}
+        >
           <Svg width={16} height={16} viewBox="0 0 16 16">
             <Path d="M3 15V1.5" stroke="#fff" strokeWidth={1.8} />
             <Path d="M3.9 2h10v7h-10z" fill="#fff" />
@@ -237,12 +257,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  // Halo of the chosen point: magenta at 22 % (mockup 10, dragged point).
+  cellChosen: { width: 56, height: 56 },
+  // Halo of the chosen point: 8 around the round of 40, magenta at 22 %
+  // (mockup 10, dragged point).
   halo: {
     position: 'absolute',
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     backgroundColor: 'rgba(194, 0, 122, 0.22)',
   },
   round: {
@@ -267,6 +289,13 @@ const styles = StyleSheet.create({
     ...markerShadow,
   },
   numberText: { fontSize: 15, fontWeight: '800', color: '#111' },
+  bigRound: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    ...markerShadowRaised,
+  },
+  bigNumberText: { fontSize: 18 },
   refusedCell: {
     width: 40,
     height: 40,

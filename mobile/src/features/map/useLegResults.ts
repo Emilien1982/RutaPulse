@@ -76,3 +76,28 @@ export function useLegResults(
     return { status: 'pending' };
   });
 }
+
+// True when the two lists draw the same thing: the screen then keeps the old
+// list, and what depends on it is not computed again.
+export function sameLegs(a: LegState[], b: LegState[]): boolean {
+  return (
+    a.length === b.length &&
+    a.every((x, i) => {
+      const y = b[i];
+      if (!y || x.status !== y.status) return false;
+      if (x.status === 'done' && y.status === 'done') {
+        return x.result === y.result;
+      }
+      if (x.status === 'hand' && y.status === 'hand') {
+        return (
+          x.result.distanceKm === y.result.distanceKm &&
+          x.result.durationS === y.result.durationS
+        );
+      }
+      if (x.status === 'error' && y.status === 'error') {
+        return x.error === y.error;
+      }
+      return true;
+    })
+  );
+}

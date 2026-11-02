@@ -1,0 +1,10 @@
+{
+  "plateforme": "android",
+  "build": "release",
+  "horodatage": "2026-11-02T10:58:40.124Z",
+  "points": 11,
+  "duree_ms": 3012.3,
+  "ticks": 120,
+  "arret_max_fil_js_ms": 37.2,
+  "appels_moteur_pendant": 0
+}

@@ -3,6 +3,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { LegMode } from '@/core/draft/draft';
 import { t } from '@/core/i18n/t';
+import { formatDistance } from '@/core/routing/formatRoute';
+import { DashedStroke } from '@/ui/DashedStroke';
 import {
   HandModeIcon,
   LoopIcon,
@@ -10,14 +12,17 @@ import {
   TrashIcon,
   UndoIcon,
 } from '@/ui/icons';
-import { border, colors, radius, spacing, text } from '@/ui/theme';
+import { border, colors, mapColors, radius, spacing, text } from '@/ui/theme';
 
 // "Prochain tronçon": the mode given to the next leg (mockup 10).
 export function ModePicker({
   mode,
+  handKm = 0,
   onChoose,
 }: {
   mode: LegMode;
+  /** Length of the hand legs (km); the note shows when it is above 0. */
+  handKm?: number;
   onChoose: (mode: LegMode) => void;
 }) {
   const options: { mode: LegMode; label: string; icon: ReactNode }[] = [
@@ -38,7 +43,17 @@ export function ModePicker({
   ];
   return (
     <>
-      <Text style={styles.heading}>{t('route.nextLeg').toUpperCase()}</Text>
+      <View style={styles.headingRow}>
+        <Text style={styles.heading}>{t('route.nextLeg').toUpperCase()}</Text>
+        {handKm > 0 && (
+          <View testID="route-hand-note" style={styles.note}>
+            <DashedStroke color={mapColors.route} />
+            <Text style={styles.noteText}>
+              {t('route.handNote', { km: formatDistance(handKm) })}
+            </Text>
+          </View>
+        )}
+      </View>
       <View
         accessibilityRole="radiogroup"
         accessibilityLabel={t('route.nextLeg')}
@@ -155,12 +170,22 @@ export function DraftTools({
 }
 
 const styles = StyleSheet.create({
-  heading: {
-    ...text.sectionLabel,
+  headingRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginTop: 13,
     marginBottom: 6,
     marginLeft: 3,
   },
+  heading: text.sectionLabel,
+  note: {
+    flexShrink: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.s2,
+  },
+  noteText: { fontSize: 13, fontWeight: '700', color: colors.brown },
   segments: {
     flexDirection: 'row',
     height: 48,

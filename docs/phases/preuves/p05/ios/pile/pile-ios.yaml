@@ -1,0 +1,135 @@
+# Pile imbriquee (C7, ADR 0017 par. 7) sur iOS, release de la phase.
+# Position du simulateur reglee avant : xcrun simctl location DAF21CEF-... set 48.751,5.967
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- waitForAnimationToEnd:
+    timeout: 4000
+- tapOn:
+    text: 'Lors de l.utilisation.*|Pendant l.utilisation.*|While Using.*|Allow While.*'
+    optional: true
+- tapOn: 'Carte.*'
+- tapOn:
+    id: 'new-route-button'
+- extendedWaitUntil:
+    visible: 'Touchez le départ sur la carte'
+    timeout: 10000
+- tapOn:
+    point: '50%,50%'
+- extendedWaitUntil:
+    visible: "Touchez l'arrivée sur la carte"
+    timeout: 10000
+- tapOn:
+    point: '50%,38%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- tapOn:
+    point: '65%,40%'
+- waitForAnimationToEnd:
+    timeout: 8000
+- assertVisible:
+    id: 'route-ascent'
+    text: '.*[1-9].*'
+- takeScreenshot: pile-0-creation
+# a) Infos s'empile
+- tapOn:
+    id: 'route-open-infos'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: pile-1-infos
+# b) glissement depuis le bord gauche : retour sans dialogue
+- swipe:
+    start: '0%,50%'
+    end: '80%,50%'
+    duration: 400
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: 'Abandonner cet itinéraire.*'
+- assertVisible:
+    id: 'route-distance'
+- assertVisible:
+    id: 'route-close'
+- takeScreenshot: pile-2-apres-glissement
+# c) Modifier : sans dialogue
+- tapOn:
+    id: 'route-open-infos'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- tapOn:
+    id: 'info-modify'
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: 'Abandonner cet itinéraire.*'
+- assertVisible:
+    id: 'route-distance'
+- takeScreenshot: pile-3-apres-modifier
+# d) croix : dialogue
+- tapOn:
+    id: 'route-close'
+- extendedWaitUntil:
+    visible: 'Abandonner cet itinéraire.*'
+    timeout: 5000
+- takeScreenshot: pile-4-croix
+- tapOn: 'Continuer'
+- waitForAnimationToEnd:
+    timeout: 2000
+# e) Infos, glissement, puis croix : dialogue encore
+- tapOn:
+    id: 'route-open-infos'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- swipe:
+    start: '0%,50%'
+    end: '80%,50%'
+    duration: 400
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: 'route-close'
+- extendedWaitUntil:
+    visible: 'Abandonner cet itinéraire.*'
+    timeout: 5000
+- takeScreenshot: pile-5-croix-apres-aller-retour
+# e2) idem apres Modifier
+- tapOn: 'Continuer'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    id: 'route-open-infos'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- tapOn:
+    id: 'info-modify'
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: 'route-close'
+- extendedWaitUntil:
+    visible: 'Abandonner cet itinéraire.*'
+    timeout: 5000
+- takeScreenshot: pile-6-croix-apres-modifier
+- tapOn: 'Abandonner'
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 10000
+- takeScreenshot: pile-7-apres-abandon

@@ -1,0 +1,6 @@
+Crash de l'app iOS (release) quand la cle React du marqueur change PENDANT le glisser (variante keychange).
+Fichier source : ~/Library/Logs/DiagnosticReports/RutaPulse-2026-10-28-123411.ips (12:34:11)
+EXC_CRASH, SIGABRT, fil principal. Pile (haut) :
+  abort <- __cxa_throw <- objc_exception_throw <- +[NSException raise:format:] <- MapLibre
+  <- -[MLRNPointAnnotation setDragState:animated:] <- MapLibre
+Les captures ios-keychange-*.png montrent donc l'ecran d'accueil du simulateur apres la fin de l'app.

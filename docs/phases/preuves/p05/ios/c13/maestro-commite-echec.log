@@ -1,0 +1,45 @@
+Running on iPhone 17 - iOS 26.5 - DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D
+ > Flow p05-infos
+  > On Flow Complete
+Run flow when Platform is ANDROID...
+Run flow when Platform is ANDROID... SKIPPED
+Launch app "fr.rutapulse.app"... COMPLETED
+Run flow when Platform is ANDROID...
+Run flow when Platform is ANDROID... SKIPPED
+Tap on (Optional) "Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*"... WARNED
+Tap on "Carte.*"... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Tap on id: new-route-button... COMPLETED
+Assert that "Touchez le départ sur la carte" is visible... COMPLETED
+Tap on point (50%,50%)... COMPLETED
+Assert that "Touchez l'arrivée sur la carte" is visible... COMPLETED
+Tap on point (50%,38%)... COMPLETED
+Assert that ".*[1-9].*", id: route-distance is visible... COMPLETED
+Tap on point (65%,40%)... COMPLETED
+Wait for animation to end within 6000 ms... COMPLETED
+Tap on id: route-mode-hand... COMPLETED
+Tap on point (30%,45%)... COMPLETED
+Wait for animation to end within 5000 ms... COMPLETED
+Tap on id: route-mode-path... COMPLETED
+Tap on point (40%,60%)... COMPLETED
+Wait for animation to end within 10000 ms... COMPLETED
+Assert that id: route-error is not visible... COMPLETED
+Assert that ".*[1-9].*", id: route-ascent is visible... COMPLETED
+Take screenshot p05-c13-creation-resume... COMPLETED
+Tap on id: route-open-infos... COMPLETED
+Assert that "Modifier" is visible... FAILED
+Run flow when Platform is ANDROID...
+Run flow when Platform is ANDROID... SKIPPED
+
+Assertion is false: "Modifier" is visible
+
+Assertion '"Modifier" is visible' failed. Check the UI hierarchy in debug artifacts to verify the element state and properties.
+
+Possible causes:
+- Element selector may be incorrect - check if there are similar elements with slightly different names/properties.
+- Element may be temporarily unavailable due to loading state
+- This could be a real regression that needs to be addressed
+
+==== Debug output (logs & screenshots) ====
+
+/Users/utilisateur/dev_ai/vtt-nav-preuves/p05/ios/c13/debug

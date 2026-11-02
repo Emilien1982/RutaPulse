@@ -1,0 +1,1 @@
+{"height":{"rejected":{"code":"ERR_ENGINE_NOT_OPEN","message":"Call to function 'ValhallaRoute.height' has been rejected.\n→ Caused by: The engine is not open"}},"trace":{"rejected":{"code":"ERR_ENGINE_NOT_OPEN","message":"Call to function 'ValhallaRoute.traceAttributes' has been rejected.\n→ Caused by: The engine is not open"}}}
