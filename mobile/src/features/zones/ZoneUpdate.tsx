@@ -9,6 +9,7 @@ import {
   type ZoneRow,
 } from '@/core/zones/zoneRow';
 import { Button } from '@/ui/Button';
+import { DashedRule } from '@/ui/DashedRule';
 import { CloseIcon, DownloadIcon, PauseIcon } from '@/ui/icons';
 import { colors, spacing, target, text } from '@/ui/theme';
 
@@ -41,6 +42,9 @@ export function ZoneUpdate({
   if (update.kind === 'available') {
     return (
       <View style={styles.part}>
+        <View style={styles.rule}>
+          <DashedRule />
+        </View>
         <Text style={styles.title}>{t('zones.updateAvailable')}</Text>
         <Text style={text.secondary}>
           {sameDate ? size : t('zones.meta', { size, date })}
@@ -70,6 +74,9 @@ export function ZoneUpdate({
 
   return (
     <View style={styles.part}>
+      <View style={styles.rule}>
+        <DashedRule />
+      </View>
       <Text style={[styles.title, styles.underCross]}>
         {sameDate
           ? t('zones.updateTitleNoDate')
@@ -160,11 +167,8 @@ export function ZoneUpdate({
 const styles = StyleSheet.create({
   part: {
     marginTop: 10,
-    paddingTop: spacing.s2,
-    borderTopWidth: 2,
-    borderStyle: 'dashed',
-    borderColor: 'rgba(58,31,15,0.55)',
   },
+  rule: { marginBottom: spacing.s2 },
   title: { ...text.secondary, color: colors.brown, fontWeight: '700' },
   underCross: { paddingRight: 44 },
   line: { flexDirection: 'row', alignItems: 'center', gap: 6, marginTop: 2 },
@@ -179,7 +183,7 @@ const styles = StyleSheet.create({
   action: { marginTop: spacing.s2, alignSelf: 'flex-start' },
   cross: {
     position: 'absolute',
-    top: -6,
+    top: -4, // -6 below the 2-pt rule (mockup 41)
     right: -6,
     width: target.stop,
     height: target.stop,

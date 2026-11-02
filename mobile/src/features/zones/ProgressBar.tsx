@@ -22,7 +22,12 @@ export function ProgressBar({
       accessibilityValue={{ min: 0, max: 100, now: percent }}
       style={styles.bar}
     >
-      <View style={[styles.fill, { width: `${percent}%` }]} />
+      <View
+        style={[
+          styles.fill,
+          { width: `${percent}%`, borderRightWidth: percent > 0 ? 2 : 0 },
+        ]}
+      />
     </View>
   );
 }
@@ -40,7 +45,6 @@ const styles = StyleSheet.create({
   fill: {
     height: '100%',
     backgroundColor: colors.mustard,
-    borderRightWidth: 2,
     borderColor: colors.brown,
   },
 });

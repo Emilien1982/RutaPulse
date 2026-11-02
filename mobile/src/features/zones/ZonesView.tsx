@@ -7,6 +7,7 @@ import {
   type ZoneRows,
 } from '@/core/zones/zoneRow';
 import { Button } from '@/ui/Button';
+import { DashedRule } from '@/ui/DashedRule';
 import { WifiOffIcon } from '@/ui/icons';
 import { ScreenFrame } from '@/ui/ScreenFrame';
 import { SwitchRow } from '@/ui/SwitchRow';
@@ -57,6 +58,7 @@ export function ZonesView({
             </Text>
           </View>
           <View style={styles.alertSwitch}>
+            <DashedRule />
             <SwitchRow
               label={t('settings.wifiOnly')}
               value={wifiOnly}
@@ -92,7 +94,9 @@ export function ZonesView({
       )}
       {catalogue === 'error' && (
         <View style={styles.error}>
-          <Text style={text.titleName}>{t('zones.catalogueError')}</Text>
+          <Text style={[text.titleName, styles.errorTitle]}>
+            {t('zones.catalogueError')}
+          </Text>
           <Text style={[text.secondary, styles.message]}>
             {t('zones.catalogueErrorHelp')}
           </Text>
@@ -125,9 +129,6 @@ const styles = StyleSheet.create({
   bold: { fontWeight: '700' },
   alertSwitch: {
     marginTop: spacing.s1,
-    borderTopWidth: 2,
-    borderStyle: 'dashed',
-    borderColor: 'rgba(58,31,15,0.55)',
   },
   section: {
     flexDirection: 'row',
@@ -138,6 +139,7 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing.s1,
   },
   explanation: { marginTop: spacing.s3, marginHorizontal: spacing.s1 },
-  message: { marginVertical: spacing.s2 },
+  message: { marginVertical: spacing.s2, marginHorizontal: spacing.s1 },
+  errorTitle: { marginHorizontal: spacing.s1 },
   error: { gap: spacing.s2, paddingVertical: spacing.s2 },
 });
