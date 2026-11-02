@@ -13,7 +13,6 @@ import {
   serializePlan,
   serializeReady,
   versionDir,
-  zoneDir,
 } from './zoneLayout';
 import type { ZoneOps } from './zoneOps';
 
@@ -243,10 +242,8 @@ export async function downloadZone(
   if (signal.aborted) return cancelled;
   await ops.writeText(readyPath(zone), serializeReady(zone, ops.now()));
   await ops.remove(planPath(zone));
-  for (const name of await ops.listDir(zoneDir(zone.id))) {
-    if (name !== `v${zone.version}`)
-      await ops.remove(`${zoneDir(zone.id)}/${name}`);
-  }
+  // The other versions stay: the engine and the map may still read them.
+  // `removeOldVersions` erases them after the switch (ADR 0018, section 4).
   const ready: DownloadState = { kind: 'ready' };
   onState(ready);
   return ready;

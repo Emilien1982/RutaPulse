@@ -3,10 +3,21 @@
 import type { Bbox, Zone } from './catalogue';
 import type { ReadyMarker } from './zoneLayout';
 
-/** The ready zone installed most recently; null when there is none. */
+/**
+ * The zone the app should use (ADR 0018, section 3): for each `id`, only the
+ * greatest ready version counts; among those zones, the one installed most
+ * recently. Null when there is none.
+ */
 export function pickActiveZone(installed: ReadyMarker[]): Zone | null {
-  let best: ReadyMarker | null = null;
+  const latestById = new Map<string, ReadyMarker>();
   for (const marker of installed) {
+    const known = latestById.get(marker.zone.id);
+    if (!known || marker.zone.version > known.zone.version) {
+      latestById.set(marker.zone.id, marker);
+    }
+  }
+  let best: ReadyMarker | null = null;
+  for (const marker of latestById.values()) {
     if (
       !best ||
       Date.parse(marker.installedAt) > Date.parse(best.installedAt)

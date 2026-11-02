@@ -154,6 +154,18 @@ export const fr = {
     "Une zone contient la carte, le calcul d'itinéraire et l'altitude d'un carré d'environ 50 km de côté. Une fois téléchargée, tout marche sans réseau\u00A0: carte, création et suivi.",
   'zones.delete': 'Supprimer',
   'zones.deleteCancel': 'Garder',
+  'zones.updateAvailable': 'Mise à jour disponible',
+  'zones.update': 'Mettre à jour',
+  'zones.updateLabel': 'Mettre à jour la zone {name} ({size})',
+  'zones.updateTitle': 'Mise à jour\u00A0: carte du {date}',
+  'zones.updateTitleNoDate': 'Mise à jour',
+  'zones.updateUsable': 'La zone reste utilisable pendant la mise à jour.',
+  'zones.updateUsableOld': 'La zone reste utilisable avec la carte du {date}.',
+  'zones.updateFailed': 'Échec de la mise à jour · {progress}',
+  'zones.updateCancelLabel': 'Annuler la mise à jour de {name}',
+  'zones.updateRetryLabel': 'Réessayer la mise à jour de {name}',
+  'zones.updateProgressLabel': 'Mise à jour de {name}',
+  'zones.updated': 'Zone {name} mise à jour.',
 } as const;
 
 export type TextKey = keyof typeof fr;

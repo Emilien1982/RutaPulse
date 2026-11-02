@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from '@tanstack/react-store';
-import { Alert } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { AccessibilityInfo, Alert } from 'react-native';
 
 import { t } from '@/core/i18n/t';
 import { buildZoneRows } from '@/core/zones/zoneRow';
@@ -17,7 +18,9 @@ import { ZonesView, type CatalogueStatus } from './ZonesView';
 
 export const zonesTitle = t('tabs.zones');
 
-export function ZonesScreen() {
+// `focused`: the tab is in front (the route file knows it); a screen reader
+// hears "zone updated" only then.
+export function ZonesScreen({ focused = true }: { focused?: boolean }) {
   const catalogue = useCatalogue();
   const installed = useInstalledZones();
   const downloads = useSelector(zoneDownloads);
@@ -30,9 +33,33 @@ export function ZonesScreen() {
     downloads,
   );
 
-  // Free space is read again whenever the installed zones change.
+  // A screen reader hears it when a zone has just been updated (mockup 41).
+  const versions = useRef<Map<string, number> | null>(null);
+  useEffect(() => {
+    if (!installed.data) return;
+    const known = versions.current;
+    const next = new Map<string, number>();
+    for (const { zone } of installed.data) {
+      next.set(zone.id, Math.max(next.get(zone.id) ?? 0, zone.version));
+    }
+    for (const [id, version] of next) {
+      const before = known?.get(id);
+      const name = installed.data.find((m) => m.zone.id === id)?.zone.name;
+      if (focused && before !== undefined && version > before && name) {
+        AccessibilityInfo.announceForAccessibility(
+          t('zones.updated', { name }),
+        );
+      }
+    }
+    versions.current = next;
+    // `focused` is read, not watched: a change of focus announces nothing.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [installed.data]);
+
+  // Free space is read again after each reading of the disk: an old version
+  // erased after a switch frees room that `installedBytes` does not show.
   const freeSpace = useQuery({
-    queryKey: ['zones', 'freeSpace', rows.installedBytes],
+    queryKey: ['zones', 'freeSpace', installed.dataUpdatedAt],
     queryFn: () => createZoneOps().availableSpace(),
     networkMode: 'always',
   });

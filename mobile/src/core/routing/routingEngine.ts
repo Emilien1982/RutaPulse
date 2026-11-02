@@ -34,8 +34,12 @@ export type EnginePaths = { tarPath: string; elevationDir: string };
 export type EngineState = 'closed' | 'opening' | 'open' | 'failed';
 
 export type RoutingEngine = {
-  /** Opens the engine on this zone; null closes it. */
-  setZone(zone: Zone | null): void;
+  /**
+   * Opens the engine on this zone; null closes it. The promise is kept when
+   * the queue has passed this point (old zone closed, new one open or
+   * failed). It never rejects.
+   */
+  setZone(zone: Zone | null): Promise<void>;
   /**
    * Never rejects. Calls wait in line, one at a time. A call whose signal is
    * aborted before its turn is skipped: no native call, 'failed' result.
@@ -108,10 +112,10 @@ export function createRoutingEngine(
     getState: () => state,
 
     setZone(zone) {
-      if (sameZone(zone, wanted)) return;
+      if (sameZone(zone, wanted)) return enqueue(async () => undefined);
       wanted = zone;
       state = zone ? 'opening' : 'closed';
-      void enqueue(async () => {
+      return enqueue(async () => {
         if (run.state !== 'closed') {
           try {
             await native.close();
