@@ -24,7 +24,7 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 spécifiée ([spec](docs/phases/p05-infos-itineraire.md)) ; phase 5b ajoutée (difficulté VTT et mise à jour des zones) |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b à spécifier (difficulté VTT et mise à jour des zones) |
 
 ## Décisions prises
 
@@ -53,6 +53,10 @@
 - 2026-10-27 — Point posé hors chemin : un trait de liaison en pointillés le relie au tracé. Il n'est pas compté dans la distance, la durée, le suivi ni le GPX pour l'instant (à revoir avant la phase 8). Durée affichée au moins « 1 min ».
 - 2026-10-27 — Spec de la phase 4 (créer et modifier un itinéraire) validée par Émilien, avec les choix du pilotage : ajout à la fin seulement, confirmation à la fermeture dès 2 points, tronçon à la main à la vitesse moyenne (ou 10 km/h), annuler jusqu'à 50 actions sans « Rétablir ».
 - 2026-10-27 — ADR 0016 (itinéraire en création) accepté par Émilien. Glisser un point demande un appui long (obligatoire sur iOS) ; la bulle d'aide le dit sur les deux plateformes. À revoir sur un vrai téléphone.
+- 2026-11-02 — Phase 5 fusionnée dans main, Android et iOS : D+ dans le résumé de la création, écran Infos (distance, durée, D+ et D−, profil, parts route/piste/sentier/à la main, carte en arche, « Modifier »), point choisi agrandi, bulle et note « À la main ». 15 critères tenus, D+ et terrain identiques au Mac sur 5 références, 1 326 tests, CI verte. ADR 0017 ; ADR 0005 et 0015 annotés.
+- 2026-11-02 — Très grandes tailles de texte (écrans qui cassent) et brouillon perdu sur Android au changement de taille du texte : à traiter à la finition (phase 10), décision d'Émilien.
+- 2026-11-02 — Quand on ajoute un point, le choix d'un point est vidé (décision du pilotage), au prochain passage sur la création.
+- 2026-11-02 — L'app calcule par tronçons `break` (phase 4), qui donnent des tracés plus courts qu'une route d'un seul tenant (R5 : −4 km). À surveiller à l'usage : demi-tours ou raccourcis sur un point de passage (ADR 0016).
 - 2026-10-28 — ADR 0017 (calcul des infos d'itinéraire) accepté par Émilien. Altitudes par `height` de Valhalla (même D+ sur iOS, Android et Mac), terrain par `trace_attributes`. Altitudes manquantes : tout ou rien. Part « À la main » en magenta, à confirmer par le designer.
 - 2026-10-28 — Spec de la phase 5 (infos de l'itinéraire) validée par Émilien : 4e part de terrain « À la main », écran Infos ouvert depuis le résumé, calcul après chaque action.
 - 2026-10-28 — Nouvelle phase 5b, après la 5 : difficulté VTT (`mtb:scale`), avec une table ajoutée par la fabrique, une zone Nancy v4 et la mise à jour d'une zone dans l'app.
@@ -92,18 +96,25 @@
 
 ## Prochaine étape
 
-Lancer la phase 5 (spec validée : [docs/phases/p05-infos-itineraire.md](docs/phases/p05-infos-itineraire.md)) dans une session de phase. Ensuite : spec de la phase 5b.
+Écrire la spec de la phase 5b (difficulté VTT `mtb:scale` : table ajoutée par la fabrique, zone Nancy v4 lancée à la main par Émilien, mise à jour d'une zone dans l'app), la faire valider par Émilien, puis la lancer dans une session de phase.
 
-## Passation du pilotage (27 octobre 2026)
+## Passation du pilotage (2 novembre 2026)
 
-La session de pilotage d'origine (19 au 27 octobre) a été remplacée par une
-nouvelle, pour alléger le contexte. Ce qu'il faut savoir pour reprendre :
+La session « Pilotage RutaPulse (reprise) » (local_4f9d736d, 27 octobre au
+2 novembre) passe la main à une nouvelle session de pilotage, après la
+fusion de la phase 5, comme le veut la règle d'Émilien. Ce qu'il faut savoir :
 
 **État exact**
-- Mise à jour du 27 octobre au soir : phase 3 fusionnée par le nouveau
-  pilotage (session « Pilotage RutaPulse (reprise) », local_4f9d736d).
-- Les anciennes sessions (essais, phases 0 à 2) sont finies ; leurs
-  branches locales ne servent plus que de trace.
+- `main` à jour et poussé : phases 0 à 5 fusionnées. Rien en cours.
+- Prochaine étape : spec de la phase 5b (voir « Prochaine étape »).
+- Les sessions des phases 3, 4 et 5 sont finies ; leurs branches et
+  worktrees ne servent plus que de trace. Branches jetables locales des
+  phases 4 et 5 (`claude/p04-*`, `claude/p05-*`), jamais poussées.
+- Xcode est en 27.2, licence acceptée le 2 novembre. Simulateurs : iPhone
+  17 (iOS 26.5) et `emulator-5554` (Android 14 arm64), remis en ordre.
+- À faire en premier : créer le réveil horaire (`CronCreate`, minute 23)
+  et relire la mémoire de Claude (`pilotage-sobre`,
+  `reprise-auto-apres-limite`).
 
 **Rôle du pilotage**
 - Seule session qui parle à Émilien. Il ne veut qu'un interlocuteur.
@@ -136,7 +147,14 @@ nouvelle, pour alléger le contexte. Ce qu'il faut savoir pour reprendre :
 - Une session de phase peut finir sans prévenir : vérifier régulièrement
   l'état des sessions liées.
 - Après une limite d'utilisation, relancer soi-même les sessions dès la
-  réinitialisation (minuterie en arrière-plan qui réveille le pilotage).
+  réinitialisation (le réveil horaire s'en charge).
+- Un essai de la phase précédente et une référence peuvent différer pour
+  une raison légitime (tracé, méthode) : demander la cause avec une preuve
+  rejouable, comme pour l'écart de D+ de la phase 5.
+- Règles des briefs apprises en phase 5 : ne jamais contourner un refus du
+  garde-fou ; arrêter ses processus par PID seulement, jamais `pkill -f` ;
+  preuves dans un dossier durable, hors de `/tmp` ; vérifier le fichier
+  d'un écran avant de le nommer dans une consigne.
 - Une boîte de fin de tour avec une question reste affichée tant qu'une
   nouvelle ne la remplace pas : les sessions de phase n'y mettent jamais
   de question.
@@ -156,9 +174,11 @@ valide spec, design, architecture et fusion ; tests sur simulateurs.
 - La fabrique dépend de serveurs tiers (Geofabrik, osmdata) ; une zone côtière échoue si osmdata est en panne. Parade possible plus tard : copie des annexes dans une release.
 - Une zone côtière et une 2e zone n'ont pas encore été fabriquées.
 - Fabrique : distinguer les chemins urbains des sentiers dans les tuiles (place Stanislas, halage dessinés en tirets rouges).
-- Plus tard (comparaison p04-t7) : point glissé agrandi avec halo (essai MapLibre d'abord) ; bulle « À la main », à chaque passage en mode « À la main » jusqu'à la première touche ; note « À la main : 0,6 km » de la maquette 11.
 - Limite connue : deux points de suite loin d'un chemin, l'erreur peut viser le mauvais point (code 171 ambigu).
 - Avant la phase 8 : décider si la liaison compte dans la distance et le GPX.
 - Phase 8 au plus tard : cadrage hors zone avec la position visible ; états « suit ma position » et flèche de cap (maquette 90).
 - Petites tâches : écarts non bloquants de la phase 2, nettoyage des fichiers partiels iOS dans `tmp/`, minuteur Jest.
-- Non testé sur simulateur : geste de pincement, vrai mode avion iOS, gros texte du système sur petits écrans.
+- Non testé sur simulateur : geste de pincement, vrai mode avion iOS.
+- Phase 10 (finition) : très grandes tailles de texte dans toute l'app ; Android, garder le brouillon quand l'activité est recréée.
+- Prochain passage sur la création : vider le point choisi à l'ajout d'un point ; nom accessible du résumé compact non touchable.
+- Plus tard (comparaison p05-t8) : écarts P1 à P7 du designer, avec leur phase ; capture iOS « Altitudes indisponibles ».
