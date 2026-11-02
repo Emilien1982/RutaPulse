@@ -231,6 +231,7 @@ Une seule graisse de Jost suffit en v1 (700).
 | `texte.titre-barre` | 18 | 700 | Jost | Titre de la barre du haut (« Nouvel itinéraire ») |
 | `texte.chiffre-cle` | 28 | 800 | système | Distance, D+, durée, à l'arrêt |
 | `texte.chiffre-cle-unite` | 17 | 700 | système | Unité à côté d'un chiffre clé (« km », « m », « h ») |
+| `texte.chiffre-cle-compact` / `-unite` | 24 / 15 | 800 / 700 | système | Résumé de la création sur un écran étroit (largeur ÷ échelle du texte < 390). Ajouté le 2 novembre 2026 (phase 5, T9) |
 | `texte.bouton-action` | 17 (20 sur l'écran « Arrivée ») | 700 | Jost | Libellé d'un bouton principal ou secondaire |
 | `texte.bouton` | 17 | 600 | système | Segments, interrupteurs, liens soulignés |
 | `texte.outil` | 15 | 600 | système | Libellé sous l'icône d'un outil (Annuler, Boucler, Supprimer) |
