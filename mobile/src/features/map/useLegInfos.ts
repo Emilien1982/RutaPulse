@@ -60,7 +60,10 @@ export function useLegInfos(
   draft: Draft,
   zone: Pick<Zone, 'id' | 'version' | 'bbox'>,
   states: LegState[],
+  /** The Infos screen only reads: a failed request is not asked again. */
+  readOnly = false,
 ): LegInfo[] {
+  const settings = readOnly ? { ...SETTINGS, retryOnMount: false } : SETTINGS;
   const legs = listLegs(draft);
   const plans = legs.map((leg, i) => {
     const state = states[i];
@@ -95,7 +98,7 @@ export function useLegInfos(
           return result.profile;
         },
         enabled: shape !== null,
-        ...SETTINGS,
+        ...settings,
       };
       if (leg.mode === 'hand') return [heights];
       const terrain = {
@@ -110,7 +113,7 @@ export function useLegInfos(
           return result.edges;
         },
         enabled: shape !== null,
-        ...SETTINGS,
+        ...settings,
       };
       return [heights, terrain];
     }),

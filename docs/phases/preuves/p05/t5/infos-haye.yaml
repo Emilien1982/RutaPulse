@@ -1,0 +1,71 @@
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- setLocation:
+    latitude: 48.751
+    longitude: 5.967
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- setLocation:
+    latitude: 48.751
+    longitude: 5.967
+- waitForAnimationToEnd:
+    timeout: 4000
+- tapOn:
+    text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
+    optional: true
+- tapOn:
+    id: 'new-route-button'
+- extendedWaitUntil:
+    visible: 'Touchez le départ sur la carte'
+    timeout: 10000
+- tapOn:
+    point: '50%,50%'
+- extendedWaitUntil:
+    visible: "Touchez l'arrivée sur la carte"
+    timeout: 10000
+- tapOn:
+    point: '50%,38%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- tapOn:
+    point: '65%,40%'
+- waitForAnimationToEnd:
+    timeout: 6000
+- tapOn:
+    id: 'route-mode-hand'
+- tapOn:
+    point: '30%,45%'
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    id: 'route-mode-path'
+- tapOn:
+    point: '40%,60%'
+- waitForAnimationToEnd:
+    timeout: 10000
+- takeScreenshot: p05-t5-android-haye-creation-4-points
+- tapOn:
+    id: 'route-open-infos'
+- extendedWaitUntil:
+    visible: 'Modifier'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 5000
+- takeScreenshot: p05-t5-android-haye-infos
+- assertNotVisible: 'Démarrer le suivi'
+- assertNotVisible: 'Difficulté.*'
+- tapOn: 'Modifier'
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: 'Abandonner cet itinéraire.*'
+- assertVisible:
+    id: 'route-distance'
+- takeScreenshot: p05-t5-android-haye-retour-creation

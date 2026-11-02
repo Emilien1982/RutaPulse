@@ -39,5 +39,12 @@ export function elevationRange(
 ): { minM: number; maxM: number } | null {
   const heights = heightsOf(profile);
   if (!heights) return null;
-  return { minM: Math.min(...heights), maxM: Math.max(...heights) };
+  // A loop, not `Math.min(...heights)`: thousands of arguments can fail.
+  let minM = heights[0] as number;
+  let maxM = minM;
+  for (const h of heights) {
+    if (h < minM) minM = h;
+    if (h > maxM) maxM = h;
+  }
+  return { minM, maxM };
 }

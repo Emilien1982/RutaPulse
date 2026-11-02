@@ -92,3 +92,13 @@ export const mapColors = {
   outsideVeil: '#CFC8BB',
   outsideVeilOpacity: 0.72,
 } as const;
+
+// Terrain of the route ("terrain.*"). Source: design/tokens.md. "À la main"
+// takes the magenta of the dashes (decision of Émilien, ADR 0017, answer 2,
+// to be confirmed by the designer).
+export const terrainColors = {
+  road: '#5A5A5A',
+  track: mapColors.track,
+  trail: mapColors.path,
+  hand: mapColors.route,
+} as const;

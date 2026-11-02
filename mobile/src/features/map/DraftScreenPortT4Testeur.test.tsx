@@ -9,7 +9,7 @@ import { StyleSheet } from 'react-native';
 import type { RouteResult } from '@/core/routing/routeResponse';
 import type { ReadyMarker } from '@/core/zones/zoneLayout';
 
-import { DraftScreen } from './DraftScreen';
+import { DraftInSession } from './testing/DraftInSession';
 import { MapScreen } from './MapScreen';
 
 // MapLibre, the router, the disk and the engine are replaced.
@@ -139,7 +139,7 @@ const wrap = (node: ReactNode) => (
 );
 
 async function renderDraft() {
-  await render(wrap(<DraftScreen />));
+  await render(wrap(<DraftInSession />));
   await act(async () => {});
 }
 
@@ -346,7 +346,7 @@ describe('port: creating a route (RouteCreation.test, RouteCreationT4Testeur)', 
   });
 
   it('a touch right after the screen opens sets the start', async () => {
-    await render(wrap(<DraftScreen />));
+    await render(wrap(<DraftInSession />));
     await act(async () => {
       press(HAYE);
       await new Promise((resolve) => setTimeout(resolve, 150));

@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import type { RouteResult } from '@/core/routing/routeResponse';
 import type { ReadyMarker } from '@/core/zones/zoneLayout';
 
-import { DraftScreen } from './DraftScreen';
+import { DraftInSession } from './testing/DraftInSession';
 
 // MapLibre, the router, the disk and the engine are replaced.
 let mockMapProps: Record<string, unknown> = {};
@@ -121,7 +121,7 @@ async function renderScreen() {
   client = new QueryClient();
   await render(
     <QueryClientProvider client={client}>
-      <DraftScreen />
+      <DraftInSession />
     </QueryClientProvider>,
   );
   await act(async () => {});

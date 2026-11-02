@@ -130,6 +130,7 @@ export function RouteSummarySheet({
   ascentM,
   pending,
   empty,
+  onOpen,
   children,
 }: {
   distanceKm: number;
@@ -139,47 +140,63 @@ export function RouteSummarySheet({
   pending?: boolean;
   /** No route yet (under 2 points): a dash instead of the figures. */
   empty?: boolean;
+  /** Opens the Infos screen; absent when it cannot open yet. */
+  onOpen?: () => void;
   children?: ReactNode;
 }) {
   const insets = useSafeAreaInsets();
+  const figures = (
+    <View
+      testID="route-figures"
+      style={[styles.summary, pending && styles.pending]}
+    >
+      <Figure
+        testID="route-distance"
+        value={empty ? t('route.noFigure') : formatDistance(distanceKm)}
+        label={t('route.distance')}
+        accessibilityLabel={empty ? t('route.distanceEmptyLabel') : undefined}
+      />
+      <Figure
+        testID="route-ascent"
+        value={
+          empty || ascentM === null || ascentM === undefined
+            ? t('route.noFigure')
+            : formatAscent(ascentM)
+        }
+        label={t('route.ascent')}
+        accessibilityLabel={
+          empty
+            ? t('route.ascentEmptyLabel')
+            : ascentM === null
+              ? t('route.ascentMissingLabel')
+              : undefined
+        }
+      />
+      <Figure
+        testID="route-duration"
+        value={empty ? t('route.noFigure') : formatDuration(durationS)}
+        label={t('route.duration')}
+        accessibilityLabel={empty ? t('route.durationEmptyLabel') : undefined}
+      />
+    </View>
+  );
   return (
     <View
       testID="route-summary"
       style={[styles.sheet, { paddingBottom: insets.bottom + spacing.s3 }]}
     >
-      <View
-        testID="route-figures"
-        style={[styles.summary, pending && styles.pending]}
-      >
-        <Figure
-          testID="route-distance"
-          value={empty ? t('route.noFigure') : formatDistance(distanceKm)}
-          label={t('route.distance')}
-          accessibilityLabel={empty ? t('route.distanceEmptyLabel') : undefined}
-        />
-        <Figure
-          testID="route-ascent"
-          value={
-            empty || ascentM === null || ascentM === undefined
-              ? t('route.noFigure')
-              : formatAscent(ascentM)
-          }
-          label={t('route.ascent')}
-          accessibilityLabel={
-            empty
-              ? t('route.ascentEmptyLabel')
-              : ascentM === null
-                ? t('route.ascentMissingLabel')
-                : undefined
-          }
-        />
-        <Figure
-          testID="route-duration"
-          value={empty ? t('route.noFigure') : formatDuration(durationS)}
-          label={t('route.duration')}
-          accessibilityLabel={empty ? t('route.durationEmptyLabel') : undefined}
-        />
-      </View>
+      {onOpen ? (
+        <Pressable
+          testID="route-open-infos"
+          accessibilityRole="button"
+          accessibilityHint={t('info.openHint')}
+          onPress={onOpen}
+        >
+          {figures}
+        </Pressable>
+      ) : (
+        figures
+      )}
       {children}
     </View>
   );

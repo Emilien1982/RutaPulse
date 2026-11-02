@@ -9,9 +9,6 @@ import { summarize } from '@/core/draft/legs';
 import { summarizeInfo } from '@/core/route-info/routeInfo';
 import { findProblem } from '@/core/draft/problem';
 import { t } from '@/core/i18n/t';
-import { pickActiveZone } from '@/core/zones/activeZone';
-import type { Zone } from '@/core/zones/catalogue';
-import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
 import { colors, mapColors, spacing, text } from '@/ui/theme';
 
 import { DraftLayers, PreviewLayer } from './DraftLayers';
@@ -22,7 +19,7 @@ import {
 } from './DraftMarkers';
 import { DraftTools, ModePicker } from './DraftToolbar';
 import { mainGeometry } from './draftGeometry';
-import { createDraftStore } from './draftStore';
+import { useDraftSession } from './DraftSession';
 import {
   RouteBubble,
   RouteErrorSheet,
@@ -35,15 +32,15 @@ import {
   useMapPosition,
 } from './MapPosition';
 import { useDragPreviewStore } from './useDragPreview';
-import { useGlyphsReady } from './useGlyphsReady';
 import { useLegInfos } from './useLegInfos';
-import { useLegResults, type LegState } from './useLegResults';
+import { sameLegs, useLegResults } from './useLegResults';
 import { ZoneBaseMap, type OpeningView } from './ZoneBaseMap';
 
 // A touch on the map waits this long before it adds a point; a touch on an
 // annotation empties the queue and blocks the map for the next 300 ms.
 const MAP_TOUCH_DELAY_MS = 120;
 const ANNOTATION_TOUCH_MS = 300;
+const OPEN_LOCK_MS = 1000;
 
 // The point of the last action: the one the error sheet is about (ADR 0016,
 // section 5). `before` is the draft before the action, `after` the one after.
@@ -68,43 +65,14 @@ function targetOf(
   }
 }
 
-// True when the two lists draw the same thing: the screen then keeps the old
-// list, and what depends on it is not computed again.
-function sameLegs(a: LegState[], b: LegState[]): boolean {
-  return (
-    a.length === b.length &&
-    a.every((x, i) => {
-      const y = b[i];
-      if (!y || x.status !== y.status) return false;
-      if (x.status === 'done' && y.status === 'done') {
-        return x.result === y.result;
-      }
-      if (x.status === 'hand' && y.status === 'hand') {
-        return (
-          x.result.distanceKm === y.result.distanceKm &&
-          x.result.durationS === y.result.durationS
-        );
-      }
-      if (x.status === 'error' && y.status === 'error') {
-        return x.error === y.error;
-      }
-      return true;
-    })
-  );
-}
-
-// Full screen creation of a route (mockup 10). Waits for the disk like the
-// map tab does: the zone, then the glyphs.
+// Full screen creation of a route (mockup 10). The zone and the Store come
+// from the session (ADR 0017, section 7).
 export function DraftScreen() {
-  const installed = useInstalledZones();
-  const glyphsReady = useGlyphsReady();
   const params = useLocalSearchParams<{
     lon?: string;
     lat?: string;
     zoom?: string;
   }>();
-  const zone = installed.data ? pickActiveZone(installed.data) : null;
-  if (!zone || !glyphsReady) return <View style={styles.blank} />;
   const lon = Number(params.lon);
   const lat = Number(params.lat);
   const zoom = Number(params.zoom);
@@ -115,20 +83,20 @@ export function DraftScreen() {
     [lon, lat, zoom].every(Number.isFinite)
       ? { center: [lon, lat], zoom }
       : undefined;
-  return (
-    <DraftView
-      key={`${zone.id}-${zone.version}`}
-      zone={zone}
-      opening={opening}
-    />
-  );
+  return <DraftView opening={opening} />;
 }
 
-function DraftView({ zone, opening }: { zone: Zone; opening?: OpeningView }) {
+function DraftView({ opening }: { opening?: OpeningView }) {
   const router = useRouter();
+  // A quick double touch opens Infos once, not twice.
+  const openedAt = useRef(0);
+  function openInfos() {
+    if (Date.now() - openedAt.current < OPEN_LOCK_MS) return;
+    openedAt.current = Date.now();
+    router.push('/draft/infos');
+  }
   const camera = useRef<CameraRef>(null);
-  // The store lives as long as the screen.
-  const [{ store, dispatch }] = useState(createDraftStore);
+  const { zone, store, dispatch } = useDraftSession();
   const draft = useSelector(store, (s) => s.draft);
   const chosenId = useSelector(store, (s) => s.selected);
   const nextMode = useSelector(store, (s) => s.nextMode);
@@ -450,6 +418,7 @@ function DraftView({ zone, opening }: { zone: Zone; opening?: OpeningView }) {
             ascentM={shown.ascentM}
             pending={computing}
             empty={!hasFigures}
+            onOpen={hasFigures && !computing ? openInfos : undefined}
           >
             <ModePicker
               mode={nextMode}
@@ -473,7 +442,6 @@ function DraftView({ zone, opening }: { zone: Zone; opening?: OpeningView }) {
 }
 
 const styles = StyleSheet.create({
-  blank: { flex: 1, backgroundColor: colors.cream },
   screen: { flex: 1, backgroundColor: colors.cream },
   bottom: { position: 'absolute', left: 0, right: 0, bottom: 0 },
   attribution: {
