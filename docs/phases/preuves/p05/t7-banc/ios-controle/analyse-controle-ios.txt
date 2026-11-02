@@ -1,0 +1,20 @@
+| Geste | Plat. | Build | Durée (ms) | Évts | Arrêt max (ms, jusqu'à la fin des infos) | Calculs | Max/s | Écart min | Final fin (ms) | Infos pendant | Infos après | Fin de tout (ms) | Autres tronçons | Carte | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| ios-controle/geste/banc-p05/geste-1.json | ios | release | 5635.6 | 168 | 30.1 | 27 | 5 | 199.6 | 16.1 | 0 | 4 | 35 | 0 | immobile | ok |
+
+| Affichage | Plat. | Build | Cache | Montage (ms) | Chiffres validés (ms) | Chiffres dessinés (ms) | Appels natifs (route/alt/terrain) | D+ | Verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| ios-controle/affichage-froid/banc-p05/affichage-1.json | ios | release | froid | 31.3 | 92.3 | 115.8 | 21/21/21 | 659 | < 1 s |
+| ios-controle/affichage-chaud/banc-p05/affichage-1.json | ios | release | chaud | 29.9 | 29.9 | 32 | 0/0/0 | 659 | < 1 s |
+
+| Témoin | Plat. | Build | Points | Durée (ms) | Arrêt max (ms) | Appels moteur |
+|---|---|---|---|---|---|---|
+| ios-controle/temoin/banc-p05/temoin-1.json | ios | release | 11 | 3013.2 | 27.3 | 0 |
+
+| Référence | Plat. | Tronçons | D+ | D− | Basse | Haute | Parts |
+|---|---|---|---|---|---|---|---|
+| R1 | ios | 11 | 199 | 203 | 196 | 271 | road=17 track=55 trail=28 |
+| R2 | ios | 18 | 457 | 456 | 177 | 342 | road=41 track=57 trail=2 |
+| R3 | ios | 13 | 454 | 456 | 200 | 350 | road=12 track=40 trail=48 |
+| R4 | ios | 21 | 659 | 661 | 255 | 423 | road=25 track=12 trail=63 |
+| R5 | ios | 23 | 568 | 569 | 223 | 364 | road=1 track=73 trail=26 |

@@ -1,0 +1,4 @@
+appId: fr.rutapulse.app
+---
+- tapOn:
+    id: 'route-mode-hand'

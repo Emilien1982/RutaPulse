@@ -3,8 +3,9 @@
 THROWAWAY. Branche locale `claude/p05-banc` (commit `72ee978`, depuis
 `12e4dad`), jamais poussée, jamais fusionnée. Il mesure la VRAIE app en
 version finale (release), avec le vrai code de `core/` et `shared-data/`.
-Essayé sur Android (`emulator-5554`) seulement ; iOS attend la licence Xcode
-(les branches iOS de `banc.sh` sont écrites, NON ESSAYÉES).
+Essayé sur Android (`emulator-5554`) et sur iOS (« iPhone 17 », iOS 26.5,
+UDID `DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D`), un passage de contrôle de chaque
+mesure.
 
 ## Ce que fait le banc
 
@@ -73,6 +74,48 @@ geste : `geste-android.sh`, départ et fin donnés par `positions.py`
 Dossiers `controle-android*` ; tableaux dans `analyse-controle.txt`.
 Empreinte de `valhalla_tiles.tar` de Nancy v3 relevée sur l'appareil après
 les mesures : `7fa29249411c75fd0cc651b4f0e06baf9dbd80109eea7df51b8116b7ceb07a44`.
+
+## iOS (Xcode 27.2, release, essayé le 2 novembre 2026)
+
+Construire (depuis `claude/p05-banc`, dans `mobile/`) :
+
+    export LANG=fr_FR.UTF-8
+    npx expo run:ios --device DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D --configuration Release
+
+Metro reste ouvert : l'arrêter par son PID (`lsof -nP -iTCP:8081 -sTCP:LISTEN`).
+Ne pas écrire `--device "iPhone 17"` : il existe deux « iPhone 17 » (iOS 26.5
+et 27.2), on utilise celui d'iOS 26.5. Journal : `ios-controle/build-ios-banc.log`.
+
+Lancer (depuis ce dossier, mêmes mesures et même analyse que sur Android) :
+
+    sh raz.sh ios
+    sh banc.sh ios references sortie-ios/references
+    sh banc.sh ios affichage-froid sortie-ios/froid     # x3, raz.sh ios avant la série
+    sh banc.sh ios affichage-chaud sortie-ios/chaud     # x3
+    sh banc.sh ios geste sortie-ios/geste               # x3
+    sh banc.sh ios temoin sortie-ios/temoin
+    python3 -I analyse.py sortie-ios/...
+    sh raz.sh ios                                       # à la fin
+
+- Affichage : Maestro touche `route-open-infos` (`toucher-resume-ios.yaml`),
+  capture par `simctl io screenshot` 6 s après (`capture-affichage-*.png`).
+- Geste : Maestro, `geste-ios.yaml`, balayage de 6000 ms de (115,193) à
+  (175,253) points (positions de `positions.py ios`). Le temps long imite
+  l'appui long de MapLibre sur iOS : la durée du geste iOS est donc d'environ
+  5,6 s, pas 2 s comme sur Android. Sur iOS `onDrag` ne donne que la position
+  de départ (essai T1) ; les calculs viennent des événements du banc.
+- Les JSON sont copiés de `<Documents>/banc-p05` de l'app (chemin par
+  `xcrun simctl get_app_container <UDID> fr.rutapulse.app data`) dans
+  `<sortie>/banc-p05`.
+- Pas d'enregistrement vidéo, donc pas de mesure externe sur iOS non plus.
+
+Passage de contrôle iOS : dossier `ios-controle/` (références, affichage-froid,
+affichage-chaud, geste, temoin ; tableaux dans `analyse-controle-ios.txt`).
+Références iOS : D+, D−, altitudes et parts identiques à celles d'Android pour
+R1 à R5. Empreinte de `valhalla_tiles.tar` de Nancy v3 sur le simulateur :
+`7fa29249411c75fd0cc651b4f0e06baf9dbd80109eea7df51b8116b7ceb07a44`.
+La branche du banc est celle de T6 (`12e4dad`), pas la tête de la phase :
+sans les corrections de T9 (visuelles seulement).
 
 ## Limites
 

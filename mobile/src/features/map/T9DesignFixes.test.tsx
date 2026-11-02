@@ -240,6 +240,11 @@ describe('T9 B1: chevron in the summary', () => {
       justifyContent: 'space-between',
       borderRadius: 18,
       overflow: 'hidden',
+      // T10 E1: room for the corners, given back by the negative margins
+      paddingHorizontal: 6,
+      paddingVertical: 4,
+      marginHorizontal: -6,
+      marginVertical: -4,
     });
   });
 
@@ -254,6 +259,11 @@ describe('T9 B1: chevron in the summary', () => {
       justifyContent: 'space-between',
       borderRadius: 18,
       overflow: 'hidden',
+      // T10 E1: room for the corners, given back by the negative margins
+      paddingHorizontal: 6,
+      paddingVertical: 4,
+      marginHorizontal: -6,
+      marginVertical: -4,
     });
   });
 });

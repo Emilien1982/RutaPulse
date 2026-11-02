@@ -1,0 +1,823 @@
+{
+  "plateforme": "ios",
+  "build": "release",
+  "horodatage": "2026-11-02T17:02:35.945Z",
+  "points_itineraire": 11,
+  "index_point_glisse": 5,
+  "duree_geste_ms": 5635.6,
+  "evenements_glisser": 168,
+  "premier_evt_ms": 31.9,
+  "dernier_evt_ms": 5580.2,
+  "arret_max_fil_js_ms_jusqua_relachement": 30.1,
+  "arret_max_fil_js_ms_jusqua_calcul_final": 30.1,
+  "arret_max_fil_js_ms_jusqua_fin_infos": 30.1,
+  "arret_max_a_ms_depuis_debut": 30.1,
+  "arrets_sup_30ms": [
+    {
+      "at": 30.1,
+      "ms": 30.1
+    }
+  ],
+  "calculs_pendant_geste": 27,
+  "calculs": [
+    {
+      "at": 32.06629180908203,
+      "n": 2,
+      "ms": 6.942625045776367
+    },
+    {
+      "at": 236.91225051879883,
+      "n": 2,
+      "ms": 4.1254167556762695
+    },
+    {
+      "at": 446.77025032043457,
+      "n": 2,
+      "ms": 5.944499969482422
+    },
+    {
+      "at": 663.805666923523,
+      "n": 2,
+      "ms": 6.105083465576172
+    },
+    {
+      "at": 865.156042098999,
+      "n": 2,
+      "ms": 4.992375373840332
+    },
+    {
+      "at": 1080.047417640686,
+      "n": 2,
+      "ms": 7.047124862670898
+    },
+    {
+      "at": 1279.6801671981812,
+      "n": 2,
+      "ms": 1.8770408630371094
+    },
+    {
+      "at": 1480.1839170455933,
+      "n": 2,
+      "ms": 3.669332504272461
+    },
+    {
+      "at": 1696.5121669769287,
+      "n": 2,
+      "ms": 6.124457359313965
+    },
+    {
+      "at": 1899.1730422973633,
+      "n": 2,
+      "ms": 6.142707824707031
+    },
+    {
+      "at": 2113.3543338775635,
+      "n": 2,
+      "ms": 5.976459503173828
+    },
+    {
+      "at": 2313.5917501449585,
+      "n": 2,
+      "ms": 2.102583885192871
+    },
+    {
+      "at": 2529.7056255340576,
+      "n": 2,
+      "ms": 2.206833839416504
+    },
+    {
+      "at": 2731.901249885559,
+      "n": 2,
+      "ms": 6.377999305725098
+    },
+    {
+      "at": 2932.027000427246,
+      "n": 2,
+      "ms": 5.422915458679199
+    },
+    {
+      "at": 3146.6711254119873,
+      "n": 2,
+      "ms": 5.763833045959473
+    },
+    {
+      "at": 3363.3690843582153,
+      "n": 2,
+      "ms": 6.104249954223633
+    },
+    {
+      "at": 3580.014500617981,
+      "n": 2,
+      "ms": 6.46995735168457
+    },
+    {
+      "at": 3796.3410425186157,
+      "n": 2,
+      "ms": 1.8222503662109375
+    },
+    {
+      "at": 4013.1997499465942,
+      "n": 2,
+      "ms": 5.551125526428223
+    },
+    {
+      "at": 4215.058042526245,
+      "n": 2,
+      "ms": 5.300874710083008
+    },
+    {
+      "at": 4430.155292510986,
+      "n": 2,
+      "ms": 6.332708358764648
+    },
+    {
+      "at": 4646.49716758728,
+      "n": 2,
+      "ms": 4.477832794189453
+    },
+    {
+      "at": 4846.418375015259,
+      "n": 2,
+      "ms": 3.3591251373291016
+    },
+    {
+      "at": 5063.179709434509,
+      "n": 2,
+      "ms": 6.054333686828613
+    },
+    {
+      "at": 5279.986291885376,
+      "n": 2,
+      "ms": 4.931832313537598
+    },
+    {
+      "at": 5496.361541748047,
+      "n": 2,
+      "ms": 1.7249574661254883
+    }
+  ],
+  "ecart_min_entre_calculs_ms": 199.6,
+  "max_calculs_par_seconde": 5,
+  "calcul_final": {
+    "present": true,
+    "appels": 2,
+    "debut_ms_apres_relachement": 9.7,
+    "fin_ms_apres_relachement": 16.1,
+    "duree_moteur_ms": 6.4,
+    "reussis": 2,
+    "position_relachement": {
+      "lon": 5.96968371357238,
+      "lat": 48.75003345471586
+    },
+    "a_la_position_du_relachement": true,
+    "appels_detail": [
+      {
+        "at": 5645.2,
+        "ok": true,
+        "points": [
+          {
+            "id": 5,
+            "lon": 5.971272,
+            "lat": 48.745898
+          },
+          {
+            "id": 6,
+            "lon": 5.96968371357238,
+            "lat": 48.75003345471586
+          }
+        ]
+      },
+      {
+        "at": 5645.3,
+        "ok": true,
+        "points": [
+          {
+            "id": 6,
+            "lon": 5.96968371357238,
+            "lat": 48.75003345471586
+          },
+          {
+            "id": 7,
+            "lon": 5.972936,
+            "lat": 48.754058
+          }
+        ]
+      }
+    ]
+  },
+  "infos": {
+    "appels_pendant_geste": 0,
+    "appels_apres_relachement": 4,
+    "altitudes_apres": 2,
+    "terrain_apres": 2,
+    "reussis": 4,
+    "fin_ms_apres_relachement": 35,
+    "detail": [
+      {
+        "kind": "height",
+        "at": 5667.9,
+        "ms": 0.8,
+        "phase": "apres_relachement",
+        "ok": true,
+        "annule": false
+      },
+      {
+        "kind": "terrain",
+        "at": 5667.9,
+        "ms": 1.8,
+        "phase": "apres_relachement",
+        "ok": true,
+        "annule": false
+      },
+      {
+        "kind": "height",
+        "at": 5668,
+        "ms": 2.2,
+        "phase": "apres_relachement",
+        "ok": true,
+        "annule": false
+      },
+      {
+        "kind": "terrain",
+        "at": 5668,
+        "ms": 2.6,
+        "phase": "apres_relachement",
+        "ok": true,
+        "annule": false
+      }
+    ]
+  },
+  "fin_de_tout_ms_apres_relachement": 35,
+  "autres_troncons_recalcules": 0,
+  "autres_troncons_detail": [],
+  "appels_routes": [
+    {
+      "at": 32.1,
+      "ms": 5.3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 32.1,
+      "ms": 6.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 236.9,
+      "ms": 2.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 236.9,
+      "ms": 4.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 446.8,
+      "ms": 3.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 446.8,
+      "ms": 5.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 663.8,
+      "ms": 3.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 663.8,
+      "ms": 6.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 865.2,
+      "ms": 2.7,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 865.2,
+      "ms": 5,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1080,
+      "ms": 4.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1080.1,
+      "ms": 7,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1279.7,
+      "ms": 0.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1279.7,
+      "ms": 1.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1480.2,
+      "ms": 1.8,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1480.2,
+      "ms": 3.7,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1696.5,
+      "ms": 3.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1696.5,
+      "ms": 6.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1899.2,
+      "ms": 3.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1899.2,
+      "ms": 6.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2113.4,
+      "ms": 3.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2113.4,
+      "ms": 6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2313.6,
+      "ms": 1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2313.6,
+      "ms": 2.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2529.7,
+      "ms": 1.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2529.7,
+      "ms": 2.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2731.9,
+      "ms": 2.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2731.9,
+      "ms": 6.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2932,
+      "ms": 2.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2932,
+      "ms": 5.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3146.7,
+      "ms": 2.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3146.7,
+      "ms": 5.8,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3363.4,
+      "ms": 3.3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3363.4,
+      "ms": 6.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3580,
+      "ms": 3.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3580,
+      "ms": 6.5,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3796.3,
+      "ms": 1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 3796.3,
+      "ms": 1.8,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4013.2,
+      "ms": 3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4013.2,
+      "ms": 5.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4215.1,
+      "ms": 3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4215.1,
+      "ms": 5.3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4430.2,
+      "ms": 3.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4430.2,
+      "ms": 6.3,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4646.5,
+      "ms": 2.5,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4646.5,
+      "ms": 4.5,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4846.4,
+      "ms": 1.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 4846.4,
+      "ms": 3.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5063.2,
+      "ms": 3.5,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5063.2,
+      "ms": 6.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5280,
+      "ms": 2.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5280,
+      "ms": 4.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5496.4,
+      "ms": 0.9,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5496.4,
+      "ms": 1.7,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5645.2,
+      "ms": 5.2,
+      "phase": "apres_relachement",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 5645.3,
+      "ms": 6.4,
+      "phase": "apres_relachement",
+      "ok": true,
+      "annule": false
+    }
+  ],
+  "carte_bougee": false,
+  "evenements_carte": 0,
+  "centre_debut": [
+    5.973717000010197,
+    48.73554699998443
+  ],
+  "evts_dates": [
+    31.9,
+    42.7,
+    85.1,
+    119,
+    170.4,
+    204.1,
+    236.8,
+    252.7,
+    303.8,
+    337.4,
+    364.8,
+    398.3,
+    431.7,
+    464.4,
+    498.5,
+    531.6,
+    565.1,
+    598.6,
+    632.7,
+    665.2,
+    681.1,
+    714.8,
+    765.5,
+    798.7,
+    831.9,
+    865,
+    899.1,
+    932.3,
+    965.5,
+    998.8,
+    1015.3,
+    1048.7,
+    1082.1,
+    1115.5,
+    1148.1,
+    1164.6,
+    1213.5,
+    1230,
+    1263.4,
+    1296.8,
+    1330.2,
+    1363.4,
+    1396.7,
+    1413.4,
+    1446.8,
+    1480.1,
+    1514.4,
+    1547.9,
+    1582.1,
+    1598.8,
+    1632.1,
+    1648.6,
+    1698.3,
+    1731.4,
+    1748.6,
+    1782.2,
+    1815.4,
+    1848.9,
+    1865.2,
+    1899,
+    1931.9,
+    1965.6,
+    1998.3,
+    2014.6,
+    2048.8,
+    2082,
+    2115,
+    2148.4,
+    2164.9,
+    2197.9,
+    2231,
+    2264.8,
+    2313.5,
+    2346.8,
+    2380.1,
+    2396.6,
+    2430,
+    2463.4,
+    2480,
+    2530,
+    2546.8,
+    2580.1,
+    2613.6,
+    2648.2,
+    2664.8,
+    2681.1,
+    2731.7,
+    2764.9,
+    2781.7,
+    2815.3,
+    2848.7,
+    2881.8,
+    2915.1,
+    2931.8,
+    2965.4,
+    2998.1,
+    3032.2,
+    3065.4,
+    3098,
+    3114.9,
+    3147.9,
+    3181.5,
+    3214.3,
+    3247.9,
+    3264.7,
+    3298.1,
+    3315.3,
+    3365.1,
+    3398.6,
+    3431.9,
+    3448.7,
+    3481.9,
+    3515,
+    3548.8,
+    3581.9,
+    3615.2,
+    3648.5,
+    3664.6,
+    3697.1,
+    3730,
+    3763.4,
+    3796.7,
+    3830.2,
+    3863.4,
+    3896.7,
+    3930,
+    3963.4,
+    3980.1,
+    4014.5,
+    4030.2,
+    4081.4,
+    4115,
+    4148.4,
+    4181.5,
+    4214.8,
+    4248.8,
+    4281.8,
+    4315.4,
+    4348.7,
+    4382.1,
+    4431.9,
+    4464.9,
+    4498.6,
+    4532.1,
+    4565.5,
+    4598.5,
+    4614.4,
+    4664.1,
+    4714.4,
+    4747.9,
+    4764.2,
+    4814.7,
+    4863.9,
+    4897.5,
+    4948,
+    4981.7,
+    5031.7,
+    5064.7,
+    5114.8,
+    5165.1,
+    5198.6,
+    5248.1,
+    5297.6,
+    5346.9,
+    5396.7,
+    5463.5,
+    5513.5,
+    5580.2
+  ]
+}

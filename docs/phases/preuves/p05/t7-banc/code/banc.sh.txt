@@ -1,0 +1,85 @@
+#!/bin/sh
+# THROWAWAY (phase 5, T7). Pose la demande, lance l'app sur /draft, attend
+# que la mesure soit prête, fait UN passage de la mesure, récupère les JSON.
+# Usage : sh banc.sh <android|ios> <MESURE> <dossier_de_sortie>
+#   MESURE = references        C3, C5 : R1 à R5, un refs-Rn.json chacun
+#            affichage-froid   C9 : toucher du résumé -> infos, cache vidé
+#            affichage-chaud   C9 : idem, cache plein
+#            geste             C9 : un glisser (répéter 3 fois)
+#            temoin            C9 : le minuteur seul, 3 s, sans geste
+# Un lancement = une app relancée à froid, un passage. Faire `raz.sh` avant
+# une série. Android : emulator-5554 seulement. iOS : iPhone 17 (iOS 26.5),
+# UDID DAF21CEF…, essayé le 2 novembre 2026 (un passage de chaque mesure).
+PLAT=$1; MODE=$2; OUT=${3:-sortie-$PLAT}
+HERE=$(cd "$(dirname "$0")" && pwd)
+UDID=DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D
+export PATH="$HOME/.maestro/bin:$PATH"
+APP=fr.rutapulse.app
+ADB="$HOME/Library/Android/sdk/platform-tools/adb -s emulator-5554"
+mkdir -p "$OUT"
+
+# La demande, selon la mesure.
+case "$MODE" in
+  references) cp "$HERE/demande-references.json" "$OUT/.demande.json"; READY=refs-fini.json ;;
+  affichage-froid|affichage-chaud)
+    FROID=false; [ "$MODE" = affichage-froid ] && FROID=true
+    python3 -I -c "import json,sys; d=json.load(open(sys.argv[1])); d['froid']=(sys.argv[2]=='true'); print(json.dumps(d))" "$HERE/demande-affichage.json" $FROID > "$OUT/.demande.json"
+    READY=pret.json ;;
+  geste) cp "$HERE/demande-geste.json" "$OUT/.demande.json"; READY=pret.json ;;
+  temoin)
+    python3 -I -c "import json,sys; d=json.load(open(sys.argv[1])); d['temoin_ms']=3000; print(json.dumps(d))" "$HERE/demande-geste.json" > "$OUT/.demande.json"
+    READY=pret.json ;;
+  *) echo "mesure inconnue : $MODE"; exit 2 ;;
+esac
+
+if [ "$PLAT" = ios ]; then
+  DOC="$(xcrun simctl get_app_container $UDID $APP data)/Documents"
+  xcrun simctl terminate $UDID $APP 2>/dev/null
+  rm -f "$DOC/banc-p05/$READY"
+  cp "$OUT/.demande.json" "$DOC/banc-p05-demande.json"
+  xcrun simctl launch $UDID $APP >/dev/null
+  sleep 6
+  xcrun simctl openurl $UDID rutapulse:///draft
+  for i in $(seq 1 120); do [ -f "$DOC/banc-p05/$READY" ] && break; sleep 1; done
+  [ -f "$DOC/banc-p05/$READY" ] || { echo "mesure pas prête après 120 s"; exit 1; }
+  sleep 8
+  case "$MODE" in
+    geste) maestro --device $UDID test "$HERE/geste-ios.yaml" >/dev/null || echo "Maestro a échoué"; sleep 14 ;;
+    affichage-*)
+      maestro --device $UDID test "$HERE/toucher-resume-ios.yaml" >/dev/null || { echo "Maestro n'a pas trouvé le résumé"; exit 1; }
+      sleep 6
+      xcrun simctl io $UDID screenshot "$OUT/capture-$MODE-$(date +%H%M%S).png" >/dev/null 2>&1 ;;
+    *) sleep 6 ;;
+  esac
+  mkdir -p "$OUT/banc-p05"
+  cp "$DOC"/banc-p05/*.json "$OUT/banc-p05/"
+else
+  $ADB root >/dev/null 2>&1; sleep 2
+  DOC=/data/data/$APP/files
+  $ADB shell am force-stop $APP
+  $ADB shell rm -f $DOC/banc-p05/$READY
+  $ADB push "$OUT/.demande.json" /data/local/tmp/banc-p05-demande.json >/dev/null
+  $ADB shell "cp /data/local/tmp/banc-p05-demande.json $DOC/banc-p05-demande.json"
+  $ADB shell am start -n $APP/.MainActivity >/dev/null
+  sleep 8
+  $ADB shell am start -a android.intent.action.VIEW -d rutapulse:///draft $APP >/dev/null
+  for i in $(seq 1 120); do $ADB shell "[ -f $DOC/banc-p05/$READY ]" && break; sleep 1; done
+  $ADB shell "[ -f $DOC/banc-p05/$READY ]" || { echo "mesure pas prête après 120 s"; exit 1; }
+  sleep 8
+  case "$MODE" in
+    geste) sh "$HERE/geste-android.sh"; sleep 14 ;;
+    affichage-*)
+      $ADB shell uiautomator dump /sdcard/ui.xml >/dev/null
+      XY=$($ADB shell cat /sdcard/ui.xml | python3 -I "$HERE/toucher-resume.py") || { echo "résumé introuvable à l'écran"; exit 1; }
+      echo "toucher du résumé en $XY"
+      $ADB shell input tap $XY
+      sleep 6
+      $ADB exec-out screencap -p > "$OUT/capture-$MODE-$(date +%H%M%S).png" ;;
+    *) sleep 6 ;;
+  esac
+  mkdir -p "$OUT/banc-p05"
+  for f in $($ADB shell "ls $DOC/banc-p05" | tr -d '\r'); do
+    $ADB shell cat $DOC/banc-p05/$f > "$OUT/banc-p05/$f"
+  done
+fi
+echo "Résultats dans $OUT/banc-p05 :"; ls "$OUT/banc-p05"

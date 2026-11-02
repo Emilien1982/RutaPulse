@@ -1,0 +1,1 @@
+{"encoded_polyline":"ugs_|AgqzsJfDgW|EeVhF_VbEyVpDcWpDaWoCwUkGeUiGeUjEmPnLiNfLuN|KiN","range_height":[[0,326],[30,322],[60,318],[90,315],[120,312],[150,309],[180,305],[208,304],[238,304],[268,305],[291,306],[321,305],[351,301],[380,299]]}

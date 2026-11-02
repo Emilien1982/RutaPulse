@@ -434,6 +434,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderRadius: radius.box,
+    // Keeps the figures out of the rounded corners (clipped by summaryClip);
+    // the negative margins give the room back, so nothing moves.
+    paddingHorizontal: 6,
+    paddingVertical: 4,
+    marginHorizontal: -6,
+    marginVertical: -4,
   },
   // Android does not clip the ripple to the radius by itself.
   summaryClip: { overflow: 'hidden' },

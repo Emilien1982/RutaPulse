@@ -88,7 +88,9 @@ export function RouteInfoMap({
         </GeoJSONSource>
       </ZoneBaseMap>
       <View style={styles.attribution}>
-        <Text style={text.attribution}>{t('info.attributionShort')}</Text>
+        <Text style={text.attribution} maxFontSizeMultiplier={1}>
+          {t('info.attributionShort')}
+        </Text>
         <Pressable
           testID="info-attribution-button"
           accessibilityRole="button"
@@ -97,7 +99,9 @@ export function RouteInfoMap({
           onPress={() => void mapRef.current?.showAttribution()}
           style={styles.attributionButton}
         >
-          <Text style={styles.attributionI}>i</Text>
+          <Text style={styles.attributionI} maxFontSizeMultiplier={1}>
+            i
+          </Text>
         </Pressable>
       </View>
     </View>

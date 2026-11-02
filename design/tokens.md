@@ -239,7 +239,7 @@ Une seule graisse de Jost suffit en v1 (700).
 | `texte.corps` | 17 | 400 | système | Texte courant |
 | `texte.secondaire` | 15 | 400 | système | Ligne d'explication, en `hn.brun-2` |
 | `texte.legende` | 13 | 500 | système | Unités sous un chiffre, axes du profil. Minimum hors carte. |
-| `texte.attribution` | 11 | 400 | système | Attributions de la carte seulement (imposé par les licences) |
+| `texte.attribution` | 11 | 400 | système | Attributions de la carte seulement (imposé par les licences). **Ne suit pas** la taille de texte du système (`maxFontSizeMultiplier` 1) : sa boîte est calée dans la carte (arche : marge du bas de 32). La liste complète, ouverte par « i », la suit. Ajouté le 2 novembre 2026 (phase 5, passe iOS) |
 
 Étiquettes **dans** la carte (ajoutées le 24 octobre 2026) : police **Noto
 Sans** en glyphes locaux (MapLibre ne sait pas utiliser la police du
@@ -367,7 +367,7 @@ passent par ces valeurs au zoom 15.
 |---|---|
 | `marqueur.position` | Flèche de cap de 32 à l'arrêt, 40 en suivi, bord blanc de 3 |
 | `marqueur.point` | Rond de 28, bord de 3, chiffre de 15 en gras |
-| `marqueur.point-deplace` | Rond de 40 avec un halo, pendant qu'on le glisse |
+| `marqueur.point-deplace` | Rond de 40, chiffre de 18, halo de 8 (`carte.itineraire` à 22 %), ombre 0 6 12 noir à 35 %. Aspect du **point choisi** : il l'a pendant qu'on le glisse, et après, tant qu'il reste choisi (le point glissé devient le point choisi, phase 4). Précisé le 2 novembre 2026 (phase 5, passe iOS) |
 | `marqueur.depart-arrivee` | Rond de 32 |
 | `marqueur.depart-arrivee-vignette` | Rond de 16 (MapLibre : `circle-radius` 8), bord `#FFFFFF` de 2 (`circle-stroke-width` 2), fond `carte.depart` ou `carte.arrivee`, **sans pictogramme**. Petites cartes seulement (arche de l'écran 20) : un rond de 32 y cacherait un tracé de quelques km. Ajouté le 2 novembre 2026 (phase 5, T8) |
 

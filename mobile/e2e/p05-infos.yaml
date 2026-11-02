@@ -93,7 +93,8 @@ onFlowComplete:
 - tapOn:
     id: 'route-open-infos'
 - extendedWaitUntil:
-    visible: 'Modifier'
+    visible:
+      id: 'info-modify'
     timeout: 15000
 - waitForAnimationToEnd:
     timeout: 3000
@@ -114,7 +115,8 @@ onFlowComplete:
 - assertNotVisible: 'Difficulté.*'
 - takeScreenshot: p05-c13-infos
 # Revenir : la création est intacte.
-- tapOn: 'Modifier'
+- tapOn:
+    id: 'info-modify'
 - waitForAnimationToEnd:
     timeout: 3000
 - assertNotVisible: 'Abandonner cet itinéraire.*'

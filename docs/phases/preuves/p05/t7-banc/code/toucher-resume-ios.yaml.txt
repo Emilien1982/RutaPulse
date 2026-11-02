@@ -1,0 +1,6 @@
+# THROWAWAY (phase 5, T7). Touche le résumé de l'itinéraire (testID
+# route-open-infos) sur iOS. L'app est déjà sur /draft (banc.sh).
+appId: fr.rutapulse.app
+---
+- tapOn:
+    id: route-open-infos

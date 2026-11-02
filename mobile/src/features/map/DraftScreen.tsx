@@ -411,7 +411,9 @@ function DraftView({ opening }: { opening?: OpeningView }) {
 
       <View style={styles.bottom} pointerEvents="box-none">
         <View style={styles.attribution} pointerEvents="none">
-          <Text style={text.attribution}>{t('map.attribution')}</Text>
+          <Text style={text.attribution} maxFontSizeMultiplier={1}>
+            {t('map.attribution')}
+          </Text>
         </View>
         {problem ? (
           <RouteErrorSheet
