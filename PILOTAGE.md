@@ -24,10 +24,12 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b à spécifier (difficulté VTT et mise à jour des zones) |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b : [spec validée](docs/phases/p05b-difficulte-maj-zones.md), en cours |
 
 ## Décisions prises
 
+- 2026-11-02 — Spec de la phase 5b (difficulté VTT `mtb:scale` et mise à jour des zones) validée par Émilien, avec les choix du pilotage. Garder sur GitHub les 2 dernières versions d'une zone ; Émilien efface lui-même les plus anciennes après la fusion.
+- 2026-11-02 — Nouvelle session de pilotage (passation après la phase 5).
 - 2026-10-19 — Dossier du projet : `~/dev_ai/vtt-nav` (nom provisoire).
 - 2026-10-19 — Style : phrases simples et concrètes ; tout terme anglais ou sigle est traduit entre parenthèses.
 - 2026-10-19 — Config validée : 5 sous-agents (architecte, designer et relecteur sur Opus 5.5 ; développeur et testeur sur Sonnet 5.5), circuit `/phase`, épreuve.
@@ -82,7 +84,7 @@
 
 ## Décisions en attente
 
-- Combien de versions de zone garder sur GitHub (3 releases de 110 Mo déjà).
+- Aucune.
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
@@ -96,7 +98,7 @@
 
 ## Prochaine étape
 
-Écrire la spec de la phase 5b (difficulté VTT `mtb:scale` : table ajoutée par la fabrique, zone Nancy v4 lancée à la main par Émilien, mise à jour d'une zone dans l'app), la faire valider par Émilien, puis la lancer dans une session de phase.
+Phase 5b lancée dans une session de phase. Émilien validera la maquette de la mise à jour (T1), lancera le workflow (T3), puis la fusion.
 
 ## Passation du pilotage (2 novembre 2026)
 
