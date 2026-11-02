@@ -196,6 +196,13 @@ Mêmes teintes que la carte, pour qu'on n'ait qu'une légende à apprendre.
 | `terrain.piste` | `#7A4A1E` | Part de piste |
 | `terrain.sentier` | `#C62828` | Part de sentier |
 | `terrain.inconnu` | hachures `#BDBDBD` | Difficulté inconnue |
+| `terrain.a-la-main` | `#C2007A` (= `carte.itineraire`), **toujours en tirets**, jamais en aplat | Part « À la main » : tronçons tracés à la main, dont on ne connaît pas le terrain. Bande sous le profil : fond `#FFFFFF` (= `carte.itineraire-lisere`) sur toute la hauteur de la bande (12), tirets `#C2007A` sur toute cette hauteur, 12 de long, 6 de vide. Légende et note de la création : trait de 22 × 8, épaisseur 4, tirets 6 / 3, à la place du rond de couleur |
+
+Ajouté le 2 novembre 2026 (phase 5, T8, `comparaisons/p05-t8.md`) :
+`terrain.a-la-main`. Les tirets ne sont pas un décor : le magenta et
+`terrain.sentier` ont presque la même luminance (contraste de 1,05:1). La
+forme les distingue pour les daltoniens et au soleil. C'est le même signe
+que le tracé à la main sur la carte (`trace.a-la-main`).
 
 ## Typographie
 
@@ -361,6 +368,7 @@ passent par ces valeurs au zoom 15.
 | `marqueur.point` | Rond de 28, bord de 3, chiffre de 15 en gras |
 | `marqueur.point-deplace` | Rond de 40 avec un halo, pendant qu'on le glisse |
 | `marqueur.depart-arrivee` | Rond de 32 |
+| `marqueur.depart-arrivee-vignette` | Rond de 16 (MapLibre : `circle-radius` 8), bord `#FFFFFF` de 2 (`circle-stroke-width` 2), fond `carte.depart` ou `carte.arrivee`, **sans pictogramme**. Petites cartes seulement (arche de l'écran 20) : un rond de 32 y cacherait un tracé de quelques km. Ajouté le 2 novembre 2026 (phase 5, T8) |
 
 ## Ombres
 
