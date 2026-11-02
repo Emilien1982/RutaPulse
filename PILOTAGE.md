@@ -78,6 +78,7 @@
 
 ## Décisions en attente
 
+- Licence de Xcode 27.2 à accepter par Émilien (`sudo xcodebuild -license`) : toute la partie iOS de la phase 5 attend. Le 2 novembre, Émilien a demandé d'avancer sur Android seul.
 - Combien de versions de zone garder sur GitHub (3 releases de 110 Mo déjà).
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
