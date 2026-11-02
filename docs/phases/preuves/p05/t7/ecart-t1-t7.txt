@@ -1,0 +1,5 @@
+R1: memes points True | T1 20.53 km, 686 altitudes, D+ 243 | app 18.85 km (11 troncons), 644 altitudes, D+ recalcule 199, D+ app 199 | ecart distance -1.68 km
+R2: memes points True | T1 35.17 km, 1174 altitudes, D+ 462 | app 34.62 km (18 troncons), 1178 altitudes, D+ recalcule 457, D+ app 457 | ecart distance -0.55 km
+R3: memes points True | T1 26.98 km, 901 altitudes, D+ 489 | app 26.09 km (13 troncons), 889 altitudes, D+ recalcule 454, D+ app 454 | ecart distance -0.90 km
+R4: memes points True | T1 42.12 km, 1406 altitudes, D+ 671 | app 40.29 km (21 troncons), 1376 altitudes, D+ recalcule 659, D+ app 659 | ecart distance -1.83 km
+R5: memes points True | T1 40.35 km, 1347 altitudes, D+ 702 | app 36.33 km (23 troncons), 1245 altitudes, D+ recalcule 568, D+ app 568 | ecart distance -4.02 km
