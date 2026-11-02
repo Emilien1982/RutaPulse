@@ -215,10 +215,12 @@ describe('Infos screen (mockup 20)', () => {
     expect(mockMapProps.dragPan).toBe(false);
     expect(mockMapProps.touchZoom).toBe(false);
     const [west, south, east, north] = mockCameraProps.initialViewState.bounds;
-    expect(west).toBeLessThan(6.1);
-    expect(east).toBeGreaterThan(6.18);
-    expect(south).toBeLessThan(48.66);
-    expect(north).toBeGreaterThan(48.7);
+    // p05-t8 C2: the box is the route itself, no margin (the padding is in
+    // the camera options).
+    expect(west).toBeCloseTo(6.1, 10);
+    expect(east).toBeCloseTo(6.18, 10);
+    expect(south).toBeCloseTo(48.66, 10);
+    expect(north).toBeCloseTo(48.7, 10);
     expect(
       mockSources['info-ends'].features.map((f: any) => f.properties.role),
     ).toEqual(['start', 'end']);
@@ -237,8 +239,10 @@ describe('Infos screen: missing and pending data (C10)', () => {
     mockHeights.mockResolvedValue(failed);
     await renderReady([P1, P2]);
     expect(screen.getByText('Altitudes indisponibles')).toBeTruthy();
-    expect(screen.queryByTestId('info-ascent')).toBeNull();
-    expect(screen.queryByTestId('info-descent')).toBeNull();
+    // p05-t8 C6: the four cells stay, with a dash; the title stays.
+    expect(screen.getByTestId('info-ascent')).toHaveTextContent('—');
+    expect(screen.getByTestId('info-descent')).toHaveTextContent('—');
+    expect(screen.getByText('Profil et terrain')).toBeTruthy();
     expect(screen.queryByTestId('info-profile')).toBeNull();
     expect(screen.getByTestId('info-distance')).toHaveTextContent('3,0 km');
     expect(screen.getByTestId('info-duration')).toBeTruthy();

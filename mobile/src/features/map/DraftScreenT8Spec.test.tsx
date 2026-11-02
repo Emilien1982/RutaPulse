@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import type { ReactNode } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { Alert, Dimensions, StyleSheet } from 'react-native';
 
 import { t } from '@/core/i18n/t';
 import type { RouteResult } from '@/core/routing/routeResponse';
@@ -170,7 +170,15 @@ const event = (at: [number, number]) => ({
   nativeEvent: { lngLat: at, point: { x: 0, y: 0 } },
 });
 
+// The summary is compact under 390 dp (p05-t8, decision 2); these suites
+// check the normal summary, on a usual phone (411 dp, text scale 1).
+let windowSpy: jest.SpyInstance;
+afterEach(() => windowSpy.mockRestore());
+
 beforeEach(() => {
+  windowSpy = jest
+    .spyOn(Dimensions, 'get')
+    .mockReturnValue({ width: 411, height: 900, scale: 1, fontScale: 1 });
   jest.clearAllMocks();
   mockInstalled = [nancy];
   mockParams = {};

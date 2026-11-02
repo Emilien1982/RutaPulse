@@ -10,9 +10,11 @@ import {
   formatAscent,
   formatDistance,
   formatDuration,
+  groupThousands,
 } from '@/core/routing/formatRoute';
 import { summarizeInfo } from '@/core/route-info/routeInfo';
 import { Button } from '@/ui/Button';
+import { DashedStroke } from '@/ui/DashedStroke';
 import { HandModeIcon } from '@/ui/icons';
 import {
   border,
@@ -23,6 +25,7 @@ import {
   text,
 } from '@/ui/theme';
 
+import { FIGURE_DIGITS } from './RouteSheets';
 import { mainGeometry } from './draftGeometry';
 import { useDraftSession } from './DraftSession';
 import { ElevationProfile } from './ElevationProfile';
@@ -37,16 +40,22 @@ function InfoCell({
   label,
   testID,
   color,
+  accessibilityLabel,
 }: {
   value: string;
   label: string;
   testID: string;
   color: string;
+  accessibilityLabel?: string;
 }) {
-  const parts = value.split(/(\d+(?:,\d+)?)/).filter(Boolean);
+  const parts = value.split(FIGURE_DIGITS).filter(Boolean);
   const hasDigit = parts.some((part) => /^\d/.test(part));
   return (
-    <View style={styles.cell}>
+    <View
+      style={styles.cell}
+      accessible={accessibilityLabel ? true : undefined}
+      accessibilityLabel={accessibilityLabel}
+    >
       <View style={[styles.cellEdge, { backgroundColor: color }]} />
       <Text testID={testID} style={styles.cellValue}>
         {!hasDigit
@@ -143,72 +152,78 @@ export function RouteInfoScreen() {
             label={t('route.duration')}
             color={colors.orange}
           />
-          {altitudes.status === 'missing' ? (
-            <View style={styles.wide}>
-              <Message testID="info-altitudes-missing">
-                {t('info.altitudesMissing')}
-              </Message>
-            </View>
-          ) : (
-            <>
-              <InfoCell
-                testID="info-ascent"
-                value={
-                  altitudes.status === 'ready'
-                    ? formatAscent(altitudes.ascentM)
-                    : t('info.pending')
-                }
-                label={t('route.ascent')}
-                color={colors.rust}
-              />
-              <InfoCell
-                testID="info-descent"
-                value={
-                  altitudes.status === 'ready'
-                    ? formatAscent(altitudes.descentM)
-                    : t('info.pending')
-                }
-                label={t('info.descent')}
-                color={colors.petrol}
-              />
-            </>
-          )}
+          <InfoCell
+            testID="info-ascent"
+            value={
+              altitudes.status === 'ready'
+                ? formatAscent(altitudes.ascentM)
+                : altitudes.status === 'missing'
+                  ? t('route.noFigure')
+                  : t('info.pending')
+            }
+            label={t('route.ascent')}
+            color={colors.rust}
+            accessibilityLabel={
+              altitudes.status === 'missing'
+                ? t('route.ascentMissingLabel')
+                : undefined
+            }
+          />
+          <InfoCell
+            testID="info-descent"
+            value={
+              altitudes.status === 'ready'
+                ? formatAscent(altitudes.descentM)
+                : altitudes.status === 'missing'
+                  ? t('route.noFigure')
+                  : t('info.pending')
+            }
+            label={t('info.descent')}
+            color={colors.petrol}
+            accessibilityLabel={
+              altitudes.status === 'missing'
+                ? t('info.descentMissingLabel')
+                : undefined
+            }
+          />
         </View>
 
-        {altitudes.status !== 'missing' && (
-          <>
-            <View style={styles.blockTitle}>
-              <Text style={text.sectionLabel}>{t('info.profileTitle')}</Text>
-              {altitudes.status === 'ready' && (
-                <Text testID="info-range" style={text.caption}>
-                  {t('info.range', {
-                    min: Math.round(altitudes.minM),
-                    max: Math.round(altitudes.maxM),
-                  })}
-                </Text>
-              )}
-            </View>
-            {altitudes.status === 'ready' ? (
-              <ElevationProfile altitudes={altitudes} segments={bandsDrawn} />
-            ) : (
-              <Message testID="info-profile-pending">
-                {t('info.pending')}
-              </Message>
-            )}
-          </>
+        <View style={styles.blockTitle}>
+          <Text style={text.sectionLabel}>{t('info.profileTitle')}</Text>
+          {altitudes.status === 'ready' && (
+            <Text testID="info-range" style={text.caption}>
+              {t('info.range', {
+                min: groupThousands(altitudes.minM),
+                max: groupThousands(altitudes.maxM),
+              })}
+            </Text>
+          )}
+        </View>
+        {altitudes.status === 'ready' ? (
+          <ElevationProfile altitudes={altitudes} segments={bandsDrawn} />
+        ) : altitudes.status === 'missing' ? (
+          <Message testID="info-altitudes-missing">
+            {t('info.altitudesMissing')}
+          </Message>
+        ) : (
+          <Message testID="info-profile-pending">{t('info.pending')}</Message>
         )}
 
         {terrain.status === 'ready' ? (
           <View testID="info-legend" style={styles.legend}>
             {terrain.shares.map((share) => (
               <View key={share.part} style={styles.legendItem}>
-                <View
-                  style={[
-                    styles.dot,
-                    { backgroundColor: terrainColors[share.part] },
-                  ]}
-                />
-                <Text style={text.secondary}>
+                {share.part === 'hand' ? (
+                  <DashedStroke color={terrainColors.hand} />
+                ) : (
+                  <View
+                    style={[
+                      styles.dot,
+                      { backgroundColor: terrainColors[share.part] },
+                    ]}
+                  />
+                )}
+                <Text style={[text.secondary, styles.legendText]}>
                   {t('info.share', {
                     part: t(`info.${share.part}`),
                     n: share.percent,
@@ -277,15 +292,7 @@ const styles = StyleSheet.create({
     fontVariant: ['tabular-nums'],
   },
   cellUnit: { fontSize: 17, fontWeight: '700' },
-  wide: {
-    width: '100%',
-    backgroundColor: colors.creamLight,
-    borderWidth: border.normal,
-    borderColor: colors.brown,
-    borderRadius: radius.box,
-    padding: spacing.s4,
-  },
-  message: { color: colors.brown },
+  message: { color: colors.brown, marginTop: 4 },
   blockTitle: {
     marginTop: spacing.s3,
     marginBottom: 6,
@@ -300,6 +307,7 @@ const styles = StyleSheet.create({
     rowGap: 4,
     marginTop: spacing.s2,
   },
+  legendText: { color: colors.brown },
   legendItem: { flexDirection: 'row', alignItems: 'center', gap: 6 },
   dot: {
     width: 15,

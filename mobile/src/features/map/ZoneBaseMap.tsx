@@ -34,6 +34,7 @@ export function ZoneBaseMap({
   mapRef,
   opening,
   fit,
+  labels,
   onPress,
   onRegionDidChange,
   children,
@@ -44,6 +45,8 @@ export function ZoneBaseMap({
   opening?: OpeningView;
   /** A map that does not move, opened on a box (Infos screen). */
   fit?: OpeningBounds;
+  /** False hides the names of places (small map of the Infos screen). */
+  labels?: boolean;
   onPress?: MapProps['onPress'];
   onRegionDidChange?: MapProps['onRegionDidChange'];
   children?: ReactNode;
@@ -58,8 +61,9 @@ export function ZoneBaseMap({
         },
         glyphsDir: glyphsDirUri(),
         bbox: zone.bbox,
+        labels,
       }),
-    [zone],
+    [zone, labels],
   );
   const { lonMin, latMin, lonMax, latMax } = zone.bbox;
   return (
@@ -81,7 +85,8 @@ export function ZoneBaseMap({
     >
       <Camera
         ref={cameraRef}
-        minZoom={MIN_ZOOM}
+        // A map opened on a box must be free to zoom out to the whole route.
+        minZoom={fit ? 0 : MIN_ZOOM}
         maxZoom={MAX_ZOOM}
         maxBounds={fit ? undefined : [lonMin, latMin, lonMax, latMax]}
         initialViewState={

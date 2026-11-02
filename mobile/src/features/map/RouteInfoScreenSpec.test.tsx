@@ -481,8 +481,10 @@ describe('C10: missing data, never a crash', () => {
     expect(screen.getByTestId('route-ascent')).toHaveTextContent('—');
     await openInfos();
     expect(screen.getByText('Altitudes indisponibles')).toBeTruthy();
-    expect(screen.queryByTestId('info-ascent')).toBeNull();
-    expect(screen.queryByTestId('info-descent')).toBeNull();
+    // p05-t8 C6: the four cells stay, with a dash; the title stays.
+    expect(screen.getByTestId('info-ascent')).toHaveTextContent('—');
+    expect(screen.getByTestId('info-descent')).toHaveTextContent('—');
+    expect(screen.getByText('Profil et terrain')).toBeTruthy();
     expect(screen.queryByTestId('info-profile')).toBeNull();
     expect(screen.queryByTestId('info-range')).toBeNull();
     expect(screen.getByTestId('info-distance')).toHaveTextContent('6,0 km');
@@ -497,7 +499,8 @@ describe('C10: missing data, never a crash', () => {
     await addPoints(P1, P2);
     await openInfos();
     expect(screen.getByText('Altitudes indisponibles')).toBeTruthy();
-    expect(screen.queryByTestId('info-ascent')).toBeNull();
+    // p05-t8 C6: the cell stays, with a dash.
+    expect(screen.getByTestId('info-ascent')).toHaveTextContent('—');
     expect(screen.getByTestId('info-distance')).toBeTruthy();
   });
 

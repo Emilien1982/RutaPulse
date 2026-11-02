@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
 
 import type { LegMode } from '@/core/draft/draft';
 import { t } from '@/core/i18n/t';
 import { formatDistance } from '@/core/routing/formatRoute';
+import { DashedStroke } from '@/ui/DashedStroke';
 import {
   HandModeIcon,
   LoopIcon,
@@ -47,14 +47,7 @@ export function ModePicker({
         <Text style={styles.heading}>{t('route.nextLeg').toUpperCase()}</Text>
         {handKm > 0 && (
           <View testID="route-hand-note" style={styles.note}>
-            <Svg width={22} height={8} viewBox="0 0 22 8">
-              <Path
-                d="M1 4h20"
-                stroke={mapColors.route}
-                strokeWidth={4}
-                strokeDasharray="6 3"
-              />
-            </Svg>
+            <DashedStroke color={mapColors.route} />
             <Text style={styles.noteText}>
               {t('route.handNote', { km: formatDistance(handKm) })}
             </Text>

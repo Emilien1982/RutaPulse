@@ -4,7 +4,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import type { ReactNode } from 'react';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 
 import type { RouteResult } from '@/core/routing/routeResponse';
 import type { ReadyMarker } from '@/core/zones/zoneLayout';
@@ -206,7 +206,15 @@ async function waitForRemoval() {
   await fireEvent.press(screen.getByTestId('route-error-remove'));
 }
 
+// The summary is compact under 390 dp (p05-t8, decision 2); these suites
+// check the normal summary, on a usual phone (411 dp, text scale 1).
+let windowSpy: jest.SpyInstance;
+afterEach(() => windowSpy.mockRestore());
+
 beforeEach(() => {
+  windowSpy = jest
+    .spyOn(Dimensions, 'get')
+    .mockReturnValue({ width: 411, height: 900, scale: 1, fontScale: 1 });
   jest.clearAllMocks();
   // The queue of `mockResolvedValueOnce` must not leak from a test to the next.
   mockComputeRoute.mockReset();

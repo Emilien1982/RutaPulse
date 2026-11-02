@@ -25,8 +25,11 @@ export function routeBounds(
     if (lat < south) south = lat;
     if (lat > north) north = lat;
   }
+  // No margin, unless the box is flat (two aligned points): then a little.
   const pad = 0.0005;
-  return [west - pad, south - pad, east + pad, north + pad];
+  const padLon = east > west ? 0 : pad;
+  const padLat = north > south ? 0 : pad;
+  return [west - padLon, south - padLat, east + padLon, north + padLat];
 }
 
 /** Start and arrival, one GeoJSON point each. */

@@ -21,7 +21,15 @@ export function formatDuration(seconds: number): string {
   return t('format.hoursMinutes', { h: String(h), m });
 }
 
-/** Ascent in whole meters ("421 m"), never in kilometers. */
+/** Whole number, thousands grouped by a narrow no-break space ("1 250"). */
+export function groupThousands(value: number): string {
+  const n = Math.round(value);
+  return String(Math.abs(n))
+    .replace(/\B(?=(\d{3})+$)/g, '\u202F')
+    .replace(/^/, n < 0 ? '-' : '');
+}
+
+/** Ascent in whole meters ("421 m", "1 250 m"), never in kilometers. */
 export function formatAscent(meters: number): string {
-  return t('format.m', { n: String(Math.round(meters)) });
+  return t('format.m', { n: groupThousands(meters) });
 }

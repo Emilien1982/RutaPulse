@@ -14,6 +14,8 @@ export const colors = {
   success: '#0F5223',
   olive: '#A9B56A',
   petrol: '#2D6A66',
+  // Android ripple on a touchable: brown at 12 %.
+  ripple: 'rgba(58, 31, 15, 0.12)',
 } as const;
 
 // Colors of the cyclist ("perso.*"). Source: design/tokens.md.

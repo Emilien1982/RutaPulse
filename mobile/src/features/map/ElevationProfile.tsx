@@ -9,11 +9,12 @@ import Svg, {
   Text as SvgText,
 } from 'react-native-svg';
 
+import { groupThousands } from '@/core/routing/formatRoute';
 import { axisTicks, chartPoints } from '@/core/route-info/chart';
 import type { AltitudeInfo } from '@/core/route-info/routeInfo';
 import type { TerrainSegment } from '@/core/route-info/terrain';
 import { t } from '@/core/i18n/t';
-import { colors, terrainColors } from '@/ui/theme';
+import { colors, mapColors, terrainColors } from '@/ui/theme';
 
 // Drawing area of mockup 20: 358 wide, a plot of 84, the axis at 85, the
 // terrain band at 89 (12 high), the labels at 118.
@@ -57,8 +58,8 @@ export function ElevationProfile({
       style={{ aspectRatio: W / H }}
       accessibilityRole="image"
       accessibilityLabel={t('info.profileLabel', {
-        min: Math.round(minM),
-        max: Math.round(maxM),
+        min: groupThousands(minM),
+        max: groupThousands(maxM),
       })}
     >
       <Defs>
@@ -94,17 +95,36 @@ export function ElevationProfile({
         stroke={colors.brown}
         strokeWidth={2}
       />
-      {segments?.map((s, i) => (
-        <Rect
-          key={i}
-          testID={`info-band-${s.part}`}
-          x={toX(s.fromM)}
-          y={BAND_Y}
-          width={Math.max(toX(s.toM) - toX(s.fromM), 0)}
-          height={BAND_H}
-          fill={terrainColors[s.part]}
-        />
-      ))}
+      {segments?.map((s, i) => {
+        const x = toX(s.fromM);
+        const width = Math.max(toX(s.toM) - x, 0);
+        // "À la main" (terrain.a-la-main): magenta dashes on white, never a
+        // flat color, so it is not mistaken for the trail.
+        const hand = s.part === 'hand';
+        return (
+          <G key={i}>
+            <Rect
+              testID={`info-band-${s.part}`}
+              x={x}
+              y={BAND_Y}
+              width={width}
+              height={BAND_H}
+              fill={hand ? mapColors.routeCasing : terrainColors[s.part]}
+            />
+            {hand && (
+              <Line
+                x1={x}
+                y1={BAND_Y + BAND_H / 2}
+                x2={x + width}
+                y2={BAND_Y + BAND_H / 2}
+                stroke={terrainColors.hand}
+                strokeWidth={BAND_H}
+                strokeDasharray="12 6"
+              />
+            )}
+          </G>
+        );
+      })}
       {ticks.map((km, i) => {
         const x = toX(km * 1000);
         const last = i === ticks.length - 1 && ticks.length > 1;

@@ -30,7 +30,8 @@ const RINGS = [
   { width: 3, color: colors.rust, top: TOP + 12, bottom: BOTTOM + 12 },
 ];
 
-const FIT_PADDING = { top: 40, right: 28, bottom: 24, left: 28 };
+// Sides clear the round corners; the bottom keeps the room of the attribution.
+const FIT_PADDING = { top: 20, right: 56, bottom: 32, left: 56 };
 
 // The route, in full, in the arch window: no gesture, start and arrival,
 // the short attribution and the "i" button (convention of MapLibre).
@@ -59,7 +60,13 @@ export function RouteInfoMap({
       accessibilityLabel={t('info.mapLabel')}
       style={styles.window}
     >
-      <ZoneBaseMap zone={zone} cameraRef={null} mapRef={mapRef} fit={fit}>
+      <ZoneBaseMap
+        zone={zone}
+        cameraRef={null}
+        mapRef={mapRef}
+        fit={fit}
+        labels={false}
+      >
         <DraftLayers lines={lines} links={links} />
         <GeoJSONSource id="info-ends" data={ends}>
           <Layer

@@ -12,6 +12,8 @@ export type MapStyleInput = {
   /** `file://` address of the glyphs folder (contains the font folders). */
   glyphsDir: string;
   bbox: Bbox;
+  /** False hides the names of places (small map). Default: true. */
+  labels?: boolean;
 };
 
 type Json = unknown;
@@ -582,7 +584,9 @@ export function buildMapStyle(input: MapStyleInput): StyleSpecification {
       'voile-zone': { type: 'geojson', data: zoneVeilGeoJson(input.bbox) },
     },
     glyphs: `${input.glyphsDir}/{fontstack}/{range}.pbf`,
-    layers: layers([zoneVeil, zoneBorder]),
+    layers: layers([zoneVeil, zoneBorder]).filter(
+      (layer) => input.labels !== false || layer.type !== 'symbol',
+    ),
   };
   return style as unknown as StyleSpecification;
 }

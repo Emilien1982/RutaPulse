@@ -31,10 +31,11 @@ describe('routeBounds', () => {
       ],
     };
     const [west, south, east, north] = routeBounds(draft, lines) ?? [];
-    expect(west).toBeLessThan(6.1);
-    expect(east).toBeGreaterThan(6.2);
-    expect(south).toBeLessThan(48.64);
-    expect(north).toBeGreaterThan(48.7);
+    // p05-t8 C2: no margin around the box any more.
+    expect(west).toBeCloseTo(6.1, 10);
+    expect(east).toBeCloseTo(6.2, 10);
+    expect(south).toBeCloseTo(48.64, 10);
+    expect(north).toBeCloseTo(48.7, 10);
   });
 
   it('is null without any point', () => {
@@ -75,8 +76,8 @@ describe('routeBounds on a long route', () => {
     };
     const [west, south, east, north] =
       routeBounds({ points: [], modes: [] }, lines) ?? [];
-    expect(west).toBeLessThan(6);
-    expect(south).toBeLessThan(48);
+    expect(west).toBeLessThanOrEqual(6);
+    expect(south).toBeLessThanOrEqual(48);
     expect(east).toBeGreaterThan(6.19);
     expect(north).toBeGreaterThan(48.19);
   });

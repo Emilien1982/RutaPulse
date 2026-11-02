@@ -1,0 +1,405 @@
+
+> rutapulse@1.0.0 verify
+> npm run typecheck && npm run lint && npm run test
+
+
+> rutapulse@1.0.0 typecheck
+> tsc --noEmit
+
+
+> rutapulse@1.0.0 lint
+> eslint --max-warnings 0 && prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> rutapulse@1.0.0 test
+> jest
+
+watchman warning: Recrawled this watch 57 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/utilisateur/dev_ai/vtt-nav' ; watchman watch-project '/Users/utilisateur/dev_ai/vtt-nav'`
+
+FAIL src/core/route-info/chart.test.ts
+  ● chartPoints › puts the lowest altitude at the bottom and the highest at the top
+
+    expect(received).toBeCloseTo(expected)
+
+    Expected: 81
+    Received: 73.92
+
+    Expected precision:    2
+    Expected difference: < 0.005
+    Received difference:   7.079999999999998
+
+      10 |   it('puts the lowest altitude at the bottom and the highest at the top', () => {
+      11 |     const points = chartPoints(profile, 100, 130, 358, 84);
+    > 12 |     expect(points[0]?.y).toBeCloseTo(81); // 84 - margin of 3
+         |                          ^
+      13 |     expect(points[1]?.y).toBeCloseTo(3);
+      14 |     expect(points[2]?.y).toBeCloseTo(81 - (15 / 30) * 78);
+      15 |   });
+
+      at Object.toBeCloseTo (src/core/route-info/chart.test.ts:12:26)
+
+  ● chartPoints › keeps a flat route flat: the span never goes under the minimum
+
+    expect(received).toBeCloseTo(expected)
+
+    Expected: 79.44
+    Received: 72.49199999999999
+
+    Expected precision:    2
+    Expected difference: < 0.005
+    Received difference:   6.9480000000000075
+
+      31 |       84,
+      32 |     );
+    > 33 |     expect(points[1]?.y).toBeCloseTo(81 - (2 / MIN_SPAN_M) * 78);
+         |                          ^
+      34 |   });
+      35 |
+      36 |   it('does not divide by zero when the profile has no length', () => {
+
+      at Object.toBeCloseTo (src/core/route-info/chart.test.ts:33:26)
+
+  ● chartPoints › does not divide by zero when the profile has no length
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+        Object {
+          "x": 0,
+    -     "y": 81,
+    +     "y": 73.92,
+        },
+      ]
+
+      35 |
+      36 |   it('does not divide by zero when the profile has no length', () => {
+    > 37 |     expect(chartPoints([[0, 100]], 100, 100, 358, 84)).toEqual([
+         |                                                        ^
+      38 |       { x: 0, y: 81 },
+      39 |     ]);
+      40 |     expect(chartPoints([], 0, 0, 358, 84)).toEqual([]);
+
+      at Object.toEqual (src/core/route-info/chart.test.ts:37:56)
+
+FAIL src/features/map/infoGeometry.test.ts
+  ● routeBounds › surrounds the points and the whole drawn line
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 6.1
+    Received:   6.1
+
+      32 |     };
+      33 |     const [west, south, east, north] = routeBounds(draft, lines) ?? [];
+    > 34 |     expect(west).toBeLessThan(6.1);
+         |                  ^
+      35 |     expect(east).toBeGreaterThan(6.2);
+      36 |     expect(south).toBeLessThan(48.64);
+      37 |     expect(north).toBeGreaterThan(48.7);
+
+      at Object.toBeLessThan (src/features/map/infoGeometry.test.ts:34:18)
+
+  ● routeBounds on a long route › handles 200 000 coordinates
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 6
+    Received:   6
+
+      76 |     const [west, south, east, north] =
+      77 |       routeBounds({ points: [], modes: [] }, lines) ?? [];
+    > 78 |     expect(west).toBeLessThan(6);
+         |                  ^
+      79 |     expect(south).toBeLessThan(48);
+      80 |     expect(east).toBeGreaterThan(6.19);
+      81 |     expect(north).toBeGreaterThan(48.19);
+
+      at Object.toBeLessThan (src/features/map/infoGeometry.test.ts:78:18)
+
+FAIL src/features/map/RouteInfoScreen.test.tsx
+  ● Infos screen (mockup 20) › frames the whole route on a map that does not move
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 6.1
+    Received:   6.1
+
+      216 |     expect(mockMapProps.touchZoom).toBe(false);
+      217 |     const [west, south, east, north] = mockCameraProps.initialViewState.bounds;
+    > 218 |     expect(west).toBeLessThan(6.1);
+          |                  ^
+      219 |     expect(east).toBeGreaterThan(6.18);
+      220 |     expect(south).toBeLessThan(48.66);
+      221 |     expect(north).toBeGreaterThan(48.7);
+
+      at Object.toBeLessThan (src/features/map/RouteInfoScreen.test.tsx:218:18)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● Infos screen: missing and pending data (C10) › says "Altitudes indisponibles" and keeps the rest
+
+    expect(received).toBeNull()
+
+    Received: <Text style={{"color": "#3A1F0F", "fontSize": 28, "fontVariant": ["tabular-nums"], "fontWeight": "800", "lineHeight": 33}} testID="info-ascent">—</Text>
+
+      238 |     await renderReady([P1, P2]);
+      239 |     expect(screen.getByText('Altitudes indisponibles')).toBeTruthy();
+    > 240 |     expect(screen.queryByTestId('info-ascent')).toBeNull();
+          |                                                 ^
+      241 |     expect(screen.queryByTestId('info-descent')).toBeNull();
+      242 |     expect(screen.queryByTestId('info-profile')).toBeNull();
+      243 |     expect(screen.getByTestId('info-distance')).toHaveTextContent('3,0 km');
+
+      at Object.toBeNull (src/features/map/RouteInfoScreen.test.tsx:240:49)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+FAIL src/features/map/RouteInfoScreenSpec.test.tsx (12.64 s)
+  ● C10: missing data, never a crash › altitudes of one leg out of two missing: nothing partial, the dash in the summary
+
+    expect(received).toBeNull()
+
+    Received: <Text style={{"color": "#3A1F0F", "fontSize": 28, "fontVariant": ["tabular-nums"], "fontWeight": "800", "lineHeight": 33}} testID="info-ascent">—</Text>
+
+      482 |     await openInfos();
+      483 |     expect(screen.getByText('Altitudes indisponibles')).toBeTruthy();
+    > 484 |     expect(screen.queryByTestId('info-ascent')).toBeNull();
+          |                                                 ^
+      485 |     expect(screen.queryByTestId('info-descent')).toBeNull();
+      486 |     expect(screen.queryByTestId('info-profile')).toBeNull();
+      487 |     expect(screen.queryByTestId('info-range')).toBeNull();
+
+      at Object.toBeNull (src/features/map/RouteInfoScreenSpec.test.tsx:484:49)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● C10: missing data, never a crash › a null altitude inside a profile makes the altitudes missing
+
+    expect(received).toBeNull()
+
+    Received: <Text style={{"color": "#3A1F0F", "fontSize": 28, "fontVariant": ["tabular-nums"], "fontWeight": "800", "lineHeight": 33}} testID="info-ascent">—</Text>
+
+      498 |     await openInfos();
+      499 |     expect(screen.getByText('Altitudes indisponibles')).toBeTruthy();
+    > 500 |     expect(screen.queryByTestId('info-ascent')).toBeNull();
+          |                                                 ^
+      501 |     expect(screen.getByTestId('info-distance')).toBeTruthy();
+      502 |   });
+      503 |
+
+      at Object.toBeNull (src/features/map/RouteInfoScreenSpec.test.tsx:500:49)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.
+
+Summary of all failing tests
+FAIL src/core/route-info/chart.test.ts
+  ● chartPoints › puts the lowest altitude at the bottom and the highest at the top
+
+    expect(received).toBeCloseTo(expected)
+
+    Expected: 81
+    Received: 73.92
+
+    Expected precision:    2
+    Expected difference: < 0.005
+    Received difference:   7.079999999999998
+
+      10 |   it('puts the lowest altitude at the bottom and the highest at the top', () => {
+      11 |     const points = chartPoints(profile, 100, 130, 358, 84);
+    > 12 |     expect(points[0]?.y).toBeCloseTo(81); // 84 - margin of 3
+         |                          ^
+      13 |     expect(points[1]?.y).toBeCloseTo(3);
+      14 |     expect(points[2]?.y).toBeCloseTo(81 - (15 / 30) * 78);
+      15 |   });
+
+      at Object.toBeCloseTo (src/core/route-info/chart.test.ts:12:26)
+
+  ● chartPoints › keeps a flat route flat: the span never goes under the minimum
+
+    expect(received).toBeCloseTo(expected)
+
+    Expected: 79.44
+    Received: 72.49199999999999
+
+    Expected precision:    2
+    Expected difference: < 0.005
+    Received difference:   6.9480000000000075
+
+      31 |       84,
+      32 |     );
+    > 33 |     expect(points[1]?.y).toBeCloseTo(81 - (2 / MIN_SPAN_M) * 78);
+         |                          ^
+      34 |   });
+      35 |
+      36 |   it('does not divide by zero when the profile has no length', () => {
+
+      at Object.toBeCloseTo (src/core/route-info/chart.test.ts:33:26)
+
+  ● chartPoints › does not divide by zero when the profile has no length
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 1
+
+      Array [
+        Object {
+          "x": 0,
+    -     "y": 81,
+    +     "y": 73.92,
+        },
+      ]
+
+      35 |
+      36 |   it('does not divide by zero when the profile has no length', () => {
+    > 37 |     expect(chartPoints([[0, 100]], 100, 100, 358, 84)).toEqual([
+         |                                                        ^
+      38 |       { x: 0, y: 81 },
+      39 |     ]);
+      40 |     expect(chartPoints([], 0, 0, 358, 84)).toEqual([]);
+
+      at Object.toEqual (src/core/route-info/chart.test.ts:37:56)
+
+FAIL src/features/map/infoGeometry.test.ts
+  ● routeBounds › surrounds the points and the whole drawn line
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 6.1
+    Received:   6.1
+
+      32 |     };
+      33 |     const [west, south, east, north] = routeBounds(draft, lines) ?? [];
+    > 34 |     expect(west).toBeLessThan(6.1);
+         |                  ^
+      35 |     expect(east).toBeGreaterThan(6.2);
+      36 |     expect(south).toBeLessThan(48.64);
+      37 |     expect(north).toBeGreaterThan(48.7);
+
+      at Object.toBeLessThan (src/features/map/infoGeometry.test.ts:34:18)
+
+  ● routeBounds on a long route › handles 200 000 coordinates
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 6
+    Received:   6
+
+      76 |     const [west, south, east, north] =
+      77 |       routeBounds({ points: [], modes: [] }, lines) ?? [];
+    > 78 |     expect(west).toBeLessThan(6);
+         |                  ^
+      79 |     expect(south).toBeLessThan(48);
+      80 |     expect(east).toBeGreaterThan(6.19);
+      81 |     expect(north).toBeGreaterThan(48.19);
+
+      at Object.toBeLessThan (src/features/map/infoGeometry.test.ts:78:18)
+
+FAIL src/features/map/RouteInfoScreen.test.tsx
+  ● Infos screen (mockup 20) › frames the whole route on a map that does not move
+
+    expect(received).toBeLessThan(expected)
+
+    Expected: < 6.1
+    Received:   6.1
+
+      216 |     expect(mockMapProps.touchZoom).toBe(false);
+      217 |     const [west, south, east, north] = mockCameraProps.initialViewState.bounds;
+    > 218 |     expect(west).toBeLessThan(6.1);
+          |                  ^
+      219 |     expect(east).toBeGreaterThan(6.18);
+      220 |     expect(south).toBeLessThan(48.66);
+      221 |     expect(north).toBeGreaterThan(48.7);
+
+      at Object.toBeLessThan (src/features/map/RouteInfoScreen.test.tsx:218:18)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● Infos screen: missing and pending data (C10) › says "Altitudes indisponibles" and keeps the rest
+
+    expect(received).toBeNull()
+
+    Received: <Text style={{"color": "#3A1F0F", "fontSize": 28, "fontVariant": ["tabular-nums"], "fontWeight": "800", "lineHeight": 33}} testID="info-ascent">—</Text>
+
+      238 |     await renderReady([P1, P2]);
+      239 |     expect(screen.getByText('Altitudes indisponibles')).toBeTruthy();
+    > 240 |     expect(screen.queryByTestId('info-ascent')).toBeNull();
+          |                                                 ^
+      241 |     expect(screen.queryByTestId('info-descent')).toBeNull();
+      242 |     expect(screen.queryByTestId('info-profile')).toBeNull();
+      243 |     expect(screen.getByTestId('info-distance')).toHaveTextContent('3,0 km');
+
+      at Object.toBeNull (src/features/map/RouteInfoScreen.test.tsx:240:49)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL src/features/map/RouteInfoScreenSpec.test.tsx (12.64 s)
+  ● C10: missing data, never a crash › altitudes of one leg out of two missing: nothing partial, the dash in the summary
+
+    expect(received).toBeNull()
+
+    Received: <Text style={{"color": "#3A1F0F", "fontSize": 28, "fontVariant": ["tabular-nums"], "fontWeight": "800", "lineHeight": 33}} testID="info-ascent">—</Text>
+
+      482 |     await openInfos();
+      483 |     expect(screen.getByText('Altitudes indisponibles')).toBeTruthy();
+    > 484 |     expect(screen.queryByTestId('info-ascent')).toBeNull();
+          |                                                 ^
+      485 |     expect(screen.queryByTestId('info-descent')).toBeNull();
+      486 |     expect(screen.queryByTestId('info-profile')).toBeNull();
+      487 |     expect(screen.queryByTestId('info-range')).toBeNull();
+
+      at Object.toBeNull (src/features/map/RouteInfoScreenSpec.test.tsx:484:49)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ● C10: missing data, never a crash › a null altitude inside a profile makes the altitudes missing
+
+    expect(received).toBeNull()
+
+    Received: <Text style={{"color": "#3A1F0F", "fontSize": 28, "fontVariant": ["tabular-nums"], "fontWeight": "800", "lineHeight": 33}} testID="info-ascent">—</Text>
+
+      498 |     await openInfos();
+      499 |     expect(screen.getByText('Altitudes indisponibles')).toBeTruthy();
+    > 500 |     expect(screen.queryByTestId('info-ascent')).toBeNull();
+          |                                                 ^
+      501 |     expect(screen.getByTestId('info-distance')).toBeTruthy();
+      502 |   });
+      503 |
+
+      at Object.toBeNull (src/features/map/RouteInfoScreenSpec.test.tsx:500:49)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+
+Test Suites: 4 failed, 94 passed, 98 total
+Tests:       9 failed, 1254 passed, 1263 total
+Snapshots:   0 total
+Time:        22.011 s
+Ran all test suites.
