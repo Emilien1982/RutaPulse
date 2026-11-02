@@ -78,7 +78,6 @@
 
 ## Décisions en attente
 
-- Licence de Xcode 27.2 à accepter par Émilien (`sudo xcodebuild -license`) : toute la partie iOS de la phase 5 attend. Le 2 novembre, Émilien a demandé d'avancer sur Android seul.
 - Combien de versions de zone garder sur GitHub (3 releases de 110 Mo déjà).
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
@@ -121,6 +120,17 @@ nouvelle, pour alléger le contexte. Ce qu'il faut savoir pour reprendre :
   captures, fichiers) avant de le présenter.
 - Après une fusion : relancer `npm run verify` et `pytest` sur `main`,
   audit des secrets et des e-mails, mise à jour de ce fichier, push.
+
+**Règles d'Émilien du 2 novembre 2026** (aussi en mémoire, `pilotage-sobre`)
+- Conversation de pilotage silencieuse : seulement les questions pour
+  Émilien, les blocages qui demandent son action et la fin d'une phase.
+- Un seul réveil, toutes les heures (`CronCreate`), qui relance une session
+  arrêtée par une limite d'utilisation. À recréer dans chaque nouvelle
+  session de pilotage, et avant 7 jours.
+- Après chaque fusion : note de passation ici, puis nouvelle session de
+  pilotage.
+- Les sessions de phase n'envoient au pilotage que leurs questions et leur
+  message de fin.
 
 **Leçons du pilotage**
 - Une session de phase peut finir sans prévenir : vérifier régulièrement
