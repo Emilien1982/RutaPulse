@@ -355,10 +355,10 @@ lèvent jamais d'erreur ; les textes sont dans `fr.ts`.
 - React Navigation, `usePreventRemove` : https://reactnavigation.org/docs/preventing-going-back
 - TanStack Query, `enabled` : https://tanstack.com/query/latest/docs/framework/react/guides/dependent-queries
 
-## Complément du 2026-11-02 : la difficulté VTT (proposé)
+## Complément du 2026-11-02 : la difficulté VTT (accepté)
 
 Statut : celui de l'[ADR 0018](0018-difficulte-et-mise-a-jour-des-zones.md),
-§ 2, proposé le 2026-11-02, à valider par Émilien.
+§ 2, accepté le 2026-11-02 par Émilien.
 
 - § 1 : la requête `trace_attributes` demande aussi `edge.way_id`.
   `TerrainEdge` gagne `wayId?`.

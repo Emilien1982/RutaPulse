@@ -1,6 +1,6 @@
 # ADR 0018 — Difficulté VTT et mise à jour des zones
 
-- Statut : Proposé le 2026-11-02, à valider par Émilien
+- Statut : Accepté le 2026-11-02 par Émilien (proposé le même jour)
 - Date : 2026-11-02 (phase 5b, tâche T1 de [p05b-difficulte-maj-zones](../phases/p05b-difficulte-maj-zones.md))
 - Complète l'[ADR 0003](0003-paquets-de-zone.md) (un fichier de plus dans
   le paquet), l'[ADR 0013](0013-telechargement-zones.md) (mise à jour d'une
@@ -594,6 +594,18 @@ dépendance nouvelle.
 
 Pour le designer (pas une question pour Émilien) : le texte de la ligne
 quand le terrain manque (« Difficulté indisponible » proposé).
+
+## Réponses d'Émilien (2 novembre 2026)
+
+Émilien valide l'ADR, la maquette v1/41 et les recommandations :
+1. l'écran Zones montre la date de la carte (« carte du 2 nov. »), pas un
+   numéro de version ;
+2. pas de pastille sur l'onglet Zones en v1 ;
+3. pas de bouton « Ignorer cette mise à jour » ;
+4. pas de confirmation pour annuler une mise à jour ;
+5. un itinéraire gardé (phase 6) garde son tracé ; ses infos (D+,
+   terrain, difficulté) sont recalculées sur la zone en service à
+   l'ouverture. À reprendre dans l'ADR de la phase 6.
 
 ## Sources (relevées le 2 novembre 2026)
 

@@ -75,10 +75,10 @@ d'architecture).
 - RGE ALTI 5 m : https://gee-community-catalog.org/projects/france5m/
 - togeojson : https://registry.npmjs.org/-/v1/search?text=%40tmcw%2Ftogeojson&size=2
 
-## Complément du 2026-11-02 (proposé)
+## Complément du 2026-11-02 (accepté)
 
 Statut : celui de l'[ADR 0018](0018-difficulte-et-mise-a-jour-des-zones.md),
-proposé le 2026-11-02, à valider par Émilien.
+accepté le 2026-11-02 par Émilien.
 
 - `sac_scale` (difficulté de randonnée) n'est pas affiché : décision de la
   spec de la phase 5b (une 2e échelle embrouillerait).

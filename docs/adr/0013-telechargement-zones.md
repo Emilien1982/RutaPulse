@@ -482,10 +482,10 @@ Détails : [p02-essai-e1.md](../phases/p02-essai-e1.md).
 - Le simulateur iOS annonce `WIFI`. La perte du Wi-Fi (C4) se teste sur
   Android seulement.
 
-## Complément du 2026-11-02 : mise à jour d'une zone (proposé)
+## Complément du 2026-11-02 : mise à jour d'une zone (accepté)
 
 Statut : celui de l'[ADR 0018](0018-difficulte-et-mise-a-jour-des-zones.md),
-§§ 3 et 4, proposé le 2026-11-02, à valider par Émilien.
+§§ 3 et 4, accepté le 2026-11-02 par Émilien.
 
 - Une mise à jour est un téléchargement ordinaire (§§ 3 à 6) dans le
   dossier de la nouvelle version, à côté de celle en service. Aucun état

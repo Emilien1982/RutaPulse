@@ -318,10 +318,10 @@ des paquets reste sur le téléchargement du binaire. L'agent :
 - `spm_dependency` de React Native (depuis la 0.75) :
   https://www.callstack.com/blog/integrating-swift-package-manager-with-react-native-libraries
 
-## Complément du 2026-11-02 (proposé)
+## Complément du 2026-11-02 (accepté)
 
 Statut : celui de l'[ADR 0018](0018-difficulte-et-mise-a-jour-des-zones.md),
-§ 4, proposé le 2026-11-02, à valider par Émilien.
+§ 4, accepté le 2026-11-02 par Émilien.
 
 - § 3 : la zone du moteur est la « zone en service » de l'ADR 0018. Elle
   ne change pas tant qu'une création est ouverte.

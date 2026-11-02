@@ -46,7 +46,7 @@
 | `31-verrouille-android.html` | Téléphone verrouillé, Android : la notification unique, petite icône A sur un rond rouille | 8 ; décision 7 (écrans 70) |
 | `32-verrouille-ios.html` | Téléphone verrouillé, iOS : la Live Activity (bandeau en direct), icône A | 8 ; décision 7 (écrans 70) |
 | `v1/40-mes-itineraires.html` | Mes itinéraires, menu natif d'une ligne ouvert, import GPX | 4, 5 |
-| `v1/41-zones.html` | Zones : prête, en attente du Wi-Fi, à télécharger ; bandeau « Pas de Wi-Fi » avec l'interrupteur « Wi-Fi seulement ». Depuis le 2 novembre 2026 (phase 5b), trois écrans de plus sous le premier : « Mise à jour disponible », mise à jour en cours, mise à jour en attente du Wi-Fi ; puis les variantes échec, place insuffisante, mise à jour finie, et une note (textes exacts, choix à valider) en bas de page | 6 ; décision 10, décision 5 (écrans 70) |
+| `v1/41-zones.html` | Zones : prête, en attente du Wi-Fi, à télécharger ; bandeau « Pas de Wi-Fi » avec l'interrupteur « Wi-Fi seulement ». Depuis le 2 novembre 2026 (phase 5b), trois écrans de plus sous le premier : « Mise à jour disponible », mise à jour en cours, mise à jour en attente du Wi-Fi ; puis les variantes échec, place insuffisante, mise à jour finie, et une note (textes exacts, choix validés le 2 novembre 2026) en bas de page | 6 ; décision 10, décision 5 (écrans 70) |
 | `v1/50-liste-vide.html` | Mes itinéraires vide, avec le vététiste | 4 ; décision 3 |
 | `v1/51-telechargement.html` | Onglet Carte pendant le téléchargement de la première zone : le vététiste roule sur la barre de progression | 6 ; décision 3 |
 | `v1/52-erreur.html` | Création : point touché hors de la zone, calcul impossible, trois sorties | 2, 6 ; décisions 3, 10 |
@@ -107,7 +107,7 @@ de textes, ouverte depuis l'écran 80).
 - **Interrupteur « Télécharger en Wi-Fi seulement » dans le bandeau « Pas de Wi-Fi » lui-même** : c'est le raccourci de la décision 10, en un geste, sans changer d'écran.
 - **Téléchargement commencé en Wi-Fi puis Wi-Fi perdu : « En attente du Wi-Fi », pas une erreur** : il reprend seul, l'utilisateur n'a rien à faire.
 - **Pas de vignette pour les zones** : un dessin générique n'apprend rien, et la place sert au nom et au bouton « Télécharger ».
-- **Mise à jour d'une zone dans sa propre carte, sous un trait en tirets, « Prête sans réseau » inchangé au-dessus** (v1/41, écrans 2 à 4) : c'est la même zone, et l'on voit que l'ancienne carte marche pendant la mise à jour. Lancée seulement par « Mettre à jour » (décision 10) ; aucun message quand elle finit, la nouvelle date suffit. Choix à valider : note en bas de v1/41.
+- **Mise à jour d'une zone dans sa propre carte, sous un trait en tirets, « Prête sans réseau » inchangé au-dessus** (v1/41, écrans 2 à 4) : c'est la même zone, et l'on voit que l'ancienne carte marche pendant la mise à jour. Lancée seulement par « Mettre à jour » (décision 10) ; aucun message quand elle finit, la nouvelle date suffit. Choix validés par Émilien le 2 novembre 2026 : note en bas de v1/41.
 - **Plus de bouton « Ma zone n'est pas là : la demander »** : décision 5 (écrans 70), la demande arrive en V2, automatique. Sur l'écran 52, un point hors de toute zone du catalogue garde les sorties « relier à la main » et « retirer le point ».
 - **Vignettes d'itinéraires en médaillon rond, dessinées depuis le tracé** : reprises du style 3.
 

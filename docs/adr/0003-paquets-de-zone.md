@@ -574,10 +574,10 @@ relevées ce jour) :
 - tippecanoe, versions : https://github.com/felt/tippecanoe/releases
 - osmium-tool, versions : https://github.com/osmcode/osmium-tool/releases
 
-## Complément du 2026-11-02 : la table des difficultés (proposé)
+## Complément du 2026-11-02 : la table des difficultés (accepté)
 
 Statut : celui de l'[ADR 0018](0018-difficulte-et-mise-a-jour-des-zones.md),
-§ 1, proposé le 2026-11-02, à valider par Émilien.
+§ 1, accepté le 2026-11-02 par Émilien.
 
 - Le point 5 de la décision du 19 octobre arrive : un fichier de plus,
   `difficulty.json`, rangé sous `difficulty.json`. Format, voies retenues
