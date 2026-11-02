@@ -1,0 +1,242 @@
+diff --git a/mobile/src/features/map/DraftScreen.tsx b/mobile/src/features/map/DraftScreen.tsx
+index 68c697e..3e13caa 100644
+--- a/mobile/src/features/map/DraftScreen.tsx
++++ b/mobile/src/features/map/DraftScreen.tsx
+@@ -1,4 +1,6 @@
++// THROWAWAY (phase 5, T7): bench hooks (bancP05) added to this screen.
+ import type { CameraRef } from '@maplibre/maplibre-react-native';
++import { useQueryClient } from '@tanstack/react-query';
+ import { useSelector } from '@tanstack/react-store';
+ import { useLocalSearchParams, usePreventRemove, useRouter } from 'expo-router';
+ import { useEffect, useMemo, useRef, useState } from 'react';
+@@ -9,6 +11,17 @@ import { listLegs, summarize } from '@/core/draft/legs';
+ import { handLengthKm, summarizeInfo } from '@/core/route-info/routeInfo';
+ import { findProblem } from '@/core/draft/problem';
+ import { t } from '@/core/i18n/t';
++import {
++  bancBuild,
++  bancDragEnd,
++  bancDragMove,
++  bancDragStart,
++  bancRegionChanged,
++  bancRequest,
++  bancTouch,
++} from '@/shared-data/routing/bancP05';
++import { bancReferences } from '@/shared-data/routing/bancP05Refs';
++import { routingEngine } from '@/shared-data/routing/routingEngine';
+ import { HelpCard } from '@/ui/HelpCard';
+ import { HandModeIcon } from '@/ui/icons';
+ import { colors, mapColors, spacing, text } from '@/ui/theme';
+@@ -78,13 +91,16 @@ export function DraftScreen() {
+   const lon = Number(params.lon);
+   const lat = Number(params.lat);
+   const zoom = Number(params.zoom);
++  const bench = bancRequest();
+   const opening: OpeningView | undefined =
+-    params.lon &&
+-    params.lat &&
+-    params.zoom &&
+-    [lon, lat, zoom].every(Number.isFinite)
+-      ? { center: [lon, lat], zoom }
+-      : undefined;
++    bench?.center && bench.zoom
++      ? { center: bench.center, zoom: bench.zoom }
++      : params.lon &&
++          params.lat &&
++          params.zoom &&
++          [lon, lat, zoom].every(Number.isFinite)
++        ? { center: [lon, lat], zoom }
++        : undefined;
+   return <DraftView opening={opening} />;
+ }
+ 
+@@ -92,7 +108,9 @@ function DraftView({ opening }: { opening?: OpeningView }) {
+   const router = useRouter();
+   // A quick double touch opens Infos once, not twice.
+   const openedAt = useRef(0);
++  const queryClient = useQueryClient();
+   function openInfos() {
++    bancTouch(() => queryClient.clear());
+     if (Date.now() - openedAt.current < OPEN_LOCK_MS) return;
+     openedAt.current = Date.now();
+     router.push('/draft/infos');
+@@ -100,6 +118,17 @@ function DraftView({ opening }: { opening?: OpeningView }) {
+   const camera = useRef<CameraRef>(null);
+   const { zone, store, dispatch } = useDraftSession();
+   const draft = useSelector(store, (s) => s.draft);
++  // Bench: adds the points of the request, once, when the screen opens.
++  useEffect(() => {
++    if (!bancRequest()) return;
++    const open = () => routingEngine.getState() === 'open';
++    void bancReferences(zone.bbox, open);
++    void bancBuild(
++      (p) => dispatch({ type: 'add', lon: p.lon, lat: p.lat }),
++      () => store.state.draft.points.length,
++      open,
++    );
++  }, [store, dispatch, zone.bbox]);
+   const chosenId = useSelector(store, (s) => s.selected);
+   const nextMode = useSelector(store, (s) => s.nextMode);
+   const undoable = useSelector(store, canUndo);
+@@ -296,15 +325,20 @@ function DraftView({ opening }: { opening?: OpeningView }) {
+           dispatch({ type: 'select', id: null });
+         }
+         dragging.current = id;
++        bancDragStart(id, store.state.draft.points);
+         // Empties the preview of a previous gesture.
+         clearPreview();
+         setGesturing(true);
+         setDraggedId(id);
+       },
+-      onDrag: (id, p) => drag(id, p.lon, p.lat),
++      onDrag: (id, p) => {
++        bancDragMove();
++        drag(id, p.lon, p.lat);
++      },
+       onDragEnd: (id, p) => {
+         touchedAnnotation();
+         dragging.current = null;
++        bancDragEnd(p);
+         // The move first: the preview must not be judged on the old legs.
+         release(id, p.lon, p.lat);
+         setGesturing(false);
+@@ -356,6 +390,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
+         opening={opening}
+         onRegionDidChange={(e) => {
+           zoom.current = e.nativeEvent.zoom;
++          bancRegionChanged(e.nativeEvent.center, e.nativeEvent.zoom);
+         }}
+         onPress={(e) => {
+           if (problem) return;
+diff --git a/mobile/src/features/map/RouteInfoScreen.tsx b/mobile/src/features/map/RouteInfoScreen.tsx
+index 0ae8c5f..158e1f0 100644
+--- a/mobile/src/features/map/RouteInfoScreen.tsx
++++ b/mobile/src/features/map/RouteInfoScreen.tsx
+@@ -1,6 +1,7 @@
++// THROWAWAY (phase 5, T7): bench hooks (bancP05) added to this screen.
+ import { useSelector } from '@tanstack/react-store';
+ import { useRouter } from 'expo-router';
+-import { useMemo, useState, type ReactNode } from 'react';
++import { useEffect, useMemo, useState, type ReactNode } from 'react';
+ import { ScrollView, StyleSheet, Text, View } from 'react-native';
+ import { useSafeAreaInsets } from 'react-native-safe-area-context';
+ 
+@@ -12,6 +13,10 @@ import {
+   formatDuration,
+ } from '@/core/routing/formatRoute';
+ import { summarizeInfo } from '@/core/route-info/routeInfo';
++import {
++  bancInfosMounted,
++  bancInfosReady,
++} from '@/shared-data/routing/bancP05';
+ import { Button } from '@/ui/Button';
+ import { HandModeIcon } from '@/ui/icons';
+ import {
+@@ -106,6 +111,23 @@ export function RouteInfoScreen() {
+   const known = summary.complete;
+   const bandsDrawn = terrain.status === 'ready' ? terrain.segments : null;
+ 
++  // Bench: the figures are all there (distance, D+, D-, profile, shares).
++  const figuresReady =
++    known && altitudes.status === 'ready' && terrain.status === 'ready';
++  useEffect(() => {
++    bancInfosMounted();
++  }, []);
++  useEffect(() => {
++    if (!figuresReady) return;
++    bancInfosReady({
++      distance_km: summary.distanceKm,
++      duree_s: summary.durationS,
++      d_plus_m: altitudes.status === 'ready' ? altitudes.ascentM : null,
++      d_moins_m: altitudes.status === 'ready' ? altitudes.descentM : null,
++      parts: terrain.status === 'ready' ? terrain.shares : null,
++    });
++  }, [figuresReady, summary, altitudes, terrain]);
++
+   return (
+     <View style={styles.screen}>
+       <View style={{ paddingTop: insets.top }}>
+diff --git a/mobile/src/shared-data/routing/computeInfos.ts b/mobile/src/shared-data/routing/computeInfos.ts
+index cb9cc7c..7ffc2ac 100644
+--- a/mobile/src/shared-data/routing/computeInfos.ts
++++ b/mobile/src/shared-data/routing/computeInfos.ts
+@@ -1,5 +1,7 @@
++// THROWAWAY (phase 5, T7): wrappers of the bench.
+ import type { HeightResult, TraceResult } from '@/core/routing/infoResponse';
+ 
++import { bancTrackInfo } from './bancP05';
+ import { routingEngine } from './routingEngine';
+ 
+ /** Altitudes along the shape. Never throws: errors come back in the result. */
+@@ -7,7 +9,10 @@ export function computeHeights(
+   shape: [number, number][],
+   signal?: AbortSignal,
+ ): Promise<HeightResult> {
+-  return routingEngine.height(shape, signal);
++  // THROWAWAY (phase 5, T7): counts the calls, changes nothing.
++  const result = routingEngine.height(shape, signal);
++  bancTrackInfo('height', shape, signal, result);
++  return result;
+ }
+ 
+ /** Terrain edges along the shape. Never throws. */
+@@ -15,5 +20,8 @@ export function computeTerrain(
+   shape: [number, number][],
+   signal?: AbortSignal,
+ ): Promise<TraceResult> {
+-  return routingEngine.traceAttributes(shape, signal);
++  // THROWAWAY (phase 5, T7): counts the calls, changes nothing.
++  const result = routingEngine.traceAttributes(shape, signal);
++  bancTrackInfo('terrain', shape, signal, result);
++  return result;
+ }
+diff --git a/mobile/src/shared-data/routing/computeRoute.ts b/mobile/src/shared-data/routing/computeRoute.ts
+index a84336d..d169681 100644
+--- a/mobile/src/shared-data/routing/computeRoute.ts
++++ b/mobile/src/shared-data/routing/computeRoute.ts
+@@ -1,6 +1,8 @@
++// THROWAWAY (phase 5, T7): wrapper of the bench.
+ import type { RoutePoint } from '@/core/routing/routeRequest';
+ import type { RouteResult } from '@/core/routing/routeResponse';
+ 
++import { bancTrackCompute } from './bancP05';
+ import { routingEngine } from './routingEngine';
+ 
+ /** Route through the points. Never throws: errors come back in the result. */
+@@ -8,5 +10,8 @@ export function computeRoute(
+   points: RoutePoint[],
+   signal?: AbortSignal,
+ ): Promise<RouteResult> {
+-  return routingEngine.route(points, signal);
++  // THROWAWAY (phase 5, T7): counts the calls, changes nothing.
++  const result = routingEngine.route(points, signal);
++  bancTrackCompute(points, signal, result);
++  return result;
+ }
+diff --git a/mobile/src/shared-data/routing/routingEngine.ts b/mobile/src/shared-data/routing/routingEngine.ts
+index 5a4509e..87e0d91 100644
+--- a/mobile/src/shared-data/routing/routingEngine.ts
++++ b/mobile/src/shared-data/routing/routingEngine.ts
+@@ -1,3 +1,4 @@
++// THROWAWAY (phase 5, T7): the native module is wrapped by the bench.
+ import { Paths } from 'expo-file-system';
+ 
+ import valhalla from '@modules/valhalla-route';
+@@ -9,6 +10,8 @@ import {
+ import type { Zone } from '@/core/zones/catalogue';
+ import { filePath, versionDir } from '@/core/zones/zoneLayout';
+ 
++import { bancWrapNative } from './bancP05';
++
+ // Plain file paths, without file://, rebuilt from the document folder at
+ // every opening (ADR 0013).
+ function pathsOf(zone: Zone): EnginePaths {
+@@ -21,4 +24,7 @@ function pathsOf(zone: Zone): EnginePaths {
+ }
+ 
+ /** The only engine of the app. */
+-export const routingEngine = createRoutingEngine(valhalla, pathsOf);
++export const routingEngine = createRoutingEngine(
++  bancWrapNative(valhalla),
++  pathsOf,
++);

@@ -1,0 +1,127 @@
+# C13 (phase 5) : créer un itinéraire, ouvrir les infos, voir le D+ et les
+# parts de terrain, revenir par « Modifier », hors ligne.
+# 3 points calculés + un tronçon à la main + un tronçon sentier, puis toucher
+# le résumé : écran Infos (D+, D−, profil, parts Route / Piste / Sentier /
+# À la main), puis « Modifier » : la création est intacte.
+# Prérequis : zone Nancy installée. Pensé pour une version release.
+# Android : le mode avion est réel (coupé à la fin, y compris en cas d'échec).
+# iOS : le simulateur n'a pas de mode avion, ces étapes sont ignorées ; la
+# position du simulateur se règle avant (xcrun simctl location booted set 48.751,5.967).
+appId: fr.rutapulse.app
+onFlowComplete:
+  - runFlow:
+      when:
+        platform: Android
+      commands:
+        - setAirplaneMode: disabled
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setAirplaneMode: enabled
+- launchApp:
+    clearState: false
+    stopApp: true
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setLocation:
+          latitude: 48.751
+          longitude: 5.967
+      - extendedWaitUntil:
+          visible:
+            id: 'new-route-button'
+          timeout: 30000
+      - setLocation:
+          latitude: 48.751
+          longitude: 5.967
+      - waitForAnimationToEnd:
+          timeout: 4000
+- tapOn:
+    text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
+    optional: true
+- tapOn: 'Carte.*'
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+# Création : départ, arrivée, un point de plus (tronçons calculés).
+- tapOn:
+    id: 'new-route-button'
+- extendedWaitUntil:
+    visible: 'Touchez le départ sur la carte'
+    timeout: 10000
+- tapOn:
+    point: '50%,50%'
+- extendedWaitUntil:
+    visible: "Touchez l'arrivée sur la carte"
+    timeout: 10000
+- tapOn:
+    point: '50%,38%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- tapOn:
+    point: '65%,40%'
+- waitForAnimationToEnd:
+    timeout: 6000
+# Un tronçon à la main, puis un tronçon sentier.
+- tapOn:
+    id: 'route-mode-hand'
+- tapOn:
+    point: '30%,45%'
+- waitForAnimationToEnd:
+    timeout: 5000
+- tapOn:
+    id: 'route-mode-path'
+- tapOn:
+    point: '40%,60%'
+- waitForAnimationToEnd:
+    timeout: 10000
+- assertNotVisible:
+    id: 'route-error'
+# Le résumé donne un D+ chiffré (pas « — », pas « … »).
+- assertVisible:
+    id: 'route-ascent'
+    text: '.*[1-9].*'
+- takeScreenshot: p05-c13-creation-resume
+# Ouvrir les infos.
+- tapOn:
+    id: 'route-open-infos'
+- extendedWaitUntil:
+    visible: 'Modifier'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertVisible: 'Nouvel itinéraire'
+- assertVisible:
+    id: 'info-ascent'
+    text: '.*[1-9].*'
+- assertVisible:
+    id: 'info-descent'
+    text: '.*[1-9].*'
+- assertNotVisible: 'Altitudes indisponibles'
+- assertNotVisible: 'Terrain indisponible'
+- assertVisible: 'Route.*%.*'
+- assertVisible: 'Piste.*%.*'
+- assertVisible: 'Sentier.*%.*'
+- assertVisible: 'À la main.*%.*'
+- assertNotVisible: 'Démarrer le suivi'
+- assertNotVisible: 'Difficulté.*'
+- takeScreenshot: p05-c13-infos
+# Revenir : la création est intacte.
+- tapOn: 'Modifier'
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertNotVisible: 'Abandonner cet itinéraire.*'
+- assertVisible:
+    id: 'route-distance'
+    text: '.*[1-9].*'
+- assertVisible:
+    id: 'route-ascent'
+    text: '.*[1-9].*'
+- takeScreenshot: p05-c13-retour-creation

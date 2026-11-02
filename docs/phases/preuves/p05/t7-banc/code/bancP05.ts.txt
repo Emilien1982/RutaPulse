@@ -1,0 +1,546 @@
+// THROWAWAY (phase 5, T7). Never merged into main.
+// Bench of criteria C3/C5 (infos computed like the app, raw answers kept),
+// C9 (time to the Infos screen with its figures; drag stays fluid).
+// Active only when <documents>/banc-p05-demande.json exists; without it every
+// function below does nothing. Results: <documents>/banc-p05/*.json.
+//
+// Request file: { "mesure": "references" | "affichage" | "geste", ... }
+//  - references: { references: { R1: [{lon,lat},...], ... } }
+//  - affichage:  { points, froid: boolean }  (a tap on the summary does the rest)
+//  - geste:      { points, center, zoom, temoin_ms? }
+import { Directory, File, Paths } from 'expo-file-system';
+import { Platform } from 'react-native';
+
+import type { NativeRouting } from '@/core/routing/routingEngine';
+import type { RoutePoint } from '@/core/routing/routeRequest';
+import type { RouteResult } from '@/core/routing/routeResponse';
+
+type Request = {
+  mesure?: 'references' | 'affichage' | 'geste';
+  points?: RoutePoint[];
+  references?: Record<string, RoutePoint[]>;
+  center?: [number, number];
+  zoom?: number;
+  froid?: boolean;
+  // Present: run the control (no gesture) for this long, once the route is built.
+  temoin_ms?: number;
+};
+
+const now = () => performance.now();
+const round = (x: number) => Math.round(x * 10) / 10;
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+const same = (a: RoutePoint, b: RoutePoint) =>
+  Math.abs(a.lon - b.lon) < 1e-7 && Math.abs(a.lat - b.lat) < 1e-7;
+const build = () => (__DEV__ ? 'debug' : 'release');
+
+let cached: Request | null | undefined;
+
+/** The request file, read once; null when absent (the bench is off). */
+export function bancRequest(): Request | null {
+  if (cached !== undefined) return cached;
+  try {
+    const f = new File(Paths.document, 'banc-p05-demande.json');
+    cached = f.exists ? (JSON.parse(f.textSync()) as Request) : null;
+  } catch {
+    cached = null;
+  }
+  return cached;
+}
+
+export function bancSave(name: string, data: unknown) {
+  const dir = new Directory(Paths.document, 'banc-p05');
+  if (!dir.exists) dir.create({ intermediates: true });
+  const f = new File(dir, name);
+  if (!f.exists) f.create();
+  f.write(JSON.stringify(data, null, 2));
+}
+
+function nextIndex(prefix: string): number {
+  const dir = new Directory(Paths.document, 'banc-p05');
+  if (!dir.exists) return 1;
+  return dir.list().filter((e) => e.name.startsWith(prefix)).length + 1;
+}
+
+// ---- Native module wrapper: raw requests and answers, as the engine sees them ----
+
+export type NativeEntry = {
+  kind: 'route' | 'height' | 'trace';
+  t: number;
+  ms: number;
+  request: string;
+  // Only kept for height and trace, and only in the "references" measure.
+  response?: string;
+};
+export const nativeLog: NativeEntry[] = [];
+
+/** Same module, every call noted. Changes nothing for the caller. */
+export function bancWrapNative(native: NativeRouting): NativeRouting {
+  const wrap =
+    (kind: NativeEntry['kind'], fn: (r: string) => Promise<string>) =>
+    async (request: string) => {
+      const t = now();
+      const out = await fn(request);
+      const req = bancRequest();
+      if (req) {
+        nativeLog.push({
+          kind,
+          t,
+          ms: now() - t,
+          request,
+          response:
+            kind !== 'route' && req.mesure === 'references' ? out : undefined,
+        });
+      }
+      return out;
+    };
+  const height = native.height;
+  const trace = native.traceAttributes;
+  return {
+    open: (a, b) => native.open(a, b),
+    close: () => native.close(),
+    route: wrap('route', (r) => native.route(r)),
+    height: height ? wrap('height', (r) => height.call(native, r)) : undefined,
+    traceAttributes: trace
+      ? wrap('trace', (r) => trace.call(native, r))
+      : undefined,
+  };
+}
+
+// ---- Engine calls (wrappers of computeRoute, computeHeights, computeTerrain) ----
+
+type Call = {
+  kind: 'route' | 'height' | 'terrain';
+  t: number;
+  end?: number;
+  points: RoutePoint[];
+  ok?: boolean;
+  error?: string;
+  aborted?: boolean;
+};
+const calls: Call[] = [];
+let inflight = 0;
+let lastActivity = 0;
+
+function track(
+  kind: Call['kind'],
+  points: RoutePoint[],
+  signal: AbortSignal | undefined,
+  result: Promise<{ ok: boolean; error?: string }>,
+): void {
+  if (!bancRequest()) return;
+  const call: Call = { kind, t: now(), points: points.map((p) => ({ ...p })) };
+  calls.push(call);
+  inflight++;
+  lastActivity = call.t;
+  void result.then((r) => {
+    call.end = now();
+    call.ok = r.ok;
+    if (!r.ok) call.error = String(r.error);
+    call.aborted = signal?.aborted ?? false;
+    inflight--;
+    lastActivity = call.end;
+  });
+}
+
+/** Records a route call. Does not touch the promise it is given. */
+export function bancTrackCompute(
+  points: RoutePoint[],
+  signal: AbortSignal | undefined,
+  result: Promise<RouteResult>,
+): void {
+  track('route', points, signal, result);
+}
+
+/** Records a height or terrain call (the ends of the shape). */
+export function bancTrackInfo(
+  kind: 'height' | 'terrain',
+  shape: [number, number][],
+  signal: AbortSignal | undefined,
+  result: Promise<{ ok: boolean; error?: string }>,
+): void {
+  const ends = [shape[0], shape[shape.length - 1]].flatMap((p) =>
+    p ? [{ lon: p[0], lat: p[1] }] : [],
+  );
+  track(kind, ends, signal, result);
+}
+
+// ---- Map movement ----
+
+let regionEvents: { t: number; center: [number, number]; zoom: number }[] = [];
+
+/** Called by the screen at each end of a map movement. */
+export function bancRegionChanged(center: [number, number], zoom: number) {
+  if (!bancRequest()) return;
+  regionEvents.push({ t: now(), center, zoom });
+}
+
+// ---- Build of the route (points added by the bench) ----
+
+/** Waits until the calls have been quiet for `quietMs`. */
+export async function bancWaitQuiet(
+  quietMs: number,
+  timeoutMs: number,
+): Promise<boolean> {
+  const t0 = now();
+  for (;;) {
+    if (inflight === 0 && now() - lastActivity >= quietMs) return true;
+    if (now() - t0 > timeoutMs) return false;
+    await sleep(50);
+  }
+}
+
+/**
+ * "affichage" and "geste": adds the points of the request one by one, waits
+ * for the legs and their infos, writes pret.json, then runs the control if
+ * the request asks for it. "references": see bancP05Refs.
+ */
+export async function bancBuild(
+  add: (p: RoutePoint) => void,
+  count: () => number,
+  engineOpen: () => boolean,
+): Promise<void> {
+  const req = bancRequest();
+  if (!req || req.mesure === 'references') return;
+  const points = req.points ?? [];
+  if (points.length > 0) {
+    // The engine must be open, as when a person starts to draw.
+    while (!engineOpen()) await sleep(300);
+    for (const p of points) {
+      add(p);
+      await sleep(150);
+    }
+    await sleep(500);
+    await bancWaitQuiet(1000, 120000);
+  }
+  bancSave('pret.json', {
+    horodatage: new Date().toISOString(),
+    plateforme: Platform.OS,
+    build: build(),
+    mesure: req.mesure,
+    points_demandes: points.length,
+    points_dans_l_itineraire: count(),
+    appels_moteur: calls.filter((c) => c.kind === 'route').length,
+    appels_altitudes: calls.filter((c) => c.kind === 'height').length,
+    appels_terrain: calls.filter((c) => c.kind === 'terrain').length,
+    appels_en_echec: calls.filter((c) => c.ok === false).map((c) => c.error),
+  });
+  if (req.temoin_ms) await runControl(req.temoin_ms, count());
+}
+
+async function runControl(ms: number, nPoints: number) {
+  const callsBefore = calls.length;
+  let maxGap = 0;
+  let last = now();
+  const t0 = last;
+  let ticks = 0;
+  const tick = setInterval(() => {
+    const t = now();
+    maxGap = Math.max(maxGap, t - last);
+    last = t;
+    ticks++;
+  }, 16);
+  await sleep(ms);
+  clearInterval(tick);
+  bancSave(`temoin-${nextIndex('temoin-')}.json`, {
+    plateforme: Platform.OS,
+    build: build(),
+    horodatage: new Date().toISOString(),
+    points: nPoints,
+    duree_ms: round(now() - t0),
+    ticks,
+    arret_max_fil_js_ms: round(maxGap),
+    appels_moteur_pendant: calls.length - callsBefore,
+  });
+}
+
+// ---- C9, display time: from the touch on the summary to the figures ----
+
+type Touch = {
+  t: number;
+  cold: boolean;
+  clearMs: number;
+  nativeFrom: number;
+  callsFrom: number;
+  mountAt?: number;
+  done: boolean;
+};
+let touch: Touch | null = null;
+
+/**
+ * The summary was touched (first line of `openInfos`). Cold: the query cache
+ * is emptied right now, so the Infos screen computes everything again.
+ */
+export function bancTouch(clearCache: () => void) {
+  const req = bancRequest();
+  if (!req || req.mesure !== 'affichage' || touch) return;
+  const t = now();
+  const cold = !!req.froid;
+  if (cold) clearCache();
+  touch = {
+    t,
+    cold,
+    clearMs: now() - t,
+    nativeFrom: nativeLog.length,
+    callsFrom: calls.length,
+    done: false,
+  };
+}
+
+/** The Infos screen is mounted (effect of the first commit). */
+export function bancInfosMounted() {
+  if (touch && touch.mountAt === undefined) touch.mountAt = now();
+}
+
+/**
+ * The Infos screen holds its figures (distance, D+, D-, profile, shares):
+ * called from an effect, so after the commit. Two animation frames later the
+ * figures have been drawn.
+ */
+export function bancInfosReady(figures: unknown) {
+  const tc = touch;
+  if (!tc || tc.done) return;
+  tc.done = true;
+  const commit = now();
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const frame = now();
+      const mine = nativeLog.slice(tc.nativeFrom);
+      const count = (k: NativeEntry['kind']) =>
+        mine.filter((e) => e.kind === k).length;
+      bancSave(`affichage-${nextIndex('affichage-')}.json`, {
+        plateforme: Platform.OS,
+        build: build(),
+        horodatage: new Date().toISOString(),
+        a_froid: tc.cold,
+        vidage_cache_ms: round(tc.clearMs),
+        ms_toucher_a_montage_infos:
+          tc.mountAt === undefined ? null : round(tc.mountAt - tc.t),
+        ms_toucher_a_chiffres_valides: round(commit - tc.t),
+        ms_toucher_a_chiffres_dessines: round(frame - tc.t),
+        appels_natifs_depuis_toucher: {
+          route: count('route'),
+          altitudes: count('height'),
+          terrain: count('trace'),
+          ms_cumules: round(mine.reduce((s, e) => s + e.ms, 0)),
+        },
+        chiffres: figures,
+      });
+    });
+  });
+}
+
+// ---- One drag gesture ----
+
+type Gesture = {
+  id: number;
+  index: number;
+  original: RoutePoint[];
+  t0: number;
+  dragAt: number[];
+  gaps: { at: number; ms: number }[];
+  releaseAt?: number;
+  releasePos?: RoutePoint;
+  callsFrom: number;
+  regionFrom: number;
+  centerStart?: [number, number];
+  tick: ReturnType<typeof setInterval>;
+};
+let gesture: Gesture | null = null;
+
+/** A drag starts on point `id`; `points` is the draft before the gesture. */
+export function bancDragStart(
+  id: number,
+  points: ({ id: number } & RoutePoint)[],
+) {
+  const req = bancRequest();
+  if (!req || req.mesure !== 'geste' || gesture) return;
+  const last = regionEvents[regionEvents.length - 1];
+  const t0 = now();
+  let prev = t0;
+  const g: Gesture = {
+    id,
+    index: points.findIndex((p) => p.id === id),
+    original: points.map(({ lon, lat }) => ({ lon, lat })),
+    t0,
+    dragAt: [],
+    gaps: [],
+    callsFrom: calls.length,
+    regionFrom: regionEvents.length,
+    centerStart: last?.center ?? req.center,
+    tick: setInterval(() => {
+      const t = now();
+      // Every stall of the JS thread over 30 ms, with its date.
+      if (t - prev > 30) g.gaps.push({ at: t - g.t0, ms: t - prev });
+      prev = t;
+    }, 16),
+  };
+  gesture = g;
+}
+
+export function bancDragMove() {
+  if (gesture) gesture.dragAt.push(round(now() - gesture.t0));
+}
+
+/** The release, with the position of the end event. */
+export function bancDragEnd(p: RoutePoint) {
+  const g = gesture;
+  if (!g || g.releaseAt !== undefined) return;
+  g.releaseAt = now() - g.t0;
+  g.releasePos = { lon: p.lon, lat: p.lat };
+  void finishGesture(g);
+}
+
+async function finishGesture(g: Gesture) {
+  // Until the final calculation and the infos have answered and all is quiet.
+  const releaseT = g.t0 + (g.releaseAt ?? 0);
+  lastActivity = Math.max(lastActivity, releaseT);
+  await sleep(300);
+  await bancWaitQuiet(400, 12000);
+  clearInterval(g.tick);
+  gesture = null;
+
+  const rel = g.releaseAt ?? 0;
+  const mine = calls.slice(g.callsFrom).map((c) => ({
+    ...c,
+    at: c.t - g.t0,
+    phase: c.t - g.t0 <= rel ? 'geste' : 'apres_relachement',
+  }));
+  const routes = mine.filter((c) => c.kind === 'route');
+  const infos = mine.filter((c) => c.kind !== 'route');
+
+  // Legit calls: one end is the neighbour of the dragged point, the other end
+  // is the moving point (its start position, or a new one).
+  const before = g.original[g.index - 1];
+  const after = g.original[g.index + 1];
+  const start = g.original[g.index];
+  const isOriginal = (p: RoutePoint) => g.original.some((o) => same(o, p));
+  const moving = (p: RoutePoint) => same(p, start) || !isOriginal(p);
+  const neighbour = (c: { points: RoutePoint[] }) => {
+    const [a, b] = c.points;
+    if (c.points.length !== 2 || !a || !b) return false;
+    return (
+      (before !== undefined && same(a, before) && moving(b)) ||
+      (after !== undefined && same(b, after) && moving(a))
+    );
+  };
+  const others = routes.filter((c) => !neighbour(c));
+
+  // Bursts: calls that start within 30 ms of each other are one calculation
+  // of the throttled function (it asks for the two neighbour legs together).
+  type Burst = { at: number; n: number; ms: number };
+  const bursts: Burst[] = [];
+  for (const c of routes.filter((m) => m.phase === 'geste')) {
+    const lastBurst = bursts[bursts.length - 1];
+    const ms = (c.end ?? c.t) - c.t;
+    if (lastBurst && c.at - lastBurst.at < 30) {
+      lastBurst.n++;
+      lastBurst.ms = Math.max(lastBurst.ms, ms);
+    } else {
+      bursts.push({ at: c.at, n: 1, ms });
+    }
+  }
+  const gaps = bursts.slice(1).map((b, i) => b.at - (bursts[i]?.at ?? 0));
+  let perSecond = 0;
+  for (const b of bursts) {
+    perSecond = Math.max(
+      perSecond,
+      bursts.filter((u) => u.at >= b.at && u.at < b.at + 1000).length,
+    );
+  }
+
+  const finals = routes.filter((c) => c.phase === 'apres_relachement');
+  const finalEnd = Math.max(0, ...finals.map((c) => (c.end ?? 0) - g.t0));
+  const finalStart = finals.length ? Math.min(...finals.map((c) => c.at)) : 0;
+  const infosAfter = infos.filter((c) => c.phase === 'apres_relachement');
+  const infosDuring = infos.filter((c) => c.phase === 'geste');
+  const infosEnd = Math.max(0, ...infosAfter.map((c) => (c.end ?? 0) - g.t0));
+  const everythingEnd = Math.max(finalEnd, infosEnd);
+  const regions = regionEvents.slice(g.regionFrom);
+  const lastRegion = regions[regions.length - 1];
+  const maxUntil = (limit: number) =>
+    round(Math.max(0, ...g.gaps.filter((x) => x.at <= limit).map((x) => x.ms)));
+  const maxOf = (sel: typeof g.gaps) =>
+    sel.reduce((a, x) => (x.ms > a.ms ? x : a), { at: 0, ms: 0 });
+  const worst = maxOf(g.gaps.filter((x) => x.at <= everythingEnd));
+
+  bancSave(`geste-${nextIndex('geste-')}.json`, {
+    plateforme: Platform.OS,
+    build: build(),
+    horodatage: new Date().toISOString(),
+    points_itineraire: g.original.length,
+    index_point_glisse: g.index,
+    duree_geste_ms: round(rel),
+    evenements_glisser: g.dragAt.length,
+    premier_evt_ms: g.dragAt[0],
+    dernier_evt_ms: g.dragAt[g.dragAt.length - 1],
+    arret_max_fil_js_ms_jusqua_relachement: maxUntil(rel),
+    arret_max_fil_js_ms_jusqua_calcul_final: maxUntil(finalEnd),
+    arret_max_fil_js_ms_jusqua_fin_infos: maxUntil(everythingEnd),
+    arret_max_a_ms_depuis_debut: round(worst.at),
+    arrets_sup_30ms: g.gaps.map((x) => ({ at: round(x.at), ms: round(x.ms) })),
+    calculs_pendant_geste: bursts.length,
+    calculs: bursts,
+    ecart_min_entre_calculs_ms: gaps.length ? round(Math.min(...gaps)) : null,
+    max_calculs_par_seconde: perSecond,
+    calcul_final: {
+      present: finals.length > 0,
+      appels: finals.length,
+      debut_ms_apres_relachement: round(finalStart - rel),
+      fin_ms_apres_relachement: round(finalEnd - rel),
+      duree_moteur_ms: round(
+        Math.max(0, ...finals.map((c) => (c.end ?? c.t) - c.t)),
+      ),
+      reussis: finals.filter((c) => c.ok).length,
+      position_relachement: g.releasePos,
+      // Every final call uses the position of the end event.
+      a_la_position_du_relachement:
+        finals.length > 0 &&
+        finals.every((c) =>
+          c.points.some((q) => g.releasePos && same(q, g.releasePos)),
+        ),
+      appels_detail: finals.map((c) => ({
+        at: round(c.at),
+        ok: c.ok,
+        points: c.points,
+      })),
+    },
+    // Infos of the legs: none during the gesture, those of the 2 legs after.
+    infos: {
+      appels_pendant_geste: infosDuring.length,
+      appels_apres_relachement: infosAfter.length,
+      altitudes_apres: infosAfter.filter((c) => c.kind === 'height').length,
+      terrain_apres: infosAfter.filter((c) => c.kind === 'terrain').length,
+      reussis: infosAfter.filter((c) => c.ok).length,
+      fin_ms_apres_relachement: infosAfter.length
+        ? round(infosEnd - rel)
+        : null,
+      detail: infos.map((c) => ({
+        kind: c.kind,
+        at: round(c.at),
+        ms: round((c.end ?? c.t) - c.t),
+        phase: c.phase,
+        ok: c.ok,
+        annule: c.aborted,
+      })),
+    },
+    fin_de_tout_ms_apres_relachement: round(everythingEnd - rel),
+    autres_troncons_recalcules: others.length,
+    autres_troncons_detail: others.map((c) => ({
+      at: round(c.at),
+      points: c.points,
+    })),
+    appels_routes: routes.map((c) => ({
+      at: round(c.at),
+      ms: round((c.end ?? c.t) - c.t),
+      phase: c.phase,
+      ok: c.ok,
+      annule: c.aborted,
+    })),
+    carte_bougee: regions.length > 0,
+    evenements_carte: regions.length,
+    centre_debut: g.centerStart,
+    centre_fin: lastRegion?.center,
+    evts_dates: g.dragAt.slice(0, 600),
+  });
+  regionEvents = [];
+}

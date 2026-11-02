@@ -1,0 +1,1 @@
+{"encoded_polyline": "iva|{AasppJlKmCrSugHwZcuE}JiqAcF}gAqV{qFe@eIUmBkBmB`AiBl@oF{Y_aIwYs_KMyE", "costing": "bicycle", "costing_options": {"bicycle": {"bicycle_type": "mountain", "use_roads": 0}}, "shape_match": "walk_or_snap", "filters": {"attributes": ["edge.use", "edge.density", "edge.length"], "action": "include"}}

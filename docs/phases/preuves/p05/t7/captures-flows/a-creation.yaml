@@ -1,0 +1,42 @@
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- setLocation:
+    latitude: 48.751
+    longitude: 5.967
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- setLocation:
+    latitude: 48.751
+    longitude: 5.967
+- waitForAnimationToEnd:
+    timeout: 4000
+- tapOn:
+    id: 'new-route-button'
+- extendedWaitUntil:
+    visible: 'Touchez le départ sur la carte'
+    timeout: 10000
+- tapOn:
+    point: '50%,50%'
+- extendedWaitUntil:
+    visible: "Touchez l'arrivée sur la carte"
+    timeout: 10000
+- tapOn:
+    point: '50%,38%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- tapOn:
+    point: '65%,40%'
+- waitForAnimationToEnd:
+    timeout: 8000
+- assertVisible:
+    id: 'route-ascent'
+    text: '.*[1-9].*'
+- takeScreenshot: p05-android-creation-resume-dplus

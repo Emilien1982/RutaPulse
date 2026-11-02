@@ -1,0 +1,1 @@
+{"units":"kilometers","edges":[{"density":1,"use":"path","length":0.084,"source_percent_along":0.686},{"density":1,"use":"path","length":0.312},{"density":0,"use":"path","length":0.207,"target_percent_along":0.778}],"alternate_paths":[]}

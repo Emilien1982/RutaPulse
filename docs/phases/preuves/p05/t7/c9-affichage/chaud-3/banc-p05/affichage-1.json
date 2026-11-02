@@ -1,0 +1,36 @@
+{
+  "plateforme": "android",
+  "build": "release",
+  "horodatage": "2026-11-02T11:10:26.139Z",
+  "a_froid": false,
+  "vidage_cache_ms": 0,
+  "ms_toucher_a_montage_infos": 26.7,
+  "ms_toucher_a_chiffres_valides": 26.7,
+  "ms_toucher_a_chiffres_dessines": 48.9,
+  "appels_natifs_depuis_toucher": {
+    "route": 0,
+    "altitudes": 0,
+    "terrain": 0,
+    "ms_cumules": 0
+  },
+  "chiffres": {
+    "distance_km": 40.28900000000001,
+    "duree_s": 9920.655999999999,
+    "d_plus_m": 659,
+    "d_moins_m": 661,
+    "parts": [
+      {
+        "part": "road",
+        "percent": 25
+      },
+      {
+        "part": "track",
+        "percent": 12
+      },
+      {
+        "part": "trail",
+        "percent": 63
+      }
+    ]
+  }
+}

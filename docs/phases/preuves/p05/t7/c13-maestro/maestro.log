@@ -1,0 +1,60 @@
+Running on Pixel_6_API_34_arm64
+ > Flow p05-infos
+  > On Flow Complete
+Run flow when Platform is ANDROID...
+  Enable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Launch app "fr.rutapulse.app"... COMPLETED
+Run flow when Platform is ANDROID...
+  Set location (48.751, 5.967)... COMPLETED
+  Assert that id: new-route-button is visible... COMPLETED
+  Set location (48.751, 5.967)... COMPLETED
+  Wait for animation to end within 4000 ms... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED
+Tap on (Optional) "Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*"... WARNED
+
+
+ Warning: Element not found: Text matching regex: Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*
+Tap on "Carte.*"... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Tap on id: new-route-button... COMPLETED
+Assert that "Touchez le départ sur la carte" is visible... COMPLETED
+Tap on point (50%,50%)... COMPLETED
+Assert that "Touchez l'arrivée sur la carte" is visible... COMPLETED
+Tap on point (50%,38%)... COMPLETED
+Assert that ".*[1-9].*", id: route-distance is visible... COMPLETED
+Tap on point (65%,40%)... COMPLETED
+Wait for animation to end within 6000 ms... COMPLETED
+Tap on id: route-mode-hand... COMPLETED
+Tap on point (30%,45%)... COMPLETED
+Wait for animation to end within 5000 ms... COMPLETED
+Tap on id: route-mode-path... COMPLETED
+Tap on point (40%,60%)... COMPLETED
+Wait for animation to end within 10000 ms... COMPLETED
+Assert that id: route-error is not visible... COMPLETED
+Assert that ".*[1-9].*", id: route-ascent is visible... COMPLETED
+Take screenshot p05-c13-creation-resume... COMPLETED
+Tap on id: route-open-infos... COMPLETED
+Assert that "Modifier" is visible... COMPLETED
+Wait for animation to end within 3000 ms... COMPLETED
+Assert that "Nouvel itinéraire" is visible... COMPLETED
+Assert that ".*[1-9].*", id: info-ascent is visible... COMPLETED
+Assert that ".*[1-9].*", id: info-descent is visible... COMPLETED
+Assert that "Altitudes indisponibles" is not visible... COMPLETED
+Assert that "Terrain indisponible" is not visible... COMPLETED
+Assert that "Route.*%.*" is visible... COMPLETED
+Assert that "Piste.*%.*" is visible... COMPLETED
+Assert that "Sentier.*%.*" is visible... COMPLETED
+Assert that "À la main.*%.*" is visible... COMPLETED
+Assert that "Démarrer le suivi" is not visible... COMPLETED
+Assert that "Difficulté.*" is not visible... COMPLETED
+Take screenshot p05-c13-infos... COMPLETED
+Tap on "Modifier"... COMPLETED
+Wait for animation to end within 3000 ms... COMPLETED
+Assert that "Abandonner cet itinéraire.*" is not visible... COMPLETED
+Assert that ".*[1-9].*", id: route-distance is visible... COMPLETED
+Assert that ".*[1-9].*", id: route-ascent is visible... COMPLETED
+Take screenshot p05-c13-retour-creation... COMPLETED
+Run flow when Platform is ANDROID...
+  Disable airplane mode... COMPLETED
+Run flow when Platform is ANDROID... COMPLETED

@@ -1,0 +1,590 @@
+{
+  "plateforme": "android",
+  "build": "release",
+  "horodatage": "2026-11-02T11:12:32.456Z",
+  "points_itineraire": 11,
+  "index_point_glisse": 5,
+  "duree_geste_ms": 2009.8,
+  "evenements_glisser": 110,
+  "premier_evt_ms": 10.6,
+  "dernier_evt_ms": 1990.8,
+  "arret_max_fil_js_ms_jusqua_relachement": 53.2,
+  "arret_max_fil_js_ms_jusqua_calcul_final": 53.2,
+  "arret_max_fil_js_ms_jusqua_fin_infos": 53.2,
+  "arret_max_a_ms_depuis_debut": 1843.1,
+  "arrets_sup_30ms": [
+    {
+      "at": 73.9,
+      "ms": 32
+    },
+    {
+      "at": 123.8,
+      "ms": 34.4
+    },
+    {
+      "at": 173.5,
+      "ms": 33.3
+    },
+    {
+      "at": 223.4,
+      "ms": 33.5
+    },
+    {
+      "at": 274.9,
+      "ms": 34.8
+    },
+    {
+      "at": 324.1,
+      "ms": 34.1
+    },
+    {
+      "at": 375.1,
+      "ms": 34.9
+    },
+    {
+      "at": 474.1,
+      "ms": 30.1
+    },
+    {
+      "at": 511.2,
+      "ms": 37.1
+    },
+    {
+      "at": 555.6,
+      "ms": 44.4
+    },
+    {
+      "at": 625.6,
+      "ms": 35.8
+    },
+    {
+      "at": 680.7,
+      "ms": 31.9
+    },
+    {
+      "at": 731.3,
+      "ms": 39.7
+    },
+    {
+      "at": 827.8,
+      "ms": 35
+    },
+    {
+      "at": 1023.2,
+      "ms": 32.1
+    },
+    {
+      "at": 1077.9,
+      "ms": 38
+    },
+    {
+      "at": 1134.6,
+      "ms": 41.6
+    },
+    {
+      "at": 1173.5,
+      "ms": 30.5
+    },
+    {
+      "at": 1227.2,
+      "ms": 35.5
+    },
+    {
+      "at": 1323,
+      "ms": 30.7
+    },
+    {
+      "at": 1375.3,
+      "ms": 32.1
+    },
+    {
+      "at": 1425.8,
+      "ms": 36.1
+    },
+    {
+      "at": 1480.5,
+      "ms": 36.3
+    },
+    {
+      "at": 1529.6,
+      "ms": 39.6
+    },
+    {
+      "at": 1573.2,
+      "ms": 32.7
+    },
+    {
+      "at": 1623.3,
+      "ms": 30.8
+    },
+    {
+      "at": 1775.7,
+      "ms": 33.3
+    },
+    {
+      "at": 1843.1,
+      "ms": 53.2
+    },
+    {
+      "at": 1878.6,
+      "ms": 35.4
+    },
+    {
+      "at": 1924.4,
+      "ms": 34.8
+    },
+    {
+      "at": 1979.1,
+      "ms": 38.8
+    },
+    {
+      "at": 2028,
+      "ms": 37.1
+    },
+    {
+      "at": 2122.9,
+      "ms": 32
+    },
+    {
+      "at": 2223.3,
+      "ms": 33.5
+    },
+    {
+      "at": 2278.2,
+      "ms": 38.5
+    },
+    {
+      "at": 2377.5,
+      "ms": 38.2
+    },
+    {
+      "at": 2422.7,
+      "ms": 32.1
+    },
+    {
+      "at": 2472.7,
+      "ms": 32.3
+    }
+  ],
+  "calculs_pendant_geste": 10,
+  "calculs": [
+    {
+      "at": 10.664584040641785,
+      "n": 2,
+      "ms": 17.20883297920227
+    },
+    {
+      "at": 216.28437495231628,
+      "n": 2,
+      "ms": 4.985749959945679
+    },
+    {
+      "at": 423.59012496471405,
+      "n": 2,
+      "ms": 4.5113749504089355
+    },
+    {
+      "at": 625.4705009460449,
+      "n": 2,
+      "ms": 2.0772500038146973
+    },
+    {
+      "at": 827.5792089700699,
+      "n": 2,
+      "ms": 2.60195791721344
+    },
+    {
+      "at": 1039.7841670513153,
+      "n": 2,
+      "ms": 2.2124160528182983
+    },
+    {
+      "at": 1245.3726259469986,
+      "n": 2,
+      "ms": 6.111415982246399
+    },
+    {
+      "at": 1458.5261260271072,
+      "n": 2,
+      "ms": 1.9748330116271973
+    },
+    {
+      "at": 1658.0477509498596,
+      "n": 2,
+      "ms": 12.554541945457458
+    },
+    {
+      "at": 1858.4585009813309,
+      "n": 2,
+      "ms": 3.189916968345642
+    }
+  ],
+  "ecart_min_entre_calculs_ms": 199.5,
+  "max_calculs_par_seconde": 5,
+  "calcul_final": {
+    "present": true,
+    "appels": 2,
+    "debut_ms_apres_relachement": 10.4,
+    "fin_ms_apres_relachement": 15.6,
+    "duree_moteur_ms": 5.1,
+    "reussis": 2,
+    "position_relachement": {
+      "lon": 5.97475246712122,
+      "lat": 48.74670555301819
+    },
+    "a_la_position_du_relachement": true,
+    "appels_detail": [
+      {
+        "at": 2020.2,
+        "ok": true,
+        "points": [
+          {
+            "id": 5,
+            "lon": 5.971272,
+            "lat": 48.745898
+          },
+          {
+            "id": 6,
+            "lon": 5.97475246712122,
+            "lat": 48.74670555301819
+          }
+        ]
+      },
+      {
+        "at": 2020.2,
+        "ok": true,
+        "points": [
+          {
+            "id": 6,
+            "lon": 5.97475246712122,
+            "lat": 48.74670555301819
+          },
+          {
+            "id": 7,
+            "lon": 5.972936,
+            "lat": 48.754058
+          }
+        ]
+      }
+    ]
+  },
+  "infos": {
+    "appels_pendant_geste": 0,
+    "appels_apres_relachement": 4,
+    "altitudes_apres": 2,
+    "terrain_apres": 2,
+    "reussis": 4,
+    "fin_ms_apres_relachement": 58.4,
+    "detail": [
+      {
+        "kind": "height",
+        "at": 2032.1,
+        "ms": 1.3,
+        "phase": "apres_relachement",
+        "ok": true,
+        "annule": false
+      },
+      {
+        "kind": "terrain",
+        "at": 2032.1,
+        "ms": 10.5,
+        "phase": "apres_relachement",
+        "ok": true,
+        "annule": false
+      },
+      {
+        "kind": "height",
+        "at": 2032.1,
+        "ms": 18.8,
+        "phase": "apres_relachement",
+        "ok": true,
+        "annule": false
+      },
+      {
+        "kind": "terrain",
+        "at": 2032.1,
+        "ms": 36.1,
+        "phase": "apres_relachement",
+        "ok": true,
+        "annule": false
+      }
+    ]
+  },
+  "fin_de_tout_ms_apres_relachement": 58.4,
+  "autres_troncons_recalcules": 0,
+  "autres_troncons_detail": [],
+  "appels_routes": [
+    {
+      "at": 10.7,
+      "ms": 15.7,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 10.7,
+      "ms": 17.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 216.3,
+      "ms": 3.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 216.3,
+      "ms": 5,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 423.6,
+      "ms": 2.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 423.6,
+      "ms": 4.5,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 625.5,
+      "ms": 1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 625.5,
+      "ms": 2.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 827.6,
+      "ms": 1.4,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 827.6,
+      "ms": 2.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1039.8,
+      "ms": 1.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1039.8,
+      "ms": 2.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1245.4,
+      "ms": 4.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1245.4,
+      "ms": 6.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1458.5,
+      "ms": 1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1458.5,
+      "ms": 2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1658,
+      "ms": 11.1,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1658.1,
+      "ms": 12.6,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1858.5,
+      "ms": 1.5,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 1858.5,
+      "ms": 3.2,
+      "phase": "geste",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2020.2,
+      "ms": 3.9,
+      "phase": "apres_relachement",
+      "ok": true,
+      "annule": false
+    },
+    {
+      "at": 2020.2,
+      "ms": 5.1,
+      "phase": "apres_relachement",
+      "ok": true,
+      "annule": false
+    }
+  ],
+  "carte_bougee": false,
+  "evenements_carte": 0,
+  "centre_debut": [
+    5.973716999999965,
+    48.735547
+  ],
+  "evts_dates": [
+    10.6,
+    25.8,
+    40.2,
+    57.2,
+    73.8,
+    109.2,
+    123.7,
+    140.2,
+    173.2,
+    189.6,
+    216.2,
+    223.4,
+    240.1,
+    263.7,
+    274.9,
+    290.1,
+    307.2,
+    324.1,
+    340,
+    358.1,
+    375.1,
+    396.7,
+    406.3,
+    423.5,
+    443.9,
+    457.2,
+    474.1,
+    511.2,
+    555.6,
+    573.5,
+    589.7,
+    625.4,
+    648.7,
+    656.9,
+    680.5,
+    691.7,
+    711.2,
+    731,
+    753.3,
+    757,
+    782.9,
+    792.8,
+    807.6,
+    827.5,
+    849.5,
+    856.2,
+    873.7,
+    893.4,
+    907.4,
+    923.1,
+    947.4,
+    963.4,
+    973.4,
+    991.1,
+    1016.9,
+    1023.1,
+    1039.7,
+    1058.3,
+    1077.9,
+    1092.9,
+    1107,
+    1134.6,
+    1143,
+    1159.4,
+    1173.5,
+    1191.7,
+    1207.1,
+    1227.1,
+    1245.3,
+    1266.8,
+    1273.6,
+    1292.2,
+    1310.5,
+    1323,
+    1343.1,
+    1357.3,
+    1375.2,
+    1389.7,
+    1412.9,
+    1425.7,
+    1444.2,
+    1458.5,
+    1480.5,
+    1490,
+    1507.2,
+    1529.6,
+    1540.4,
+    1564.6,
+    1607.2,
+    1623.2,
+    1647.4,
+    1658,
+    1673.5,
+    1693.7,
+    1711.6,
+    1723.6,
+    1763.1,
+    1775.7,
+    1789.9,
+    1824.2,
+    1843.1,
+    1858.4,
+    1878.5,
+    1889.6,
+    1913.3,
+    1924.4,
+    1940.3,
+    1956.5,
+    1979,
+    1990.8
+  ]
+}

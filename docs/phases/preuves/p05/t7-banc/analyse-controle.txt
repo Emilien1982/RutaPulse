@@ -1,0 +1,20 @@
+| Geste | Plat. | Build | Durée (ms) | Évts | Arrêt max (ms, jusqu'à la fin des infos) | Calculs | Max/s | Écart min | Final fin (ms) | Infos pendant | Infos après | Fin de tout (ms) | Autres tronçons | Carte | Verdict |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| controle-android-geste/banc-p05/geste-1.json | android | release | 1995.6 | 114 | 46.1 | 10 | 5 | 202.7 | 8.4 | 0 | 4 | 37.6 | 0 | immobile | ok |
+
+| Affichage | Plat. | Build | Cache | Montage (ms) | Chiffres validés (ms) | Chiffres dessinés (ms) | Appels natifs (route/alt/terrain) | D+ | Verdict |
+|---|---|---|---|---|---|---|---|---|---|
+| controle-android-affichage/banc-p05/affichage-1.json | android | release | froid | 16.9 | 204.7 | 275.8 | 21/21/21 | 659 | < 1 s |
+| controle-android-affichage/banc-p05/affichage-2.json | android | release | chaud | 26.9 | 26.9 | 50.6 | 0/0/0 | 659 | < 1 s |
+
+| Témoin | Plat. | Build | Points | Durée (ms) | Arrêt max (ms) | Appels moteur |
+|---|---|---|---|---|---|---|
+| controle-android-temoin/banc-p05/temoin-1.json | android | release | 11 | 3012.3 | 37.2 | 0 |
+
+| Référence | Plat. | Tronçons | D+ | D− | Basse | Haute | Parts |
+|---|---|---|---|---|---|---|---|
+| R1 | android | 11 | 199 | 203 | 196 | 271 | road=17 track=55 trail=28 |
+| R2 | android | 18 | 457 | 456 | 177 | 342 | road=41 track=57 trail=2 |
+| R3 | android | 13 | 454 | 456 | 200 | 350 | road=12 track=40 trail=48 |
+| R4 | android | 21 | 659 | 661 | 255 | 423 | road=25 track=12 trail=63 |
+| R5 | android | 23 | 568 | 569 | 223 | 364 | road=1 track=73 trail=26 |
