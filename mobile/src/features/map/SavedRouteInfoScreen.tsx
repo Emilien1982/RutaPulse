@@ -6,6 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { Draft } from '@/core/draft/draft';
 import { t } from '@/core/i18n/t';
@@ -126,6 +127,7 @@ function MessageScreen({
 }) {
   const router = useRouter();
   const menu = useInfoMenu(menuRoute ?? { id: 0, name: title });
+  const insets = useSafeAreaInsets();
   return (
     <View style={styles.message}>
       {menuRoute && (
@@ -134,7 +136,7 @@ function MessageScreen({
           accessibilityRole="button"
           accessibilityLabel={menu.button.accessibilityLabel}
           onPress={menu.button.onPress}
-          style={styles.menuButton}
+          style={[styles.menuButton, { top: insets.top + spacing.s3 }]}
         >
           <MoreIcon color={colors.brown} />
         </Pressable>
@@ -564,7 +566,6 @@ const styles = StyleSheet.create({
   gap: { marginTop: spacing.s3 },
   menuButton: {
     position: 'absolute',
-    top: spacing.s3,
     right: spacing.s3,
     width: 48,
     height: 48,

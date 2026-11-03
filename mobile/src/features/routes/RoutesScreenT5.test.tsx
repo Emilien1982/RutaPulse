@@ -430,6 +430,12 @@ describe('rename (mockup 40, state 4)', () => {
     expect(input().props.value).toBe(`${'a'.repeat(59)}🚵`);
   });
 
+  it('counts the name as it will be kept', async () => {
+    await openSheet(2);
+    await fireEvent.changeText(input(), '  a   b  ');
+    expect(screen.getByTestId('rename-count')).toHaveTextContent('3 / 60');
+  });
+
   it('keeps the name when cancelled', async () => {
     await openSheet(2);
     await fireEvent.changeText(input(), 'Autre');

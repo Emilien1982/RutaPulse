@@ -14,7 +14,11 @@ import {
 } from 'react-native';
 
 import { t } from '@/core/i18n/t';
-import { checkName, MAX_NAME_LENGTH } from '@/core/routes/routeName';
+import {
+  checkName,
+  MAX_NAME_LENGTH,
+  normalizeName,
+} from '@/core/routes/routeName';
 
 import { Button } from './Button';
 import { CloseIcon } from './icons';
@@ -37,7 +41,8 @@ function cut(value: string): string {
 export function RenameSheet({ initialName, onSubmit, onCancel }: Props) {
   const [value, setValue] = useState(initialName);
   const check = checkName(value);
-  const count = [...value].length;
+  // The name as it will be kept: the same count as the rule of the empty name.
+  const count = [...normalizeName(value)].length;
   const empty = !check.ok;
 
   function submit() {
@@ -100,7 +105,13 @@ export function RenameSheet({ initialName, onSubmit, onCancel }: Props) {
             ) : (
               <View />
             )}
-            <Text testID="rename-count" style={text.secondary}>
+            <Text
+              testID="rename-count"
+              style={[
+                text.secondary,
+                count >= MAX_NAME_LENGTH && styles.countFull,
+              ]}
+            >
               {t('routes.renameCount', { n: count })}
             </Text>
           </View>
@@ -168,6 +179,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  countFull: { color: colors.brown, fontWeight: '700' },
   error: { color: colors.danger, fontWeight: '700', flex: 1 },
   buttons: { flexDirection: 'row', gap: spacing.s3, marginTop: spacing.s3 },
   button: { flex: 1 },

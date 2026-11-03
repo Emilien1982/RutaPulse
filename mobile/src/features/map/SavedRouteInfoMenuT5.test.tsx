@@ -4,7 +4,7 @@
 // engine are faked.
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
-import { Alert, Platform } from 'react-native';
+import { Alert, Platform, StyleSheet } from 'react-native';
 import type { ReactNode } from 'react';
 
 import { MIGRATIONS, migrate } from '@/core/routes/migrations';
@@ -29,6 +29,7 @@ let mockDb: Promise<unknown>;
 let mockZone: Zone | null;
 let mockInstalled: Zone[];
 let mockId = '1';
+let mockTop = 0;
 
 jest.mock('@maplibre/maplibre-react-native', () => {
   const { View } = jest.requireActual('react-native');
@@ -48,7 +49,7 @@ jest.mock('expo-router', () => ({
   useLocalSearchParams: () => ({ id: mockId }),
 }));
 jest.mock('react-native-safe-area-context', () => ({
-  useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
+  useSafeAreaInsets: () => ({ top: mockTop, bottom: 0, left: 0, right: 0 }),
 }));
 jest.mock('@/shared-data/routes/routesDb', () => ({
   getRoutesDb: () => mockDb,
@@ -221,5 +222,19 @@ describe('the "⋮" menu of the Infos screen', () => {
     mockInstalled = [];
     await open();
     expect(screen.getByTestId('info-menu')).toBeTruthy();
+  });
+});
+
+describe('the "⋮" button of the unreadable-route screen', () => {
+  it('sits under the status bar, not behind it', async () => {
+    mockTop = 47;
+    await insertRoute(db, sampleCreated());
+    await db.run("UPDATE routes SET draft = 'x'");
+    await open();
+    const style = StyleSheet.flatten(
+      screen.getByTestId('info-menu').props.style,
+    );
+    expect(style.top).toBe(47 + 12);
+    mockTop = 0;
   });
 });
