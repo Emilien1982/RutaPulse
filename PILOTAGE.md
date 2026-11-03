@@ -24,10 +24,12 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 à spécifier (mes itinéraires et GPX) |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 🔧 spec validée ([spec](docs/phases/p06-mes-itineraires-gpx.md)) |
 
 ## Décisions prises
 
+- 2026-11-03 — Spec de la phase 6 (mes itinéraires et GPX, taille G) validée par Émilien, avec les choix du pilotage. Un GPX importé n'est pas modifiable ; le geste « trace → itinéraire modifiable » se fera en phase 7, pour les circuits et les GPX.
+- 2026-11-03 — Nouvelle session de pilotage (passation après la phase 5b).
 - 2026-11-03 — Phase 5b fusionnée dans main : table `difficulty.json` dans le paquet (505 voies notées à Nancy), ligne « Difficulté » sur l'écran Infos (écart 0 avec le Mac sur 6 itinéraires), mise à jour d'une zone à côté de l'ancienne version. 15 critères tenus avec réserves (coupure réseau, place insuffisante et attente du Wi-Fi prouvées sur Android seulement). 1 513 tests, 228 pytest, CI verte. ADR 0018 ; ADR 0003, 0005, 0013, 0015 et 0017 complétés.
 - 2026-11-03 — Zone Nancy v5 publiée avec la table (run 41622214717). La v4, lancée depuis `main`, est publiée sans table. Émilien peut effacer les releases v1 à v3 (règle des 2 dernières versions).
 - 2026-11-03 — Nettoyage du Mac avec l'accord d'Émilien : anciens worktrees, fichiers de compilation iOS, simulateurs hors service, cache npm, émulateurs KillerTest et Pixel_6_API_33. 57 Go libres.
@@ -102,7 +104,7 @@
 
 ## Prochaine étape
 
-Écrire la spec de la phase 6 (mes itinéraires et GPX, docs/05 ligne 6), la faire valider par Émilien, puis la lancer dans une session de phase. À y faire : recalcul des infos d'un itinéraire gardé sur la zone en service (décision du 2 novembre, ADR 0018).
+Phase 6 (mes itinéraires et GPX) lancée dans une session de phase. Prochain point avec Émilien : la maquette 40 complétée (T1).
 
 ## Passation du pilotage (3 novembre 2026)
 
