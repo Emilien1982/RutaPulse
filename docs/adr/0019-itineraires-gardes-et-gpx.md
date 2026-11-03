@@ -443,9 +443,13 @@ zone de RutaPulse pour l'instant. »
   d'espace de noms (`gpx:trkpt` = `trkpt`) ;
 - `wpt`, `extensions`, `time` et tout élément inconnu sont ignorés.
 
-**Un point** : attributs `lat` et `lon` décimaux (`^[+-]?(\d+\.?\d*|\.\d+)$`,
-sans exposant, comme `xsd:decimal`), latitude entre −90 et 90, longitude
-entre −180 et 180. Un point faux est sauté. `ele` décimal, sinon `null`.
+**Un point** : attributs `lat` et `lon` décimaux
+(`^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$`, sans exposant, comme `xsd:decimal`),
+latitude entre −90 et 90, longitude entre −180 et 180. Un point faux est
+sauté. `ele` décimal entre −1 000 et 10 000 m, sinon `null`. La regex
+(expression régulière) est écrite sans ambiguïté, pour rester en temps
+linéaire : la première forme, `(\d+\.?\d*|…)`, figeait l'app sur un
+nombre piégé d'un million de chiffres (relecture de T2).
 Coordonnées arrondies à 6 décimales (la précision gardée, § 1) ; deux
 points de suite identiques après arrondi n'en font qu'un.
 
@@ -523,8 +527,8 @@ simulateurs. Le contrôle 4 le mesure avant T6.
   comparent un texte exact.
 - `lat` et `lon` à 6 décimales (`toFixed(6)`). Une longitude de 180
   s'écrit −180 : le schéma veut −180 ≤ lon < 180.
-- `<ele>` seulement quand l'altitude du point est connue. Un nombre fini,
-  écrit sans exposant (un entier pour le modèle numérique, au dixième pour
+- `<ele>` seulement quand l'altitude du point est connue, et entre
+  −1 000 et 10 000 m. Un nombre fini, écrit sans exposant (un entier pour le modèle numérique, au dixième pour
   un GPX).
 - Encodage UTF-8, sans BOM (marque d'ordre des octets au début du
   fichier). Fins de ligne `\n`.
@@ -589,8 +593,8 @@ Ce qu'il fait, en un seul passage :
 - lit les balises ouvrantes, fermantes et vides, et leurs attributs entre
   `"` ou `'` (une expression régulière, regex, par balise) ;
 - tient une pile des balises ouvertes : une balise fermante qui ne
-  correspond pas, ou une balise restée ouverte à la fin, rend le fichier
-  « illisible » ;
+  correspond pas, une balise restée ouverte à la fin, ou plus de 64
+  niveaux d'imbrication (`MAX_DEPTH`), rend le fichier « illisible » ;
 - ne garde le texte que des éléments utiles (`name`, `ele`) ;
 - `readGpx` est construit au-dessus, sans arbre en mémoire.
 
