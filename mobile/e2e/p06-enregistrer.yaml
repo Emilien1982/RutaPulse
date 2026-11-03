@@ -1,0 +1,73 @@
+# Phase 6 : créer un itinéraire de deux points et l'enregistrer, hors ligne
+# (Android : mode avion réel, coupé à la fin). Sert de préparation aux
+# contrôles C3 (app tuée puis relancée) et C6 (infos recalculées).
+# Prérequis : zone Nancy installée. iOS : position réglée avant
+# (xcrun simctl location booted set 48.751,5.967).
+appId: fr.rutapulse.app
+onFlowComplete:
+  - runFlow:
+      when:
+        platform: Android
+      commands:
+        - setAirplaneMode: disabled
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setAirplaneMode: enabled
+- launchApp:
+    clearState: false
+    stopApp: true
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setLocation:
+          latitude: 48.751
+          longitude: 5.967
+      - extendedWaitUntil:
+          visible:
+            id: 'new-route-button'
+          timeout: 30000
+      - setLocation:
+          latitude: 48.751
+          longitude: 5.967
+      - waitForAnimationToEnd:
+          timeout: 4000
+- tapOn:
+    text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
+    optional: true
+- tapOn: 'Carte.*'
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- tapOn:
+    id: 'new-route-button'
+- extendedWaitUntil:
+    visible: 'Touchez le départ sur la carte'
+    timeout: 10000
+- tapOn:
+    point: '50%,50%'
+- extendedWaitUntil:
+    visible: "Touchez l'arrivée sur la carte"
+    timeout: 10000
+- tapOn:
+    point: '50%,38%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 4000
+- tapOn:
+    id: 'route-save'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- assertVisible:
+    id: 'info-title'
+    text: 'Itinéraire du .*'
