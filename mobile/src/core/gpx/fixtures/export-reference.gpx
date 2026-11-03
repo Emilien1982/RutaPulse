@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="RutaPulse" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Boucle du Bois de la Côte &amp; &lt;Haye&gt;</name>
+  </metadata>
+  <trk>
+    <name>Boucle du Bois de la Côte &amp; &lt;Haye&gt;</name>
+    <trkseg>
+      <trkpt lat="48.692100" lon="6.184400"><ele>212</ele></trkpt>
+      <trkpt lat="48.692350" lon="6.184912"/>
+      <trkpt lat="48.693000" lon="6.185500"><ele>214.5</ele></trkpt>
+      <trkpt lat="48.693800" lon="-180.000000"/>
+    </trkseg>
+  </trk>
+</gpx>
