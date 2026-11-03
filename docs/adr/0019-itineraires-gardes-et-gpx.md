@@ -1,6 +1,6 @@
 # ADR 0019 — Itinéraires gardés et fichiers GPX
 
-- Statut : **Proposé** le 2026-11-03, à valider par Émilien
+- Statut : Accepté le 2026-11-03 par Émilien (proposé le même jour)
 - Date : 2026-11-03 (phase 6, tâche T1 de [p06-mes-itineraires-gpx](../phases/p06-mes-itineraires-gpx.md))
 - Précise l'[ADR 0007](0007-donnees-locales-et-etat.md) (SQLite lu par
   TanStack Query), l'[ADR 0016](0016-itineraire-en-creation.md) (création
@@ -887,6 +887,26 @@ extension de partage iOS que rien n'utilise.
 6. **Ordre de la liste** (§ 13, point 7) : le choix 3 dit « dernière
    modification ». **Recommandation** : comprendre « dernier enregistrement
    ou import », comme le designer.
+
+## Réponses d'Émilien (3 novembre 2026)
+
+ADR, maquette 40 et recommandations acceptés. Chaque réponse suit la
+recommandation.
+
+1. Renommer ne fait pas remonter l'itinéraire. Seuls « Enregistrer » et
+   l'import changent l'ordre de la liste (question ouverte 6).
+2. Deux itinéraires le même jour : « Itinéraire du 3 nov. (2) ».
+3. Supprimer une zone utilisée prévient : « 2 itinéraires utilisent cette
+   zone. Ils resteront, sans carte ni terrain. »
+4. Pas de balayage : menu « ⋮ » et appui long, sur les deux plateformes.
+5. Après un import réussi, l'écran Infos du GPX s'ouvre.
+6. Durée d'un GPX importé : 10 km/h en v1 (question ouverte 2).
+7. Un GPX avec un `DOCTYPE` est refusé comme illisible (question ouverte 5).
+8. Un itinéraire d'une zone prête mais pas en service n'a pas d'infos en
+   v1. À revoir quand une 2e zone sera publiée (question ouverte 3).
+9. C11 : on compare la longueur du tracé avant et après l'aller-retour
+   seulement si le contrôle montre un écart dû au moteur, preuve à
+   l'appui (question ouverte 1).
 
 ## Sources (relevées le 3 novembre 2026)
 
