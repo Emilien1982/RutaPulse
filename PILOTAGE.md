@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-03 — Phase 6, T1 : ADR 0019 et maquette 40 validés par Émilien, avec les recommandations : nom par défaut « Itinéraire du 3 nov. » (commune en V2, trouvée hors ligne dans 68 % des cas seulement), « (2) » le même jour, renommer ne fait pas remonter, pas de balayage (menu « ⋮ » et appui long), import → écran Infos, GPX importé à 10 km/h, avertissement à la suppression d'une zone utilisée.
 - 2026-11-03 — Spec de la phase 6 (mes itinéraires et GPX, taille G) validée par Émilien, avec les choix du pilotage. Un GPX importé n'est pas modifiable ; le geste « trace → itinéraire modifiable » se fera en phase 7, pour les circuits et les GPX.
 - 2026-11-03 — Nouvelle session de pilotage (passation après la phase 5b).
 - 2026-11-03 — Phase 5b fusionnée dans main : table `difficulty.json` dans le paquet (505 voies notées à Nancy), ligne « Difficulté » sur l'écran Infos (écart 0 avec le Mac sur 6 itinéraires), mise à jour d'une zone à côté de l'ancienne version. 15 critères tenus avec réserves (coupure réseau, place insuffisante et attente du Wi-Fi prouvées sur Android seulement). 1 513 tests, 228 pytest, CI verte. ADR 0018 ; ADR 0003, 0005, 0013, 0015 et 0017 complétés.
@@ -104,7 +105,7 @@
 
 ## Prochaine étape
 
-Phase 6 (mes itinéraires et GPX) lancée dans une session de phase. Prochain point avec Émilien : la maquette 40 complétée (T1).
+Phase 6 (mes itinéraires et GPX) lancée dans une session de phase. Maquette 40 et ADR 0019 validés ; prochain point avec Émilien : la fusion.
 
 ## Passation du pilotage (3 novembre 2026)
 
