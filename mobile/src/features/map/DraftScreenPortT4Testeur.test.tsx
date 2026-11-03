@@ -319,15 +319,16 @@ describe('port: creating a route (RouteCreation.test, RouteCreationT4Testeur)', 
     });
   });
 
-  it('full path: title, one call, figures, the cross asks nothing wrong, "Enregistrer" absent, "D+" shown', async () => {
+  it('full path: title, one call, figures, the cross asks nothing wrong, "Enregistrer" present, "D+" shown', async () => {
     await renderDraft();
     expect(screen.getByText('Nouvel itinéraire')).toBeTruthy();
     await addPoints(HAYE, NANCY);
     expect(mockComputeRoute).toHaveBeenCalledTimes(1);
     expect(screen.getByTestId('route-distance')).toHaveTextContent('25,1 km');
     expect(screen.getByTestId('route-duration')).toHaveTextContent('1 h 35');
-    // Out of the phase 4 scope (spec): no save button. The ascent (D+) is
-    // shown since phase 5 (spec C6, ADR 0017): its label is there.
+    // "Enregistrer" is there since phase 6 (spec, task T4: the save button of
+    // mockup 10). The ascent (D+) is shown since phase 5 (spec C6, ADR 0017):
+    // its label is there.
     expect(screen.queryByText(/Enregistrer/)).toBeTruthy();
     expect(screen.getByText('Montée (D+)')).toBeTruthy();
     // 2 points: the way out is guarded.
