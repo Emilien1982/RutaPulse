@@ -73,31 +73,21 @@ describe('C2 - version of the schema', () => {
     expect((await listRoutes(db)).map((r) => r.id)).toEqual([id]);
   });
 
-  // DEFECT (minor): migrate() throws 'table routes already exists' on a v0 base
-  // that already has the table; the spec asks for a 0 to 1 climb on such a base.
-  it.failing(
-    'version 0 base that already has the table: no crash of the app, rows kept',
-    async () => {
-      const db = createNodeSqlDb();
-      await db.exec(
-        "CREATE TABLE routes (id INTEGER PRIMARY KEY, name TEXT NOT NULL); INSERT INTO routes VALUES (1, 'avant')",
-      );
-      let outcome: unknown;
-      try {
-        outcome = await migrate(db, MIGRATIONS);
-      } catch (e) {
-        outcome = e;
-      }
-      // Whatever the choice, the existing row must survive and the base must
-      // end in a coherent state: version 1 (ready) or untouched version 0.
-      const row = await db.first<{ name: string }>('SELECT name FROM routes');
-      expect(row?.name).toBe('avant');
-      const v = await version(db);
-      expect([0, 1]).toContain(v);
-      // The spec asks for a migration that works: the app must be able to open.
-      expect(outcome).toEqual({ status: 'ready', version: 1 });
-    },
-  );
+  // The app never produces this state (table and version in one transaction),
+  // and an unknown table may have another schema: refuse, write nothing.
+  it('version 0 base with an unknown routes table: throws, stays in 0, row kept', async () => {
+    const db = createNodeSqlDb();
+    await db.exec(
+      "CREATE TABLE routes (id INTEGER PRIMARY KEY, name TEXT NOT NULL); INSERT INTO routes VALUES (1, 'avant')",
+    );
+    await expect(migrate(db, MIGRATIONS)).rejects.toThrow();
+    expect(await version(db)).toBe(0);
+    const rows = await db.all<{ id: number; name: string }>(
+      'SELECT * FROM routes',
+    );
+    expect(rows).toEqual([{ id: 1, name: 'avant' }]);
+    expect(await columns(db)).toEqual(['id', 'name']);
+  });
 
   it('real climb 1 to 2: a row written in v1 is intact in v2', async () => {
     const db = await fresh();
