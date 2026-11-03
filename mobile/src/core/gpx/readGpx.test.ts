@@ -349,7 +349,6 @@ describe('readGpx on hostile numbers', () => {
     const start = Date.now();
     const result = readGpx(text);
     const elapsed = Date.now() - start;
-    console.log(`hostile ${_l}: ${elapsed} ms`);
     expect(elapsed).toBeLessThan(200);
     if (_l === 'ele') expect(result).toMatchObject({ ok: true });
     else expect(result).toEqual({ ok: false, reason: 'noTrack' });
