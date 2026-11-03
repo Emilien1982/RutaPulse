@@ -258,7 +258,13 @@ d'extensions.
 
 **« Modifier »** (C7) depuis l'écran Infos d'un itinéraire créé dont la
 zone est en service :
-1. `router.push({ pathname: '/draft', params: { routeId: '12' } })`.
+1. `setDraftTarget(12)` puis `router.push('/draft')`. L'id passe par un
+   petit module en mémoire (`features/map/draftTarget.ts`), lu une fois au
+   montage de la création par `DraftRoot`, puis effacé. Raison : dans une
+   pile imbriquée d'expo-router, un paramètre d'adresse peut se perdre ;
+   « Modifier » ouvrirait alors une création vide, et « Enregistrer »
+   créerait un nouvel itinéraire. *Corrigé en T4 (3 novembre 2026) : la
+   première version passait `routeId` en paramètre d'adresse.*
 2. `DraftSession` lit l'itinéraire (`useSavedRoute`), prend sa prise de
    zone, puis contrôle encore que la zone tenue a le même `id`. Sinon il
    ferme avec le message « zone absente ».
