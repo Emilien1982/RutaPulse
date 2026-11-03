@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<gpx version="1.1" creator="komoot.com" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>Tour du Haut-Barr &amp; Saverne</name>
+    <author>
+      <link href="https://www.komoot.com">
+        <text>komoot</text>
+        <type>text/html</type>
+      </link>
+    </author>
+  </metadata>
+  <trk>
+    <name>Tour du Haut-Barr &amp; Saverne</name>
+    <trkseg>
+      <trkpt lat="48.7400" lon="7.3600"><ele>200</ele><time>2026-09-01T09:00:00.000Z</time></trkpt>
+      <trkpt lat="48.7410" lon="7.3610"><ele>205</ele><time>2026-09-01T09:00:10.000Z</time></trkpt>
+      <trkpt lat="48.7420" lon="7.3620"><ele>210</ele><time>2026-09-01T09:00:20.000Z</time></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="test">
+  <trk><name>Points faux</name><trkseg>
+    <trkpt lat="45.0" lon="5.0"/>
+    <trkpt lat="45.0000001" lon="5.0000001"/>
+    <trkpt lat="91" lon="5"/>
+    <trkpt lat="45" lon="181"/>
+    <trkpt lat="1e1" lon="5"/>
+    <trkpt lat="NaN" lon="5"/>
+    <trkpt lat="Infinity" lon="5"/>
+    <trkpt lat="45,5" lon="5"/>
+    <trkpt lat="" lon="5"/>
+    <trkpt lat="45"/>
+    <trkpt lat="45.1" lon="5.1"><ele>1e3</ele></trkpt>
+    <trkpt lat="45.2" lon="5.2"><ele>abc</ele></trkpt>
+    <trkpt lat="+45.3" lon="-5.3"><ele> 12 </ele></trkpt>
+    <trkpt lat=".5" lon="5."/>
+  </trkseg></trk>
+</gpx>

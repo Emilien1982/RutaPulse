@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<gpx version="1.1" creator="OsmAnd~ 4.8.5" xmlns="http://www.topografix.com/GPX/1/1" xmlns:osmand="https://osmand.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+  <metadata>
+    <name>OsmAnd piste</name>
+  </metadata>
+  <wpt lat="45.0" lon="5.0"><name>Départ</name></wpt>
+  <trk>
+    <name>OsmAnd piste</name>
+    <extensions><osmand:color>#ff0000</osmand:color></extensions>
+    <trkseg>
+      <trkpt lat="45.100" lon="5.100"/>
+      <trkpt lat="45.101" lon="5.101"><ele>800</ele></trkpt>
+      <trkpt lat="45.102" lon="5.102"/>
+    </trkseg>
+  </trk>
+</gpx>
