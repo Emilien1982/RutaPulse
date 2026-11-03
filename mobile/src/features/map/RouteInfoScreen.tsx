@@ -188,8 +188,9 @@ export function RouteInfoView({
   map: ReactNode;
   distance: Figure;
   duration: Figure;
-  ascent: Figure;
-  descent: Figure;
+  /** Left out: the cell is not drawn. */
+  ascent?: Figure;
+  descent?: Figure;
   /** Under the figures: "Chiffres du dernier calcul…". */
   caption?: string;
   altitudes?: Block<AltitudeInfo>;
@@ -255,26 +256,30 @@ export function RouteInfoView({
             label={t('route.duration')}
             color={colors.orange}
           />
-          <InfoCell
-            testID="info-ascent"
-            value={figureText(ascent, formatAscent)}
-            label={t('route.ascent')}
-            color={colors.rust}
-            accessibilityLabel={missingLabel(
-              ascent,
-              'route.ascentMissingLabel',
-            )}
-          />
-          <InfoCell
-            testID="info-descent"
-            value={figureText(descent, formatAscent)}
-            label={t('info.descent')}
-            color={colors.petrol}
-            accessibilityLabel={missingLabel(
-              descent,
-              'info.descentMissingLabel',
-            )}
-          />
+          {ascent && (
+            <InfoCell
+              testID="info-ascent"
+              value={figureText(ascent, formatAscent)}
+              label={t('route.ascent')}
+              color={colors.rust}
+              accessibilityLabel={missingLabel(
+                ascent,
+                'route.ascentMissingLabel',
+              )}
+            />
+          )}
+          {descent && (
+            <InfoCell
+              testID="info-descent"
+              value={figureText(descent, formatAscent)}
+              label={t('info.descent')}
+              color={colors.petrol}
+              accessibilityLabel={missingLabel(
+                descent,
+                'info.descentMissingLabel',
+              )}
+            />
+          )}
         </View>
         {caption && (
           <Text testID="info-caption" style={[text.caption, styles.caption]}>

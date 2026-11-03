@@ -2,13 +2,15 @@ import type { CameraRef } from '@maplibre/maplibre-react-native';
 import { useSelector } from '@tanstack/react-store';
 import { useLocalSearchParams, usePreventRemove, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { AccessibilityInfo, Alert, StyleSheet, Text, View } from 'react-native';
 
 import { canLoop, canUndo, type DraftAction } from '@/core/draft/draft';
 import { listLegs, summarize } from '@/core/draft/legs';
 import { handLengthKm, summarizeInfo } from '@/core/route-info/routeInfo';
 import { findProblem } from '@/core/draft/problem';
 import { RoutesTooNewError } from '@/core/routes/migrations';
+import { getRoute } from '@/core/routes/routeRepo';
+import { getRoutesDb } from '@/shared-data/routes/routesDb';
 import type { SavedLeg } from '@/core/routes/savedRoute';
 import { previewOf, trackOfCreated } from '@/core/routes/track';
 import { useRouteActions, useSavedRoute } from '@/shared-data/routes/useRoutes';
@@ -107,6 +109,8 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   const savedName = useSavedRoute(saved.routeId).data?.name;
   const actions = useRouteActions();
   const [saving, setSaving] = useState(false);
+  const [exitFor, setExitFor] = useState<number | null>(null);
+  const exited = useRef(false);
   const draft = useSelector(store, (s) => s.draft);
   const chosenId = useSelector(store, (s) => s.selected);
   const nextMode = useSelector(store, (s) => s.nextMode);
@@ -295,6 +299,15 @@ function DraftView({ opening }: { opening?: OpeningView }) {
     !problem &&
     !saving &&
     (!isSaved || draft !== saved.savedDraft);
+  // After "Enregistrer": the creation closes, then the saved route opens
+  // (mockup 40, 8a). A route that came from its Infos screen goes back to it,
+  // which reads it again; a new one is opened on top of the screen below.
+  useEffect(() => {
+    if (exitFor === null || hasChanges || exited.current) return;
+    exited.current = true;
+    router.back();
+    if (kept === undefined) router.push(`/route/${exitFor}`);
+  }, [exitFor, hasChanges, kept, router]);
   async function save() {
     if (!canSave) return;
     const legs: SavedLeg[] = [];
@@ -331,7 +344,14 @@ function DraftView({ opening }: { opening?: OpeningView }) {
         await actions.replace(id, { ...input, savedAt: now });
       }
       savedStore.setState(() => ({ routeId: id, savedDraft: draft }));
-      openInfos();
+      const row = await getRoute(await getRoutesDb(), id);
+      if (row) {
+        AccessibilityInfo.announceForAccessibility(
+          t('route.savedAnnounce', { name: row.name }),
+        );
+      }
+      // The creation closes once the screen knows nothing is left to save.
+      setExitFor(id);
     } catch (error) {
       Alert.alert(
         t(
@@ -480,6 +500,9 @@ function DraftView({ opening }: { opening?: OpeningView }) {
           savedName
             ? t('route.saveChangesLabel', { name: savedName })
             : t('route.saveLabel')
+        }
+        saveOffLabel={
+          savedName ? t('route.saveNoChangeLabel') : t('route.saveOffLabel')
         }
       />
       {showHandHelp && (

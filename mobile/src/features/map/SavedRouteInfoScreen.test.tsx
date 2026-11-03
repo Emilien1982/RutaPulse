@@ -18,6 +18,7 @@ import {
 import { sampleCreated, sampleGpx } from '@/core/routes/testing/sampleRoutes';
 import type { Zone } from '@/core/zones/catalogue';
 
+import { peekDraftTarget } from './draftTarget';
 import { SavedRouteInfoScreen } from './SavedRouteInfoScreen';
 
 const mockPush = jest.fn();
@@ -214,23 +215,26 @@ describe('C6: saved track, infos calculated again', () => {
     expect(route).toMatchObject({ ascentM: 60, savedAt: 1_000 });
     expect(route?.figuresAt).toBeGreaterThan(1_000);
     expect(screen.getByTestId('info-ascent')).toHaveTextContent('60 m');
+    // The saved detail was read again: a later opening sees the same figure.
+    expect(
+      (client.getQueryData(['routes', 'detail', 1]) as { ascentM: number })
+        .ascentM,
+    ).toBe(60);
   });
 
   it('opens "Modifier" on the same route', async () => {
     await insertRoute(db, sampleCreated());
     await open();
     fireEvent.press(screen.getByTestId('info-modify'));
-    expect(mockPush).toHaveBeenCalledWith({
-      pathname: '/draft',
-      params: { routeId: '1' },
-    });
+    expect(peekDraftTarget()).toBe(1);
+    expect(mockPush).toHaveBeenCalledWith('/draft');
   });
 
   it('goes back to the list', async () => {
     await insertRoute(db, sampleCreated());
     await open();
     fireEvent.press(screen.getByTestId('info-back'));
-    expect(mockBack).toHaveBeenCalled();
+    expect(mockNavigate).toHaveBeenCalledWith('/routes');
   });
 });
 
@@ -314,6 +318,8 @@ describe('imported GPX', () => {
       /Hors de vos zones/,
     );
     expect(screen.getByTestId('info-distance')).toHaveTextContent('300 m');
+    expect(screen.queryByTestId('info-ascent')).toBeNull();
+    expect(screen.queryByTestId('info-descent')).toBeNull();
     expect(mockHeights).not.toHaveBeenCalled();
     expect((await getRoute(db, 1))?.zone).toBeNull();
   });

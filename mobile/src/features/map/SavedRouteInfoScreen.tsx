@@ -2,6 +2,7 @@
 // saved track never changes; the infos are calculated again on the zone in
 // service when the zone is usable, and the figures of the list are updated.
 
+import { useQueryClient } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -27,7 +28,11 @@ import { trackOfCreated } from '@/core/routes/track';
 import { canAttachZone, routeZoneStatus } from '@/core/routes/routeZone';
 import type { RouteZoneStatus } from '@/core/routes/routeZone';
 import type { Zone } from '@/core/zones/catalogue';
-import { useRouteActions, useSavedRoute } from '@/shared-data/routes/useRoutes';
+import {
+  routeDetailKey,
+  useRouteActions,
+  useSavedRoute,
+} from '@/shared-data/routes/useRoutes';
 import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
 import { useZoneHold } from '@/shared-data/zones/zoneInService';
 import { Button } from '@/ui/Button';
@@ -35,6 +40,7 @@ import { HandModeIcon } from '@/ui/icons';
 import { RoutePreview } from '@/ui/RoutePreview';
 import { border, colors, radius, spacing, text } from '@/ui/theme';
 
+import { setDraftTarget } from './draftTarget';
 import { mainGeometry, type LineCollection } from './draftGeometry';
 import { RouteInfoView, type Figure } from './RouteInfoScreen';
 import { ArchFrame, RouteInfoMap } from './RouteInfoMap';
@@ -111,7 +117,7 @@ function MessageScreen({
           variant="secondary"
           label={t('routes.back')}
           accessibilityLabel={t('routes.backLabel')}
-          onPress={() => router.back()}
+          onPress={() => router.navigate('/routes')}
         />
       </View>
     </View>
@@ -168,7 +174,8 @@ function useBack() {
   return {
     label: t('routes.back'),
     accessibilityLabel: t('routes.backLabel'),
-    onPress: () => router.back(),
+    // Whatever the way in (list, or right after "Enregistrer"): the list.
+    onPress: () => router.navigate('/routes'),
   };
 }
 
@@ -188,6 +195,7 @@ function figureOf(
 // Writes ascent and descent for the list when they changed (choice 6).
 function useSyncFigures(route: Readable, altitudes: Block<AltitudeInfo>) {
   const actions = useRouteActions();
+  const queryClient = useQueryClient();
   const written = useRef('');
   const ready = altitudes.status === 'ready';
   const ascent = ready ? Math.round(altitudes.ascentM) : null;
@@ -198,10 +206,23 @@ function useSyncFigures(route: Readable, altitudes: Block<AltitudeInfo>) {
     const key = `${route.id}:${ascent}:${descent}`;
     if (written.current === key) return;
     written.current = key;
+    // The saved detail is read again, so that a later opening of this screen
+    // without a zone shows the figures that the list shows.
     void actions
       .updateFigures(route.id, ascent, descent)
+      .then(() =>
+        queryClient.invalidateQueries({ queryKey: routeDetailKey(route.id) }),
+      )
       .catch(() => undefined);
-  }, [ascent, descent, route.id, route.ascentM, route.descentM, actions]);
+  }, [
+    ascent,
+    descent,
+    route.id,
+    route.ascentM,
+    route.descentM,
+    actions,
+    queryClient,
+  ]);
 }
 
 function ModifyButton({ routeId }: { routeId: number }) {
@@ -213,12 +234,10 @@ function ModifyButton({ routeId }: { routeId: number }) {
       label={t('info.modify')}
       accessibilityLabel={t('info.modifyLabel')}
       icon={(color) => <HandModeIcon color={color} />}
-      onPress={() =>
-        router.push({
-          pathname: '/draft',
-          params: { routeId: String(routeId) },
-        })
-      }
+      onPress={() => {
+        setDraftTarget(routeId);
+        router.push('/draft');
+      }}
     />
   );
 }
@@ -373,8 +392,9 @@ function PlainInfos({
       map={map}
       distance={{ status: 'ready', value: route.distanceKm }}
       duration={{ status: 'ready', value: route.durationS }}
-      ascent={none(route.ascentM)}
-      descent={none(route.descentM)}
+      // Outside any zone there is no D+ to speak of: two cells (mockup 6d).
+      ascent={status === 'outside' ? undefined : none(route.ascentM)}
+      descent={status === 'outside' ? undefined : none(route.descentM)}
       caption={
         route.figuresAt !== null
           ? t('routes.lastFigures', {

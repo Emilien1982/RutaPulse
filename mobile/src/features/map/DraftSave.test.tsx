@@ -4,7 +4,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import { useEffect, type ReactNode } from 'react';
-import { Alert } from 'react-native';
+import { AccessibilityInfo, Alert } from 'react-native';
 
 import { defaultRouteName } from '@/core/routes/routeName';
 import {
@@ -20,6 +20,8 @@ import {
 import { sampleCreated } from '@/core/routes/testing/sampleRoutes';
 import type { ReadyMarker } from '@/core/zones/zoneLayout';
 
+import { DraftRoot } from './DraftRoot';
+import { setDraftTarget } from './draftTarget';
 import { DraftScreen } from './DraftScreen';
 import { DraftSession, useDraftSession } from './DraftSession';
 import { RouteInfoScreen } from './RouteInfoScreen';
@@ -185,6 +187,9 @@ beforeEach(async () => {
   mockDb = Promise.resolve(db);
   engine();
   jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+  jest
+    .spyOn(AccessibilityInfo, 'announceForAccessibility')
+    .mockImplementation(() => undefined);
 });
 afterEach(() => db.close());
 
@@ -220,7 +225,15 @@ describe('"Enregistrer" of a new route', () => {
     expect(route && 'legs' in route && route.legs).toEqual([
       expect.objectContaining({ mode: 'path', zoneVersion: 5 }),
     ]);
-    expect(mockPush).toHaveBeenCalledWith('/draft/infos');
+    // The creation closes, then the saved route opens (mockup 40, 8a).
+    expect(mockBack).toHaveBeenCalledTimes(1);
+    expect(mockPush).toHaveBeenCalledWith(`/route/${line!.id}`);
+    expect(mockBack.mock.invocationCallOrder[0]).toBeLessThan(
+      mockPush.mock.invocationCallOrder[0]!,
+    );
+    expect(AccessibilityInfo.announceForAccessibility).toHaveBeenCalledWith(
+      `Itinéraire enregistré\u00A0: ${defaultRouteName(new Date())}.`,
+    );
   });
 
   it('numbers a second route of the same day "(2)"', async () => {
@@ -357,7 +370,9 @@ describe('C7: "Modifier"', () => {
     ]);
     // The untouched leg keeps its saved shape.
     expect(legs[0]).toEqual(saved().legs[0]);
-    expect(mockPush).toHaveBeenCalledWith('/draft/infos');
+    // Back to the same screen, read again: no new screen is pushed.
+    expect(mockBack).toHaveBeenCalledTimes(1);
+    expect(mockPush).not.toHaveBeenCalled();
     // Off again until the next change.
     expect(screen.getByTestId('route-save').props.accessibilityState).toEqual({
       disabled: true,
@@ -392,6 +407,36 @@ describe('C7: "Modifier"', () => {
     await act_(() => buttons[1].onPress());
     expect(repeat).toHaveBeenCalled();
     expect(await getRoute(db, 1)).toEqual(before);
+  });
+
+  it('through the root of the layout: "Modifier" reopens the saved route', async () => {
+    await insertRoute(db, saved());
+    setDraftTarget(1);
+    await render(
+      <QueryClientProvider client={new QueryClient()}>
+        <DraftRoot>
+          <Probe />
+          <DraftScreen />
+        </DraftRoot>
+      </QueryClientProvider>,
+    );
+    await settle();
+    expect(screen.getByRole('header', { name: 'Mon tour' })).toBeTruthy();
+    expect(session.store.state.draft.points).toHaveLength(4);
+    await act_(() =>
+      session.dispatch({ type: 'move', id: 3, lon: 6.19, lat: 48.71 }),
+    );
+    await act_(() => fireEvent.press(screen.getByTestId('route-save')));
+    // The same row is replaced: no second route.
+    expect(await listRoutes(db)).toHaveLength(1);
+  });
+
+  it('the off button of a reopened route does not ask for a start and an arrival', async () => {
+    await insertRoute(db, saved());
+    await openCreation(1);
+    expect(screen.getByTestId('route-save').props.accessibilityLabel).toBe(
+      'Enregistrer\u00A0: aucun changement à enregistrer',
+    );
   });
 
   it('refuses a route whose zone is not the one held', async () => {

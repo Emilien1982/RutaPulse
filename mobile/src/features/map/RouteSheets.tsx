@@ -43,6 +43,7 @@ export function RouteTopBar({
   title,
   onSave,
   saveLabel,
+  saveOffLabel,
 }: {
   onClose: () => void;
   onHeight: (height: number) => void;
@@ -51,6 +52,7 @@ export function RouteTopBar({
   /** Hidden without it. */
   onSave?: { enabled: boolean; press: () => void };
   saveLabel?: string;
+  saveOffLabel?: string;
 }) {
   const insets = useSafeAreaInsets();
   return (
@@ -79,9 +81,7 @@ export function RouteTopBar({
           <Pressable
             testID="route-save"
             accessibilityRole="button"
-            accessibilityLabel={
-              onSave.enabled ? saveLabel : t('route.saveOffLabel')
-            }
+            accessibilityLabel={onSave.enabled ? saveLabel : saveOffLabel}
             accessibilityState={{ disabled: !onSave.enabled }}
             disabled={!onSave.enabled}
             onPress={onSave.press}

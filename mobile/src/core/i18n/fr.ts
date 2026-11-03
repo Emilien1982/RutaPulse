@@ -189,6 +189,9 @@ export const fr = {
   'route.saveChangesLabel': 'Enregistrer les changements de {name}',
   'route.saveOffLabel':
     "Enregistrer\u00A0: posez d'abord le départ et l'arrivée",
+  'route.saveNoChangeLabel':
+    'Enregistrer\u00A0: aucun changement à enregistrer',
+  'route.savedAnnounce': 'Itinéraire enregistré\u00A0: {name}.',
   'route.saveFailedTitle': 'Enregistrement impossible',
   'route.saveFailedText': "L'itinéraire n'a pas pu être gardé. Réessayez.",
   'route.abandonChangesTitle': 'Abandonner les changements\u202F?',
