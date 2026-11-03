@@ -1,11 +1,11 @@
 // The turning circle of "Lecture du fichier…" (mockup 40, 6a): an open arc.
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Animated, Easing } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 export function ReadingIcon({ color }: { color: string }) {
-  const turn = useRef(new Animated.Value(0)).current;
+  const [turn] = useState(() => new Animated.Value(0));
   useEffect(() => {
     const loop = Animated.loop(
       Animated.timing(turn, {
