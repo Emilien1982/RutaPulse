@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-03 — Règle d'Émilien : à chaque fin de phase et à chaque pause, garder au moins 2 % du quota hebdomadaire par jour restant avant le renouvellement (lundi 7 h), dimanche non compté. Cette réserve sert à sa veille emploi. Sinon, la phase finit sa tâche, commite et s'arrête.
 - 2026-11-03 — Phase 6, T1 : ADR 0019 et maquette 40 validés par Émilien, avec les recommandations : nom par défaut « Itinéraire du 3 nov. » (commune en V2, trouvée hors ligne dans 68 % des cas seulement), « (2) » le même jour, renommer ne fait pas remonter, pas de balayage (menu « ⋮ » et appui long), import → écran Infos, GPX importé à 10 km/h, avertissement à la suppression d'une zone utilisée.
 - 2026-11-03 — Spec de la phase 6 (mes itinéraires et GPX, taille G) validée par Émilien, avec les choix du pilotage. Un GPX importé n'est pas modifiable ; le geste « trace → itinéraire modifiable » se fera en phase 7, pour les circuits et les GPX.
 - 2026-11-03 — Nouvelle session de pilotage (passation après la phase 5b).
