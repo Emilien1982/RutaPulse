@@ -7,6 +7,9 @@ import { readAttributes, scanXml, XmlError } from './xmlScan';
 /** Biggest text accepted, in characters (the import also checks bytes). */
 export const MAX_GPX_CHARS = 20_000_000;
 export const MAX_NAME_CHARS = 60;
+/** Plausible altitudes (m); anything else is read as unknown. */
+export const MIN_ELEVATION_M = -1000;
+export const MAX_ELEVATION_M = 10000;
 
 export type GpxRefusal = 'tooBig' | 'empty' | 'unreadable' | 'noTrack';
 
@@ -107,7 +110,10 @@ export function readGpx(text: string): GpxResult {
             const inRtept = n === 4 && path[2] === 'rtept' && path[1] === 'rte';
             if (current && (inTrkpt || inRtept)) {
               const ele = decimal(content);
-              current.ele = ele !== null && Number.isFinite(ele) ? ele : null;
+              current.ele =
+                ele !== null && ele >= MIN_ELEVATION_M && ele <= MAX_ELEVATION_M
+                  ? ele
+                  : null;
             }
           } else if (last === 'name') {
             const name = cleanName(content);

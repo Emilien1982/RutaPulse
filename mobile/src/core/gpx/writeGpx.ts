@@ -1,6 +1,8 @@
 // Writes a GPX 1.1 text (ADR 0019, section 8). The output only depends on
 // the name and the points, so tests compare an exact text.
 
+import { MAX_ELEVATION_M, MIN_ELEVATION_M } from './readGpx';
+
 export type WriteGpxInput = {
   name: string;
   /** [lon, lat] points. */
@@ -61,7 +63,11 @@ export function writeGpx({ name, track, elevations }: WriteGpxInput): string {
     const [lon, lat] = track[i];
     const open = `      <trkpt lat="${coordinate(lat, false)}" lon="${coordinate(lon, true)}"`;
     const ele = elevations?.[i];
-    if (ele === null || ele === undefined || !Number.isFinite(ele)) {
+    if (
+      ele === null ||
+      ele === undefined ||
+      !(ele >= MIN_ELEVATION_M && ele <= MAX_ELEVATION_M)
+    ) {
       lines.push(`${open}/>`);
     } else {
       lines.push(`${open}><ele>${Number(ele.toFixed(1)) + 0}</ele></trkpt>`);

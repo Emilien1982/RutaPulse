@@ -1,3 +1,4 @@
+import { MAX_ELEVATION_M, MIN_ELEVATION_M } from './readGpx';
 import { escapeXml, writeGpx } from './writeGpx';
 
 // No @types/node in the project: node:fs is loaded untyped, like the native
@@ -69,5 +70,25 @@ describe('escapeXml', () => {
   it('drops forbidden characters and lone surrogate halves', () => {
     expect(escapeXml('a\u0000b\u0008c\u001Fd￾e￿f')).toBe('abcdef');
     expect(escapeXml('x\uD83Dy\uDE00z')).toBe('xyz');
+  });
+});
+
+describe('writeGpx altitude range', () => {
+  it('writes the bounds and skips what is beyond, never an exponent', () => {
+    const text = writeGpx({
+      name: 'A',
+      track: [
+        [1, 1],
+        [2, 2],
+        [3, 3],
+        [4, 4],
+        [5, 5],
+      ],
+      elevations: [MIN_ELEVATION_M, MAX_ELEVATION_M, 10000.1, -1000.1, 1e21],
+    });
+    expect(text).toContain('<ele>-1000</ele>');
+    expect(text).toContain('<ele>10000</ele>');
+    expect(text.match(/<ele>/g)).toHaveLength(2);
+    expect(text).not.toMatch(/e[+-]?\d/);
   });
 });

@@ -366,37 +366,31 @@ describe('hostile numbers', () => {
   });
 
   // DEFECT (T2): writeGpx writes <ele>1e+21</ele> from 1e21 m, invalid xsd:decimal.
-  it.failing(
-    'a huge altitude read then written gives an XSD-valid decimal (no exponent)',
-    () => {
-      const r = ok(one('5', '5', '1234567890123456789012'));
-      const out = writeGpx({
-        name: 'x',
-        track: r.track,
-        elevations: r.elevations,
-      });
-      expect(out).not.toMatch(/<ele>[^<]*[eE][^<]*<\/ele>/);
-      expect(out).not.toMatch(/<ele>(NaN|Infinity)/);
-    },
-  );
+  it('a huge altitude read then written gives an XSD-valid decimal (no exponent)', () => {
+    const r = ok(one('5', '5', '1234567890123456789012'));
+    const out = writeGpx({
+      name: 'x',
+      track: r.track,
+      elevations: r.elevations,
+    });
+    expect(out).not.toMatch(/<ele>[^<]*[eE][^<]*<\/ele>/);
+    expect(out).not.toMatch(/<ele>(NaN|Infinity)/);
+  });
 
   // DEFECT (T2): writeGpx writes <ele>1e+21</ele> from 1e21 m, invalid xsd:decimal.
-  it.failing(
-    'writeGpx never writes an exponent, for any finite altitude',
-    () => {
-      for (const e of [1e21, -1e21, 1.5e300, 1e-7, 123456789012345678901234]) {
-        const out = writeGpx({
-          name: 'x',
-          track: [
-            [1, 1],
-            [2, 2],
-          ],
-          elevations: [e, null],
-        });
-        expect(out).not.toMatch(/<ele>[^<]*[eE][^<]*<\/ele>/);
-      }
-    },
-  );
+  it('writeGpx never writes an exponent, for any finite altitude', () => {
+    for (const e of [1e21, -1e21, 1.5e300, 1e-7, 123456789012345678901234]) {
+      const out = writeGpx({
+        name: 'x',
+        track: [
+          [1, 1],
+          [2, 2],
+        ],
+        elevations: [e, null],
+      });
+      expect(out).not.toMatch(/<ele>[^<]*[eE][^<]*<\/ele>/);
+    }
+  });
 
   it('boundary values are rounded to 6 decimals', () => {
     const r = ok(one('45.1234565', '5.1234564'));

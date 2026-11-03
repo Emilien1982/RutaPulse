@@ -1,4 +1,9 @@
-import { MAX_GPX_CHARS, readGpx } from './readGpx';
+import {
+  MAX_ELEVATION_M,
+  MAX_GPX_CHARS,
+  MIN_ELEVATION_M,
+  readGpx,
+} from './readGpx';
 
 const NS = 'xmlns="http://www.topografix.com/GPX/1/1"';
 const gpx = (body: string, attrs = `version="1.1" ${NS}`) =>
@@ -357,5 +362,20 @@ describe('readGpx on hostile numbers', () => {
   it('refuses a document nested too deep', () => {
     const text = gpx('<a>'.repeat(100) + '</a>'.repeat(100));
     expect(readGpx(text)).toEqual({ ok: false, reason: 'unreadable' });
+  });
+});
+
+describe('readGpx altitude range', () => {
+  it.each([
+    [String(MIN_ELEVATION_M), MIN_ELEVATION_M],
+    [String(MAX_ELEVATION_M), MAX_ELEVATION_M],
+    ['-1000.1', null],
+    ['10000.1', null],
+    ['1' + '0'.repeat(21), null],
+  ])('altitude %s is read as %s', (raw, expected) => {
+    const result = readGpx(
+      gpx(trk([pt('48', '6', `<ele>${raw}</ele>`), pt('49', '6')])),
+    );
+    expect(result).toMatchObject({ ok: true, elevations: [expected, null] });
   });
 });
