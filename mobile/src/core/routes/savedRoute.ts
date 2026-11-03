@@ -348,6 +348,12 @@ export function rowToRoute(row: RouteRow): SavedRoute {
     return fail();
   } catch {
     // Unreadable, or any other surprise: never a crash.
-    return { ...common, origin: row.origin, readable: false };
+    let zone: RouteZone | null = null;
+    try {
+      zone = parseZone(row);
+    } catch {
+      // A wrong zone is left out.
+    }
+    return { ...common, zone, origin: row.origin, readable: false };
   }
 }

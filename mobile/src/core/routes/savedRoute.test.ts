@@ -152,4 +152,16 @@ describe('rowToRoute', () => {
       expect(rowToRoute({ ...goodGpx, ...patch }).readable).toBe(false);
     });
   });
+
+  it('keeps the zone of an unreadable route when the zone is readable', () => {
+    const read = rowToRoute({ ...rowOf(sampleCreated()), draft: '{bad' });
+    expect(read.readable).toBe(false);
+    expect(read.zone).toEqual({ id: 'nancy', version: 5, name: 'Nancy' });
+    const noZone = rowToRoute({
+      ...rowOf(sampleCreated()),
+      zone_version: null,
+    });
+    expect(noZone.readable).toBe(false);
+    expect(noZone.zone).toBeNull();
+  });
 });

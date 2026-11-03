@@ -64,7 +64,11 @@ export function useRouteCountByZone(zoneId: string) {
 }
 
 /** A new route: the name is optional (default name), dates default to now. */
-export type CreateRouteInput = Omit<
+type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
+  ? Omit<T, K>
+  : never;
+
+export type CreateRouteInput = DistributiveOmit<
   NewRoute,
   'name' | 'createdAt' | 'savedAt'
 > & { name?: string; now?: number };
@@ -80,7 +84,7 @@ export function createRouteActions(queryClient: QueryClient) {
         name: name ?? (await newDefaultName(db, date)),
         createdAt: date.getTime(),
         savedAt: date.getTime(),
-      } as NewRoute;
+      };
       const id = await insertRoute(db, route);
       await queryClient.invalidateQueries({ queryKey: routesKey });
       return id;

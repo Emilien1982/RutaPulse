@@ -45,16 +45,23 @@ let opening: Promise<SqlDb> | null = null;
 
 /**
  * The database, ready to write. Rejects with `RoutesTooNewError` when it was
- * written by a newer app (nothing is written then). A failed opening is
+ * written by a newer app (nothing is written then; the refusal is kept, the
+ * database is not opened again). Any other failed opening is
  * tried again at the next call.
  */
 export function getRoutesDb(): Promise<SqlDb> {
   opening ??= (async () => {
     const database = await SQLite.openDatabaseAsync(DB_NAME);
-    const db = toSqlDb(database);
-    const { status } = await migrate(db, MIGRATIONS);
-    if (status === 'tooNew') throw new RoutesTooNewError();
-    return db;
+    try {
+      const db = toSqlDb(database);
+      const { status } = await migrate(db, MIGRATIONS);
+      if (status === 'tooNew') throw new RoutesTooNewError();
+      return db;
+    } catch (error) {
+      // A refused or failed opening must not leave the connection open.
+      await database.closeAsync().catch(() => undefined);
+      throw error;
+    }
   })();
   opening.catch((error) => {
     if (!(error instanceof RoutesTooNewError)) opening = null;

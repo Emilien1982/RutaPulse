@@ -5,6 +5,7 @@ import { act, renderHook, waitFor } from '@testing-library/react-native';
 import type { ReactNode } from 'react';
 
 import { MIGRATIONS, migrate } from '@/core/routes/migrations';
+import { getRoute } from '@/core/routes/routeRepo';
 import {
   createNodeSqlDb,
   type NodeSqlDb,
@@ -191,5 +192,79 @@ describe('invalidation', () => {
     expect(reads).toEqual(['list']);
     expect(client.getQueryState(routesListKey)?.isInvalidated).toBe(false);
     expect(result.current.detail.data).toMatchObject({ ascentM: null });
+  });
+});
+
+describe('create, typed by origin', () => {
+  it('accepts a created route and a GPX route written out in full', async () => {
+    const { result } = await renderAll(1);
+    const { actions } = result.current;
+    let created = 0;
+    let gpx = 0;
+    await act(async () => {
+      created = await actions.create({
+        origin: 'created',
+        zone: { id: 'nancy', version: 5, name: 'Nancy' },
+        draft: {
+          points: [
+            { id: 1, lon: 6.18, lat: 48.69 },
+            { id: 2, lon: 6.19, lat: 48.7 },
+          ],
+          modes: ['hand'],
+        },
+        legs: [{ mode: 'hand' }],
+        preview: '_p~iF~ps|U',
+        distanceKm: 1,
+        durationS: 360,
+        ascentM: null,
+        descentM: null,
+        figuresAt: null,
+        now: 1_000,
+      });
+      gpx = await actions.create({
+        origin: 'gpx',
+        name: 'Trace',
+        zone: null,
+        track: [
+          [6.18, 48.69],
+          [6.19, 48.7],
+        ],
+        elevations: null,
+        preview: '_p~iF~ps|U',
+        distanceKm: 1,
+        durationS: 360,
+        ascentM: null,
+        descentM: null,
+        figuresAt: null,
+        now: 2_000,
+      });
+    });
+    expect(await getRoute(mockDb, created)).toMatchObject({
+      origin: 'created',
+      readable: true,
+    });
+    expect(await getRoute(mockDb, gpx)).toMatchObject({
+      origin: 'gpx',
+      readable: true,
+    });
+  });
+
+  it('refuses a GPX route without track at typecheck', async () => {
+    const { result } = await renderHook(() => useRouteActions(), { wrapper });
+    const noTrack = {
+      origin: 'gpx' as const,
+      name: 'Sans trace',
+      zone: null,
+      elevations: null,
+      preview: '',
+      distanceKm: 1,
+      durationS: 1,
+      ascentM: null,
+      descentM: null,
+      figuresAt: null,
+    };
+    // @ts-expect-error a GPX route needs its track
+    const call = () => result.current.create(noTrack);
+    await expect(call()).rejects.toThrow();
   });
 });
