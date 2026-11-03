@@ -109,6 +109,9 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   const savedName = useSavedRoute(saved.routeId).data?.name;
   const actions = useRouteActions();
   const [saving, setSaving] = useState(false);
+  // Set at once, unlike `saving`, which a second press in the same tick
+  // does not see yet: two quick presses keep the route only once.
+  const saveLock = useRef(false);
   const [exitFor, setExitFor] = useState<number | null>(null);
   const exited = useRef(false);
   const reopened = kept !== undefined;
@@ -326,6 +329,8 @@ function DraftView({ opening }: { opening?: OpeningView }) {
         });
       } else return;
     }
+    if (saveLock.current) return;
+    saveLock.current = true;
     setSaving(true);
     try {
       const now = Date.now();
@@ -369,6 +374,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
         ),
       );
     } finally {
+      saveLock.current = false;
       setSaving(false);
     }
   }

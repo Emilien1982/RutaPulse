@@ -27,7 +27,7 @@ import { zoneLine } from '@/core/routes/routeText';
 import { useSavedRoute } from '@/shared-data/routes/useRoutes';
 import { Button } from '@/ui/Button';
 import { DashedStroke } from '@/ui/DashedStroke';
-import { ChevronIcon, HandModeIcon } from '@/ui/icons';
+import { ChevronIcon, HandModeIcon, MoreIcon } from '@/ui/icons';
 import {
   border,
   colors,
@@ -170,6 +170,7 @@ export function RouteInfoView({
   title,
   subtitle,
   back,
+  menu,
   map,
   distance,
   duration,
@@ -185,6 +186,8 @@ export function RouteInfoView({
   title: string;
   subtitle?: string;
   back?: { label: string; accessibilityLabel: string; onPress: () => void };
+  /** The "⋮" button, at the right of the back button. */
+  menu?: { accessibilityLabel: string; onPress: () => void };
   map: ReactNode;
   distance: Figure;
   duration: Figure;
@@ -207,19 +210,34 @@ export function RouteInfoView({
   return (
     <View style={styles.screen}>
       <View style={{ paddingTop: insets.top }}>
-        {back && (
-          <Pressable
-            testID="info-back"
-            accessibilityRole="button"
-            accessibilityLabel={back.accessibilityLabel}
-            onPress={back.onPress}
-            style={styles.back}
-          >
-            <View style={styles.backIcon}>
-              <ChevronIcon color={colors.brown} />
-            </View>
-            <Text style={styles.backText}>{back.label}</Text>
-          </Pressable>
+        {(back || menu) && (
+          <View style={styles.topBar}>
+            {back && (
+              <Pressable
+                testID="info-back"
+                accessibilityRole="button"
+                accessibilityLabel={back.accessibilityLabel}
+                onPress={back.onPress}
+                style={styles.back}
+              >
+                <View style={styles.backIcon}>
+                  <ChevronIcon color={colors.brown} />
+                </View>
+                <Text style={styles.backText}>{back.label}</Text>
+              </Pressable>
+            )}
+            {menu && (
+              <Pressable
+                testID="info-menu"
+                accessibilityRole="button"
+                accessibilityLabel={menu.accessibilityLabel}
+                onPress={menu.onPress}
+                style={styles.menu}
+              >
+                <MoreIcon color={colors.brown} />
+              </Pressable>
+            )}
+          </View>
         )}
         <View style={styles.header}>
           <Text
@@ -460,6 +478,18 @@ const styles = StyleSheet.create({
     minHeight: 56,
     justifyContent: 'center',
     paddingHorizontal: spacing.s4,
+  },
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  menu: {
+    width: 48,
+    height: 48,
+    marginRight: spacing.s3,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   back: {
     minHeight: 48,

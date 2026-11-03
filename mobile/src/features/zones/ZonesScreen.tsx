@@ -1,10 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQueries, useQuery } from '@tanstack/react-query';
 import { useSelector } from '@tanstack/react-store';
 import { useEffect, useRef } from 'react';
 import { AccessibilityInfo, Alert } from 'react-native';
 
 import { t } from '@/core/i18n/t';
 import { buildZoneRows } from '@/core/zones/zoneRow';
+import { routeCountByZoneOptions } from '@/shared-data/routes/useRoutes';
 import { createZoneOps } from '@/shared-data/zones/createZoneOps';
 import {
   useSettings,
@@ -76,16 +77,35 @@ export function ZonesScreen({ focused = true }: { focused?: boolean }) {
     if (zone) void getZoneDownloader().request(zone);
   }
 
+  // How many saved routes each installed zone holds, read before the
+  // question of the deletion (ADR 0019, section 13, point 8). Not read yet,
+  // or not readable: no sentence.
+  const installedIds = rows.installed.map((row) => row.id);
+  const routeCounts = useQueries({
+    queries: installedIds.map(routeCountByZoneOptions),
+    combine: (results) =>
+      new Map(results.map((r, i) => [installedIds[i], r.data ?? 0])),
+  });
+
   function confirmDelete(id: string) {
     const name = rows.installed.find((row) => row.id === id)?.name ?? id;
-    Alert.alert(t('zones.deleteTitle', { name }), t('zones.deleteMessage'), [
-      { text: t('zones.deleteCancel'), style: 'cancel' },
-      {
-        text: t('zones.delete'),
-        style: 'destructive',
-        onPress: () => void getZoneDownloader().remove(id),
-      },
-    ]);
+    const count = routeCounts.get(id) ?? 0;
+    const routes =
+      count === 0
+        ? ''
+        : `\n\n${t(count === 1 ? 'zones.deleteRoutesOne' : 'zones.deleteRoutes', { n: count })}`;
+    Alert.alert(
+      t('zones.deleteTitle', { name }),
+      t('zones.deleteMessage') + routes,
+      [
+        { text: t('zones.deleteCancel'), style: 'cancel' },
+        {
+          text: t('zones.delete'),
+          style: 'destructive',
+          onPress: () => void getZoneDownloader().remove(id),
+        },
+      ],
+    );
   }
 
   return (

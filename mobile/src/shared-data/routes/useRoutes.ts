@@ -58,12 +58,15 @@ export function useSavedRoute(id: number | null) {
   });
 }
 
+/** Options of the count, for `useQuery` and for `useQueries`. */
+export const routeCountByZoneOptions = (zoneId: string) => ({
+  queryKey: routeCountByZoneKey(zoneId),
+  queryFn: async () => countRoutesByZone(await getRoutesDb(), zoneId),
+  ...READ_OPTIONS,
+});
+
 export function useRouteCountByZone(zoneId: string) {
-  return useQuery({
-    queryKey: routeCountByZoneKey(zoneId),
-    queryFn: async () => countRoutesByZone(await getRoutesDb(), zoneId),
-    ...READ_OPTIONS,
-  });
+  return useQuery(routeCountByZoneOptions(zoneId));
 }
 
 /** A new route: the name is optional (default name), dates default to now. */

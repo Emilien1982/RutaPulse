@@ -5,7 +5,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { Draft } from '@/core/draft/draft';
 import { t } from '@/core/i18n/t';
@@ -36,9 +36,10 @@ import {
 import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
 import { useZoneHold } from '@/shared-data/zones/zoneInService';
 import { Button } from '@/ui/Button';
-import { HandModeIcon } from '@/ui/icons';
+import { HandModeIcon, MoreIcon } from '@/ui/icons';
 import { RoutePreview } from '@/ui/RoutePreview';
 import { border, colors, radius, spacing, text } from '@/ui/theme';
+import { useRouteMenu } from '@/ui/useRouteMenu';
 
 import { setDraftTarget } from './draftTarget';
 import { mainGeometry, type LineCollection } from './draftGeometry';
@@ -77,7 +78,11 @@ export function SavedRouteInfoScreen() {
   }
   if (!route.readable) {
     return (
-      <MessageScreen title={route.name} message={t('route.unreadableText')} />
+      <MessageScreen
+        title={route.name}
+        message={t('route.unreadableText')}
+        menuRoute={{ id: route.id, name: route.name }}
+      />
     );
   }
   return (
@@ -89,16 +94,52 @@ export function SavedRouteInfoScreen() {
   );
 }
 
+// The "⋮" menu of the Infos screens: the same as the list. After a deletion,
+// back to the list.
+function useInfoMenu(route: { id: number; name: string }) {
+  const router = useRouter();
+  const actions = useRouteActions();
+  const menu = useRouteMenu({
+    rename: actions.rename,
+    remove: actions.remove,
+    onRemoved: () => router.dismissTo('/routes'),
+  });
+  return {
+    sheet: menu.sheet,
+    button: {
+      accessibilityLabel: t('routes.menuLabel', { name: route.name }),
+      onPress: () => menu.open(route),
+    },
+  };
+}
+
+type InfoMenu = ReturnType<typeof useInfoMenu>['button'];
+
 function MessageScreen({
   title,
   message,
+  menuRoute,
 }: {
   title: string;
   message?: string;
+  menuRoute?: { id: number; name: string };
 }) {
   const router = useRouter();
+  const menu = useInfoMenu(menuRoute ?? { id: 0, name: title });
   return (
     <View style={styles.message}>
+      {menuRoute && (
+        <Pressable
+          testID="info-menu"
+          accessibilityRole="button"
+          accessibilityLabel={menu.button.accessibilityLabel}
+          onPress={menu.button.onPress}
+          style={styles.menuButton}
+        >
+          <MoreIcon color={colors.brown} />
+        </Pressable>
+      )}
+      {menu.sheet}
       <Text
         testID="saved-message-title"
         accessibilityRole="header"
@@ -157,14 +198,26 @@ function LoadedRoute({
         }
       : route;
   const status = routeZoneStatus(effective, zone, installed);
+  const { button, sheet } = useInfoMenu(route);
+  let infos: ReactNode;
   if (status === 'usable' && zone) {
-    return effective.origin === 'created' ? (
-      <CreatedInfos route={effective} zone={zone} />
-    ) : (
-      <GpxInfos route={effective} zone={zone} />
+    infos =
+      effective.origin === 'created' ? (
+        <CreatedInfos route={effective} zone={zone} menu={button} />
+      ) : (
+        <GpxInfos route={effective} zone={zone} menu={button} />
+      );
+  } else {
+    infos = (
+      <PlainInfos route={effective} zone={zone} status={status} menu={button} />
     );
   }
-  return <PlainInfos route={effective} zone={zone} status={status} />;
+  return (
+    <>
+      {infos}
+      {sheet}
+    </>
+  );
 }
 
 // --- Shared pieces ---
@@ -246,7 +299,15 @@ function ModifyButton({ routeId }: { routeId: number }) {
 
 // --- A created route on a usable zone ---
 
-function CreatedInfos({ route, zone }: { route: CreatedRoute; zone: Zone }) {
+function CreatedInfos({
+  route,
+  zone,
+  menu,
+}: {
+  route: CreatedRoute;
+  zone: Zone;
+  menu: InfoMenu;
+}) {
   const kept = useMemo(() => reopenDraft(route).kept, [route]);
   const rawLegs = useLegResults(route.draft, zone, kept);
   const [legs, setLegs] = useState(rawLegs);
@@ -264,6 +325,7 @@ function CreatedInfos({ route, zone }: { route: CreatedRoute; zone: Zone }) {
       title={route.name}
       subtitle={zoneLine(route, 'usable')}
       back={useBack()}
+      menu={menu}
       map={
         <RouteInfoMap
           zone={zone}
@@ -316,7 +378,15 @@ function trackMapData(track: LonLat[]): {
 
 const NO_LINKS: LineCollection = { type: 'FeatureCollection', features: [] };
 
-function GpxInfos({ route, zone }: { route: GpxRoute; zone: Zone }) {
+function GpxInfos({
+  route,
+  zone,
+  menu,
+}: {
+  route: GpxRoute;
+  zone: Zone;
+  menu: InfoMenu;
+}) {
   const legInfos = useTrackInfos(route, zone, true);
   const { altitudes, terrain } = summarizeInfo(legInfos);
   const difficulty = summarizeDifficulty(legInfos, useDifficultyTable(zone));
@@ -327,6 +397,7 @@ function GpxInfos({ route, zone }: { route: GpxRoute; zone: Zone }) {
       title={route.name}
       subtitle={zoneLine(route, 'usable')}
       back={useBack()}
+      menu={menu}
       map={
         <RouteInfoMap
           zone={zone}
@@ -352,10 +423,12 @@ function PlainInfos({
   route,
   zone,
   status,
+  menu,
 }: {
   route: Readable;
   zone: Zone | null;
   status: RouteZoneStatus;
+  menu: InfoMenu;
 }) {
   const router = useRouter();
   const track = useMemo(
@@ -391,6 +464,7 @@ function PlainInfos({
       title={route.name}
       subtitle={zoneLine(route, status)}
       back={useBack()}
+      menu={menu}
       map={map}
       distance={{ status: 'ready', value: route.distanceKm }}
       duration={{ status: 'ready', value: route.durationS }}
@@ -488,6 +562,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.cream,
   },
   gap: { marginTop: spacing.s3 },
+  menuButton: {
+    position: 'absolute',
+    top: spacing.s3,
+    right: spacing.s3,
+    width: 48,
+    height: 48,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   notice: {
     marginTop: spacing.s3,
     gap: spacing.s3,

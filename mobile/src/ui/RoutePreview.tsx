@@ -11,11 +11,16 @@ export function RoutePreview({
   width,
   height,
   padding = 24,
+  lineWidth = 5,
+  dotRadius = 8,
 }: {
   track: readonly (readonly number[])[];
   width: number;
   height: number;
   padding?: number;
+  /** Width of the route line; the casing is 3 wider. */
+  lineWidth?: number;
+  dotRadius?: number;
 }) {
   if (track.length < 2) return null;
   let west = Infinity;
@@ -55,8 +60,8 @@ export function RoutePreview({
     >
       {(
         [
-          [mapColors.routeCasing, 8],
-          [mapColors.route, 5],
+          [mapColors.routeCasing, lineWidth + 3],
+          [mapColors.route, lineWidth],
         ] as const
       ).map(([stroke, strokeWidth]) => (
         <Polyline
@@ -72,7 +77,7 @@ export function RoutePreview({
       <Circle
         cx={startX}
         cy={startY}
-        r={8}
+        r={dotRadius}
         fill={mapColors.start}
         stroke={colors.creamLight}
         strokeWidth={2}
@@ -80,7 +85,7 @@ export function RoutePreview({
       <Circle
         cx={endX}
         cy={endY}
-        r={8}
+        r={dotRadius}
         fill={mapColors.end}
         stroke={colors.creamLight}
         strokeWidth={2}

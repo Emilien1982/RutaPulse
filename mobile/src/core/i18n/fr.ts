@@ -230,6 +230,43 @@ export const fr = {
   'routes.noticeLeavesText':
     ' D+, profil, terrain et difficulté indisponibles.',
   'routes.arcLabel': "Tracé de l'itinéraire, sans fond de carte",
+  'routes.title': 'Mes itinéraires',
+  'routes.import': 'Importer un GPX',
+  'routes.importLabel': 'Importer un fichier GPX',
+  'routes.figuresRest': ' · D+ {ascent} · {duration}',
+  'routes.ascentUnknown': 'indisponible',
+  'routes.rowLabel': '{name}, {distance}, montée {ascent}, {duration}, {meta}',
+  'routes.problemOutside': 'Hors de vos zones',
+  'routes.problemDeleted': 'Zone {zone} supprimée',
+  'routes.problemNotInService': 'Zone {zone} pas en service',
+  'routes.menuLabel': 'Actions de {name}',
+  'routes.menuRename': 'Renommer',
+  'routes.menuExport': 'Exporter en GPX',
+  'routes.menuDelete': 'Supprimer',
+  'routes.menuCancel': 'Annuler',
+  'routes.emptyTitle': "Pas encore d'itinéraire",
+  'routes.emptyText':
+    'Tracez une sortie sur la carte, puis touchez « Enregistrer ». Vous pouvez aussi importer un fichier GPX.',
+  'routes.emptyCreate': 'Créer un itinéraire',
+  'routes.loadFailed':
+    'Vos itinéraires ne peuvent pas être lus pour le moment.',
+  'routes.renameTitle': "Renommer l'itinéraire",
+  'routes.renameField': "Nom de l'itinéraire",
+  'routes.renameClear': 'Effacer le nom',
+  'routes.renameCount': '{n} / 60',
+  'routes.renameEmpty': "Donnez un nom à l'itinéraire.",
+  'routes.renameMax': '60 caractères au plus.',
+  'routes.renameAction': 'Renommer',
+  'routes.renameCancel': 'Annuler',
+  'routes.deleteTitle': 'Supprimer « {name} » ?',
+  'routes.deleteText':
+    "L'itinéraire sera effacé du téléphone. Pour le garder ailleurs, exportez-le d'abord en GPX.",
+  'routes.actionFailedTitle': 'Action impossible',
+  'routes.actionFailedText': "L'action n'a pas pu être faite. Réessayez.",
+  'zones.deleteRoutes':
+    '{n} itinéraires utilisent cette zone. Ils resteront, sans carte ni terrain.',
+  'zones.deleteRoutesOne':
+    '1 itinéraire utilise cette zone. Il restera, sans carte ni terrain.',
 } as const;
 
 export type TextKey = keyof typeof fr;
