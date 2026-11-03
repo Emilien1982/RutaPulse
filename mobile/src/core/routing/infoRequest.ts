@@ -28,3 +28,11 @@ export function buildTraceRequest(shape: [number, number][]): string {
     },
   });
 }
+
+/**
+ * JSON text of the `height` request for the export: no resampling and no
+ * range, so Valhalla gives one altitude per point (ADR 0019, section 8).
+ */
+export function buildPointHeightRequest(shape: [number, number][]): string {
+  return JSON.stringify({ encoded_polyline: encodePolyline6(shape) });
+}

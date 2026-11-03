@@ -14,7 +14,7 @@ import { RenameSheet } from './RenameSheet';
 export type RouteMenuHandlers = {
   rename: (id: number, name: string) => Promise<unknown>;
   remove: (id: number) => Promise<unknown>;
-  /** Export is made in T6: without it, the entry does nothing. */
+  /** Without it, the entry does nothing. */
   export?: (id: number) => void;
   /** After a deletion. */
   onRemoved?: (id: number) => void;

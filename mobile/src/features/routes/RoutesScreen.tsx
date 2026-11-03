@@ -6,8 +6,10 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { t } from '@/core/i18n/t';
+import type { Zone } from '@/core/zones/catalogue';
 import { RoutesTooNewError } from '@/core/routes/migrations';
 import { describeRoute, listZoneStatus } from '@/core/routes/routeList';
+import { useExportRoute } from '@/shared-data/routes/exportRoute';
 import { useRouteActions, useRoutes } from '@/shared-data/routes/useRoutes';
 import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
 import { useZoneInService } from '@/shared-data/zones/zoneInService';
@@ -18,19 +20,31 @@ import { useRouteMenu } from '@/ui/useRouteMenu';
 
 import { RouteItem } from './RouteItem';
 import { RoutesEmpty } from './RoutesEmpty';
+import { useGpxImport } from './useGpxImport';
 
 export const routesTitle = t('tabs.routes');
 
-export function RoutesScreen() {
+export function RoutesScreen({
+  onDownloadZone,
+}: {
+  /** Starts the download of a zone: the downloader is the Zones tab's. */
+  onDownloadZone?: (zone: Zone) => void;
+}) {
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const query = useRoutes();
   const installed = useInstalledZones().data;
   const inService = useZoneInService();
   const actions = useRouteActions();
+  const exportRoute = useExportRoute(
+    inService,
+    installed?.map((marker) => marker.zone),
+  );
+  const gpxImport = useGpxImport(onDownloadZone);
   const menu = useRouteMenu({
     rename: actions.rename,
     remove: actions.remove,
+    export: (id) => void exportRoute(id),
   });
 
   const routes = query.data;
@@ -77,18 +91,26 @@ export function RoutesScreen() {
   return (
     <View style={styles.screen}>
       <ScreenFrame title={t('routes.title')}>{content}</ScreenFrame>
-      {/* The import is made in T6: the button is drawn, and does nothing yet. */}
       <Pressable
         testID="routes-import"
         accessibilityRole="button"
         accessibilityLabel={t('routes.importLabel')}
-        onPress={() => undefined}
-        style={[styles.import, { top: insets.top + 7 }]}
+        accessibilityState={{ disabled: gpxImport.busy }}
+        disabled={gpxImport.busy}
+        onPress={gpxImport.start}
+        style={[
+          styles.import,
+          gpxImport.busy && styles.importBusy,
+          { top: insets.top + 7 },
+        ]}
       >
         <PlusIcon color={colors.brown} size={18} />
-        <Text style={styles.importText}>{t('routes.import')}</Text>
+        <Text style={styles.importText}>
+          {t(gpxImport.busy ? 'routes.importBusy' : 'routes.import')}
+        </Text>
       </Pressable>
       {menu.sheet}
+      {gpxImport.sheet}
     </View>
   );
 }
@@ -109,6 +131,7 @@ const styles = StyleSheet.create({
     borderColor: colors.brown,
     borderRadius: 24,
   },
+  importBusy: { opacity: 0.6 },
   importText: { fontSize: 16, fontWeight: '600', color: colors.brown },
   message: { paddingVertical: spacing.s6 },
   gap: { marginTop: spacing.s3 },

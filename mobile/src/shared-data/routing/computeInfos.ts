@@ -1,4 +1,8 @@
-import type { HeightResult, TraceResult } from '@/core/routing/infoResponse';
+import type {
+  HeightResult,
+  PointHeightsResult,
+  TraceResult,
+} from '@/core/routing/infoResponse';
 
 import { routingEngine } from './routingEngine';
 
@@ -16,4 +20,12 @@ export function computeTerrain(
   signal?: AbortSignal,
 ): Promise<TraceResult> {
   return routingEngine.traceAttributes(shape, signal);
+}
+
+/** One altitude per point of the shape (export). Never throws. */
+export function computePointHeights(
+  shape: [number, number][],
+  signal?: AbortSignal,
+): Promise<PointHeightsResult> {
+  return routingEngine.pointHeights(shape, signal);
 }

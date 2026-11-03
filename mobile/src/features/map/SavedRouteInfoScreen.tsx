@@ -29,6 +29,7 @@ import { trackOfCreated } from '@/core/routes/track';
 import { canAttachZone, routeZoneStatus } from '@/core/routes/routeZone';
 import type { RouteZoneStatus } from '@/core/routes/routeZone';
 import type { Zone } from '@/core/zones/catalogue';
+import { useExportRoute } from '@/shared-data/routes/exportRoute';
 import {
   routeDetailKey,
   useRouteActions,
@@ -97,12 +98,17 @@ export function SavedRouteInfoScreen() {
 
 // The "⋮" menu of the Infos screens: the same as the list. After a deletion,
 // back to the list.
-function useInfoMenu(route: { id: number; name: string }) {
+function useInfoMenu(
+  route: { id: number; name: string },
+  zones?: { inService: Zone | null; installed: Zone[] },
+) {
   const router = useRouter();
   const actions = useRouteActions();
+  const exportRoute = useExportRoute(zones?.inService, zones?.installed);
   const menu = useRouteMenu({
     rename: actions.rename,
     remove: actions.remove,
+    export: (id) => void exportRoute(id),
     onRemoved: () => router.dismissTo('/routes'),
   });
   return {
@@ -200,7 +206,7 @@ function LoadedRoute({
         }
       : route;
   const status = routeZoneStatus(effective, zone, installed);
-  const { button, sheet } = useInfoMenu(route);
+  const { button, sheet } = useInfoMenu(route, { inService: zone, installed });
   let infos: ReactNode;
   if (status === 'usable' && zone) {
     infos =

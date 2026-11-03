@@ -261,6 +261,30 @@ export const fr = {
   'routes.deleteTitle': 'Supprimer « {name} » ?',
   'routes.deleteText':
     "L'itinéraire sera effacé du téléphone. Pour le garder ailleurs, exportez-le d'abord en GPX.",
+  'routes.importBusy': 'Lecture du fichier…',
+  'routes.importFailedTitle': 'Import impossible',
+  'routes.importEmpty': 'Ce fichier est vide.',
+  'routes.importUnreadable': "Ce fichier n'est pas un GPX lisible.",
+  'routes.importNoTrack':
+    'Ce fichier GPX ne contient aucun tracé. RutaPulse lit les traces et les routes, pas les points isolés.',
+  'routes.importTooBig':
+    'Ce fichier pèse {size}. RutaPulse importe les GPX de 20 Mo au plus.',
+  'routes.importOk': 'OK',
+  'routes.importedAnnounce': 'GPX importé : {name}',
+  'routes.outsideTitle': 'GPX hors de vos zones',
+  'routes.outsideText':
+    "L'itinéraire est importé, avec sa distance. Le D+, le terrain et la difficulté sont indisponibles hors zone.",
+  'routes.outsideFound':
+    'Ce tracé est dans la zone {zone}, pas encore sur le téléphone.',
+  'routes.outsideNone':
+    "Ce tracé n'est dans aucune zone de RutaPulse pour l'instant.",
+  'routes.outsideOffline':
+    'Sans réseau, RutaPulse ne peut pas chercher la zone de ce tracé.',
+  'routes.outsideDownload': 'Télécharger {zone} · {size}',
+  'routes.outsideLater': 'Plus tard',
+  'routes.outsideClose': 'Fermer',
+  'routes.exportFailedTitle': 'Export impossible',
+  'routes.exportFailedText': "Le fichier GPX n'a pas pu être écrit. Réessayez.",
   'routes.actionFailedTitle': 'Action impossible',
   'routes.actionFailedText': "L'action n'a pas pu être faite. Réessayez.",
   'zones.deleteRoutes':

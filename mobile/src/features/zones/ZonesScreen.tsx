@@ -7,13 +7,13 @@ import { t } from '@/core/i18n/t';
 import { buildZoneRows } from '@/core/zones/zoneRow';
 import { routeCountByZoneOptions } from '@/shared-data/routes/useRoutes';
 import { createZoneOps } from '@/shared-data/zones/createZoneOps';
+import { useCatalogue } from '@/shared-data/zones/useCatalogue';
 import {
   useSettings,
   useSetWifiOnly,
 } from '@/shared-data/settings/useSettings';
 import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
 
-import { useCatalogue } from './useCatalogue';
 import { getZoneDownloader, zoneDownloads } from './zoneDownloader';
 import { ZonesView, type CatalogueStatus } from './ZonesView';
 

@@ -4,9 +4,15 @@
 
 import type { Bbox, Zone } from '../zones/catalogue';
 import { isInsideBbox } from '../zones/activeZone';
-import { buildHeightRequest, buildTraceRequest } from './infoRequest';
+import {
+  buildHeightRequest,
+  buildPointHeightRequest,
+  buildTraceRequest,
+} from './infoRequest';
 import {
   parseHeightResponse,
+  parsePointHeights,
+  type PointHeightsResult,
   parseTraceResponse,
   type HeightResult,
   type TraceResult,
@@ -50,6 +56,11 @@ export type RoutingEngine = {
     shape: [number, number][],
     signal?: AbortSignal,
   ): Promise<HeightResult>;
+  /** One altitude per point of the shape (export). Same queue and rules. */
+  pointHeights(
+    shape: [number, number][],
+    signal?: AbortSignal,
+  ): Promise<PointHeightsResult>;
   /** Terrain edges along a [lon, lat] shape. Same queue and rules as `route`. */
   traceAttributes(
     shape: [number, number][],
@@ -176,6 +187,16 @@ export function createRoutingEngine(
         native.height?.bind(native),
         buildHeightRequest,
         parseHeightResponse,
+      );
+    },
+
+    pointHeights(shape, signal) {
+      return infoCall(
+        shape,
+        signal,
+        native.height?.bind(native),
+        buildPointHeightRequest,
+        parsePointHeights,
       );
     },
 

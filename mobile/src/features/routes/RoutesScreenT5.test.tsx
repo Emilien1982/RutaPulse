@@ -28,6 +28,10 @@ let mockInstalled: { id: string }[];
 jest.mock('expo-router', () => ({
   useRouter: () => ({ push: mockPush }),
 }));
+// The import is made in T6: here the picker is cancelled.
+jest.mock('expo-document-picker', () => ({
+  getDocumentAsync: () => Promise.resolve({ canceled: true, assets: null }),
+}));
 jest.mock('react-native-safe-area-context', () => ({
   useSafeAreaInsets: () => ({ top: 0, bottom: 0, left: 0, right: 0 }),
 }));
@@ -180,7 +184,7 @@ describe('the list', () => {
     expect(mockPush).toHaveBeenCalledWith('/route/1');
   });
 
-  it('draws the "Importer un GPX" button, which does nothing yet (T6)', async () => {
+  it('draws the "Importer un GPX" button, which does nothing when the picker is cancelled', async () => {
     await insertRoute(db, sampleCreated());
     await open();
     expect(screen.getByText('Importer un GPX')).toBeTruthy();
