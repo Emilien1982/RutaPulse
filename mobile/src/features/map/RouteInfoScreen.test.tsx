@@ -300,6 +300,7 @@ describe('Infos screen computes nothing', () => {
       P1.lat,
       P2.lon,
       P2.lat,
+      ...(kind === 'leg' ? [] : [3]),
     ];
     client.setQueryData(at('leg', 'path'), route);
     client.setQueryData(at('height', 'path'), heights.profile);
@@ -324,6 +325,7 @@ describe('Infos screen computes nothing', () => {
       P1.lat,
       P2.lon,
       P2.lat,
+      3,
     ];
     client.setQueryData(
       ['routing', 'leg', 'nancy', 3, 'path', P1.lon, P1.lat, P2.lon, P2.lat],

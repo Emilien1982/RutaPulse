@@ -9,6 +9,7 @@ import {
 import { useMemo } from 'react';
 
 import {
+  attachZone,
   countRoutesByZone,
   deleteRoute,
   getRoute,
@@ -46,11 +47,13 @@ export function useRoutes() {
   });
 }
 
-/** `data` is null when there is no such route. */
-export function useSavedRoute(id: number) {
+/** `data` is null when there is no such route. No read while `id` is null. */
+export function useSavedRoute(id: number | null) {
   return useQuery({
-    queryKey: routeDetailKey(id),
-    queryFn: async () => getRoute(await getRoutesDb(), id),
+    queryKey: ['routes', 'detail', id],
+    queryFn: async () =>
+      id === null ? null : getRoute(await getRoutesDb(), id),
+    enabled: id !== null,
     ...READ_OPTIONS,
   });
 }
@@ -106,6 +109,15 @@ export function createRouteActions(queryClient: QueryClient) {
       const changed = await deleteRoute(await getRoutesDb(), id);
       queryClient.removeQueries({ queryKey: routeDetailKey(id) });
       await queryClient.invalidateQueries({ queryKey: routesKey });
+      return changed;
+    },
+    /** A GPX without zone takes the zone in service. */
+    attachZone: async (
+      id: number,
+      zone: { id: string; version: number; name: string },
+    ) => {
+      const changed = await attachZone(await getRoutesDb(), id, zone);
+      if (changed) await queryClient.invalidateQueries({ queryKey: routesKey });
       return changed;
     },
     /** Only the list is invalidated: the Infos screen has its figures. */

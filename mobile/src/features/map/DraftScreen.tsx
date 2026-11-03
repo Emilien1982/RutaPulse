@@ -8,6 +8,10 @@ import { canLoop, canUndo, type DraftAction } from '@/core/draft/draft';
 import { listLegs, summarize } from '@/core/draft/legs';
 import { handLengthKm, summarizeInfo } from '@/core/route-info/routeInfo';
 import { findProblem } from '@/core/draft/problem';
+import { RoutesTooNewError } from '@/core/routes/migrations';
+import type { SavedLeg } from '@/core/routes/savedRoute';
+import { previewOf, trackOfCreated } from '@/core/routes/track';
+import { useRouteActions, useSavedRoute } from '@/shared-data/routes/useRoutes';
 import { t } from '@/core/i18n/t';
 import { HelpCard } from '@/ui/HelpCard';
 import { HandModeIcon } from '@/ui/icons';
@@ -98,7 +102,11 @@ function DraftView({ opening }: { opening?: OpeningView }) {
     router.push('/draft/infos');
   }
   const camera = useRef<CameraRef>(null);
-  const { zone, store, dispatch } = useDraftSession();
+  const { zone, store, savedStore, kept, dispatch } = useDraftSession();
+  const saved = useSelector(savedStore, (s) => s);
+  const savedName = useSavedRoute(saved.routeId).data?.name;
+  const actions = useRouteActions();
+  const [saving, setSaving] = useState(false);
   const draft = useSelector(store, (s) => s.draft);
   const chosenId = useSelector(store, (s) => s.selected);
   const nextMode = useSelector(store, (s) => s.nextMode);
@@ -116,7 +124,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
     setTarget(targetOf(action, before, store.state.draft.points));
   }
 
-  const rawLegs = useLegResults(draft, zone);
+  const rawLegs = useLegResults(draft, zone, kept);
   const [legs, setLegs] = useState(rawLegs);
   if (legs !== rawLegs && !sameLegs(legs, rawLegs)) setLegs(rawLegs);
 
@@ -256,19 +264,91 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   // Leaving: from 2 points on, a native dialog asks first (also for the back
   // button of Android).
   const [leaving, setLeaving] = useState(false);
-  usePreventRemove(draft.points.length >= 2 && !leaving, ({ repeat }) => {
-    Alert.alert(t('route.abandonTitle'), t('route.abandonText'), [
-      { text: t('route.abandonKeep'), style: 'cancel' },
-      {
-        text: t('route.abandonConfirm'),
-        style: 'destructive',
-        onPress: () => {
-          setLeaving(true);
-          repeat();
+  // A saved route asks only when the draft differs from what is saved.
+  const isSaved = saved.savedDraft !== null;
+  const hasChanges = isSaved
+    ? draft !== saved.savedDraft
+    : draft.points.length >= 2;
+  usePreventRemove(hasChanges && !leaving, ({ repeat }) => {
+    Alert.alert(
+      t(isSaved ? 'route.abandonChangesTitle' : 'route.abandonTitle'),
+      t(isSaved ? 'route.abandonChangesText' : 'route.abandonText'),
+      [
+        { text: t('route.abandonKeep'), style: 'cancel' },
+        {
+          text: t('route.abandonConfirm'),
+          style: 'destructive',
+          onPress: () => {
+            setLeaving(true);
+            repeat();
+          },
         },
-      },
-    ]);
+      ],
+    );
   });
+
+  // "Enregistrer": keeps the route at once (new: default name; reopened:
+  // the same row is replaced), then opens the Infos screen (ADR 0019, § 4).
+  const canSave =
+    hasFigures &&
+    !computing &&
+    !problem &&
+    !saving &&
+    (!isSaved || draft !== saved.savedDraft);
+  async function save() {
+    if (!canSave) return;
+    const legs: SavedLeg[] = [];
+    for (const leg of rawLegs) {
+      if (leg.status === 'hand') legs.push({ mode: 'hand' });
+      else if (leg.status === 'done') {
+        legs.push({
+          mode: 'path',
+          zoneVersion: leg.shapeVersion ?? zone.version,
+          distanceKm: leg.result.distanceKm,
+          durationS: leg.result.durationS,
+          shape: leg.result.shape,
+        });
+      } else return;
+    }
+    setSaving(true);
+    try {
+      const now = Date.now();
+      const input = {
+        draft,
+        legs,
+        zone: { id: zone.id, version: zone.version, name: zone.name },
+        preview: previewOf(trackOfCreated(draft, legs)),
+        distanceKm: summary.distanceKm,
+        durationS: summary.durationS,
+        ascentM: altitudes.status === 'ready' ? altitudes.ascentM : null,
+        descentM: altitudes.status === 'ready' ? altitudes.descentM : null,
+        figuresAt: altitudes.status === 'ready' ? now : null,
+      };
+      let id = saved.routeId;
+      if (id === null) {
+        id = await actions.create({ origin: 'created', ...input, now });
+      } else {
+        await actions.replace(id, { ...input, savedAt: now });
+      }
+      savedStore.setState(() => ({ routeId: id, savedDraft: draft }));
+      openInfos();
+    } catch (error) {
+      Alert.alert(
+        t(
+          error instanceof RoutesTooNewError
+            ? 'routes.tooNewTitle'
+            : 'route.saveFailedTitle',
+        ),
+        t(
+          error instanceof RoutesTooNewError
+            ? 'routes.tooNewText'
+            : 'route.saveFailedText',
+        ),
+      );
+    } finally {
+      setSaving(false);
+    }
+  }
 
   // The drawn legs do not change during a gesture but for the two next to
   // the dragged point, and only when the legs or the draft change.
@@ -391,7 +471,17 @@ function DraftView({ opening }: { opening?: OpeningView }) {
         top={barHeight + 64}
         onPress={recenter}
       />
-      <RouteTopBar onClose={() => router.back()} onHeight={setBarHeight} />
+      <RouteTopBar
+        onClose={() => router.back()}
+        onHeight={setBarHeight}
+        title={savedName}
+        onSave={{ enabled: canSave, press: () => void save() }}
+        saveLabel={
+          savedName
+            ? t('route.saveChangesLabel', { name: savedName })
+            : t('route.saveLabel')
+        }
+      />
       {showHandHelp && (
         <HelpCard
           top={barHeight + spacing.s3}

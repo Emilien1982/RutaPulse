@@ -3,7 +3,7 @@ import {
   Layer,
   type MapRef,
 } from '@maplibre/maplibre-react-native';
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, type ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { Draft } from '@/core/draft/draft';
@@ -54,12 +54,8 @@ export function RouteInfoMap({
     [bounds],
   );
 
-  let content = (
-    <View
-      testID="info-map"
-      accessibilityLabel={t('info.mapLabel')}
-      style={styles.window}
-    >
+  return (
+    <ArchFrame>
       <ZoneBaseMap
         zone={zone}
         cameraRef={null}
@@ -104,6 +100,25 @@ export function RouteInfoMap({
           </Text>
         </Pressable>
       </View>
+    </ArchFrame>
+  );
+}
+
+// The arch window of mockup 20 with its three rings; the caller fills it.
+export function ArchFrame({
+  children,
+  label,
+}: {
+  children: ReactNode;
+  label?: string;
+}) {
+  let content = (
+    <View
+      testID="info-map"
+      accessibilityLabel={label ?? t('info.mapLabel')}
+      style={styles.window}
+    >
+      {children}
     </View>
   );
   for (const ring of RINGS) {

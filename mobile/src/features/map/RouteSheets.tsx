@@ -40,9 +40,17 @@ const COMPACT_BELOW = 390;
 export function RouteTopBar({
   onClose,
   onHeight,
+  title,
+  onSave,
+  saveLabel,
 }: {
   onClose: () => void;
   onHeight: (height: number) => void;
+  /** The name of a saved route; "Nouvel itinéraire" without it. */
+  title?: string;
+  /** Hidden without it. */
+  onSave?: { enabled: boolean; press: () => void };
+  saveLabel?: string;
 }) {
   const insets = useSafeAreaInsets();
   return (
@@ -60,9 +68,32 @@ export function RouteTopBar({
         >
           <CloseIcon color={colors.brown} />
         </Pressable>
-        <Text accessibilityRole="header" style={styles.topTitle}>
-          {t('route.new')}
+        <Text
+          accessibilityRole="header"
+          numberOfLines={1}
+          style={[styles.topTitle, styles.topTitleFlex]}
+        >
+          {title ?? t('route.new')}
         </Text>
+        {onSave && (
+          <Pressable
+            testID="route-save"
+            accessibilityRole="button"
+            accessibilityLabel={
+              onSave.enabled ? saveLabel : t('route.saveOffLabel')
+            }
+            accessibilityState={{ disabled: !onSave.enabled }}
+            disabled={!onSave.enabled}
+            onPress={onSave.press}
+            style={[styles.save, !onSave.enabled && styles.saveOff]}
+          >
+            <Text
+              style={[styles.saveText, !onSave.enabled && styles.saveTextOff]}
+            >
+              {t('route.save')}
+            </Text>
+          </Pressable>
+        )}
       </View>
       <Stripes />
     </View>
@@ -403,6 +434,25 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     color: colors.brown,
   },
+  topTitleFlex: { flex: 1 },
+  // "Enregistrer" (mockup 40, 8b): mustard; dashed and pale when off.
+  save: {
+    height: 48,
+    paddingHorizontal: 18,
+    marginRight: spacing.s3,
+    borderRadius: radius.button48,
+    backgroundColor: colors.mustard,
+    borderWidth: 2.5,
+    borderColor: colors.brown,
+    justifyContent: 'center',
+  },
+  saveOff: {
+    backgroundColor: colors.creamLight,
+    borderStyle: 'dashed',
+    borderColor: colors.brown2,
+  },
+  saveText: { fontSize: 17, fontWeight: '700', color: colors.brown },
+  saveTextOff: { color: colors.brown2 },
   bubbleRow: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
   bubble: {
     backgroundColor: colors.brown,

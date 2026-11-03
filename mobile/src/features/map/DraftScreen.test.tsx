@@ -186,7 +186,7 @@ describe('opening', () => {
     expect(screen.getByText('PROCHAIN TRONÇON')).toBeTruthy();
     expect(screen.getByText('Par les chemins')).toBeTruthy();
     expect(screen.getByText('À la main')).toBeTruthy();
-    expect(screen.queryByText('Enregistrer')).toBeNull();
+    expect(screen.queryByText('Enregistrer')).toBeTruthy();
   });
 
   it('draws nothing but an empty background without a zone', async () => {

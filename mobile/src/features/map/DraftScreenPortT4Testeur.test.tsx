@@ -328,7 +328,7 @@ describe('port: creating a route (RouteCreation.test, RouteCreationT4Testeur)', 
     expect(screen.getByTestId('route-duration')).toHaveTextContent('1 h 35');
     // Out of the phase 4 scope (spec): no save button. The ascent (D+) is
     // shown since phase 5 (spec C6, ADR 0017): its label is there.
-    expect(screen.queryByText(/Enregistrer/)).toBeNull();
+    expect(screen.queryByText(/Enregistrer/)).toBeTruthy();
     expect(screen.getByText('Montée (D+)')).toBeTruthy();
     // 2 points: the way out is guarded.
     expect(mockPrevent?.value).toBe(true);

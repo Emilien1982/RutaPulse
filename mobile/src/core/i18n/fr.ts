@@ -184,6 +184,49 @@ export const fr = {
   'zones.updateRetryLabel': 'Réessayer la mise à jour de {name}',
   'zones.updateProgressLabel': 'Mise à jour de {name}',
   'zones.updated': 'Zone {name} mise à jour.',
+  'route.save': 'Enregistrer',
+  'route.saveLabel': "Enregistrer l'itinéraire",
+  'route.saveChangesLabel': 'Enregistrer les changements de {name}',
+  'route.saveOffLabel':
+    "Enregistrer\u00A0: posez d'abord le départ et l'arrivée",
+  'route.saveFailedTitle': 'Enregistrement impossible',
+  'route.saveFailedText': "L'itinéraire n'a pas pu être gardé. Réessayez.",
+  'route.abandonChangesTitle': 'Abandonner les changements\u202F?',
+  'route.abandonChangesText': "L'itinéraire gardé ne change pas.",
+  'route.zoneAbsentTitle': 'Zone absente',
+  'route.zoneAbsentText':
+    "La zone de cet itinéraire n'est pas en service\u00A0: il ne peut pas être modifié.",
+  'route.unreadableText':
+    'Cet itinéraire ne peut pas être lu. Il reste dans la liste\u00A0: vous pouvez le renommer ou le supprimer.',
+  'routes.tooNewTitle': 'Itinéraires indisponibles',
+  'routes.tooNewText':
+    'Mettez à jour RutaPulse pour retrouver vos itinéraires.',
+  'routes.notFound': "Cet itinéraire n'existe plus.",
+  'routes.back': 'Itinéraires',
+  'routes.backLabel': 'Retour à Mes itinéraires',
+  'routes.meta': 'Zone {zone} · {origin}',
+  'routes.metaDeleted': 'Zone {zone} supprimée · {origin}',
+  'routes.metaOutside': 'Hors de vos zones · {origin}',
+  'routes.originCreated': 'créé le {date}',
+  'routes.originModified': 'modifié le {date}',
+  'routes.originGpx': 'GPX importé le {date}',
+  'routes.lastFigures': 'Chiffres du dernier calcul, le {date}',
+  'routes.seeZones': 'Voir les zones',
+  'routes.noticeDeleted': 'Zone {zone} supprimée\u00A0:',
+  'routes.noticeDeletedText':
+    " carte, profil, terrain et difficulté indisponibles. Téléchargez la zone à nouveau pour les retrouver et pour modifier l'itinéraire.",
+  'routes.noticeDeletedGpxText':
+    ' carte, profil, terrain et difficulté indisponibles. Téléchargez la zone à nouveau pour les retrouver.',
+  'routes.noticeNotInService': "La zone {zone} n'est pas en service\u00A0:",
+  'routes.noticeNotInServiceText':
+    " carte, profil, terrain et difficulté sont indisponibles pour l'instant.",
+  'routes.noticeOutside': 'Hors de vos zones\u00A0:',
+  'routes.noticeOutsideText':
+    ' D+, profil, terrain et difficulté indisponibles.',
+  'routes.noticeLeaves': 'Ce tracé sort de la zone {zone}\u00A0:',
+  'routes.noticeLeavesText':
+    ' D+, profil, terrain et difficulté indisponibles.',
+  'routes.arcLabel': "Tracé de l'itinéraire, sans fond de carte",
 } as const;
 
 export type TextKey = keyof typeof fr;

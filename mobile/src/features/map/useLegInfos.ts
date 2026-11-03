@@ -29,7 +29,7 @@ import {
 import type { LegState } from './useLegResults';
 
 /** Thrown by a query function: an error is never kept in the cache. */
-class InfoError extends Error {
+export class InfoError extends Error {
   constructor(readonly kind: RouteErrorKind) {
     super(kind);
   }
@@ -37,7 +37,7 @@ class InfoError extends Error {
 
 const MINUTE = 60_000;
 
-const SETTINGS = {
+export const SETTINGS = {
   staleTime: Infinity,
   gcTime: 30 * MINUTE,
   retry: false,
@@ -47,7 +47,7 @@ const SETTINGS = {
 
 type Slot = { data: unknown; error: unknown } | undefined;
 
-function failureOf(error: unknown): RouteFailure {
+export function failureOf(error: unknown): RouteFailure {
   return failure(error instanceof InfoError ? error.kind : 'failed');
 }
 
@@ -71,10 +71,14 @@ export function useLegInfos(
     const shape = infoShape(leg, route, zone.bbox);
     const blocked =
       shape === null && (leg.mode === 'hand' || state?.status === 'error');
-    return { leg, shape, blocked };
+    const shapeVersion =
+      state?.status === 'done'
+        ? (state.shapeVersion ?? zone.version)
+        : zone.version;
+    return { leg, shape, blocked, shapeVersion };
   });
   const queries = useQueries({
-    queries: plans.flatMap(({ leg, shape }) => {
+    queries: plans.flatMap(({ leg, shape, shapeVersion }) => {
       const key = (kind: 'height' | 'terrain', mode: string) => [
         'routing',
         kind,
@@ -85,6 +89,9 @@ export function useLegInfos(
         leg.from.lat,
         leg.to.lon,
         leg.to.lat,
+        // Version of the zone that drew the shape: a saved shape of v3 and a
+        // new one of v4 between the same points are not the same thing.
+        leg.mode === 'hand' ? null : shapeVersion,
       ];
       const heights = {
         queryKey: key('height', leg.mode),

@@ -159,3 +159,17 @@ export async function countRoutesByZone(
   );
   return row?.n ?? 0;
 }
+
+/** Gives a zone to a GPX route that has none. False if it already had one. */
+export async function attachZone(
+  db: SqlDb,
+  id: number,
+  zone: { id: string; version: number; name: string },
+): Promise<boolean> {
+  const result = await db.run(
+    `UPDATE routes SET zone_id = ?, zone_version = ?, zone_name = ?
+     WHERE id = ? AND origin = 'gpx' AND zone_id IS NULL`,
+    [zone.id, zone.version, zone.name, id],
+  );
+  return result.changes > 0;
+}

@@ -24,6 +24,8 @@ export default function RootLayout() {
               gestureEnabled: false,
             }}
           />
+          {/* Infos of a saved route (ADR 0019, section 3). */}
+          <Stack.Screen name="route/[id]" options={{ headerShown: false }} />
         </Stack>
       </FontGate>
     </QueryProvider>
