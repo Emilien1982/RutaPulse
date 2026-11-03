@@ -3,58 +3,71 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=390, initial-scale=1">
-<title>RutaPulse v1 – Mes itinéraires</title>
+<title>RutaPulse v1 – Mes itinéraires : liste, actions, renommer, supprimer, import GPX</title>
 <!--
-  Écran 40, v1, style années 70. Version finie de
-  design/styles/3-affiche-annees-70-itineraires.html (même contenu que design/40).
-  Fonctions 4 et 5 du cadrage.
-  Instant montré : le menu de la 2e ligne est ouvert (Renommer, Exporter en GPX,
-  Supprimer). Ce menu reste le menu natif : menu déroulant sur Android, menu
-  contextuel (UIMenu) sur iOS, qui ne se décorent pas. Sur iOS, glisser une ligne
-  vers la gauche propose aussi « Supprimer ».
-  Bandeau : soleil rayé posé sur quatre bandes, commun aux onglets
-  (Itinéraires, Zones, Réglages, et Carte quand elle est vide).
-  Barre d'onglets à quatre onglets : « Réglages » ajouté (voir 80-reglages.html).
-  Noms et chiffres de la liste en police du système : ils sont longs et
-  variables, et Futura (Jost dans l'app) est trop large pour la ligne.
-  Vignettes : dessins du tracé générés depuis sa géométrie (SVG), dans un
-  médaillon rond.
-  Liste vide : voir 50-liste-vide.html.
-  Valeurs : design/tokens.md.
+  Écran 40, v1, style années 70. Fonctions 4 et 5 du cadrage. Phase 6
+  (docs/phases/p06-mes-itineraires-gpx.md), complété le 3 novembre 2026 (T1).
+
+  CE FICHIER CONTIENT PLUSIEURS ÉCRANS, L'UN SOUS L'AUTRE (comme v1/41), PUIS
+  DES VARIANTES ET UNE NOTE (en bas de la page, à lire dans le navigateur).
+   1. Liste remplie, le plus récent en haut.
+   2. Liste vide (reprend v1/50, texte précisé).
+   3. Actions d'un itinéraire : menu « ⋮ » ouvert (menu natif).
+   4. Renommer : feuille posée sur le clavier. Variantes : nom vide, 60 caractères.
+   5. Confirmation de suppression (boîte native).
+   6. Import : a) refus (boîte native) ; b) import réussi (Infos du GPX, sans
+      « Modifier ») ; c) GPX hors de vos zones (feuille de l'écran 52) ;
+      d) Infos d'un GPX hors zone.
+   7. Zone supprimée (C8) : a) la liste ; b) les Infos.
+   8. Après « Enregistrer » : Infos avec le nom par défaut en titre. Variantes :
+      barre du haut de la création (Enregistrer actif, inactif, « Modifier »).
+  Textes exacts, règles, choix et questions : note en bas de page.
+
+  Inchangé depuis la v1 d'origine : bandeau (soleil rayé sur quatre bandes),
+  bouton « Importer un GPX » en haut à droite, lignes en carte crème clair,
+  médaillons dessinés depuis le tracé, menu natif non décoré, quatre onglets.
+  Noms et chiffres de la liste en police du système (Jost est trop large).
+  La ligne « d'après un circuit balisé » de la v1 d'origine arrive en phase 7.
+  Valeurs : design/tokens.md. Noms, dates et chiffres : exemples.
 -->
 <style>
 :root{
-  --creme:#F4E4C1; --creme-clair:#FBF1DA; --sable:#F7DDA6; --brun:#3A1F0F; --brun-2:#5A3A28;
+  --creme:#F4E4C1; --creme-clair:#FBF1DA; --sable:#F7DDA6; --moutarde-pale:#F6CB7A;
+  --brun:#3A1F0F; --brun-2:#5A3A28;
   --rouille:#B5452A; --orange:#E2652B; --moutarde:#F0A830; --petrole:#2D6A66; --olive:#A9B56A;
-  --itineraire:#C2007A;
+  --itineraire:#C2007A; --depart:#146C2E; --danger:#8A1C12; --succes:#0F5223;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:390px;height:844px;overflow:hidden;background:var(--creme)}
+html,body{width:390px;background:var(--creme)}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--brun);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
 .geo{font-family:"Futura","Futura PT",Jost,"Century Gothic","Avenir Next",sans-serif;font-weight:700}
 .ecran{position:relative;width:390px;height:844px;overflow:hidden;background:var(--creme)}
 .barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20;color:var(--brun)}
 .barre-etat .icones{display:flex;gap:6px;align-items:center}
-.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--creme);z-index:30}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--creme);z-index:60}
+.indicateur.fonce{background:var(--brun)}
 
+/* ---------- Liste (onglet Itinéraires) ---------- */
 .decor{position:absolute;top:0;left:0}
 .importer{position:absolute;top:51px;right:16px;height:48px;display:flex;align-items:center;gap:6px;padding:0 16px 0 12px;background:var(--creme-clair);border:2.5px solid var(--brun);border-radius:24px;font-size:16px}
 h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-spacing:.5px}
-
 .liste{position:absolute;top:216px;left:12px;right:12px}
 .ligne{display:flex;align-items:center;gap:10px;height:96px;margin-bottom:10px;padding:0 2px 0 10px;background:var(--creme-clair);border:2.5px solid var(--brun);border-radius:24px}
 .medaillon{width:64px;height:64px;flex:none;border:3px solid var(--brun);border-radius:50%;overflow:hidden;box-shadow:inset 0 0 0 3px var(--moutarde)}
 .medaillon svg{display:block;width:100%;height:100%}
 .texte{flex:1;min-width:0}
 .nom{font-size:17px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.chiffres{font-size:15px;margin-top:3px}
+.chiffres{font-size:15px;margin-top:3px;white-space:nowrap}
 .chiffres b{font-weight:800}
 .meta{font-size:13px;font-weight:500;color:var(--brun-2);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Ligne à problème (hors zone, zone supprimée) : le problème remplace l'origine */
+.meta.signal{display:flex;align-items:center;gap:5px;color:var(--brun);font-weight:700}
+.meta.signal svg{flex:none}
 .plus{width:48px;height:48px;border-radius:24px;display:flex;align-items:center;justify-content:center;flex:none}
 .plus.ouvert{background:var(--moutarde);border:2.5px solid var(--brun)}
 
 /* Menu natif de la plateforme : non décoré */
-.menu{position:absolute;right:12px;top:398px;width:236px;background:#FFFFFF;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.28);border:1px solid rgba(17,17,17,.2);overflow:hidden;z-index:15;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,system-ui,sans-serif;color:#111}
+.menu{position:absolute;right:12px;width:236px;background:#FFFFFF;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.28);border:1px solid rgba(17,17,17,.2);overflow:hidden;z-index:15;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,system-ui,sans-serif;color:#111}
 .menu div{height:52px;display:flex;align-items:center;gap:12px;padding:0 16px;font-size:17px;border-bottom:1px solid #D0D0D0}
 .menu div:last-child{border-bottom:0;color:#B3261E} /* rouge du système (Material 3 ici), pas un jeton à nous */
 
@@ -64,15 +77,124 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
 .pastille{width:64px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center}
 .onglet.actif{font-weight:800}
 .onglet.actif .pastille{background:var(--moutarde);color:var(--brun)}
+
+/* ---------- Liste vide (repris de v1/50) ---------- */
+.illustration-vide{position:absolute;top:220px;left:0}
+.vide{position:absolute;top:430px;left:24px;right:24px;text-align:center}
+.vide h2{font-size:24px;line-height:1.2}
+.vide p{font-size:17px;line-height:1.4;color:var(--brun-2);margin-top:8px}
+.principal-vide{position:absolute;top:570px;left:55px;right:55px;height:56px;border-radius:28px;background:var(--brun);color:var(--creme);font-size:17px;display:flex;align-items:center;justify-content:center;gap:10px;padding-left:4px}
+
+/* ---------- Voiles, feuilles, champ, clavier ---------- */
+.voile{position:absolute;inset:0;background:rgba(58,31,15,.45);z-index:40}
+.voile-natif{position:absolute;inset:0;background:rgba(0,0,0,.32);z-index:40}
+.feuille{position:absolute;left:0;right:0;background:var(--creme);border:3px solid var(--brun);border-bottom:0;border-radius:28px 28px 0 0;box-shadow:0 -2px 10px rgba(58,31,15,.22);padding:14px 16px 0;z-index:45}
+.feuille h2{font-size:22px;line-height:1.2;margin:2px 2px 0}
+.feuille p{font-size:15px;line-height:1.4;color:var(--brun-2);margin:6px 2px 0}
+.feuille p b{color:var(--brun);font-weight:700}
+.etiquette-champ{font-size:15px;font-weight:600;margin:12px 2px 6px}
+.champ{height:56px;border:2.5px solid var(--brun);border-radius:18px;background:var(--creme-clair);display:flex;align-items:center;padding:0 0 0 14px;font-size:17px}
+.champ .valeur{flex:1;min-width:0;white-space:nowrap;overflow:hidden}
+.champ .curseur{display:inline-block;width:2px;height:22px;background:var(--brun);vertical-align:-4px;margin-left:1px}
+.champ .effacer{width:48px;height:48px;flex:none;display:flex;align-items:center;justify-content:center}
+.champ.erreur{border:3px solid var(--danger)}
+.aide{display:flex;justify-content:space-between;gap:8px;font-size:15px;line-height:1.3;margin:6px 4px 0;color:var(--brun-2)}
+.aide .err{color:var(--danger);font-weight:700;display:flex;gap:5px;align-items:center}
+.aide .compte{margin-left:auto;flex:none}
+.boutons{display:flex;gap:10px;margin-top:14px}
+.btn-sec{flex:1;height:56px;border-radius:28px;border:2.5px solid var(--brun);background:var(--creme-clair);font-size:17px;display:flex;align-items:center;justify-content:center}
+.btn-pri{flex:1;height:56px;border-radius:28px;background:var(--brun);color:var(--creme);border:2.5px solid var(--brun);font-size:17px;display:flex;align-items:center;justify-content:center}
+.btn-pri.inactif{background:var(--creme-clair);color:var(--brun-2);border:2.5px dashed var(--brun-2)}
+.clavier{position:absolute;left:0;right:0;bottom:0;height:300px;background:#D1D4DA;z-index:46}
+.clavier svg{display:block}
+
+/* Boîte de dialogue native (ici Android, Material 3) : non décorée */
+.dialogue{position:absolute;left:39px;width:312px;background:#FFFFFF;border-radius:28px;padding:24px 24px 14px;z-index:45;font-family:Roboto,-apple-system,system-ui,sans-serif;color:#1C1B1F;box-shadow:0 6px 24px rgba(0,0,0,.3)}
+.dialogue h3{font-size:24px;line-height:32px;font-weight:400}
+.dialogue p{font-size:16px;line-height:24px;color:#49454F;margin-top:14px}
+.dlg-boutons{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+.dlg-boutons span{height:48px;padding:0 12px;display:flex;align-items:center;font-size:16px;font-weight:600;color:#3A1F0F}
+
+/* ---------- Écran Infos (repris de v1/20) ---------- */
+.i-barre{position:absolute;top:47px;left:0;right:0;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 4px}
+.retour{height:48px;display:flex;align-items:center;gap:2px;padding:0 10px 0 4px;font-size:17px}
+.icone-btn{width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+.arche{position:absolute;top:120px;left:31px;width:328px;height:146px;border:3px solid var(--brun);border-radius:164px 164px 18px 18px / 96px 96px 18px 18px;overflow:hidden;background:#EEEBE4;box-shadow:0 0 0 5px var(--moutarde),0 0 0 9px var(--orange),0 0 0 12px var(--rouille)}
+.arche svg{display:block}
+.arche svg *{vector-effect:non-scaling-stroke}
+.attribution{position:absolute;right:12px;bottom:5px;display:flex;align-items:center;gap:4px;font-size:11px;color:var(--brun-2);background:rgba(251,241,218,.9);padding:1px 2px 1px 5px;border-radius:9px}
+.attribution i{font-style:normal;width:16px;height:16px;border-radius:8px;border:1.5px solid var(--brun-2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.contenu{position:absolute;top:292px;left:16px;right:16px}
+.i-nom{font-size:22px;line-height:1.2}
+.i-sous{font-size:15px;color:var(--brun-2);margin-top:2px}
+.grille{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.case{background:var(--creme-clair);border:2.5px solid var(--brun);border-radius:18px;padding:6px 12px 7px 20px}
+.case .v{font-size:28px;font-weight:800;line-height:1.15}
+.case u{text-decoration:none;font-size:17px;font-weight:700}
+.case .e{font-size:13px;font-weight:600;color:var(--brun-2)}
+.dernier-calcul{font-size:13px;font-weight:500;color:var(--brun-2);margin:6px 2px 0}
+.bloc-titre{margin-top:12px;display:flex;justify-content:space-between;align-items:baseline}
+.bloc-titre .geo{font-size:16px;letter-spacing:1px}
+.bloc-titre span.d{font-size:13px;font-weight:500;color:var(--brun-2)}
+.profil{display:block;margin-top:6px}
+.i-legende{display:flex;gap:14px;margin-top:8px;font-size:15px}
+.i-legende i{display:inline-block;width:15px;height:15px;border-radius:50%;border:2px solid var(--brun);margin-right:6px;vertical-align:-2px}
+.difficulte{font-size:15px;margin-top:6px;line-height:1.35}
+.difficulte b{font-weight:700}
+.difficulte .t2{color:var(--brun-2)}
+.actions{position:absolute;left:16px;right:16px;top:744px;display:flex;gap:10px}
+.secondaire{width:128px;height:56px;border-radius:28px;border:2.5px solid var(--brun);background:var(--creme-clair);font-size:17px;display:flex;align-items:center;justify-content:center;gap:6px}
+/* Ce qui manque (hors zone, zone supprimée) : à la place du profil. Texte brun seulement (9,9:1). */
+.manque{margin-top:14px;background:var(--moutarde-pale);border:2.5px solid var(--brun);border-radius:20px;padding:10px 12px 12px}
+.manque .haut{display:flex;gap:10px;align-items:flex-start;font-size:15px;line-height:1.35}
+.manque .haut svg{flex:none;margin-top:1px}
+.manque b{font-weight:700}
+.manque .btn{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 18px 0 14px;border-radius:24px;border:2.5px solid var(--brun);background:var(--creme-clair);font-size:17px;margin:10px 0 0 34px}
+
+/* ---------- Feuille d'erreur (reprise de v1/52) ---------- */
+.feuille-erreur{position:absolute;left:0;right:0;top:400px;bottom:0;background:var(--creme);border:3px solid var(--brun);border-bottom:0;border-radius:28px 28px 0 0;box-shadow:0 -2px 10px rgba(58,31,15,.22);padding:12px 13px 0;z-index:45}
+.feuille-erreur svg.illustration{display:block;margin:0 auto}
+.feuille-erreur h2{font-size:22px;line-height:1.2;margin:4px 3px 0}
+.feuille-erreur p{font-size:15px;line-height:1.4;color:var(--brun-2);margin:6px 3px 0}
+.feuille-erreur p b{color:var(--brun);font-weight:700}
+.principal{margin-top:12px;height:56px;border-radius:28px;background:var(--brun);color:var(--creme);font-size:17px;display:flex;align-items:center;justify-content:center;gap:10px;padding-left:4px}
+.principal .soleil,.principal-vide .soleil{width:32px;height:32px;border-radius:16px;background:var(--moutarde);display:flex;align-items:center;justify-content:center}
+.tertiaire{height:48px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:600;text-decoration:underline;text-underline-offset:3px;margin-top:4px}
+
+/* ---------- Barre du haut de la création (variantes, repris de v1/10) ---------- */
+.barre-crea{position:relative;height:65px;background:var(--creme);border:2px solid var(--brun);border-radius:14px;overflow:hidden;margin-bottom:6px}
+.barre-crea .contenu-crea{height:56px;display:flex;align-items:center;gap:4px;padding:0 8px 0 4px}
+.barre-crea .titre{flex:1;min-width:0;font-size:18px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.barre-crea .rayures{height:9px;background:linear-gradient(var(--moutarde) 0 3px,var(--orange) 3px 6px,var(--rouille) 6px 9px)}
+.enregistrer{flex:none;height:48px;padding:0 18px;border-radius:24px;background:var(--moutarde);border:2.5px solid var(--brun);display:flex;align-items:center;font-size:17px}
+.enregistrer.inactif{background:var(--creme-clair);border:2.5px dashed var(--brun-2);color:var(--brun-2)}
+
+/* ---------- Hors du téléphone : légendes, variantes, note ---------- */
+.cartouche{background:var(--brun);color:var(--creme);padding:14px 16px;font-size:15px;line-height:1.35;border-top:9px solid var(--moutarde)}
+.cartouche b{font-size:17px}
+.variantes{padding:4px 12px 12px}
+.var-titre{font-size:15px;font-weight:700;margin:16px 4px 6px}
+.var-texte{font-size:15px;line-height:1.4;margin:0 4px 6px}
+.statique{position:static!important}
+.note{padding:8px 16px 48px;font-size:15px;line-height:1.4}
+.note h2{font-size:20px;margin:20px 0 8px;letter-spacing:.5px}
+.note h3{font-size:16px;margin:16px 0 4px}
+.note p{margin:4px 0}
+.note ul,.note ol{padding-left:18px;margin:4px 0}
+.note li{margin:3px 0}
+.note q{quotes:"« " " »"}
+.note code{font-size:13px}
 </style>
 </head>
 <body>
+
+<!-- ========== ÉCRAN 1 : liste remplie ========== -->
+<div class="cartouche"><b>1. La liste remplie</b><br>Le plus récent en haut (dernier enregistrement ou import). Chaque ligne : nom, distance, D+, durée, zone et origine. « Importer un GPX » en haut à droite.</div>
 <div class="ecran">
 
-<!-- Bandeau : soleil rayé posé sur quatre bandes -->
 <svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs><clipPath id="au-dessus"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
-  <g clip-path="url(#au-dessus)">
+  <defs><clipPath id="sol-1"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#sol-1)">
     <circle cx="344" cy="164" r="36" fill="#F0A830"/>
     <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
     <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
@@ -83,7 +205,213 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
   <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
 </svg>
 
-<div class="barre-etat"><span>09:45</span>
+<div class="barre-etat"><span>10:02</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<div class="importer geo" role="button" aria-label="Importer un fichier GPX"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M12 11v6M9 14h6"/></svg>Importer un GPX</div>
+<h1 class="geo">MES ITINÉRAIRES</h1>
+
+<div class="liste">
+  <div class="ligne" aria-label="Itinéraire du 3 nov., 25,1 km, montée 421 m, 1 h 35, zone Nancy, créé le 3 nov.">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 20 C20 14 40 26 74 18 V48 C50 56 20 44 -2 52 Z" fill="#A9B56A"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linejoin="round"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/><circle cx="40" cy="60" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Itinéraire du 3 nov.</div>
+      <div class="chiffres"><b>25,1 km</b> · D+ 421 m · 1 h 35</div>
+      <div class="meta">Zone Nancy · créé le 3 nov.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Itinéraire du 3 nov."><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 -2 H40 C34 20 50 40 30 74 H-2 Z" fill="#A9B56A"/><path d="M58 -2 C50 24 66 44 56 74" fill="none" stroke="#2D6A66" stroke-width="5"/><path d="M24 58 C14 50 8 40 10 28 C12 16 24 10 36 10 C48 10 52 22 50 34 C48 46 52 54 44 60 C38 64 30 63 24 58 Z" fill="none" stroke="#FBF1DA" stroke-width="7"/><path d="M24 58 C14 50 8 40 10 28 C12 16 24 10 36 10 C48 10 52 22 50 34 C48 46 52 54 44 60 C38 64 30 63 24 58 Z" fill="none" stroke="#C2007A" stroke-width="4"/><circle cx="24" cy="58" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Tour de la forêt de Haye</div>
+      <div class="chiffres"><b>31,4 km</b> · D+ 512 m · 2 h 05</div>
+      <div class="meta">Zone Nancy · modifié le 28 oct.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Tour de la forêt de Haye"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M20 -2 H74 V40 C50 30 30 30 20 -2 Z" fill="#A9B56A"/><path d="M-2 50 C24 46 48 54 74 48" fill="none" stroke="#FBF1DA" stroke-width="4"/><path d="M8 50 L20 30 L34 26 L40 12 L58 16 L62 34 L50 44 L56 60 L30 62 Z" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linejoin="round"/><path d="M8 50 L20 30 L34 26 L40 12 L58 16 L62 34 L50 44 L56 60 L30 62 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/><circle cx="8" cy="50" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Rando VTT Ludres</div>
+      <div class="chiffres"><b>42,1 km</b> · D+ 665 m · 2 h 40</div>
+      <div class="meta">Zone Nancy · GPX importé le 19 oct.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Rando VTT Ludres"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 36 C20 30 40 44 74 34 V74 H-2 Z" fill="#A9B56A"/><path d="M14 56 C20 40 30 30 46 26 C56 24 62 16 60 10" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linecap="round"/><path d="M14 56 C20 40 30 30 46 26 C56 24 62 16 60 10" fill="none" stroke="#C2007A" stroke-width="4" stroke-linecap="round"/><circle cx="14" cy="56" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/><circle cx="60" cy="10" r="5" fill="#3A1F0F" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Plateau de Malzéville</div>
+      <div class="chiffres"><b>14,8 km</b> · D+ 186 m · 55 min</div>
+      <div class="meta">Zone Nancy · créé le 12 oct.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Plateau de Malzéville"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 10 C24 18 44 4 74 12 V30 C46 24 20 38 -2 28 Z" fill="#A9B56A"/><path d="M-2 62 C20 56 44 66 74 58" fill="none" stroke="#2D6A66" stroke-width="5"/><path d="M12 48 C18 30 30 22 40 30 S56 40 60 24" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linecap="round"/><path d="M12 48 C18 30 30 22 40 30 S56 40 60 24" fill="none" stroke="#C2007A" stroke-width="4" stroke-linecap="round"/><circle cx="12" cy="48" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/><circle cx="60" cy="24" r="5" fill="#3A1F0F" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Vallée de l'Amezule</div>
+      <div class="chiffres"><b>21,3 km</b> · D+ 302 m · 1 h 20</div>
+      <div class="meta">Zone Nancy · créé le 5 oct.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Vallée de l'Amezule"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ========== ÉCRAN 2 : liste vide ========== -->
+<div class="cartouche"><b>2. La liste vide</b><br>Premier lancement. Même dessin que l'écran 50 ; le texte dit maintenant les deux chemins : créer puis « Enregistrer », ou importer. « Créer un itinéraire » ouvre la création (écran 10).</div>
+<div class="ecran">
+
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="sol-2"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#sol-2)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+
+<div class="barre-etat"><span>09:30</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<div class="importer geo" role="button" aria-label="Importer un fichier GPX"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M12 11v6M9 14h6"/></svg>Importer un GPX</div>
+<h1 class="geo">MES ITINÉRAIRES</h1>
+
+<!-- Illustration : le vététiste et sa carte vierge (identique à v1/50) -->
+<svg class="illustration-vide" width="390" height="196" viewBox="0 0 390 196" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <rect x="64" y="176" width="262" height="9" rx="4.5" fill="#A9B56A"/>
+  <g fill="none" stroke="#A9B56A" stroke-width="3" stroke-linecap="round">
+    <path d="M80 176 l-3 -8 M86 176 l0 -10 M92 176 l3 -8"/>
+    <path d="M300 176 l-3 -7 M306 176 l0 -9 M312 176 l3 -7"/>
+  </g>
+  <g class="velo" transform="translate(204 148)">
+    <g transform="rotate(200)"><line x2="13" stroke="#5A3A28" stroke-width="4" stroke-linecap="round"/></g>
+    <g transform="translate(-42 -2)">
+      <circle r="27" fill="none" stroke="#3A1F0F" stroke-width="6"/>
+      <g stroke="#5A3A28" stroke-width="2"><line x1="-24" x2="24"/><line x1="-12" y1="-20.8" x2="12" y2="20.8"/><line x1="-12" y1="20.8" x2="12" y2="-20.8"/></g>
+      <circle r="3.5" fill="#3A1F0F"/>
+    </g>
+    <g transform="translate(62 -2)">
+      <circle r="27" fill="none" stroke="#3A1F0F" stroke-width="6"/>
+      <g stroke="#5A3A28" stroke-width="2"><line x1="-24" x2="24"/><line x1="-12" y1="-20.8" x2="12" y2="20.8"/><line x1="-12" y1="20.8" x2="12" y2="-20.8"/></g>
+      <circle r="3.5" fill="#3A1F0F"/>
+    </g>
+    <path d="M-42 -2 L0 0 L-10 -42 Z M-10 -42 L48 -46 L51 -34 L0 0" fill="none" stroke="#2D6A66" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M51 -34 L62 -2" stroke="#5A3A28" stroke-width="5" stroke-linecap="round"/>
+    <path d="M-10 -42 L-12 -51" stroke="#3A1F0F" stroke-width="4"/>
+    <path d="M-22 -53 L-3 -53" stroke="#3A1F0F" stroke-width="5" stroke-linecap="round"/>
+    <path d="M48 -46 L50 -55 L43 -57" fill="none" stroke="#3A1F0F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle r="7" fill="#FBF1DA" stroke="#3A1F0F" stroke-width="2.5"/>
+    <g transform="rotate(20)"><line x2="13" stroke="#3A1F0F" stroke-width="4" stroke-linecap="round"/><g transform="translate(13 0) rotate(-20)"><rect x="-5" y="-2.5" width="10" height="5" rx="2" fill="#3A1F0F"/></g></g>
+  </g>
+  <g class="vetetiste" transform="translate(114 100)">
+    <g transform="rotate(8)">
+      <line y2="36" stroke="#5A3A28" stroke-width="10" stroke-linecap="round"/>
+      <g transform="translate(0 36) rotate(-4)">
+        <line y2="36" stroke="#B97A52" stroke-width="8" stroke-linecap="round"/>
+        <ellipse cx="4" cy="37" rx="8" ry="4.5" fill="#5A3A28"/>
+      </g>
+    </g>
+    <g transform="rotate(3)">
+      <g transform="translate(0 -34) rotate(-25)">
+        <line y2="20" stroke="#B97A52" stroke-width="7" stroke-linecap="round"/>
+        <g transform="translate(0 20) rotate(-85)">
+          <line y2="18" stroke="#B97A52" stroke-width="6" stroke-linecap="round"/>
+          <circle cy="19" r="4.5" fill="#5A3A28"/>
+        </g>
+        <circle cy="2" r="6.5" fill="#8E3520"/>
+      </g>
+      <rect x="-9" y="-40" width="18" height="44" rx="9" fill="#B5452A"/>
+      <rect x="-9" y="-25" width="18" height="5" fill="#F0A830"/>
+      <g transform="translate(0 -40) rotate(15)">
+        <circle cy="-12" r="12" fill="#D9956A"/>
+        <path d="M-13.5 -13 A13.5 13.5 0 0 1 13.5 -13 Z" fill="#F0A830"/>
+        <path d="M12 -14 L21 -12 L12.5 -10 Z" fill="#E2652B"/>
+        <circle cx="6.5" cy="-9.5" r="1.8" fill="#3A1F0F"/>
+        <path d="M4.5 -4 h5" fill="none" stroke="#3A1F0F" stroke-width="1.6" stroke-linecap="round"/>
+      </g>
+      <g>
+        <path d="M20 -46 L54 -40 L52 -12 L18 -18 Z" fill="#FBF1DA" stroke="#3A1F0F" stroke-width="2.2" stroke-linejoin="round"/>
+        <path d="M31 -44 L29 -16 M42 -42 L40 -14" stroke="#5A3A28" stroke-width="1.4" stroke-dasharray="3 2.5"/>
+      </g>
+      <g transform="translate(0 -34) rotate(-37)">
+        <line y2="20" stroke="#D9956A" stroke-width="7" stroke-linecap="round"/>
+        <g transform="translate(0 20) rotate(-70)">
+          <line y2="18" stroke="#D9956A" stroke-width="6" stroke-linecap="round"/>
+          <circle cy="19" r="4.5" fill="#3A1F0F"/>
+        </g>
+        <circle cy="2" r="6.5" fill="#B5452A"/>
+      </g>
+    </g>
+    <g transform="rotate(-6)">
+      <line y2="36" stroke="#3A1F0F" stroke-width="10" stroke-linecap="round"/>
+      <g transform="translate(0 36) rotate(8)">
+        <line y2="36" stroke="#D9956A" stroke-width="8" stroke-linecap="round"/>
+        <ellipse cx="4" cy="37" rx="8" ry="4.5" fill="#3A1F0F"/>
+      </g>
+    </g>
+  </g>
+</svg>
+
+<div class="vide">
+  <h2 class="geo">Pas encore d'itinéraire</h2>
+  <p>Tracez une sortie sur la carte, puis touchez «&nbsp;Enregistrer&nbsp;». Vous pouvez aussi importer un fichier GPX.</p>
+</div>
+<div class="principal-vide geo" role="button"><span class="soleil"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="3" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>Créer un itinéraire</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ========== ÉCRAN 3 : menu des actions ========== -->
+<div class="cartouche"><b>3. Les actions d'un itinéraire</b><br>Le bouton « ⋮ » de la ligne (cible de 48) ouvre le menu natif : Renommer, Exporter en GPX, Supprimer. L'appui long sur la ligne ouvre le même menu. Pas de balayage. Même menu depuis le « ⋮ » de l'écran Infos.</div>
+<div class="ecran">
+
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="sol-3"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#sol-3)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+
+<div class="barre-etat"><span>10:03</span>
   <span class="icones">
     <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
     <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
@@ -97,20 +425,20 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
   <div class="ligne">
     <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 20 C20 14 40 26 74 18 V48 C50 56 20 44 -2 52 Z" fill="#A9B56A"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linejoin="round"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/><circle cx="40" cy="60" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
     <div class="texte">
-      <div class="nom">Boucle du Bois de la Côte</div>
+      <div class="nom">Itinéraire du 3 nov.</div>
       <div class="chiffres"><b>25,1 km</b> · D+ 421 m · 1 h 35</div>
-      <div class="meta">Zone Nancy · modifié le 20 oct.</div>
+      <div class="meta">Zone Nancy · créé le 3 nov.</div>
     </div>
-    <div class="plus" aria-label="Actions de Boucle du Bois de la Côte"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+    <div class="plus ouvert" aria-label="Actions de Itinéraire du 3 nov. (menu ouvert)"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
   </div>
   <div class="ligne">
     <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 -2 H40 C34 20 50 40 30 74 H-2 Z" fill="#A9B56A"/><path d="M58 -2 C50 24 66 44 56 74" fill="none" stroke="#2D6A66" stroke-width="5"/><path d="M24 58 C14 50 8 40 10 28 C12 16 24 10 36 10 C48 10 52 22 50 34 C48 46 52 54 44 60 C38 64 30 63 24 58 Z" fill="none" stroke="#FBF1DA" stroke-width="7"/><path d="M24 58 C14 50 8 40 10 28 C12 16 24 10 36 10 C48 10 52 22 50 34 C48 46 52 54 44 60 C38 64 30 63 24 58 Z" fill="none" stroke="#C2007A" stroke-width="4"/><circle cx="24" cy="58" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
     <div class="texte">
-      <div class="nom">Petite Suisse Lorraine</div>
-      <div class="chiffres"><b>35,6 km</b> · D+ 468 m · 2 h 15</div>
-      <div class="meta">Zone Nancy · d'après un circuit balisé</div>
+      <div class="nom">Tour de la forêt de Haye</div>
+      <div class="chiffres"><b>31,4 km</b> · D+ 512 m · 2 h 05</div>
+      <div class="meta">Zone Nancy · modifié le 28 oct.</div>
     </div>
-    <div class="plus ouvert" aria-label="Actions de Petite Suisse Lorraine (menu ouvert)"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+    <div class="plus"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
   </div>
   <div class="ligne">
     <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M20 -2 H74 V40 C50 30 30 30 20 -2 Z" fill="#A9B56A"/><path d="M-2 50 C24 46 48 54 74 48" fill="none" stroke="#FBF1DA" stroke-width="4"/><path d="M8 50 L20 30 L34 26 L40 12 L58 16 L62 34 L50 44 L56 60 L30 62 Z" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linejoin="round"/><path d="M8 50 L20 30 L34 26 L40 12 L58 16 L62 34 L50 44 L56 60 L30 62 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/><circle cx="8" cy="50" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
@@ -119,20 +447,20 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
       <div class="chiffres"><b>42,1 km</b> · D+ 665 m · 2 h 40</div>
       <div class="meta">Zone Nancy · GPX importé le 19 oct.</div>
     </div>
-    <div class="plus" aria-label="Actions de Rando VTT Ludres"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+    <div class="plus"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
   </div>
   <div class="ligne">
     <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 36 C20 30 40 44 74 34 V74 H-2 Z" fill="#A9B56A"/><path d="M14 56 C20 40 30 30 46 26 C56 24 62 16 60 10" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linecap="round"/><path d="M14 56 C20 40 30 30 46 26 C56 24 62 16 60 10" fill="none" stroke="#C2007A" stroke-width="4" stroke-linecap="round"/><circle cx="14" cy="56" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/><circle cx="60" cy="10" r="5" fill="#3A1F0F" stroke="#FBF1DA" stroke-width="2"/></svg></div>
     <div class="texte">
       <div class="nom">Plateau de Malzéville</div>
-      <div class="chiffres"><b>14,8 km</b> · D+ 186 m · 0 h 55</div>
+      <div class="chiffres"><b>14,8 km</b> · D+ 186 m · 55 min</div>
       <div class="meta">Zone Nancy · créé le 12 oct.</div>
     </div>
-    <div class="plus" aria-label="Actions de Plateau de Malzéville"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+    <div class="plus"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
   </div>
 </div>
 
-<div class="menu" role="menu">
+<div class="menu" role="menu" style="top:292px">
   <div role="menuitem"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>Renommer</div>
   <div role="menuitem"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7 9l5-5 5 5M5 20h14"/></svg>Exporter en GPX</div>
   <div role="menuitem"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B3261E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Supprimer</div>
@@ -145,8 +473,741 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
   <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
   <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
 </div>
-
 <div class="indicateur"></div>
 </div>
+
+
+<!-- ========== ÉCRAN 4 : renommer ========== -->
+<div class="cartouche"><b>4. Renommer</b><br>Feuille du bas posée sur le clavier, ouverte par « Renommer ». Le champ contient le nom actuel, tout sélectionné : on tape le nouveau nom directement. « Renommer » garde le nom et ferme ; la liste change aussitôt. Pas de confirmation.</div>
+<div class="ecran">
+
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="sol-4"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#sol-4)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+<div class="barre-etat"><span>10:04</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+<div class="importer geo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M12 11v6M9 14h6"/></svg>Importer un GPX</div>
+<h1 class="geo">MES ITINÉRAIRES</h1>
+<div class="liste">
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 20 C20 14 40 26 74 18 V48 C50 56 20 44 -2 52 Z" fill="#A9B56A"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/></svg></div>
+    <div class="texte"><div class="nom">Itinéraire du 3 nov.</div><div class="chiffres"><b>25,1 km</b> · D+ 421 m · 1 h 35</div><div class="meta">Zone Nancy · créé le 3 nov.</div></div>
+    <div class="plus"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+</div>
+
+<div class="voile"></div>
+<div class="feuille" role="dialog" aria-labelledby="titre-renommer" style="top:318px;bottom:300px">
+  <h2 id="titre-renommer" class="geo">Renommer l'itinéraire</h2>
+  <div class="etiquette-champ">Nom de l'itinéraire</div>
+  <div class="champ"><span class="valeur">Boucle du Bois de la Côte<span class="curseur"></span></span><span class="effacer" role="button" aria-label="Effacer le nom"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#5A3A28"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="#FBF1DA" stroke-width="2.4" stroke-linecap="round"/></svg></span></div>
+  <div class="aide"><span class="compte">25 / 60</span></div>
+  <div class="boutons geo">
+    <div class="btn-sec" role="button">Annuler</div>
+    <div class="btn-pri" role="button">Renommer</div>
+  </div>
+</div>
+<div class="clavier" aria-hidden="true">
+  <svg width="390" height="300" viewBox="0 0 390 300" xmlns="http://www.w3.org/2000/svg">
+    <defs><pattern id="touche" x="3" y="10" width="38.7" height="54" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="33" height="42" rx="5" fill="#FFFFFF"/></pattern></defs>
+    <rect x="0" y="0" width="390" height="162" fill="url(#touche)"/>
+    <rect x="4" y="172" width="86" height="42" rx="5" fill="#ABB0BA"/><rect x="96" y="172" width="198" height="42" rx="5" fill="#FFFFFF"/><rect x="300" y="172" width="86" height="42" rx="5" fill="#ABB0BA"/>
+    <text x="195" y="250" text-anchor="middle" font-size="13" fill="#3D3D3D" font-family="-apple-system,Roboto,sans-serif">Clavier du système</text>
+  </svg>
+</div>
+<div class="indicateur fonce"></div>
+</div>
+
+<div class="cartouche"><b>Variantes du champ « Renommer »</b><br>Seule la feuille change. Le compteur reste visible ; le message apparaît dès que la règle n'est pas tenue, sans attendre le toucher sur « Renommer ».</div>
+<div class="variantes">
+  <div class="var-titre">A. Nom vide (ou fait seulement d'espaces)</div>
+  <div class="feuille statique" style="border-radius:28px;border-bottom:3px solid var(--brun);padding-bottom:14px">
+    <h2 class="geo">Renommer l'itinéraire</h2>
+    <div class="etiquette-champ">Nom de l'itinéraire</div>
+    <div class="champ erreur" aria-invalid="true"><span class="valeur"><span class="curseur"></span></span></div>
+    <div class="aide"><span class="err" role="alert"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A1C12" stroke-width="2.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v6"/><circle cx="12" cy="17" r="1.2" fill="#8A1C12" stroke="none"/></svg>Donnez un nom à l'itinéraire.</span><span class="compte">0 / 60</span></div>
+    <div class="boutons geo">
+      <div class="btn-sec" role="button">Annuler</div>
+      <div class="btn-pri inactif" role="button" aria-disabled="true">Renommer</div>
+    </div>
+  </div>
+
+  <div class="var-titre">B. 60 caractères atteints : le champ n'en accepte pas plus</div>
+  <div class="feuille statique" style="border-radius:28px;border-bottom:3px solid var(--brun);padding-bottom:14px">
+    <h2 class="geo">Renommer l'itinéraire</h2>
+    <div class="etiquette-champ">Nom de l'itinéraire</div>
+    <div class="champ"><!-- Nom de 60 caractères : « Grande boucle des côtes de Moselle par le bois de Malzéville ». Le champ défile : on voit la fin. -->
+    <span class="valeur">…oselle par le bois de Malzéville<span class="curseur"></span></span><span class="effacer" role="button" aria-label="Effacer le nom"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="#5A3A28"/><path d="M8.5 8.5l7 7M15.5 8.5l-7 7" stroke="#FBF1DA" stroke-width="2.4" stroke-linecap="round"/></svg></span></div>
+    <div class="aide"><span>60 caractères au plus.</span><span class="compte" style="color:var(--brun);font-weight:700">60 / 60</span></div>
+    <div class="boutons geo">
+      <div class="btn-sec" role="button">Annuler</div>
+      <div class="btn-pri" role="button">Renommer</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========== ÉCRAN 5 : confirmation de suppression ========== -->
+<div class="cartouche"><b>5. Confirmation de suppression</b><br>Boîte de dialogue native, non décorée (ici Android). Sur iOS, « Supprimer » est en rouge (style « destructive ») et « Garder » en gras. Toucher en dehors ou le retour d'Android = « Garder ».</div>
+<div class="ecran">
+
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="sol-5"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#sol-5)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+<div class="barre-etat"><span>10:05</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+<div class="importer geo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M12 11v6M9 14h6"/></svg>Importer un GPX</div>
+<h1 class="geo">MES ITINÉRAIRES</h1>
+<div class="liste">
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 20 C20 14 40 26 74 18 V48 C50 56 20 44 -2 52 Z" fill="#A9B56A"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/></svg></div>
+    <div class="texte"><div class="nom">Boucle du Bois de la Côte</div><div class="chiffres"><b>25,1 km</b> · D+ 421 m · 1 h 35</div><div class="meta">Zone Nancy · créé le 3 nov.</div></div>
+    <div class="plus"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 -2 H40 C34 20 50 40 30 74 H-2 Z" fill="#A9B56A"/><path d="M24 58 C14 50 8 40 10 28 C12 16 24 10 36 10 C48 10 52 22 50 34 C48 46 52 54 44 60 C38 64 30 63 24 58 Z" fill="none" stroke="#C2007A" stroke-width="4"/></svg></div>
+    <div class="texte"><div class="nom">Tour de la forêt de Haye</div><div class="chiffres"><b>31,4 km</b> · D+ 512 m · 2 h 05</div><div class="meta">Zone Nancy · modifié le 28 oct.</div></div>
+    <div class="plus"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+</div>
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet"><span class="pastille"></span>Carte</div>
+  <div class="onglet actif"><span class="pastille"></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"></span>Zones</div>
+  <div class="onglet"><span class="pastille"></span>Réglages</div>
+</div>
+
+<div class="voile-natif"></div>
+<div class="dialogue" role="alertdialog" aria-labelledby="titre-suppr" style="top:280px">
+  <h3 id="titre-suppr">Supprimer «&nbsp;Boucle du Bois de la Côte&nbsp;»&#8239;?</h3>
+  <p>L'itinéraire sera effacé du téléphone. Pour le garder ailleurs, exportez-le d'abord en GPX.</p>
+  <div class="dlg-boutons"><span role="button">Garder</span><span role="button">Supprimer</span></div>
+</div>
+<div class="indicateur" style="z-index:60"></div>
+</div>
+
+
+<!-- ========== ÉCRAN 6a : import refusé ========== -->
+<div class="cartouche"><b>6a. Import refusé</b><br>Après le choix du fichier dans le sélecteur du téléphone. Boîte native, un seul bouton. Rien n'est ajouté à la liste. Les quatre textes de refus sont sous l'écran.</div>
+<div class="ecran">
+
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="sol-6"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#sol-6)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+<div class="barre-etat"><span>10:10</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+<div class="importer geo"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M12 11v6M9 14h6"/></svg>Importer un GPX</div>
+<h1 class="geo">MES ITINÉRAIRES</h1>
+<div class="liste">
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 20 C20 14 40 26 74 18 V48 C50 56 20 44 -2 52 Z" fill="#A9B56A"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/></svg></div>
+    <div class="texte"><div class="nom">Boucle du Bois de la Côte</div><div class="chiffres"><b>25,1 km</b> · D+ 421 m · 1 h 35</div><div class="meta">Zone Nancy · créé le 3 nov.</div></div>
+    <div class="plus"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+</div>
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet"><span class="pastille"></span>Carte</div>
+  <div class="onglet actif"><span class="pastille"></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"></span>Zones</div>
+  <div class="onglet"><span class="pastille"></span>Réglages</div>
+</div>
+<div class="voile-natif"></div>
+<div class="dialogue" role="alertdialog" aria-labelledby="titre-refus" style="top:300px">
+  <h3 id="titre-refus">Import impossible</h3>
+  <p>Ce fichier n'est pas un GPX lisible.</p>
+  <div class="dlg-boutons"><span role="button">OK</span></div>
+</div>
+<div class="indicateur" style="z-index:60"></div>
+</div>
+
+<div class="cartouche"><b>Les quatre refus, et la lecture en cours</b><br>Même boîte, même titre « Import impossible », même bouton « OK ». Seule la phrase change.</div>
+<div class="variantes">
+  <div class="var-texte"><b>Fichier vide</b> (0 octet, ou seulement des espaces) : «&nbsp;Ce fichier est vide.&nbsp;»</div>
+  <div class="var-texte"><b>Illisible</b> (pas du XML, XML cassé, pas un GPX, entité externe, encodage inconnu) : «&nbsp;Ce fichier n'est pas un GPX lisible.&nbsp;»</div>
+  <div class="var-texte"><b>Sans tracé</b> (aucune trace <code>trk</code> ni route <code>rte</code> d'au moins 2 points ; un GPX de points isolés <code>wpt</code> seulement) : «&nbsp;Ce fichier GPX ne contient aucun tracé. RutaPulse lit les traces et les routes, pas les points isolés.&nbsp;»</div>
+  <div class="var-texte"><b>Plus de 20 Mo</b> : «&nbsp;Ce fichier pèse 34&nbsp;Mo. RutaPulse importe les GPX de 20&nbsp;Mo au plus.&nbsp;» (taille arrondie au Mo, format <code>zones.megabytes</code>).</div>
+  <div class="var-titre">Lecture en cours (si elle dure plus d'une demi-seconde)</div>
+  <div class="var-texte">Le bouton du haut devient inactif et dit ce qui se passe. Le reste de l'écran ne bouge pas.</div>
+  <div class="importer geo statique" style="display:inline-flex;color:var(--brun-2);border-style:dashed;border-color:var(--brun-2)" aria-busy="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 3a9 9 0 1 1-9 9"/></svg>Lecture du fichier…</div>
+</div>
+
+
+<!-- ========== ÉCRAN 6b : import réussi ========== -->
+<div class="cartouche"><b>6b. Import réussi : l'écran Infos du GPX s'ouvre</b><br>Comme après « Enregistrer ». Titre : le nom lu dans le fichier. Pas de bouton « Modifier » pour un GPX importé (décision du 3 nov.). « Démarrer le suivi » viendra ici en phase 8. Retour : la liste, le GPX en haut.</div>
+<div class="ecran">
+
+<div class="barre-etat"><span>10:12</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+<div class="i-barre">
+  <div class="retour geo" aria-label="Retour à Mes itinéraires"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Itinéraires</div>
+  <div class="icone-btn" aria-label="Plus d'actions : renommer, exporter en GPX, supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+</div>
+<div class="arche">
+<svg width="322" height="140" viewBox="-212 192 754 290" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <rect x="-400" y="-400" width="1200" height="1700" fill="#EEEBE4"/>
+  <path d="M-60 140 C60 120 120 160 170 150 C230 140 280 170 300 220 C310 280 290 340 250 360 C200 380 160 360 120 380 C80 395 30 380 -60 390 Z" fill="#D3E4C0"/>
+  <path d="M370 -60 L460 -60 L460 220 C410 190 370 120 370 -60 Z" fill="#D3E4C0"/>
+  <path d="M345 -60 C320 120 370 220 335 330 C305 420 320 520 300 600" fill="none" stroke="#A8CCDD" stroke-width="10"/>
+  <g fill="none" stroke-linecap="round"><path d="M-260 520 C-120 500 -60 497 -60 497 C80 482 150 468 235 470 S340 462 560 420" stroke="#FFFFFF" stroke-width="3.5"/></g>
+  <g fill="none" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M-120 450 L-40 330 L60 300 L110 220 L260 236 L300 330 L220 380 L262 460 L40 472 Z" stroke="#FFFFFF" stroke-width="8"/>
+    <path d="M-120 450 L-40 330 L60 300 L110 220 L260 236 L300 330 L220 380 L262 460 L40 472 Z" stroke="#C2007A" stroke-width="5"/>
+  </g>
+  <circle cx="-120" cy="450" r="16" fill="#146C2E" stroke="#fff" stroke-width="2"/>
+</svg>
+<div class="attribution">© OpenStreetMap <i>i</i></div>
+</div>
+<div class="contenu">
+  <div class="i-nom geo">Rando VTT Ludres</div>
+  <div class="i-sous">Zone Nancy · GPX importé le 3 nov. 2026</div>
+  <div class="grille">
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--moutarde)"><div class="v">42,1<u> km</u></div><div class="e">Distance</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--orange)"><div class="v">2<u> h </u>40</div><div class="e">Durée estimée</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--rouille)"><div class="v">665<u> m</u></div><div class="e">Montée (D+)</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--petrole)"><div class="v">665<u> m</u></div><div class="e">Descente (D−)</div></div>
+  </div>
+  <div class="bloc-titre"><span class="geo">PROFIL ET TERRAIN</span><span class="d">de 232 à 418 m</span></div>
+  <svg class="profil" width="358" height="122" viewBox="0 0 358 122" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Roboto,sans-serif" role="img" aria-label="Profil d'altitude, de 232 à 418 m">
+    <defs><clipPath id="sp-6b"><polygon points="0,84 0,66 20,52 40,30 60,18 80,34 100,50 120,40 140,12 160,6 180,26 200,48 220,60 240,42 260,22 280,14 300,30 320,50 340,58 358,70 358,84"/></clipPath></defs>
+    <g clip-path="url(#sp-6b)"><rect x="0" y="0" width="358" height="22" fill="#B5452A"/><rect x="0" y="22" width="358" height="21" fill="#E2652B"/><rect x="0" y="43" width="358" height="21" fill="#F0A830"/><rect x="0" y="64" width="358" height="20" fill="#F6CB7A"/></g>
+    <polyline fill="none" stroke="#3A1F0F" stroke-width="2.5" stroke-linejoin="round" points="0,66 20,52 40,30 60,18 80,34 100,50 120,40 140,12 160,6 180,26 200,48 220,60 240,42 260,22 280,14 300,30 320,50 340,58 358,70"/>
+    <line x1="0" y1="85" x2="358" y2="85" stroke="#3A1F0F" stroke-width="2"/>
+    <g><rect x="0" y="89" width="34" height="12" fill="#5A5A5A"/><rect x="34" y="89" width="96" height="12" fill="#7A4A1E"/><rect x="130" y="89" width="70" height="12" fill="#C62828"/><rect x="200" y="89" width="72" height="12" fill="#7A4A1E"/><rect x="272" y="89" width="56" height="12" fill="#C62828"/><rect x="328" y="89" width="30" height="12" fill="#5A5A5A"/></g>
+    <g font-size="13" font-weight="500" fill="#5A3A28"><text x="0" y="118">0</text><text x="85" y="118" text-anchor="middle">10</text><text x="170" y="118" text-anchor="middle">20</text><text x="255" y="118" text-anchor="middle">30</text><text x="358" y="118" text-anchor="end">42 km</text></g>
+  </svg>
+  <div class="i-legende"><span><i style="background:#5A5A5A"></i>Route 18 %</span><span><i style="background:#7A4A1E"></i>Piste 47 %</span><span><i style="background:#C62828"></i>Sentier 35 %</span></div>
+  <div class="difficulte"><b>Difficulté</b> : S1 (facile) sur 6 % ; S2 (moyen) sur 3 % ; <span class="t2">inconnue sur 91 %, la carte la donne rarement.</span></div>
+</div>
+<!-- Pas de rangée d'actions en phase 6 : ni « Modifier » (GPX importé), ni « Démarrer le suivi » (phase 8). -->
+<div class="indicateur fonce"></div>
+</div>
+
+
+<!-- ========== ÉCRAN 6c : GPX hors de vos zones (feuille) ========== -->
+<div class="cartouche"><b>6c. GPX hors de vos zones : la feuille de l'écran 52</b><br>Décision 11 : l'import est accepté. La feuille s'ouvre une seule fois, sur l'écran Infos du GPX qui vient d'être importé. Elle propose la zone du catalogue qui contient le tracé (ici Metz).</div>
+<div class="ecran">
+
+<div class="barre-etat"><span>10:20</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="18" height="13" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M2 6.5a15 15 0 0 1 20 0"/><path d="M5.5 10a10 10 0 0 1 13 0"/><path d="M9 13.5a5 5 0 0 1 6 0"/><circle cx="12" cy="16.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+<div class="i-barre">
+  <div class="retour geo"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Itinéraires</div>
+  <div class="icone-btn"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+</div>
+<div class="arche">
+<svg width="322" height="140" viewBox="-212 192 754 290" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <rect x="-400" y="-400" width="1200" height="1700" fill="#EEEBE4"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-150 430 C-90 380 -40 410 20 360 S120 300 180 320 S300 250 360 280 S440 230 480 230" stroke="#FFFFFF" stroke-width="8"/>
+    <path d="M-150 430 C-90 380 -40 410 20 360 S120 300 180 320 S300 250 360 280 S440 230 480 230" stroke="#C2007A" stroke-width="5"/>
+  </g>
+  <circle cx="-150" cy="430" r="16" fill="#146C2E" stroke="#fff" stroke-width="2"/>
+  <circle cx="480" cy="230" r="16" fill="#111" stroke="#fff" stroke-width="2"/>
+</svg>
+</div>
+<div class="contenu">
+  <div class="i-nom geo">Traversée Metz – Gorze</div>
+  <div class="i-sous">Hors de vos zones · GPX importé le 3 nov. 2026</div>
+</div>
+
+<div class="feuille-erreur" role="alertdialog" aria-labelledby="titre-hors-zone">
+  <!-- Illustration de v1/52 : vélo, vététiste qui se gratte le casque, barrière, sol gris hors de la zone -->
+  <svg class="illustration" width="358" height="106" viewBox="0 0 358 106" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <rect x="20" y="100" width="232" height="6" rx="3" fill="#A9B56A"/>
+    <rect x="252" y="100" width="86" height="6" rx="3" fill="#CFC8BB"/>
+    <path d="M252 58 V106" stroke="#3A1F0F" stroke-width="2" stroke-dasharray="5 4"/>
+    <g transform="translate(150 54) scale(.6)">
+      <g transform="translate(-80 49)">
+        <g transform="translate(-42 -2)"><circle r="27" fill="none" stroke="#3A1F0F" stroke-width="6"/><g stroke="#5A3A28" stroke-width="2"><line x1="-24" x2="24"/><line x1="-12" y1="-20.8" x2="12" y2="20.8"/><line x1="-12" y1="20.8" x2="12" y2="-20.8"/></g><circle r="3.5" fill="#3A1F0F"/></g>
+        <g transform="translate(62 -2)"><circle r="27" fill="none" stroke="#3A1F0F" stroke-width="6"/><g stroke="#5A3A28" stroke-width="2"><line x1="-24" x2="24"/><line x1="-12" y1="-20.8" x2="12" y2="20.8"/><line x1="-12" y1="20.8" x2="12" y2="-20.8"/></g><circle r="3.5" fill="#3A1F0F"/></g>
+        <path d="M-42 -2 L0 0 L-10 -42 Z M-10 -42 L48 -46 L51 -34 L0 0" fill="none" stroke="#2D6A66" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M51 -34 L62 -2" stroke="#5A3A28" stroke-width="5" stroke-linecap="round"/>
+        <path d="M-10 -42 L-12 -51" stroke="#3A1F0F" stroke-width="4"/>
+        <path d="M-22 -53 L-3 -53" stroke="#3A1F0F" stroke-width="5" stroke-linecap="round"/>
+        <path d="M48 -46 L50 -55 L43 -57" fill="none" stroke="#3A1F0F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle r="7" fill="#FBF1DA" stroke="#3A1F0F" stroke-width="2.5"/>
+        <g transform="rotate(100)"><line x2="13" stroke="#3A1F0F" stroke-width="4" stroke-linecap="round"/></g>
+      </g>
+      <g>
+        <rect x="44" y="30" width="5" height="47" fill="#3A1F0F"/>
+        <rect x="112" y="30" width="5" height="47" fill="#3A1F0F"/>
+        <clipPath id="planche-6c"><rect x="36" y="28" width="88" height="17" rx="3"/></clipPath>
+        <g clip-path="url(#planche-6c)">
+          <rect x="36" y="28" width="88" height="17" fill="#FBF1DA"/>
+          <path d="M40 28 h12 l-10 17 h-12 Z M64 28 h12 l-10 17 h-12 Z M88 28 h12 l-10 17 h-12 Z M112 28 h12 l-10 17 h-12 Z M136 28 h12 l-10 17 h-12 Z" fill="#B5452A"/>
+        </g>
+        <rect x="36" y="28" width="88" height="17" rx="3" fill="none" stroke="#3A1F0F" stroke-width="2.5"/>
+      </g>
+      <g>
+        <g transform="rotate(8)"><line y2="36" stroke="#5A3A28" stroke-width="10" stroke-linecap="round"/><g transform="translate(0 36) rotate(-4)"><line y2="36" stroke="#B97A52" stroke-width="8" stroke-linecap="round"/><ellipse cx="4" cy="37" rx="8" ry="4.5" fill="#5A3A28"/></g></g>
+        <g>
+          <g transform="translate(0 -34) rotate(10)"><line y2="20" stroke="#B97A52" stroke-width="7" stroke-linecap="round"/><g transform="translate(0 20) rotate(-12)"><line y2="18" stroke="#B97A52" stroke-width="6" stroke-linecap="round"/><circle cy="19" r="4.5" fill="#5A3A28"/></g><circle cy="2" r="6.5" fill="#8E3520"/></g>
+          <rect x="-9" y="-40" width="18" height="44" rx="9" fill="#B5452A"/>
+          <rect x="-9" y="-25" width="18" height="5" fill="#F0A830"/>
+          <g transform="translate(0 -40) rotate(-6)">
+            <circle cy="-12" r="12" fill="#D9956A"/>
+            <path d="M-13.5 -13 A13.5 13.5 0 0 1 13.5 -13 Z" fill="#F0A830"/>
+            <path d="M12 -14 L21 -12 L12.5 -10 Z" fill="#E2652B"/>
+            <circle cx="6.5" cy="-9.5" r="1.8" fill="#3A1F0F"/>
+            <path d="M4 -4.2 l2 -1.3 l2 1.3 l2 -1.3" fill="none" stroke="#3A1F0F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </g>
+          <g transform="translate(0 -34) rotate(-126.5)"><line y2="20" stroke="#D9956A" stroke-width="7" stroke-linecap="round"/><g transform="translate(0 20) rotate(-80.2)"><line y2="18" stroke="#D9956A" stroke-width="6" stroke-linecap="round"/><circle cy="19" r="4.5" fill="#3A1F0F"/></g><circle cy="2" r="6.5" fill="#B5452A"/></g>
+        </g>
+        <g transform="rotate(-6)"><line y2="36" stroke="#3A1F0F" stroke-width="10" stroke-linecap="round"/><g transform="translate(0 36) rotate(8)"><line y2="36" stroke="#D9956A" stroke-width="8" stroke-linecap="round"/><ellipse cx="4" cy="37" rx="8" ry="4.5" fill="#3A1F0F"/></g></g>
+        <path d="M22 -80 a6 6 0 1 1 6 6 v5" fill="none" stroke="#3A1F0F" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="28" cy="-62" r="2" fill="#3A1F0F"/>
+      </g>
+    </g>
+  </svg>
+  <h2 id="titre-hors-zone" class="geo">GPX hors de vos zones</h2>
+  <p>L'itinéraire est importé, avec sa distance. Le D+, le terrain et la difficulté sont indisponibles hors zone. Ce tracé est dans la <b>zone Metz</b>, pas encore sur le téléphone.</p>
+  <div class="principal geo" role="button"><span class="soleil"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Télécharger Metz · 95 Mo</div>
+  <div class="tertiaire" role="button">Plus tard</div>
+</div>
+<div class="indicateur fonce"></div>
+</div>
+
+<div class="cartouche"><b>Variantes de la feuille « GPX hors de vos zones »</b><br>Même illustration, même titre, même première phrase. Seule la fin change, avec les boutons.</div>
+<div class="variantes">
+  <div class="var-texte"><b>A. Le tracé n'est dans aucune zone du catalogue</b> : «&nbsp;L'itinéraire est importé, avec sa distance. Le D+, le terrain et la difficulté sont indisponibles hors zone. Ce tracé n'est dans aucune zone de RutaPulse pour l'instant.&nbsp;» Un seul bouton, secondaire : «&nbsp;Fermer&nbsp;».</div>
+  <div class="var-texte"><b>B. Catalogue injoignable</b> (mode avion, pas de réseau) : «&nbsp;L'itinéraire est importé, avec sa distance. Le D+, le terrain et la difficulté sont indisponibles hors zone. Sans réseau, RutaPulse ne peut pas chercher la zone de ce tracé.&nbsp;» Bouton secondaire «&nbsp;Voir les zones&nbsp;», puis le lien «&nbsp;Plus tard&nbsp;».</div>
+  <div class="var-texte"><b>« Télécharger Metz · 95 Mo »</b> lance le téléchargement, avec la règle du Wi-Fi (décision 10), puis ouvre l'onglet Zones : la progression et le bandeau «&nbsp;Pas de Wi-Fi&nbsp;» y sont déjà. <b>« Plus tard »</b> ferme la feuille et laisse l'écran Infos (6d).</div>
+</div>
+
+
+<!-- ========== ÉCRAN 6d : Infos d'un GPX hors zone ========== -->
+<div class="cartouche"><b>6d. Infos d'un GPX hors de vos zones</b><br>Après « Plus tard », et à chaque ouverture tant que la zone manque. Distance et durée seulement. À la place des altitudes et du profil : une carte « Hors de vos zones », qui dit ce qui manque et où trouver la zone.</div>
+<div class="ecran">
+
+<div class="barre-etat"><span>10:21</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+<div class="i-barre">
+  <div class="retour geo" aria-label="Retour à Mes itinéraires"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Itinéraires</div>
+  <div class="icone-btn" aria-label="Plus d'actions : renommer, exporter en GPX, supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+</div>
+<!-- Sans zone, pas de fond de carte : le tracé seul sur carte.fond -->
+<div class="arche" aria-label="Tracé de l'itinéraire, sans fond de carte">
+<svg width="322" height="140" viewBox="-212 192 754 290" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <rect x="-400" y="-400" width="1200" height="1700" fill="#EEEBE4"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-150 430 C-90 380 -40 410 20 360 S120 300 180 320 S300 250 360 280 S440 230 480 230" stroke="#FFFFFF" stroke-width="8"/>
+    <path d="M-150 430 C-90 380 -40 410 20 360 S120 300 180 320 S300 250 360 280 S440 230 480 230" stroke="#C2007A" stroke-width="5"/>
+  </g>
+  <circle cx="-150" cy="430" r="16" fill="#146C2E" stroke="#fff" stroke-width="2"/>
+  <circle cx="480" cy="230" r="16" fill="#111" stroke="#fff" stroke-width="2"/>
+</svg>
+</div>
+<div class="contenu">
+  <div class="i-nom geo">Traversée Metz – Gorze</div>
+  <div class="i-sous">Hors de vos zones · GPX importé le 3 nov. 2026</div>
+  <div class="grille">
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--moutarde)"><div class="v">18,2<u> km</u></div><div class="e">Distance</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--orange)"><div class="v">1<u> h </u>49</div><div class="e">Durée estimée</div></div>
+  </div>
+  <div class="manque" role="note">
+    <div class="haut">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" stroke-dasharray="3.2 2.6"/><path d="M12 7v6"/><circle cx="12" cy="16.8" r="1.3" fill="#3A1F0F" stroke="none"/></svg>
+      <div><b>Hors de vos zones&nbsp;:</b> D+, profil, terrain et difficulté indisponibles. Ce tracé est dans la zone Metz.</div>
+    </div>
+    <div class="btn geo" role="button"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Voir les zones</div>
+  </div>
+</div>
+<div class="indicateur fonce"></div>
+</div>
+
+
+<!-- ========== ÉCRAN 7a : liste avec une zone supprimée et un GPX hors zone ========== -->
+<div class="cartouche"><b>7a. Liste : zone supprimée (C8) et GPX hors zone</b><br>La zone Gérardmer a été supprimée de l'écran Zones. Son itinéraire reste, avec son médaillon (le tracé est gardé) et ses derniers chiffres. Sur la 3e ligne, le problème remplace l'origine. Le menu « ⋮ » garde ses trois actions.</div>
+<div class="ecran">
+
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="sol-7"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#sol-7)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+<div class="barre-etat"><span>10:25</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+<div class="importer geo" role="button" aria-label="Importer un fichier GPX"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M12 11v6M9 14h6"/></svg>Importer un GPX</div>
+<h1 class="geo">MES ITINÉRAIRES</h1>
+
+<div class="liste">
+  <div class="ligne" aria-label="Traversée Metz – Gorze, 18,2 km, montée indisponible, 1 h 49, hors de vos zones">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M8 58 C16 46 24 50 32 40 S46 30 52 32 S62 20 66 14" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linecap="round"/><path d="M8 58 C16 46 24 50 32 40 S46 30 52 32 S62 20 66 14" fill="none" stroke="#C2007A" stroke-width="4" stroke-linecap="round"/><circle cx="8" cy="58" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/><circle cx="66" cy="14" r="5" fill="#3A1F0F" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Traversée Metz – Gorze</div>
+      <div class="chiffres"><b>18,2 km</b> · D+ — · 1 h 49</div>
+      <div class="meta signal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" stroke-dasharray="3.2 2.6"/><path d="M12 7v6"/><circle cx="12" cy="16.8" r="1.3" fill="#3A1F0F" stroke="none"/></svg>Hors de vos zones</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Traversée Metz – Gorze"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 20 C20 14 40 26 74 18 V48 C50 56 20 44 -2 52 Z" fill="#A9B56A"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linejoin="round"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/><circle cx="40" cy="60" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Boucle du Bois de la Côte</div>
+      <div class="chiffres"><b>25,1 km</b> · D+ 421 m · 1 h 35</div>
+      <div class="meta">Zone Nancy · créé le 3 nov.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Boucle du Bois de la Côte"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne" aria-label="Tour du lac de Longemer, 19,6 km, montée 548 m, 1 h 40, zone Gérardmer supprimée">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 -2 H74 V22 C50 30 24 14 -2 24 Z" fill="#A9B56A"/><ellipse cx="36" cy="40" rx="16" ry="9" fill="#A8CCDD" stroke="#2D6A66" stroke-width="2"/><path d="M14 44 C12 30 24 24 36 24 S60 28 60 40 S48 58 36 58 S16 56 14 44 Z" fill="none" stroke="#FBF1DA" stroke-width="7"/><path d="M14 44 C12 30 24 24 36 24 S60 28 60 40 S48 58 36 58 S16 56 14 44 Z" fill="none" stroke="#C2007A" stroke-width="4"/><circle cx="14" cy="44" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Tour du lac de Longemer</div>
+      <div class="chiffres"><b>19,6 km</b> · D+ 548 m · 1 h 40</div>
+      <div class="meta signal"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" stroke-dasharray="3.2 2.6"/><path d="M12 7v6"/><circle cx="12" cy="16.8" r="1.3" fill="#3A1F0F" stroke="none"/></svg>Zone Gérardmer supprimée</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Tour du lac de Longemer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 -2 H40 C34 20 50 40 30 74 H-2 Z" fill="#A9B56A"/><path d="M58 -2 C50 24 66 44 56 74" fill="none" stroke="#2D6A66" stroke-width="5"/><path d="M24 58 C14 50 8 40 10 28 C12 16 24 10 36 10 C48 10 52 22 50 34 C48 46 52 54 44 60 C38 64 30 63 24 58 Z" fill="none" stroke="#FBF1DA" stroke-width="7"/><path d="M24 58 C14 50 8 40 10 28 C12 16 24 10 36 10 C48 10 52 22 50 34 C48 46 52 54 44 60 C38 64 30 63 24 58 Z" fill="none" stroke="#C2007A" stroke-width="4"/><circle cx="24" cy="58" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Tour de la forêt de Haye</div>
+      <div class="chiffres"><b>31,4 km</b> · D+ 512 m · 2 h 05</div>
+      <div class="meta">Zone Nancy · modifié le 28 oct.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Tour de la forêt de Haye"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M20 -2 H74 V40 C50 30 30 30 20 -2 Z" fill="#A9B56A"/><path d="M8 50 L20 30 L34 26 L40 12 L58 16 L62 34 L50 44 L56 60 L30 62 Z" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linejoin="round"/><path d="M8 50 L20 30 L34 26 L40 12 L58 16 L62 34 L50 44 L56 60 L30 62 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/><circle cx="8" cy="50" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Rando VTT Ludres</div>
+      <div class="chiffres"><b>42,1 km</b> · D+ 665 m · 2 h 40</div>
+      <div class="meta">Zone Nancy · GPX importé le 19 oct.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Rando VTT Ludres"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ========== ÉCRAN 7b : Infos, zone supprimée ========== -->
+<div class="cartouche"><b>7b. Infos d'un itinéraire dont la zone est supprimée</b><br>Le tracé seul, sans fond de carte. Les chiffres du dernier calcul, datés. À la place du profil : ce qui manque, et le chemin pour le retrouver. « Modifier » n'apparaît pas : la création a besoin de la zone. Renommer, exporter et supprimer restent dans le « ⋮ ».</div>
+<div class="ecran">
+
+<div class="barre-etat"><span>10:26</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+<div class="i-barre">
+  <div class="retour geo" aria-label="Retour à Mes itinéraires"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Itinéraires</div>
+  <div class="icone-btn" aria-label="Plus d'actions : renommer, exporter en GPX, supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+</div>
+<div class="arche" aria-label="Tracé de l'itinéraire, sans fond de carte">
+<svg width="322" height="140" viewBox="-212 192 754 290" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <rect x="-400" y="-400" width="1200" height="1700" fill="#EEEBE4"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-60 400 C-80 300 20 230 150 226 S360 250 360 330 S260 460 150 462 S-50 450 -60 400 Z" stroke="#FFFFFF" stroke-width="8"/>
+    <path d="M-60 400 C-80 300 20 230 150 226 S360 250 360 330 S260 460 150 462 S-50 450 -60 400 Z" stroke="#C2007A" stroke-width="5"/>
+  </g>
+  <circle cx="-60" cy="400" r="16" fill="#146C2E" stroke="#fff" stroke-width="2"/>
+</svg>
+</div>
+<div class="contenu">
+  <div class="i-nom geo">Tour du lac de Longemer</div>
+  <div class="i-sous">Zone Gérardmer supprimée · créé le 8 oct. 2026</div>
+  <div class="grille">
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--moutarde)"><div class="v">19,6<u> km</u></div><div class="e">Distance</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--orange)"><div class="v">1<u> h </u>40</div><div class="e">Durée estimée</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--rouille)"><div class="v">548<u> m</u></div><div class="e">Montée (D+)</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--petrole)"><div class="v">548<u> m</u></div><div class="e">Descente (D−)</div></div>
+  </div>
+  <div class="dernier-calcul">Chiffres du dernier calcul, le 8 oct.</div>
+  <div class="manque" role="note">
+    <div class="haut">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" stroke-dasharray="3.2 2.6"/><path d="M12 7v6"/><circle cx="12" cy="16.8" r="1.3" fill="#3A1F0F" stroke="none"/></svg>
+      <div><b>Zone Gérardmer supprimée&nbsp;:</b> carte, profil, terrain et difficulté indisponibles. Téléchargez la zone à nouveau pour les retrouver et pour modifier l'itinéraire.</div>
+    </div>
+    <div class="btn geo" role="button"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Voir les zones</div>
+  </div>
+</div>
+<div class="indicateur fonce"></div>
+</div>
+
+
+<!-- ========== ÉCRAN 8a : Infos après « Enregistrer » ========== -->
+<div class="cartouche"><b>8a. Après « Enregistrer » : le nom par défaut en titre de l'écran Infos</b><br>Même écran que v1/20. Le titre est le nom gardé : la date seule, « Itinéraire du 3 nov. » (la commune viendra en V2). La ligne du dessous dit « créé le » : la preuve que c'est enregistré. Pas de message en plus. « Modifier » reste ; « Démarrer le suivi » viendra à sa droite en phase 8.</div>
+<div class="ecran">
+
+<div class="barre-etat"><span>09:58</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+<div class="i-barre">
+  <div class="retour geo" aria-label="Retour à Mes itinéraires"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>Itinéraires</div>
+  <div class="icone-btn" aria-label="Plus d'actions : renommer, exporter en GPX, supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+</div>
+<div class="arche">
+<svg width="322" height="140" viewBox="-212 192 754 290" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <rect x="-400" y="-400" width="1200" height="1700" fill="#EEEBE4"/>
+  <path d="M-60 140 C60 120 120 160 170 150 C230 140 280 170 300 220 C310 280 290 340 250 360 C200 380 160 360 120 380 C80 395 30 380 -60 390 Z" fill="#D3E4C0"/>
+  <path d="M-200 150 C-150 120 -100 180 -60 140 L-60 390 C-120 400 -170 380 -200 420 Z" fill="#D3E4C0"/>
+  <path d="M370 -60 L460 -60 L460 220 C410 190 370 120 370 -60 Z" fill="#D3E4C0"/>
+  <path d="M90 486 L226 472 L232 562 L96 576 Z" fill="#E3DCD0"/>
+  <path d="M345 -60 C320 120 370 220 335 330 C305 420 320 520 300 600" fill="none" stroke="#A8CCDD" stroke-width="10"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M-260 520 C-120 500 -60 497 -60 497 C80 482 150 468 235 470 S340 462 560 420" stroke="#FFFFFF" stroke-width="3.5"/>
+    <path d="M138 -60 C148 120 128 260 150 400 S160 640 190 900" stroke="#FFFFFF" stroke-width="3"/>
+  </g>
+  <g fill="none" stroke="#7A4A1E" stroke-width="1.5" stroke-linecap="round">
+    <path d="M190 215 C200 170 215 120 210 60"/><path d="M250 300 C285 292 305 280 322 268"/><path d="M60 330 C40 360 20 400 -60 440"/>
+  </g>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C150 220 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="8"/>
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C150 220 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#C2007A" stroke-width="5"/>
+  </g>
+  <circle cx="175" cy="470" r="16" fill="#146C2E" stroke="#fff" stroke-width="2"/>
+  <circle cx="152" cy="440" r="16" fill="#111" stroke="#fff" stroke-width="2"/>
+</svg>
+<div class="attribution" aria-label="Attributions de la carte : OpenStreetMap, OpenMapTiles, Mapterhorn, IGN">© OpenStreetMap <i>i</i></div>
+</div>
+<div class="contenu">
+  <div class="i-nom geo">Itinéraire du 3 nov.</div>
+  <div class="i-sous">Zone Nancy · créé le 3 nov. 2026</div>
+  <div class="grille">
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--moutarde)"><div class="v">25,1<u> km</u></div><div class="e">Distance</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--orange)"><div class="v">1<u> h </u>35</div><div class="e">Durée estimée</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--rouille)"><div class="v">421<u> m</u></div><div class="e">Montée (D+)</div></div>
+    <div class="case" style="box-shadow:inset 9px 0 0 var(--petrole)"><div class="v">421<u> m</u></div><div class="e">Descente (D−)</div></div>
+  </div>
+  <div class="bloc-titre"><span class="geo">PROFIL ET TERRAIN</span><span class="d">de 245 à 390 m</span></div>
+  <svg class="profil" width="358" height="122" viewBox="0 0 358 122" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Roboto,sans-serif" role="img" aria-label="Profil d'altitude, de 245 à 390 m">
+    <defs><clipPath id="sp-8a"><polygon points="0,84 0,72.3 14.3,60.7 28.6,42 43,23.3 57.3,11.7 71.6,28 85.9,46.7 100.2,32.7 114.6,14 128.9,4.7 143.2,21 157.5,42 171.8,56 186.2,39.7 200.5,21 214.8,7 229.1,23.3 243.4,46.7 257.8,60.7 272.1,44.3 286.4,28 300.7,20.5 315,37.3 329.4,53.7 343.7,49 358,72.3 358,84"/></clipPath></defs>
+    <g clip-path="url(#sp-8a)"><rect x="0" y="0" width="358" height="22" fill="#B5452A"/><rect x="0" y="22" width="358" height="21" fill="#E2652B"/><rect x="0" y="43" width="358" height="21" fill="#F0A830"/><rect x="0" y="64" width="358" height="20" fill="#F6CB7A"/></g>
+    <polyline fill="none" stroke="#3A1F0F" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" points="0,72.3 14.3,60.7 28.6,42 43,23.3 57.3,11.7 71.6,28 85.9,46.7 100.2,32.7 114.6,14 128.9,4.7 143.2,21 157.5,42 171.8,56 186.2,39.7 200.5,21 214.8,7 229.1,23.3 243.4,46.7 257.8,60.7 272.1,44.3 286.4,28 300.7,20.5 315,37.3 329.4,53.7 343.7,49 358,72.3"/>
+    <line x1="0" y1="85" x2="358" y2="85" stroke="#3A1F0F" stroke-width="2"/>
+    <g><rect x="0" y="89" width="14.3" height="12" fill="#5A5A5A"/><rect x="14.3" y="89" width="71.6" height="12" fill="#7A4A1E"/><rect x="85.9" y="89" width="43" height="12" fill="#C62828"/><rect x="128.9" y="89" width="57.3" height="12" fill="#7A4A1E"/><rect x="186.2" y="89" width="57.2" height="12" fill="#C62828"/><rect x="243.4" y="89" width="28.7" height="12" fill="#7A4A1E"/><rect x="272.1" y="89" width="28.6" height="12" fill="#C62828"/><rect x="300.7" y="89" width="28.7" height="12" fill="#7A4A1E"/><rect x="329.4" y="89" width="28.6" height="12" fill="#5A5A5A"/></g>
+    <g font-size="13" font-weight="500" fill="#5A3A28"><text x="0" y="118">0</text><text x="71.6" y="118" text-anchor="middle">5</text><text x="143.2" y="118" text-anchor="middle">10</text><text x="214.8" y="118" text-anchor="middle">15</text><text x="286.4" y="118" text-anchor="middle">20</text><text x="358" y="118" text-anchor="end">25 km</text></g>
+  </svg>
+  <div class="i-legende"><span><i style="background:#5A5A5A"></i>Route 12 %</span><span><i style="background:#7A4A1E"></i>Piste 52 %</span><span><i style="background:#C62828"></i>Sentier 36 %</span></div>
+  <div class="difficulte"><b>Difficulté</b> : S1 (facile) sur 4 % ; <span class="t2">inconnue sur 96 %, la carte la donne rarement.</span></div>
+</div>
+<div class="actions geo">
+  <div class="secondaire" role="button" aria-label="Modifier l'itinéraire"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>Modifier</div>
+</div>
+<div class="indicateur fonce"></div>
+</div>
+
+
+<!-- ========== 8b : barre du haut de la création ========== -->
+<div class="cartouche"><b>8b. « Enregistrer » dans la création (barre du haut de v1/10)</b><br>Le bouton existe déjà sur v1/10, v1/11 et v1/52 ; rien n'y change. Voici ses trois états, et le mode « Modifier ».</div>
+<div class="variantes">
+  <div class="var-titre">A. Inactif : départ seul, calcul en cours (« … ») ou feuille d'erreur ouverte</div>
+  <div class="barre-crea"><div class="contenu-crea">
+    <div class="icone-btn" aria-label="Fermer sans enregistrer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    <div class="titre geo">Nouvel itinéraire</div>
+    <div class="enregistrer inactif geo" role="button" aria-disabled="true" aria-label="Enregistrer : posez d'abord le départ et l'arrivée">Enregistrer</div>
+  </div><div class="rayures"></div></div>
+
+  <div class="var-titre">B. Actif : au moins départ et arrivée, chiffres connus (v1/10)</div>
+  <div class="barre-crea"><div class="contenu-crea">
+    <div class="icone-btn" aria-label="Fermer sans enregistrer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    <div class="titre geo">Nouvel itinéraire</div>
+    <div class="enregistrer geo" role="button" aria-label="Enregistrer l'itinéraire">Enregistrer</div>
+  </div><div class="rayures"></div></div>
+  <div class="var-texte">Toucher « Enregistrer » garde l'itinéraire sous « Itinéraire du 3 nov. », ferme la création et ouvre son écran Infos (8a).</div>
+
+  <div class="var-titre">C. Mode « Modifier » : ouvert depuis l'écran Infos d'un itinéraire gardé</div>
+  <div class="barre-crea"><div class="contenu-crea">
+    <div class="icone-btn" aria-label="Fermer sans enregistrer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    <div class="titre geo">Boucle du Bois de la Côte</div>
+    <div class="enregistrer geo" role="button" aria-label="Enregistrer les changements de Boucle du Bois de la Côte">Enregistrer</div>
+  </div><div class="rayures"></div></div>
+  <div class="var-texte">Le titre est le nom de l'itinéraire (coupé par « … » s'il est long). « Enregistrer » remplace l'ancienne version, garde le nom, et revient à l'écran Infos. Inactif tant que rien n'a changé.</div>
+
+  <div class="var-titre">D. Fermer sans enregistrer, en mode « Modifier », après un changement</div>
+  <div class="dialogue statique" role="alertdialog" style="margin:0 auto">
+    <h3>Abandonner les changements&#8239;?</h3>
+    <p>L'itinéraire gardé ne change pas.</p>
+    <div class="dlg-boutons"><span role="button">Continuer</span><span role="button">Abandonner</span></div>
+  </div>
+  <div class="var-texte" style="margin-top:8px">Sans changement, la croix ferme tout de suite. En création neuve, la boîte actuelle reste (« Abandonner cet itinéraire ? », <code>route.abandonTitle</code>).</div>
+</div>
+
+
+<!-- ========== NOTE ========== -->
+<div class="cartouche"><b>Note : Mes itinéraires et GPX (phase 6, T1)</b><br>3 novembre 2026. Designer. Questions pour Émilien en fin de note.</div>
+<div class="note">
+
+<h2 class="geo">TEXTES EXACTS</h2>
+<p>Clés proposées pour <code>fr.ts</code> ; le développeur peut les renommer. « Existant » : déjà dans <code>fr.ts</code>, réutilisé tel quel.</p>
+<h3>Liste</h3>
+<ul>
+  <li><code>routes.title</code> : <q>Mes itinéraires</q> (affiché en capitales).</li>
+  <li><code>routes.import</code> : <q>Importer un GPX</q> ; libellé d'accessibilité <q>Importer un fichier GPX</q> ; en cours : <q>Lecture du fichier…</q></li>
+  <li><code>routes.figures</code> : <q>{distance} · D+ {montée} · {durée}</q>, formats existants (<code>format.km</code>, <code>format.m</code>, <code>format.hoursMinutes</code>, <code>format.min</code>). D+ inconnu : <q>—</q> (<code>route.noFigure</code>, existant).</li>
+  <li><code>routes.meta</code> : <q>Zone {zone} · {origine}</q>. Origine : <q>créé le {date}</q>, <q>modifié le {date}</q> (après « Modifier » puis « Enregistrer »), <q>GPX importé le {date}</q>.</li>
+  <li>Date : <q>3 nov.</q> (format <code>zones.date</code>, existant) ; avec l'année si elle n'est pas l'année en cours : <q>3 nov. 2025</q>. Sur l'écran Infos, toujours avec l'année (comme v1/20).</li>
+  <li>Problème, à la place de la ligne zone et origine : <q>Hors de vos zones</q> ; <q>Zone {zone} supprimée</q>.</li>
+  <li><code>routes.menuLabel</code> : <q>Actions de {nom}</q>. Menu : <q>Renommer</q>, <q>Exporter en GPX</q>, <q>Supprimer</q>.</li>
+  <li>Ligne entière, pour le lecteur d'écran : <q>{nom}, {distance}, montée {montée}, {durée}, {zone et origine}</q>.</li>
+</ul>
+<h3>Liste vide</h3>
+<ul>
+  <li><q>Pas encore d'itinéraire</q> ; <q>Tracez une sortie sur la carte, puis touchez « Enregistrer ». Vous pouvez aussi importer un fichier GPX.</q> ; bouton <q>Créer un itinéraire</q>.</li>
+</ul>
+<h3>Nom par défaut</h3>
+<ul>
+  <li><code>routes.defaultName</code> : <q>Itinéraire du {date}</q>, date du jour de l'enregistrement, sans l'année : <q>Itinéraire du 3 nov.</q> Le nom ne change plus ensuite, même après « Modifier ».</li>
+  <li>GPX importé : le nom du fichier GPX (<code>metadata/name</code>, sinon le nom de la première trace ou route), sinon le nom du fichier sans <q>.gpx</q>. Espaces retirés au début et à la fin, coupé à 60 caractères.</li>
+</ul>
+<h3>Renommer</h3>
+<ul>
+  <li>Titre <q>Renommer l'itinéraire</q> ; étiquette du champ <q>Nom de l'itinéraire</q> ; croix <q>Effacer le nom</q> ; compteur <q>{n} / 60</q>.</li>
+  <li>Nom vide ou fait d'espaces : <q>Donnez un nom à l'itinéraire.</q> en <code>hn.danger</code>, bord du champ en <code>hn.danger</code>, « Renommer » inactif.</li>
+  <li>60 caractères atteints : <q>60 caractères au plus.</q> en <code>hn.brun-2</code>. Le champ n'accepte pas plus (un nom collé est coupé à 60).</li>
+  <li>Boutons <q>Annuler</q> et <q>Renommer</q>. La touche « OK » du clavier fait « Renommer ».</li>
+</ul>
+<h3>Supprimer</h3>
+<ul>
+  <li><q>Supprimer « {nom} » ?</q> ; <q>L'itinéraire sera effacé du téléphone. Pour le garder ailleurs, exportez-le d'abord en GPX.</q> ; boutons <q>Garder</q> (existant, <code>zones.deleteCancel</code>) et <q>Supprimer</q>. Depuis l'écran Infos : après « Supprimer », retour à la liste.</li>
+</ul>
+<h3>Export</h3>
+<ul>
+  <li>Feuille de partage du système, sans texte à nous. Nom du fichier : <q>{nom}.gpx</q>, les caractères <code>/ \ : * ? " &lt; &gt; |</code> remplacés par <q>-</q>.</li>
+  <li>Échec d'écriture : <q>Export impossible</q> ; <q>Le fichier GPX n'a pas pu être écrit. Réessayez.</q> ; <q>OK</q>.</li>
+</ul>
+<h3>Import</h3>
+<ul>
+  <li>Refus : titre <q>Import impossible</q>, bouton <q>OK</q> ; phrases sous l'écran 6a.</li>
+  <li>Réussi, dans une zone : pas de message ; l'écran Infos s'ouvre. Lecteur d'écran : <q>GPX importé : {nom}.</q></li>
+  <li>Hors de vos zones (feuille) : titre <q>GPX hors de vos zones</q> ; <q>L'itinéraire est importé, avec sa distance. Le D+, le terrain et la difficulté sont indisponibles hors zone.</q> puis, selon le cas : <q>Ce tracé est dans la zone {zone}, pas encore sur le téléphone.</q> / <q>Ce tracé n'est dans aucune zone de RutaPulse pour l'instant.</q> / <q>Sans réseau, RutaPulse ne peut pas chercher la zone de ce tracé.</q> Boutons : <q>Télécharger {zone} · {taille}</q>, <q>Voir les zones</q>, <q>Plus tard</q>, <q>Fermer</q>.</li>
+</ul>
+<h3>Écran Infos</h3>
+<ul>
+  <li>Titre : le nom gardé. Sous le titre : <q>Zone {zone} · {origine}</q> avec l'année ; ou <q>Hors de vos zones · GPX importé le {date}</q> ; ou <q>Zone {zone} supprimée · {origine}</q>.</li>
+  <li>Hors zone : <q>Hors de vos zones : D+, profil, terrain et difficulté indisponibles.</q> puis <q>Ce tracé est dans la zone {zone}.</q> (ou la phrase « aucune zone ») ; bouton <q>Voir les zones</q>.</li>
+  <li>Zone supprimée : <q>Zone {zone} supprimée : carte, profil, terrain et difficulté indisponibles. Téléchargez la zone à nouveau pour les retrouver et pour modifier l'itinéraire.</q> ; bouton <q>Voir les zones</q> ; sous les chiffres : <q>Chiffres du dernier calcul, le {date}.</q></li>
+  <li>Après « Enregistrer », lecteur d'écran : <q>Itinéraire enregistré : {nom}.</q></li>
+</ul>
+<h3>Création</h3>
+<ul>
+  <li>« Enregistrer » : libellé d'accessibilité <q>Enregistrer l'itinéraire</q> ; inactif : <q>Enregistrer : posez d'abord le départ et l'arrivée</q>.</li>
+  <li>Mode « Modifier » : titre = nom ; fermeture après un changement : <q>Abandonner les changements ?</q> ; <q>L'itinéraire gardé ne change pas.</q> ; <q>Continuer</q> (existant) et <q>Abandonner</q> (existant).</li>
+</ul>
+
+<h2 class="geo">RÈGLES D'AFFICHAGE</h2>
+<ul>
+  <li><b>Ordre</b> : dernier enregistrement ou import, le plus récent en haut. Ouvrir un itinéraire met ses chiffres à jour, sans le déplacer.</li>
+  <li><b>Ligne à problème</b> : la ligne zone et origine est remplacée par le problème, en brun gras, avec le rond en tirets et le « ! » (le signe du point refusé, v1/52). Les chiffres gardés restent ; « — » pour ce qu'on n'a jamais eu.</li>
+  <li><b>Arche sans zone</b> : le tracé, le départ et l'arrivée sur <code>carte.fond</code>, sans tuiles. Le cadrage reste celui de l'arche.</li>
+  <li><b>Hors zone, durée</b> : celle du tracé sans calcul, comme le tracé à la main (10 km/h, ADR 0016). La distance et la durée s'affichent toujours (ADR 0017, § 8).</li>
+  <li><b>Lignes à 96 de haut</b> : à grande taille de texte, la ligne grandit, rien n'est coupé sauf le nom (« … »).</li>
+  <li><b>Contrastes</b> : aucun jeton nouveau. Brun sur moutarde pâle 9,9:1 ; <code>hn.danger</code> sur crème 7,5:1 ; <code>hn.brun-2</code> sur crème clair 9,0:1. Cibles : 48 (« ⋮ », croix du champ, « Voir les zones »), 56 (boutons de la feuille).</li>
+</ul>
+
+<h2 class="geo">CHOIX, EN UNE LIGNE</h2>
+<ul>
+  <li><b>Accès aux actions : bouton « ⋮ » visible, plus l'appui long ; pas de balayage</b> : avec des gants, un bouton visible de 48 se trouve et se touche sûrement, alors qu'un balayage se déclenche en faisant défiler et n'existe pas pareil sur Android. (La v1 d'origine prévoyait aussi le balayage sur iOS : retiré, à valider.)</li>
+  <li><b>Menu et boîtes de dialogue natifs</b> : déjà choisis pour l'app (LISEZMOI) ; chacun garde les gestes de sa plateforme.</li>
+  <li><b>Renommer dans une feuille du bas, pas dans une boîte native</b> : Android n'a pas de boîte native avec un champ dans React Native ; la feuille est la même sur les deux et reste près du pouce, au-dessus du clavier.</li>
+  <li><b>Nom tout sélectionné à l'ouverture</b> : on remplace le nom par défaut en tapant, sans effacer d'abord.</li>
+  <li><b>Message dès que le nom est vide, et « Renommer » inactif</b> : on voit la règle avant de toucher, sans essai raté.</li>
+  <li><b>Bouton inactif en tirets brun-2, pas en transparence</b> : au soleil, un bouton pâli ne se lit plus ; les tirets disent « pas encore » et le texte reste à 8:1.</li>
+  <li><b>Suppression confirmée, renommer non</b> : choix 4 du pilotage ; la phrase propose l'export, la seule façon de ne rien perdre.</li>
+  <li><b>Import réussi : l'écran Infos s'ouvre, sans message</b> : comme après « Enregistrer » (choix 2 du pilotage) ; on voit tout de suite ce qu'on a importé.</li>
+  <li><b>Refus en boîte native à un bouton</b> : il n'y a rien à choisir, seulement à comprendre ; une phrase par cause, sans mot technique.</li>
+  <li><b>GPX hors zone : la feuille de l'écran 52, une fois, puis une carte dans l'écran Infos</b> : même dessin et même bouton que pour un point hors zone ; la carte de l'écran Infos garde le message à chaque ouverture, sans fenêtre qui revient.</li>
+  <li><b>« Télécharger Metz » ouvre ensuite l'onglet Zones</b> : la progression et le raccourci Wi-Fi (décision 10) y sont déjà ; rien à refaire ailleurs.</li>
+  <li><b>Zone supprimée : chiffres gardés, datés ; « Modifier » caché</b> : les chiffres restent vrais pour le tracé gardé ; la création ne marche pas sans la zone, et la carte dit pourquoi.</li>
+  <li><b>Problème à la place de l'origine sur la ligne</b> : la ligne ne peut pas tout dire sans couper ; le problème compte plus que la date, qui reste sur l'écran Infos.</li>
+  <li><b>Pas de message après « Enregistrer »</b> : le titre et « créé le 3 nov. » prouvent l'enregistrement ; un message de plus serait à lire et à fermer.</li>
+  <li><b>Pas de couleur nouvelle</b> : carte « ce qui manque » en moutarde pâle avec texte brun, comme le bandeau « Pas de Wi-Fi » (v1/41).</li>
+</ul>
+
+<h2 class="geo">À RÉGLER DANS L'ADR 0019 (architecte, pas Émilien)</h2>
+<ul>
+  <li>Le D− est-il gardé avec la distance, le D+ et la durée ? L'écran 7b le suppose. Sinon, la case D− montre <q>—</q>.</li>
+  <li>Zone d'un GPX à cheval sur deux zones, ou qui sort de la zone : laquelle est « sa » zone, et que dit l'écran Infos ? Proposition : la zone qui contient le départ ; ce qui en sort suit l'ADR 0017, § 8.</li>
+  <li>Hors réseau, le catalogue en cache suffit-il à trouver la zone d'un GPX ? Sinon, la variante B de la feuille.</li>
+  <li>Le menu natif d'une ligne (Android et iOS) demande un module : à choisir et à éprouver.</li>
+</ul>
+
+<h2 class="geo">QUESTIONS POUR ÉMILIEN</h2>
+<ol style="padding-left:20px">
+  <li>Renommer fait-il remonter l'itinéraire en haut de la liste ? <b>Recommandation : non.</b> Seuls « Enregistrer » et l'import comptent. Sinon, la ligne saute sous le doigt.</li>
+  <li>Deux itinéraires enregistrés le même jour : <q>Itinéraire du 3 nov.</q> puis <q>Itinéraire du 3 nov. (2)</q> ? <b>Recommandation : oui.</b> On les distingue dans la liste et dans les fichiers exportés.</li>
+  <li>Supprimer une zone dont des itinéraires dépendent : prévenir dans la boîte de l'écran Zones, par une phrase de plus (<q>2 itinéraires utilisent cette zone. Ils resteront, sans carte ni terrain.</q>) ? <b>Recommandation : oui.</b> C'est la seule façon d'arriver à l'état 7, et la phrase évite la surprise.</li>
+  <li>Retirer le balayage pour supprimer sur iOS, prévu dans la maquette 40 d'origine ? <b>Recommandation : oui.</b> Un seul chemin, sûr avec des gants, le même sur les deux plateformes.</li>
+  <li>Import réussi : ouvrir directement l'écran Infos du GPX, plutôt que rester sur la liste ? <b>Recommandation : oui</b>, comme après « Enregistrer ».</li>
+</ol>
+</div>
+
 </body>
 </html>
