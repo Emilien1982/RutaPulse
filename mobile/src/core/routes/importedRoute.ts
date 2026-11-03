@@ -3,10 +3,11 @@
 
 import { HAND_SPEED_KMH } from '@/core/draft/legs';
 
-import type { GpxResult } from '../gpx/readGpx';
-import { trackLengthM } from '../gpx/trackLengthM';
-import { isInsideBbox } from '../zones/activeZone';
-import type { Zone } from '../zones/catalogue';
+import type { GpxResult } from '@/core/gpx/readGpx';
+import { trackLengthM } from '@/core/gpx/trackLengthM';
+import { isInsideBbox } from '@/core/zones/activeZone';
+import type { Zone } from '@/core/zones/catalogue';
+
 import { MAX_NAME_LENGTH, normalizeName } from './routeName';
 import type { GpxRoute } from './savedRoute';
 import { previewOf } from './track';
@@ -35,7 +36,7 @@ export function buildImportedRoute(
   now: number,
 ): ImportedRoute {
   const distanceKm = trackLengthM(gpx.track) / 1000;
-  const name = gpx.name || nameOfFile(fileName);
+  const name = normalizeName(gpx.name) || nameOfFile(fileName);
   const known = gpx.elevations.some((e) => e !== null);
   const start = gpx.track[0];
   const inZone =

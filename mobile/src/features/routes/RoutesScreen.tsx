@@ -19,6 +19,7 @@ import { border, colors, spacing, target, text } from '@/ui/theme';
 import { useRouteMenu } from '@/ui/useRouteMenu';
 
 import { RouteItem } from './RouteItem';
+import { ReadingIcon } from './ReadingIcon';
 import { RoutesEmpty } from './RoutesEmpty';
 import { useGpxImport } from './useGpxImport';
 
@@ -104,8 +105,14 @@ export function RoutesScreen({
           { top: insets.top + 7 },
         ]}
       >
-        <PlusIcon color={colors.brown} size={18} />
-        <Text style={styles.importText}>
+        {gpxImport.busy ? (
+          <ReadingIcon color={colors.brown2} />
+        ) : (
+          <PlusIcon color={colors.brown} size={18} />
+        )}
+        <Text
+          style={[styles.importText, gpxImport.busy && styles.importTextBusy]}
+        >
           {t(gpxImport.busy ? 'routes.importBusy' : 'routes.import')}
         </Text>
       </Pressable>
@@ -131,7 +138,9 @@ const styles = StyleSheet.create({
     borderColor: colors.brown,
     borderRadius: 24,
   },
-  importBusy: { opacity: 0.6 },
+  // Off, not faded: dashed brown-2 border (mockup 40, 6a).
+  importBusy: { borderStyle: 'dashed', borderColor: colors.brown2 },
+  importTextBusy: { color: colors.brown2 },
   importText: { fontSize: 16, fontWeight: '600', color: colors.brown },
   message: { paddingVertical: spacing.s6 },
   gap: { marginTop: spacing.s3 },

@@ -1,12 +1,14 @@
 // The sheet "GPX hors de vos zones" (mockup 40, state 6c and its variants).
 // It offers the zone of the catalogue that holds the track, if it finds one.
 
+import Svg from 'react-native-svg';
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { t } from '@/core/i18n/t';
 import { formatMegabytes } from '@/core/zones/zoneRow';
 import type { Zone } from '@/core/zones/catalogue';
 import { Button } from '@/ui/Button';
+import { CyclistErrorScene } from '@/ui/CyclistErrorScene';
 import { border, colors, radius, spacing, target, text } from '@/ui/theme';
 
 /** `found`: a zone to download. `none`: no zone. `offline`: not searched. */
@@ -48,6 +50,15 @@ export function OutsideSheet({
           onPress={onClose}
         />
         <View style={styles.sheet} accessibilityViewIsModal>
+          <Svg
+            width="100%"
+            height={106}
+            viewBox="0 0 358 106"
+            preserveAspectRatio="xMidYMid meet"
+            accessible={false}
+          >
+            <CyclistErrorScene limit />
+          </Svg>
           <Text accessibilityRole="header" style={text.titleName}>
             {t('routes.outsideTitle')}
           </Text>

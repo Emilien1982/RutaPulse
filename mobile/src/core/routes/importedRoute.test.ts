@@ -53,6 +53,24 @@ describe('buildImportedRoute', () => {
     ).not.toHaveProperty('name');
   });
 
+  it.each(['\u0085', '\u0001', '  \u0085 '])(
+    'ignores a GPX name that is only control characters: %j',
+    (name) => {
+      const route = buildImportedRoute(gpx({ name }), 'Sortie.gpx', NANCY, 5);
+      expect(route.name).toBe('Sortie');
+    },
+  );
+
+  it('gives no name when the file name is empty once normalized', () => {
+    const route = buildImportedRoute(
+      gpx({ name: '\u0001' }),
+      ' \u0085.gpx',
+      NANCY,
+      5,
+    );
+    expect(route).not.toHaveProperty('name');
+  });
+
   it('measures the distance on the track and the duration at 10 km/h', () => {
     const route = buildImportedRoute(gpx(), 'f.gpx', NANCY, 5);
     expect(route.distanceKm).toBeCloseTo(trackLengthM(TRACK) / 1000, 9);

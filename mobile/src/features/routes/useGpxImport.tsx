@@ -12,6 +12,8 @@ import { buildImportedRoute } from '@/core/routes/importedRoute';
 import type { Catalogue, Zone } from '@/core/zones/catalogue';
 import { zonesCovering } from '@/core/zones/zonesCovering';
 import { megabytes } from '@/core/zones/zoneRow';
+import { getRoute } from '@/core/routes/routeRepo';
+import { getRoutesDb } from '@/shared-data/routes/routesDb';
 import { useRouteActions } from '@/shared-data/routes/useRoutes';
 import { catalogueKey, fetchCatalogue } from '@/shared-data/zones/useCatalogue';
 import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
@@ -99,9 +101,12 @@ export function useGpxImport(onDownloadZone?: (zone: Zone) => void): {
   const running = useRef(false);
 
   async function run() {
-    const timer = setTimeout(() => setBusy(true), BUSY_AFTER_MS);
+    // The delay counts from the choice of the file, not from the touch.
+    let timer: ReturnType<typeof setTimeout> | undefined;
     try {
-      const picked = await pickGpxFile();
+      const picked = await pickGpxFile(() => {
+        timer = setTimeout(() => setBusy(true), BUSY_AFTER_MS);
+      });
       if (picked.status === 'cancelled') return;
       if (picked.status === 'refused') {
         Alert.alert(t('routes.importFailedTitle'), refusalText(picked), [
@@ -116,9 +121,10 @@ export function useGpxImport(onDownloadZone?: (zone: Zone) => void): {
         Date.now(),
       );
       const routeId = await actions.create({ ...built, now: built.createdAt });
-      if (built.name) {
+      const row = await getRoute(await getRoutesDb(), routeId);
+      if (row) {
         AccessibilityInfo.announceForAccessibility(
-          t('routes.importedAnnounce', { name: built.name }),
+          t('routes.importedAnnounce', { name: row.name }),
         );
       }
       if (built.zone) {

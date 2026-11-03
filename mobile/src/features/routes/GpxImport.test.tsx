@@ -4,7 +4,7 @@
 // faked.
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { act, fireEvent, render, screen } from '@testing-library/react-native';
-import { Alert } from 'react-native';
+import { AccessibilityInfo, Alert } from 'react-native';
 
 import { MIGRATIONS, migrate } from '@/core/routes/migrations';
 import { getRoute, listRoutes } from '@/core/routes/routeRepo';
@@ -335,6 +335,68 @@ describe('the reading in progress', () => {
     await settle();
     expect(screen.getByText('Importer un GPX')).toBeTruthy();
     expect(await saved()).toHaveLength(1);
+  });
+});
+
+describe('the delay of "Lecture du fichier…"', () => {
+  it('does not count the time spent in the picker', async () => {
+    const text = gpxText('Rapide', IN_NANCY);
+    mockFiles[URI] = { size: text.length, text };
+    mockPicker.mockImplementation(
+      () =>
+        new Promise((resolve) =>
+          setTimeout(
+            () =>
+              resolve({
+                canceled: false,
+                assets: [{ uri: URI, name: 'x.gpx', size: text.length }],
+              }),
+            600,
+          ),
+        ),
+    );
+    await open();
+    await fireEvent.press(screen.getByLabelText('Importer un fichier GPX'));
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 550));
+    });
+    expect(screen.queryByText('Lecture du fichier…')).toBeNull();
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 150));
+    });
+    await settle();
+    expect(screen.queryByText('Lecture du fichier…')).toBeNull();
+    expect(await saved()).toHaveLength(1);
+  });
+});
+
+describe('the announcement for a screen reader', () => {
+  it('says the name kept, with a full stop, even a default name', async () => {
+    const announce = jest
+      .spyOn(AccessibilityInfo, 'announceForAccessibility')
+      .mockImplementation(() => undefined);
+    chooseGpx(gpxText('Rando', IN_NANCY));
+    await open();
+    await importFile();
+    expect(announce).toHaveBeenLastCalledWith('GPX importé\u00A0: Rando.');
+    chooseGpx(
+      '<gpx version="1.1"><trk><trkseg><trkpt lat="48.69" lon="6.18"/><trkpt lat="48.7" lon="6.19"/></trkseg></trk></gpx>',
+      '.gpx',
+    );
+    await importFile();
+    expect(announce.mock.calls.at(-1)![0]).toMatch(
+      /^GPX importé\u00A0: Itinéraire du \d+ .*\.$/,
+    );
+  });
+});
+
+describe('a GPX whose name is only control characters', () => {
+  it('is imported under the name of the file', async () => {
+    chooseGpx(gpxText('&#1;', IN_NANCY), 'Mon tour.gpx');
+    await open();
+    await importFile();
+    expect((await saved())[0].name).toBe('Mon tour');
+    expect(alert).not.toHaveBeenCalled();
   });
 });
 

@@ -270,7 +270,7 @@ export const fr = {
   'routes.importTooBig':
     'Ce fichier pèse {size}. RutaPulse importe les GPX de 20 Mo au plus.',
   'routes.importOk': 'OK',
-  'routes.importedAnnounce': 'GPX importé : {name}',
+  'routes.importedAnnounce': 'GPX importé\u00A0: {name}.',
   'routes.outsideTitle': 'GPX hors de vos zones',
   'routes.outsideText':
     "L'itinéraire est importé, avec sa distance. Le D+, le terrain et la difficulté sont indisponibles hors zone.",
