@@ -111,6 +111,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   const [saving, setSaving] = useState(false);
   const [exitFor, setExitFor] = useState<number | null>(null);
   const exited = useRef(false);
+  const reopened = kept !== undefined;
   const draft = useSelector(store, (s) => s.draft);
   const chosenId = useSelector(store, (s) => s.selected);
   const nextMode = useSelector(store, (s) => s.nextMode);
@@ -292,7 +293,8 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   });
 
   // "Enregistrer": keeps the route at once (new: default name; reopened:
-  // the same row is replaced), then opens the Infos screen (ADR 0019, § 4).
+  // the same row is replaced), then the creation closes and the saved route
+  // opens (mockup 40, 8a).
   const canSave =
     hasFigures &&
     !computing &&
@@ -306,8 +308,9 @@ function DraftView({ opening }: { opening?: OpeningView }) {
     if (exitFor === null || hasChanges || exited.current) return;
     exited.current = true;
     router.back();
-    if (kept === undefined) router.push(`/route/${exitFor}`);
-  }, [exitFor, hasChanges, kept, router]);
+    // A route opened by "Modifier" goes back to its Infos screen below.
+    if (!reopened) router.push(`/route/${exitFor}`);
+  }, [exitFor, hasChanges, reopened, router]);
   async function save() {
     if (!canSave) return;
     const legs: SavedLeg[] = [];
@@ -502,7 +505,11 @@ function DraftView({ opening }: { opening?: OpeningView }) {
             : t('route.saveLabel')
         }
         saveOffLabel={
-          savedName ? t('route.saveNoChangeLabel') : t('route.saveOffLabel')
+          draft.points.length < 2
+            ? t('route.saveOffLabel')
+            : isSaved && draft === saved.savedDraft
+              ? t('route.saveNoChangeLabel')
+              : t('route.save')
         }
       />
       {showHandHelp && (

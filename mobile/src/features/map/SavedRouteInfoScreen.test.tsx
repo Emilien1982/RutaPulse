@@ -23,7 +23,7 @@ import { SavedRouteInfoScreen } from './SavedRouteInfoScreen';
 
 const mockPush = jest.fn();
 const mockBack = jest.fn();
-const mockNavigate = jest.fn();
+const mockDismissTo = jest.fn();
 const mockComputeRoute = jest.fn();
 const mockHeights = jest.fn();
 const mockTerrain = jest.fn();
@@ -46,7 +46,7 @@ jest.mock('expo-router', () => ({
   useRouter: () => ({
     back: mockBack,
     push: mockPush,
-    navigate: mockNavigate,
+    dismissTo: mockDismissTo,
   }),
   useLocalSearchParams: () => ({ id: mockId }),
 }));
@@ -234,7 +234,7 @@ describe('C6: saved track, infos calculated again', () => {
     await insertRoute(db, sampleCreated());
     await open();
     fireEvent.press(screen.getByTestId('info-back'));
-    expect(mockNavigate).toHaveBeenCalledWith('/routes');
+    expect(mockDismissTo).toHaveBeenCalledWith('/routes');
   });
 });
 
@@ -267,7 +267,7 @@ describe('C8: zone deleted', () => {
     expect(mockTerrain).not.toHaveBeenCalled();
     expect(mockComputeRoute).not.toHaveBeenCalled();
     fireEvent.press(screen.getByTestId('info-see-zones'));
-    expect(mockNavigate).toHaveBeenCalledWith('/zones');
+    expect(mockDismissTo).toHaveBeenCalledWith('/zones');
   });
 
   it('shows a dash for figures never known', async () => {

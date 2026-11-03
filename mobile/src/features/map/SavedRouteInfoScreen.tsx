@@ -117,7 +117,7 @@ function MessageScreen({
           variant="secondary"
           label={t('routes.back')}
           accessibilityLabel={t('routes.backLabel')}
-          onPress={() => router.navigate('/routes')}
+          onPress={() => router.dismissTo('/routes')}
         />
       </View>
     </View>
@@ -175,7 +175,9 @@ function useBack() {
     label: t('routes.back'),
     accessibilityLabel: t('routes.backLabel'),
     // Whatever the way in (list, or right after "Enregistrer"): the list.
-    onPress: () => router.navigate('/routes'),
+    // `dismissTo` pops to the (tabs) below and shows the tab; `navigate`
+    // would push a second (tabs).
+    onPress: () => router.dismissTo('/routes'),
   };
 }
 
@@ -409,7 +411,7 @@ function PlainInfos({
               testID="info-see-zones"
               variant="secondary"
               label={t('routes.seeZones')}
-              onPress={() => router.navigate('/zones')}
+              onPress={() => router.dismissTo('/zones')}
             />
           )}
         </Notice>

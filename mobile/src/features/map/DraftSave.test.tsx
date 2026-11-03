@@ -199,6 +199,9 @@ describe('"Enregistrer" of a new route', () => {
     expect(screen.getByTestId('route-save').props.accessibilityState).toEqual({
       disabled: true,
     });
+    expect(screen.getByTestId('route-save').props.accessibilityLabel).toBe(
+      "Enregistrer\u00A0: posez d'abord le départ et l'arrivée",
+    );
     await drawAB();
     expect(screen.getByTestId('route-save').props.accessibilityState).toEqual({
       disabled: false,
@@ -437,6 +440,19 @@ describe('C7: "Modifier"', () => {
     expect(screen.getByTestId('route-save').props.accessibilityLabel).toBe(
       'Enregistrer\u00A0: aucun changement à enregistrer',
     );
+  });
+
+  it('the off label says "Enregistrer" alone while a changed route is being calculated', async () => {
+    await insertRoute(db, saved());
+    await openCreation(1);
+    // The engine does not answer: the legs next to the point stay pending.
+    mockComputeRoute.mockImplementation(() => new Promise(() => undefined));
+    await act_(() =>
+      session.dispatch({ type: 'move', id: 3, lon: 6.19, lat: 48.71 }),
+    );
+    const save = screen.getByTestId('route-save');
+    expect(save.props.accessibilityState).toEqual({ disabled: true });
+    expect(save.props.accessibilityLabel).toBe('Enregistrer');
   });
 
   it('refuses a route whose zone is not the one held', async () => {

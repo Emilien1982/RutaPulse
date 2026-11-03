@@ -8,6 +8,8 @@ import { peekDraftTarget, setDraftTarget } from './draftTarget';
 
 export function DraftRoot({ children }: { children: ReactNode }) {
   const [routeId] = useState(peekDraftTarget);
-  useEffect(() => () => setDraftTarget(null), []);
+  // Read once, then cleared at once: an older creation closing later cannot
+  // clear the target of a newer one.
+  useEffect(() => setDraftTarget(null), []);
   return <DraftSession routeId={routeId ?? undefined}>{children}</DraftSession>;
 }
