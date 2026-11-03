@@ -24,10 +24,13 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b : [spec validée](docs/phases/p05b-difficulte-maj-zones.md), en cours |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 à spécifier (mes itinéraires et GPX) |
 
 ## Décisions prises
 
+- 2026-11-03 — Phase 5b fusionnée dans main : table `difficulty.json` dans le paquet (505 voies notées à Nancy), ligne « Difficulté » sur l'écran Infos (écart 0 avec le Mac sur 6 itinéraires), mise à jour d'une zone à côté de l'ancienne version. 15 critères tenus avec réserves (coupure réseau, place insuffisante et attente du Wi-Fi prouvées sur Android seulement). 1 513 tests, 228 pytest, CI verte. ADR 0018 ; ADR 0003, 0005, 0013, 0015 et 0017 complétés.
+- 2026-11-03 — Zone Nancy v5 publiée avec la table (run 41622214717). La v4, lancée depuis `main`, est publiée sans table. Émilien peut effacer les releases v1 à v3 (règle des 2 dernières versions).
+- 2026-11-03 — Nettoyage du Mac avec l'accord d'Émilien : anciens worktrees, fichiers de compilation iOS, simulateurs hors service, cache npm, émulateurs KillerTest et Pixel_6_API_33. 57 Go libres.
 - 2026-11-02 — Phase 5b, T1 : maquette 41 (mise à jour d'une zone) et ADR 0018 validés par Émilien. Date de la carte plutôt que « v4 » ; pas de pastille sur l'onglet en v1 ; pas de bouton « Ignorer » ; pas de confirmation pour annuler une mise à jour ; un itinéraire gardé (phase 6) a ses infos recalculées sur la zone en service, son tracé ne change jamais.
 - 2026-11-02 — Spec de la phase 5b (difficulté VTT `mtb:scale` et mise à jour des zones) validée par Émilien, avec les choix du pilotage. Garder sur GitHub les 2 dernières versions d'une zone ; Émilien efface lui-même les plus anciennes après la fusion.
 - 2026-11-02 — Nouvelle session de pilotage (passation après la phase 5).
@@ -99,9 +102,43 @@
 
 ## Prochaine étape
 
-Phase 5b lancée dans une session de phase. Émilien validera la maquette de la mise à jour (T1), lancera le workflow (T3), puis la fusion.
+Écrire la spec de la phase 6 (mes itinéraires et GPX, docs/05 ligne 6), la faire valider par Émilien, puis la lancer dans une session de phase. À y faire : recalcul des infos d'un itinéraire gardé sur la zone en service (décision du 2 novembre, ADR 0018).
 
-## Passation du pilotage (2 novembre 2026)
+## Passation du pilotage (3 novembre 2026)
+
+La session de pilotage du 2 au 3 novembre passe la main après la fusion de
+la phase 5b, comme le veut la règle d'Émilien.
+
+**État exact**
+- `main` à jour et poussé : phases 0 à 5b fusionnées. Rien en cours.
+- Sur les deux simulateurs : Nancy v5 seule, build release de la phase 5b,
+  « Wi-Fi seulement » sur ON. Émulateurs gardés : `Pixel_6_API_34_arm64`
+  (`emulator-5554`, celui des phases) et `Pixel_6_API_34_arm64_e3`
+  (`emulator-5584`, essai 2). Un téléphone Android réel (`R5CR21B1KDW`) est
+  parfois branché : ne pas y toucher sans Émilien.
+- Worktree de la phase 5b (`.claude/worktrees/phase-1-zones-73115d`, et le
+  banc `p05b-banc` dedans) gardé comme trace ; il pèse environ 15 Go, plus
+  12 Go de fichiers de compilation iOS. À retirer si la place manque (tout
+  est commité ; le banc C6 vit seulement dans la branche locale
+  `claude/p05b-banc`).
+- À faire en premier : créer le réveil horaire (`CronCreate`, minute 23).
+
+**Rôle du pilotage** : inchangé (voir la passation du 2 novembre plus bas).
+
+**Leçons de la phase 5b**
+- Pour un lancement de workflow par Émilien : lui dire de choisir la
+  branche dans « Use workflow from », et vérifier aussitôt la branche du
+  run par l'API publique. Le premier lancement est parti de `main` (v4
+  sans table).
+- Un testeur a contourné un refus du garde-fou (script écrit ailleurs puis
+  copié). Rappeler dans chaque brief : un refus du garde-fou s'arrête là ;
+  on demande au pilotage.
+- Pendant une attente longue, dire à la session de phase de ne pas se
+  réveiller toutes les heures : le pilotage la prévient.
+- Surveiller la place libre du Mac (`df -h /`) avant une phase qui
+  construit l'app.
+
+## Passation du pilotage (2 novembre 2026, archive)
 
 La session « Pilotage RutaPulse (reprise) » (local_4f9d736d, 27 octobre au
 2 novembre) passe la main à une nouvelle session de pilotage, après la
