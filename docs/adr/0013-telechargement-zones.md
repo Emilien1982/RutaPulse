@@ -481,3 +481,19 @@ Détails : [p02-essai-e1.md](../phases/p02-essai-e1.md).
   ignoré en v1.
 - Le simulateur iOS annonce `WIFI`. La perte du Wi-Fi (C4) se teste sur
   Android seulement.
+
+## Complément du 2026-11-02 : mise à jour d'une zone (accepté)
+
+Statut : celui de l'[ADR 0018](0018-difficulte-et-mise-a-jour-des-zones.md),
+§§ 3 et 4, accepté le 2026-11-02 par Émilien.
+
+- Une mise à jour est un téléchargement ordinaire (§§ 3 à 6) dans le
+  dossier de la nouvelle version, à côté de celle en service. Aucun état
+  nouveau sur le disque.
+- **Étape 4 du § 3 changée** : le téléchargement n'efface plus les autres
+  versions. Elles sont effacées après le passage à la nouvelle version,
+  quand le moteur a fermé l'ancienne (ADR 0018, § 4).
+- **§ 8 précisé** : pour chaque zone, seule compte la plus grande version
+  prête. La carte, le moteur et la création lisent tous la même « zone en
+  service ». Une création ouverte la fige (une « prise ») jusqu'à sa
+  fermeture.

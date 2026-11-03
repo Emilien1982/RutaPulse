@@ -21,7 +21,7 @@ import zipfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-from . import checksums, trails
+from . import checksums, difficulty, trails
 from .config import ZONES_DIR
 from .paths import hgt_names_for_bbox, storage_path
 
@@ -330,6 +330,8 @@ def build_zone(zone: dict, version: int, out: Path, cache: Path = DEFAULT_CACHE_
     step("Courbes de niveau", build_contours, work, bbox, zone["name"])
     report = step("Circuits balisés", trails.extract_trails, pbf, bbox, work / "trails.geojson", work)
     print("\n".join(report))
+    report = step("Difficulté VTT (mtb:scale)", difficulty.extract_difficulty, work / "zone.osm.pbf", work / "difficulty.json", work)
+    print("\n".join(report))
 
     shutil.move(work / "valhalla_tiles.tar", out / "valhalla_tiles.tar")
     for name in hgt_names_for_bbox(bbox):
@@ -337,7 +339,7 @@ def build_zone(zone: dict, version: int, out: Path, cache: Path = DEFAULT_CACHE_
         if tile.stat().st_size != HGT_BYTES:
             raise BuildError(f"tuile d'altitude de taille inattendue : {name} ({tile.stat().st_size} octets)")
         shutil.copy2(tile, out / name)
-    for name in ("map.pmtiles", "terrain.pmtiles", "contours.pmtiles", "trails.geojson"):
+    for name in ("map.pmtiles", "terrain.pmtiles", "contours.pmtiles", "trails.geojson", "difficulty.json"):
         shutil.move(work / name if name != "map.pmtiles" else work / "planetiler" / name, out / name)
     shutil.copy(TEMPLATES_DIR / "LICENCES.md", out / "LICENCES.md")
     description = {

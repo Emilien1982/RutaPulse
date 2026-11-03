@@ -1,0 +1,127 @@
+# C13 (phase 5b) : partir de Nancy v3 installee, mettre a jour la zone,
+# creer un itineraire sur des voies notees (mtb:scale), ouvrir les infos et
+# voir la ligne « Difficulte » avec au moins un niveau connu (S0 a S6).
+# Le parcours marche aussi si la zone est deja a jour (l'etape de mise a jour
+# est alors sautee).
+# Prerequis : pensé pour une version release, zone Nancy installee, reseau
+# disponible pour la mise a jour.
+# - iOS : position du simulateur sur le depart du tronçon note (S2, ouest de
+#   Liverdun) avant de lancer :
+#   xcrun simctl location booted set 48.7796,6.0201
+# - Android : la position est posee par le parcours (setLocation). Le reglage
+#   « Telecharger en Wi-Fi seulement » doit laisser passer le reseau de
+#   l'emulateur (Wi-Fi connecte, ou reglage coupe).
+# Les points sont places en pourcentage de l'ecran : ils dependent du
+# zoom de depart de la carte (iOS : centree sur la position ; Android : vue
+# d'ensemble, d'ou les 3 zooms et le decalage). Sur Android, le resultat
+# depend de la position exacte des points : reperes par essais, 12 % de S2.
+appId: fr.rutapulse.app
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setLocation:
+          latitude: 48.7796
+          longitude: 6.0201
+- launchApp:
+    clearState: false
+    stopApp: true
+- tapOn:
+    text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
+    optional: true
+# 1. Mise a jour (sautee si la zone est deja a jour).
+- tapOn: 'Zones.*'
+- runFlow:
+    when:
+      visible: 'Mettre à jour.*'
+    commands:
+      - tapOn: 'Mettre à jour.*'
+      - extendedWaitUntil:
+          notVisible: 'Mise à jour.*'
+          timeout: 400000
+- assertVisible: 'Prête sans réseau'
+# 2 et 3. Creation sur le troncon note, puis infos. Sur Android, les points
+# sont poses a l'aveugle (zoom par double tap) : on recommence jusqu'a 3 fois
+# si le tronçon note n'est pas atteint.
+- retry:
+    maxRetries: 3
+    commands:
+      - launchApp:
+          clearState: false
+          stopApp: true
+      - tapOn: 'Carte.*'
+      - extendedWaitUntil:
+          visible:
+            id: 'new-route-button'
+          timeout: 30000
+      - waitForAnimationToEnd:
+          timeout: 4000
+      - runFlow:
+          when:
+            platform: Android
+          commands:
+            - repeat:
+                times: 3
+                commands:
+                  - doubleTapOn:
+                      point: '27%,36%'
+                  - waitForAnimationToEnd:
+                      timeout: 1500
+            - swipe:
+                start: '50%,71%'
+                end: '50%,43%'
+                duration: 500
+            - waitForAnimationToEnd:
+                timeout: 2000
+      - tapOn:
+          id: 'new-route-button'
+      - extendedWaitUntil:
+          visible: 'Touchez le départ sur la carte'
+          timeout: 10000
+      - runFlow:
+          when:
+            platform: Android
+          commands:
+            - tapOn:
+                point: '30%,36%'
+      - runFlow:
+          when:
+            platform: iOS
+          commands:
+            - tapOn:
+                point: '50%,50%'
+      - extendedWaitUntil:
+          visible: "Touchez l'arrivée sur la carte"
+          timeout: 10000
+      - runFlow:
+          when:
+            platform: Android
+          commands:
+            - tapOn:
+                point: '63%,52%'
+      - runFlow:
+          when:
+            platform: iOS
+          commands:
+            - tapOn:
+                point: '83%,66%'
+      - extendedWaitUntil:
+          visible:
+            id: 'route-distance'
+            text: '.*[1-9].*'
+          timeout: 60000
+      # 3. Infos : ligne Difficulte avec un niveau connu.
+      - tapOn:
+          id: 'route-open-infos'
+      - extendedWaitUntil:
+          visible:
+            id: 'info-modify'
+          timeout: 15000
+      - waitForAnimationToEnd:
+          timeout: 3000
+      - assertVisible:
+          id: 'info-difficulty'
+          text: 'Difficulté.{1,3}S[0-6].*'
+      - assertNotVisible: 'Difficulté inconnue.*'
+      - assertNotVisible: '.*indisponible.*'

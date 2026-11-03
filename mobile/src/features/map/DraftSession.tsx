@@ -5,9 +5,8 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { pickActiveZone } from '@/core/zones/activeZone';
 import type { Zone } from '@/core/zones/catalogue';
-import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
+import { useZoneHold } from '@/shared-data/zones/zoneInService';
 import { colors } from '@/ui/theme';
 
 import { createDraftStore } from './draftStore';
@@ -27,11 +26,12 @@ export function useDraftSession(): DraftSessionValue {
   return session;
 }
 
-// Waits for the disk like the map tab does: the zone, then the glyphs.
+// Holds the zone in service for as long as it is open, so that a new version
+// does not replace it under the draft (ADR 0018, section 4). Waits for the
+// hold, then for the glyphs.
 export function DraftSession({ children }: { children: ReactNode }) {
-  const installed = useInstalledZones();
+  const zone = useZoneHold();
   const glyphsReady = useGlyphsReady();
-  const zone = installed.data ? pickActiveZone(installed.data) : null;
   if (!zone || !glyphsReady) return <View style={styles.blank} />;
   return (
     <ZoneSession key={`${zone.id}-${zone.version}`} zone={zone}>

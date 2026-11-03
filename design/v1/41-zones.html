@@ -3,12 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=390, initial-scale=1">
-<title>RutaPulse v1 – Zones hors ligne, sans Wi-Fi</title>
+<title>RutaPulse v1 – Zones hors ligne : sans Wi-Fi, mise à jour d'une zone</title>
 <!--
-  Écran 41, v1, style années 70. Même contenu que design/41-zones.html, plus
-  l'état « pas de Wi-Fi ». Fonction 6 du cadrage, ADR 0003, décision 10.
-  Instant montré : le téléphone est en données mobiles (4G), sans Wi-Fi, et le
-  réglage « Wi-Fi seulement » est activé (valeur par défaut).
+  Écran 41, v1, style années 70. Fonction 6 du cadrage, ADR 0003, ADR 0013,
+  décision 10 (mise à jour à la main, Wi-Fi seulement par défaut).
+
+  CE FICHIER CONTIENT QUATRE ÉCRANS, L'UN SOUS L'AUTRE, PUIS DES VARIANTES
+  ET UNE NOTE (en bas de la page, à lire dans le navigateur).
+  1. Sans Wi-Fi (écran d'origine, inchangé).
+  2. Mise à jour disponible (phase 5b, ajouté le 2 novembre 2026).
+  3. Mise à jour en cours, en Wi-Fi (phase 5b).
+  4. Mise à jour demandée sans Wi-Fi, « Wi-Fi seulement » activé (phase 5b).
+  Variantes de la carte Nancy : échec, place insuffisante, mise à jour finie.
+
+  ÉCRAN 1. Instant montré : le téléphone est en données mobiles (4G), sans
+  Wi-Fi, et le réglage « Wi-Fi seulement » est activé (valeur par défaut).
   - Bandeau « Pas de Wi-Fi » en tête de liste : il contient l'interrupteur
     « Wi-Fi seulement » lui-même. C'est le raccourci de la décision 10 : un seul
     geste, sans changer d'écran. Le même interrupteur existe dans les réglages.
@@ -23,17 +32,26 @@
   Plus bas, en faisant défiler : place utilisée sur le téléphone et explication
   d'une zone (texte de design/41).
   Le téléchargement actif (barre qui avance) est montré dans 51-telechargement.html.
-  Valeurs : design/tokens.md. Noms des deux zones à télécharger : exemples.
+
+  ÉCRANS 2 À 4 (mise à jour d'une zone prête). La zone Nancy est installée
+  en version 3 (carte du 18 oct.) ; le catalogue annonce une version 4 (carte
+  du 2 nov., 108 Mo). La partie « mise à jour » s'ajoute en bas de la carte
+  de la zone, sous un trait en tirets. Le haut de la carte (« Prête sans
+  réseau ») ne change pas tant que la v4 n'a pas remplacé la v3.
+  Détail des états, textes exacts et choix à valider : note en bas de page.
+
+  Valeurs : design/tokens.md. Noms des zones Metz et Gérardmer, tailles et
+  dates : exemples.
 -->
 <style>
 :root{
   --creme:#F4E4C1; --creme-clair:#FBF1DA; --sable:#F7DDA6; --moutarde-pale:#F6CB7A;
   --brun:#3A1F0F; --brun-2:#5A3A28;
   --moutarde:#F0A830; --orange:#E2652B; --rouille:#B5452A; --petrole:#2D6A66; --olive:#A9B56A;
-  --succes:#0F5223;
+  --succes:#0F5223; --danger:#8A1C12;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:390px;height:844px;overflow:hidden;background:var(--creme)}
+html,body{width:390px;background:var(--creme)}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--brun);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
 .geo{font-family:"Futura","Futura PT",Jost,"Century Gothic","Avenir Next",sans-serif;font-weight:700}
 .ecran{position:relative;width:390px;height:844px;overflow:hidden;background:var(--creme)}
@@ -71,8 +89,23 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
 .coin{position:absolute;top:4px;right:4px}
 .barre{height:12px;border-radius:6px;background:var(--sable);border:2px solid var(--brun);margin-top:8px;overflow:hidden}
 .barre i{display:block;height:100%;width:42%;background:var(--moutarde);border-right:2px solid var(--brun)}
+.barre i.vide{width:0;border-right:0}
 .progres{display:flex;align-items:center;gap:6px;margin-top:5px;font-size:15px;font-weight:600}
+.progres.erreur{color:var(--danger)}
 .telecharger{display:flex;flex:none;height:48px;padding:0 18px 0 14px;border-radius:24px;border:2.5px solid var(--brun);background:var(--moutarde);font-size:17px;align-items:center;gap:8px}
+
+/* Mise à jour d'une zone prête (phase 5b) : une partie de plus, en bas de la
+   carte de la zone, sous un trait en tirets (même trait que le bandeau). */
+.zone.avec-maj{display:block}
+.tete{display:flex;gap:10px;align-items:flex-start}
+.maj{position:relative;margin-top:10px;padding-top:8px;border-top:2px dashed rgba(58,31,15,.55)}
+.maj-titre{font-size:15px;font-weight:700;line-height:20px}
+.maj-titre.sous-croix{padding-right:44px}
+.maj .meta{margin-top:0}
+.maj .telecharger{display:inline-flex;margin-top:8px}
+.maj-note{font-size:15px;line-height:1.3;color:var(--brun-2);margin-top:3px}
+.croix{position:absolute;top:-6px;right:-6px;width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+.reessayer{display:inline-flex;align-items:center;height:56px;padding:0 24px;border-radius:28px;border:2.5px solid var(--brun);background:var(--creme-clair);font-size:17px;margin-top:8px}
 
 .rayures-bas{position:absolute;left:0;right:0;bottom:83px;height:9px;background:linear-gradient(var(--moutarde) 0 3px,var(--orange) 3px 6px,var(--rouille) 6px 9px)}
 .onglets{position:absolute;left:0;right:0;bottom:0;height:83px;background:var(--brun);display:flex;padding-top:7px}
@@ -80,9 +113,24 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
 .pastille{width:64px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center}
 .onglet.actif{font-weight:800}
 .onglet.actif .pastille{background:var(--moutarde);color:var(--brun)}
+
+/* Hors du téléphone : légendes de la planche, variantes, note */
+.legende{background:var(--brun);color:var(--creme);padding:14px 16px;font-size:15px;line-height:1.35;border-top:9px solid var(--moutarde)}
+.legende b{font-size:17px}
+.variantes{padding:4px 12px 8px}
+.var-titre{font-size:15px;font-weight:700;margin:16px 4px 6px}
+.note{padding:8px 16px 48px;font-size:15px;line-height:1.4}
+.note h2{font-size:20px;margin:20px 0 8px;letter-spacing:.5px}
+.note h3{font-size:16px;margin:16px 0 4px}
+.note p{margin:4px 0}
+.note ul{padding-left:18px;margin:4px 0}
+.note li{margin:3px 0}
+.note q{quotes:"« " " »"}
 </style>
 </head>
 <body>
+
+<!-- ========== ÉCRAN 1 : sans Wi-Fi (écran d'origine) ========== -->
 <div class="ecran">
 
 <svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -161,5 +209,352 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
 
 <div class="indicateur"></div>
 </div>
+
+
+<!-- ========== ÉCRAN 2 : mise à jour disponible ========== -->
+<div class="legende"><b>2. Mise à jour disponible</b><br>En Wi-Fi. Nancy est installée (carte du 18 oct.) ; le catalogue a une version plus récente (carte du 2 nov.). Rien ne part sans un toucher sur « Mettre à jour ».</div>
+<div class="ecran">
+
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="au-dessus-2"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#au-dessus-2)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+
+<!-- Barre d'état : Wi-Fi -->
+<div class="barre-etat"><span>09:47</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="18" height="13" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M2 6.5a15 15 0 0 1 20 0"/><path d="M5.5 10a10 10 0 0 1 13 0"/><path d="M9 13.5a5 5 0 0 1 6 0"/><circle cx="12" cy="16.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<h1 class="geo">ZONES HORS LIGNE</h1>
+
+<div class="liste">
+  <div class="section"><span class="geo">SUR LE TÉLÉPHONE</span><span class="d">106 Mo</span></div>
+  <div class="zone avec-maj">
+    <div class="tete">
+      <div class="texte">
+        <div class="nom">Nancy et forêt de Haye</div>
+        <div class="meta">106 Mo · carte du 18 oct.</div>
+        <div class="etat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Prête sans réseau</div>
+      </div>
+      <div class="plus" aria-label="Actions de la zone Nancy : supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+    </div>
+    <div class="maj">
+      <div class="maj-titre">Mise à jour disponible</div>
+      <div class="meta">108 Mo · carte du 2 nov.</div>
+      <div class="telecharger geo" role="button" aria-label="Mettre à jour la zone Nancy et forêt de Haye (108 Mo)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Mettre à jour</div>
+    </div>
+  </div>
+
+  <div class="section"><span class="geo">DISPONIBLES</span><span class="d">23,4 Go libres</span></div>
+  <div class="zone" style="align-items:center">
+    <div class="texte">
+      <div class="nom">Metz et vallée de la Moselle</div>
+      <div class="meta">95 Mo · carte du 2 nov.</div>
+    </div>
+    <div class="telecharger geo" aria-label="Télécharger la zone Metz (95 Mo)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Télécharger</div>
+  </div>
+  <div class="zone" style="align-items:center">
+    <div class="texte">
+      <div class="nom">Gérardmer et lacs</div>
+      <div class="meta">118 Mo · carte du 2 nov.</div>
+    </div>
+    <div class="telecharger geo" aria-label="Télécharger la zone Gérardmer (118 Mo)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Télécharger</div>
+  </div>
+</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
+</div>
+
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ========== ÉCRAN 3 : mise à jour en cours (Wi-Fi) ========== -->
+<div class="legende"><b>3. Mise à jour en cours</b><br>En Wi-Fi. La nouvelle carte se télécharge à côté de l'ancienne. « Prête sans réseau » ne bouge pas : carte, création et suivi marchent avec la carte du 18 oct. La croix annule et garde l'ancienne carte.</div>
+<div class="ecran">
+
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="au-dessus-3"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#au-dessus-3)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+
+<div class="barre-etat"><span>09:49</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="18" height="13" viewBox="0 0 24 18" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"><path d="M2 6.5a15 15 0 0 1 20 0"/><path d="M5.5 10a10 10 0 0 1 13 0"/><path d="M9 13.5a5 5 0 0 1 6 0"/><circle cx="12" cy="16.5" r="1.4" fill="currentColor" stroke="none"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<h1 class="geo">ZONES HORS LIGNE</h1>
+
+<div class="liste">
+  <div class="section"><span class="geo">SUR LE TÉLÉPHONE</span><span class="d">106 Mo</span></div>
+  <div class="zone avec-maj">
+    <div class="tete">
+      <div class="texte">
+        <div class="nom">Nancy et forêt de Haye</div>
+        <div class="meta">106 Mo · carte du 18 oct.</div>
+        <div class="etat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Prête sans réseau</div>
+      </div>
+      <div class="plus" aria-label="Actions de la zone Nancy : supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+    </div>
+    <div class="maj">
+      <div class="maj-titre sous-croix">Mise à jour&nbsp;: carte du 2 nov.</div>
+      <div class="barre" role="progressbar" aria-valuenow="44" aria-valuemin="0" aria-valuemax="100" aria-label="Mise à jour de Nancy et forêt de Haye"><i style="width:44%"></i></div>
+      <div class="progres">47 Mo sur 108</div>
+      <div class="maj-note">La zone reste utilisable pendant la mise à jour.</div>
+      <div class="croix" role="button" aria-label="Annuler la mise à jour de Nancy et forêt de Haye"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    </div>
+  </div>
+
+  <div class="section"><span class="geo">DISPONIBLES</span><span class="d">23,3 Go libres</span></div>
+  <div class="zone" style="align-items:center">
+    <div class="texte">
+      <div class="nom">Metz et vallée de la Moselle</div>
+      <div class="meta">95 Mo · carte du 2 nov.</div>
+    </div>
+    <div class="telecharger geo" aria-label="Télécharger la zone Metz (95 Mo)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Télécharger</div>
+  </div>
+  <div class="zone" style="align-items:center">
+    <div class="texte">
+      <div class="nom">Gérardmer et lacs</div>
+      <div class="meta">118 Mo · carte du 2 nov.</div>
+    </div>
+    <div class="telecharger geo" aria-label="Télécharger la zone Gérardmer (118 Mo)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Télécharger</div>
+  </div>
+</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
+</div>
+
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ========== ÉCRAN 4 : mise à jour demandée sans Wi-Fi ========== -->
+<div class="legende"><b>4. Mise à jour demandée sans Wi-Fi</b><br>En 4G, « Wi-Fi seulement » activé. Toucher « Mettre à jour » met la mise à jour en attente, comme un premier téléchargement, et le bandeau « Pas de Wi-Fi » apparaît avec son interrupteur. Couper l'interrupteur la lance tout de suite en 4G.</div>
+<div class="ecran">
+
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="au-dessus-4"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#au-dessus-4)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+
+<div class="barre-etat"><span>09:47</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <span class="reseau">4G</span>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<h1 class="geo">ZONES HORS LIGNE</h1>
+
+<div class="liste">
+  <div class="alerte" role="status">
+    <div class="haut">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0"/><path d="M5.5 12a10 10 0 0 1 13 0"/><path d="M9 15.5a5 5 0 0 1 6 0"/><circle cx="12" cy="19" r="1.3" fill="#3A1F0F"/><path d="M3 3l18 18"/></svg>
+      <div><b>Pas de Wi-Fi :</b> les téléchargements attendent le Wi-Fi.</div>
+    </div>
+    <div class="reglage" role="switch" aria-checked="true" aria-label="Télécharger en Wi-Fi seulement">
+      <span>Télécharger en Wi-Fi seulement</span>
+      <span class="interrupteur"><i><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg></i></span>
+    </div>
+  </div>
+
+  <div class="section"><span class="geo">SUR LE TÉLÉPHONE</span><span class="d">106 Mo</span></div>
+  <div class="zone avec-maj">
+    <div class="tete">
+      <div class="texte">
+        <div class="nom">Nancy et forêt de Haye</div>
+        <div class="meta">106 Mo · carte du 18 oct.</div>
+        <div class="etat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Prête sans réseau</div>
+      </div>
+      <div class="plus" aria-label="Actions de la zone Nancy : supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+    </div>
+    <div class="maj">
+      <div class="maj-titre sous-croix">Mise à jour&nbsp;: carte du 2 nov.</div>
+      <div class="barre" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Mise à jour de Nancy et forêt de Haye, en pause"><i class="vide"></i></div>
+      <div class="progres"><svg width="16" height="16" viewBox="0 0 24 24" fill="#3A1F0F" aria-hidden="true"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>En attente du Wi-Fi · 0 Mo sur 108</div>
+      <div class="maj-note">La zone reste utilisable pendant la mise à jour.</div>
+      <div class="croix" role="button" aria-label="Annuler la mise à jour de Nancy et forêt de Haye"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    </div>
+  </div>
+
+  <div class="section"><span class="geo">DISPONIBLES</span><span class="d">23,4 Go libres</span></div>
+  <div class="zone" style="align-items:center">
+    <div class="texte">
+      <div class="nom">Metz et vallée de la Moselle</div>
+      <div class="meta">95 Mo · carte du 2 nov.</div>
+    </div>
+    <div class="telecharger geo" aria-label="Télécharger la zone Metz (95 Mo)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Télécharger</div>
+  </div>
+  <div class="zone" style="align-items:center">
+    <div class="texte">
+      <div class="nom">Gérardmer et lacs</div>
+      <div class="meta">118 Mo · carte du 2 nov.</div>
+    </div>
+    <div class="telecharger geo" aria-label="Télécharger la zone Gérardmer (118 Mo)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Télécharger</div>
+  </div>
+</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
+</div>
+
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ========== VARIANTES de la carte Nancy ========== -->
+<div class="legende"><b>Variantes de la carte Nancy</b><br>Seule la carte de la zone change ; le reste de l'écran est celui de l'écran 3.</div>
+<div class="variantes">
+
+  <div class="var-titre">A. Échec : 3 essais ratés (empreinte fausse, release introuvable)</div>
+  <div class="zone avec-maj">
+    <div class="tete">
+      <div class="texte">
+        <div class="nom">Nancy et forêt de Haye</div>
+        <div class="meta">106 Mo · carte du 18 oct.</div>
+        <div class="etat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Prête sans réseau</div>
+      </div>
+      <div class="plus" aria-label="Actions de la zone Nancy : supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+    </div>
+    <div class="maj">
+      <div class="maj-titre sous-croix">Mise à jour&nbsp;: carte du 2 nov.</div>
+      <div class="barre" role="progressbar" aria-valuenow="44" aria-valuemin="0" aria-valuemax="100" aria-label="Mise à jour de Nancy et forêt de Haye, échouée"><i style="width:44%"></i></div>
+      <div class="progres erreur">Échec de la mise à jour · 47 Mo sur 108</div>
+      <div class="maj-note">La zone reste utilisable avec la carte du 18 oct.</div>
+      <div class="reessayer geo" role="button" aria-label="Réessayer la mise à jour de Nancy et forêt de Haye">Réessayer</div>
+      <div class="croix" role="button" aria-label="Annuler la mise à jour de Nancy et forêt de Haye"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    </div>
+  </div>
+
+  <div class="var-titre">B. Place insuffisante (la nouvelle carte + 50 Mo, l'ancienne restant en place)</div>
+  <div class="zone avec-maj">
+    <div class="tete">
+      <div class="texte">
+        <div class="nom">Nancy et forêt de Haye</div>
+        <div class="meta">106 Mo · carte du 18 oct.</div>
+        <div class="etat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Prête sans réseau</div>
+      </div>
+      <div class="plus" aria-label="Actions de la zone Nancy : supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+    </div>
+    <div class="maj">
+      <div class="maj-titre sous-croix">Mise à jour&nbsp;: carte du 2 nov.</div>
+      <div class="progres erreur">Place insuffisante&nbsp;: il faut 158 Mo libres.</div>
+      <div class="maj-note">La zone reste utilisable avec la carte du 18 oct.</div>
+      <div class="reessayer geo" role="button" aria-label="Réessayer la mise à jour de Nancy et forêt de Haye">Réessayer</div>
+      <div class="croix" role="button" aria-label="Annuler la mise à jour de Nancy et forêt de Haye"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    </div>
+  </div>
+
+  <div class="var-titre">C. Mise à jour finie : la nouvelle carte a remplacé l'ancienne</div>
+  <div class="zone">
+    <div class="texte">
+      <div class="nom">Nancy et forêt de Haye</div>
+      <div class="meta">108 Mo · carte du 2 nov.</div>
+      <div class="etat"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Prête sans réseau</div>
+    </div>
+    <div class="plus" aria-label="Actions de la zone Nancy : supprimer"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+</div>
+
+
+<!-- ========== NOTE ========== -->
+<div class="legende"><b>Note : mise à jour d'une zone (phase 5b, T1)</b><br>2 novembre 2026. Designer. Choix marqués « à valider » : Émilien.</div>
+<div class="note">
+
+<h2 class="geo">QUAND LA PARTIE « MISE À JOUR » APPARAÎT</h2>
+<ul>
+  <li>Zone prête, et le catalogue a une version plus grande de la même zone. Rien d'autre ne le signale (pas de pastille sur l'onglet, pas de message ailleurs).</li>
+  <li>Sans catalogue (pas de réseau à l'ouverture de l'écran) : la carte de la zone reste comme à l'écran 1.</li>
+  <li>Jamais de départ seul : seul « Mettre à jour » lance le téléchargement (décision 10). Une mise à jour <em>déjà demandée</em> reprend seule après une coupure ou l'app fermée, comme un premier téléchargement (ADR 0013, § 4).</li>
+  <li>Le haut de la carte (nom, taille, date, « Prête sans réseau », menu « ⋮ ») reste celui de la carte en service jusqu'au passage à la nouvelle version.</li>
+</ul>
+
+<h2 class="geo">TEXTES EXACTS</h2>
+<p>Les textes déjà dans <code>fr.ts</code> sont réutilisés tels quels (marqués « existant »).</p>
+<ul>
+  <li><b>Disponible</b> : titre <q>Mise à jour disponible</q> ; ligne <q>{taille} · carte du {date}</q> (format de <code>zones.meta</code>, existant) ; bouton <q>Mettre à jour</q>, libellé d'accessibilité <q>Mettre à jour la zone {nom} ({taille})</q>.</li>
+  <li><b>En cours, en attente, reprise</b> : titre <q>Mise à jour&nbsp;: carte du {date}</q> ; sous la barre, selon l'état : <q>{n} Mo sur {total}</q>, <q>En attente du Wi-Fi · {n} Mo sur {total}</q>, <q>En attente du réseau · {n} Mo sur {total}</q>, <q>En attente de son tour</q> (tous existants) ; puis <q>La zone reste utilisable pendant la mise à jour.</q></li>
+  <li><b>Croix</b> : libellé d'accessibilité <q>Annuler la mise à jour de {nom}</q>. Pas de confirmation. Après l'annulation, la carte revient à « Mise à jour disponible ».</li>
+  <li><b>Échec</b> : <q>Échec de la mise à jour · {n} Mo sur {total}</q> en rouge (<code>hn.danger</code>) ; <q>La zone reste utilisable avec la carte du {date en service}.</q> ; bouton <q>Réessayer</q> (existant), libellé <q>Réessayer la mise à jour de {nom}</q>.</li>
+  <li><b>Place insuffisante</b> : <q>Place insuffisante&nbsp;: il faut {besoin} libres.</q> (existant ; besoin = ce qui reste à télécharger + 50 Mo, l'ancienne version restant en place) ; même phrase et même « Réessayer » que l'échec.</li>
+  <li><b>Fini</b> : aucun message. La carte de la zone montre la nouvelle taille et la nouvelle date, et la partie « mise à jour » disparaît. Lecteur d'écran, si l'écran Zones est ouvert : annoncer <q>Zone {nom} mise à jour.</q></li>
+  <li><b>Même date de carte</b> (version refaite sans nouvel extrait OSM) : ligne <q>{taille}</q> seule, et titre <q>Mise à jour</q> sans date.</li>
+</ul>
+
+<h2 class="geo">LA NOUVELLE VERSION EST PRÊTE PENDANT UNE CRÉATION</h2>
+<p><b>Recommandation : aucun message.</b> La création est en plein écran, sans onglets : l'écran Zones n'est pas visible pendant ce temps. L'app finit la création sur l'ancienne carte et passe à la nouvelle quand la création se ferme. L'utilisateur n'a rien à faire, donc rien à lire. Il voit la nouvelle date en ouvrant Zones. Si l'ADR 0018 laisse un délai visible sur l'écran Zones, la partie « mise à jour » montre alors la coche verte et <q>Mise à jour prête&nbsp;: elle s'appliquera à la fin de la création en cours.</q> (à éviter si possible).</p>
+
+<h2 class="geo">CHOIX, EN UNE LIGNE</h2>
+<ul>
+  <li><b>Mise à jour dans la carte de la zone, sous un trait en tirets</b> : c'est la même zone ; « Prête sans réseau » reste au-dessus et dit que l'ancienne marche.</li>
+  <li><b>Date de la carte, pas numéro de version (validé le 2 nov.)</b> : « carte du 2 nov. » dit ce qu'on gagne ; « version 4 » ne parle pas à un vététiste.</li>
+  <li><b>« Mettre à jour » en moutarde, avec la flèche de « Télécharger »</b> : c'est un téléchargement, sous la même règle du Wi-Fi ; même bouton, même couleur.</li>
+  <li><b>Bouton sous le texte, à gauche, comme « Réessayer »</b> : le titre et la taille gardent toute la largeur, même en grand texte.</li>
+  <li><b>Barre sur toute la largeur, seule la ligne du titre laisse la place de la croix</b> : leçon de N2 (p02-t7).</li>
+  <li><b>Phrase « La zone reste utilisable pendant la mise à jour. »</b> : la coche verte seule ne dit pas que la mise à jour ne casse rien.</li>
+  <li><b>Pas d'état dessiné pour la reprise</b> : elle se montre comme le téléchargement, avec les fichiers déjà contrôlés comptés ; rien de plus à apprendre.</li>
+  <li><b>Pas le mot « empreinte »</b> : l'échec dit ce qui compte, l'ancienne carte est gardée.</li>
+  <li><b>Pas de message à la fin</b> : la nouvelle date suffit, et l'utilisateur est peut-être sur la carte, pas sur cet écran.</li>
+  <li><b>Pas de nouvelle couleur</b> : brun, brun-2, vert « prête », rouge danger, moutarde, trait à 55 % du bandeau. Contrastes : 7,5:1 au moins sur crème clair. Cibles : 48 (croix, menu), 48 (« Mettre à jour »), 56 (« Réessayer »).</li>
+</ul>
+
+<h2 class="geo">QUESTIONS POUR ÉMILIEN</h2>
+<p><b>Réponses d'Émilien (2 novembre 2026) : tout est validé.</b> Date de la carte ; pas de pastille ; pas de bouton « Ignorer » ; pas de confirmation pour annuler ; itinéraire gardé : infos recalculées sur la zone en service (phase 6).</p>
+<ol style="padding-left:20px">
+  <li>Date de la carte plutôt que numéro de version. <b>Recommandation : la date.</b></li>
+  <li>Un signal hors de l'écran Zones (pastille sur l'onglet Zones) ? <b>Recommandation : non en v1</b>, la mise à jour reste discrète et à la main.</li>
+  <li>Un bouton « Ignorer cette mise à jour » ? <b>Recommandation : non</b>, la ligne ne gêne pas et ne revient pas en alerte.</li>
+  <li>Confirmer l'annulation ? <b>Recommandation : non</b>, comme un premier téléchargement : on ne perd que le temps de télécharger.</li>
+  <li>Un itinéraire créé sur l'ancienne carte : après le passage, ses infos (dont la difficulté) sont-elles recalculées sur la nouvelle ? Question de produit, à poser avec l'ADR 0018. Pas de recommandation de design.</li>
+</ol>
+</div>
+
 </body>
 </html>

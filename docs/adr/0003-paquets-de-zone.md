@@ -573,3 +573,18 @@ relevées ce jour) :
 - go-pmtiles, versions : https://github.com/protomaps/go-pmtiles/releases
 - tippecanoe, versions : https://github.com/felt/tippecanoe/releases
 - osmium-tool, versions : https://github.com/osmcode/osmium-tool/releases
+
+## Complément du 2026-11-02 : la table des difficultés (accepté)
+
+Statut : celui de l'[ADR 0018](0018-difficulte-et-mise-a-jour-des-zones.md),
+§ 1, accepté le 2026-11-02 par Émilien.
+
+- Le point 5 de la décision du 19 octobre arrive : un fichier de plus,
+  `difficulty.json`, rangé sous `difficulty.json`. Format, voies retenues
+  et lecture de `mtb:scale` : ADR 0018, § 1.
+- Il entre dans `SHA256SUMS` et dans `files` du catalogue comme les
+  autres fichiers. Aucun champ nouveau ; `formatVersion` reste 1 (§ 3).
+- La liste des fichiers obligatoires du catalogue (§ 4) ne change pas :
+  une entrée publiée sans table reste valide. `build` l'écrit toujours
+  dans un paquet neuf.
+- `zone.json` et les schémas ne changent pas.

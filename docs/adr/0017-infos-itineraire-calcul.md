@@ -354,3 +354,21 @@ lèvent jamais d'erreur ; les textes sont dans `fr.ts`.
 - Expo Router, modales et pile imbriquée : https://docs.expo.dev/router/advanced/modals/
 - React Navigation, `usePreventRemove` : https://reactnavigation.org/docs/preventing-going-back
 - TanStack Query, `enabled` : https://tanstack.com/query/latest/docs/framework/react/guides/dependent-queries
+
+## Complément du 2026-11-02 : la difficulté VTT (accepté)
+
+Statut : celui de l'[ADR 0018](0018-difficulte-et-mise-a-jour-des-zones.md),
+§ 2, accepté le 2026-11-02 par Émilien.
+
+- § 1 : la requête `trace_attributes` demande aussi `edge.way_id`.
+  `TerrainEdge` gagne `wayId?`.
+- § 2 : `core/route-info/difficulty.ts` (lecture de la table, parts,
+  ordre) ; `features/map/useDifficultyTable.ts` (lecture du fichier de la
+  zone, en cache).
+- § 3 : la difficulté a la même base et le même arrondi que le terrain.
+  Un tronçon à la main compte « inconnue ».
+- § 7 : l'écran Infos gagne la ligne « Difficulté » (maquette 20).
+  `DraftSession` lit la zone de sa prise, plus la liste des zones prêtes
+  (ADR 0018, § 4).
+- § 9 : la comparaison au Mac (C6 de la phase 5b) suit la même méthode,
+  avec la même table.

@@ -28,6 +28,10 @@ avant toute commande `python3 -m zonefactory`, sinon `jsonschema` manque.
   fichiers de la release, `SHA256SUMS` compris.
 - `--cache-dir` (facultatif, par défaut `work/cache/`) : voir ci-dessous.
 
+Le paquet contient `difficulty.json` : les identifiants des voies OSM qui portent
+`mtb:scale`, rangés par niveau S0 à S6 (ADR 0018, § 1). Le journal de
+fabrication donne les comptes par niveau et les valeurs écartées.
+
 Pour contrôler le résultat : `cd out/nancy && shasum -a 256 -c SHA256SUMS`.
 
 ### Fichiers réutilisés

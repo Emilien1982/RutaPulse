@@ -55,7 +55,8 @@ describe('downloadZone, normal case', () => {
     const ready = parseMarker(phone.files.get(readyPath(zone)) ?? null);
     expect(ready?.installedAt).toBe('2026-10-24T10:12:31Z');
     expect(phone.files.has(planPath(zone))).toBe(false);
-    expect([...phone.files.keys()].some((k) => k.includes('/v2/'))).toBe(false);
+    // ADR 0018, section 3: the download no longer erases the other versions.
+    expect(phone.files.get('zones/nancy/v2/.ready.json')).toBe('old version');
     expect(last(states)).toEqual({ kind: 'ready' });
   });
 

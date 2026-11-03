@@ -16,14 +16,14 @@ export function buildHeightRequest(shape: [number, number][]): string {
   });
 }
 
-/** JSON text of the `trace_attributes` request: only what the terrain needs. */
+/** JSON text of the `trace_attributes` request: what the terrain and the difficulty need. */
 export function buildTraceRequest(shape: [number, number][]): string {
   return JSON.stringify({
     encoded_polyline: encodePolyline6(shape),
     ...ROUTE_COSTING,
     shape_match: 'walk_or_snap',
     filters: {
-      attributes: ['edge.use', 'edge.density', 'edge.length'],
+      attributes: ['edge.use', 'edge.density', 'edge.length', 'edge.way_id'],
       action: 'include',
     },
   });
