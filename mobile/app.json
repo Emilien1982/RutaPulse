@@ -41,7 +41,8 @@
         }
       ],
       "expo-status-bar",
-      "./plugins/withAndroidAccent"
+      "./plugins/withAndroidAccent",
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true

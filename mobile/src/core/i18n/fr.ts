@@ -133,6 +133,7 @@ export const fr = {
   'zones.gigabytes': '{n} Go',
   'zones.meta': '{size} · carte du {date}',
   'zones.date': '{day} {month}',
+  'routes.defaultName': 'Itinéraire du {day} {month}',
   'zones.month.1': 'janv.',
   'zones.month.2': 'févr.',
   'zones.month.3': 'mars',
