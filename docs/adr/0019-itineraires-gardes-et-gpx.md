@@ -249,8 +249,12 @@ d'extensions.
 - **itinéraire rouvert** : `UPDATE` de la même ligne (`draft`, `legs`,
   zone, `preview`, chiffres, `saved_at`). Le nom et `created_at` ne
   changent pas. « Enregistrer » remplace (C7) ;
-- puis `router.push('/draft/infos')` : l'écran Infos de la session, avec
-  le nom en titre (choix 2).
+- puis la création se ferme et l'écran `/route/[id]` de l'itinéraire
+  gardé s'ouvre, avec le nom en titre (choix 2, maquette 40, états 8a et
+  8b-B). Venu de « Modifier », on revient au même `/route/[id]`, relu.
+  *Corrigé en T4 (3 novembre 2026) : la première version disait
+  `router.push('/draft/infos')`, ce qui contredisait la maquette validée
+  le même jour. Décision de la session de phase, après la relecture de T4.*
 
 **« Modifier »** (C7) depuis l'écran Infos d'un itinéraire créé dont la
 zone est en service :
