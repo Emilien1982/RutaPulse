@@ -24,7 +24,7 @@ export type GpxResult =
 
 type Points = { track: [number, number][]; elevations: (number | null)[] };
 
-const DECIMAL = /^[+-]?(\d+\.?\d*|\.\d+)$/;
+const DECIMAL = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)$/;
 const TEXT_ELEMENTS: ReadonlySet<string> = new Set(['name', 'ele']);
 
 function decimal(raw: string | undefined): number | null {

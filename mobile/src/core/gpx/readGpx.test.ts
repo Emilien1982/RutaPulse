@@ -337,3 +337,26 @@ describe('readGpx speed', () => {
     expect(elapsed).toBeLessThan(1000);
   });
 });
+
+describe('readGpx on hostile numbers', () => {
+  const digits = '1'.repeat(1_000_000) + 'x';
+
+  it.each([
+    ['lat', gpx(trk([pt(digits, '6'), pt('48', '6')]))],
+    ['lon', gpx(trk([pt('48', digits), pt('49', '6')]))],
+    ['ele', gpx(trk([pt('48', '6', `<ele>${digits}</ele>`), pt('49', '6')]))],
+  ])('a huge non numeric %s is handled in linear time', (_l, text) => {
+    const start = Date.now();
+    const result = readGpx(text);
+    const elapsed = Date.now() - start;
+    console.log(`hostile ${_l}: ${elapsed} ms`);
+    expect(elapsed).toBeLessThan(200);
+    if (_l === 'ele') expect(result).toMatchObject({ ok: true });
+    else expect(result).toEqual({ ok: false, reason: 'noTrack' });
+  });
+
+  it('refuses a document nested too deep', () => {
+    const text = gpx('<a>'.repeat(100) + '</a>'.repeat(100));
+    expect(readGpx(text)).toEqual({ ok: false, reason: 'unreadable' });
+  });
+});

@@ -1,4 +1,10 @@
-import { decodeEntities, readAttributes, scanXml, XmlError } from './xmlScan';
+import {
+  decodeEntities,
+  MAX_DEPTH,
+  readAttributes,
+  scanXml,
+  XmlError,
+} from './xmlScan';
 
 const none = { open: () => undefined, close: () => undefined };
 const scan = (xml: string) => scanXml(xml, none, new Set());
@@ -68,5 +74,14 @@ describe('scanXml', () => {
     ['ENTITY in a comment', '<gpx><!-- <!ENTITY a "b"> --></gpx>'],
   ])('refuses %s', (_label, xml) => {
     expect(() => scan(xml)).toThrow(XmlError);
+  });
+
+  it('refuses a nesting deeper than the limit, accepts the limit', () => {
+    const nest = (n: number) =>
+      '<gpx>'
+        .repeat(1)
+        .concat('<a>'.repeat(n - 1), '</a>'.repeat(n - 1), '</gpx>');
+    expect(() => scan(nest(MAX_DEPTH))).not.toThrow();
+    expect(() => scan(nest(MAX_DEPTH + 1))).toThrow(XmlError);
   });
 });

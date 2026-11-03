@@ -12,6 +12,9 @@ export type XmlVisitor = {
   close(path: readonly string[], text: string): void;
 };
 
+/** Deepest nesting accepted; a GPX needs about 8 levels. */
+export const MAX_DEPTH = 64;
+
 const FORBIDDEN_DECLARATION = /<!(?:DOCTYPE|ENTITY)/i;
 const START_TAG =
   /<([^\s/>!?]+)((?:\s+[^\s=/>]+\s*=\s*(?:"[^"]*"|'[^']*'))*)\s*(\/?)>/y;
@@ -122,6 +125,7 @@ export function scanXml(
         if (name !== 'gpx') throw new XmlError('root is not gpx');
         rootSeen = true;
       }
+      if (stack.length >= MAX_DEPTH) throw new XmlError('too deep');
       stack.push(match[1]);
       path.push(name);
       buffers.push('');
