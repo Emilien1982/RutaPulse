@@ -6,13 +6,14 @@ import { useRouter } from 'expo-router';
 import { useRef, useState, type ReactNode } from 'react';
 import { AccessibilityInfo, Alert } from 'react-native';
 
-import { t } from '@/core/i18n/t';
 import type { TextKey } from '@/core/i18n/fr';
+import { t } from '@/core/i18n/t';
 import { buildImportedRoute } from '@/core/routes/importedRoute';
-import type { Catalogue, Zone } from '@/core/zones/catalogue';
-import { zonesCovering } from '@/core/zones/zonesCovering';
-import { megabytes } from '@/core/zones/zoneRow';
+import { announcement } from '@/core/routes/routeName';
 import { getRoute } from '@/core/routes/routeRepo';
+import type { Catalogue, Zone } from '@/core/zones/catalogue';
+import { megabytes } from '@/core/zones/zoneRow';
+import { zonesCovering } from '@/core/zones/zonesCovering';
 import { getRoutesDb } from '@/shared-data/routes/routesDb';
 import { useRouteActions } from '@/shared-data/routes/useRoutes';
 import { catalogueKey, fetchCatalogue } from '@/shared-data/zones/useCatalogue';
@@ -121,10 +122,13 @@ export function useGpxImport(onDownloadZone?: (zone: Zone) => void): {
         Date.now(),
       );
       const routeId = await actions.create({ ...built, now: built.createdAt });
-      const row = await getRoute(await getRoutesDb(), routeId);
+      // The route is kept: failing to read its name back must not fail the import.
+      const row = await getRoute(await getRoutesDb(), routeId).catch(
+        () => null,
+      );
       if (row) {
         AccessibilityInfo.announceForAccessibility(
-          t('routes.importedAnnounce', { name: row.name }),
+          announcement(t('routes.importedAnnounce', { name: row.name })),
         );
       }
       if (built.zone) {

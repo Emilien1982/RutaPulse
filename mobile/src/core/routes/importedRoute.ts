@@ -2,7 +2,6 @@
 // Pure logic.
 
 import { HAND_SPEED_KMH } from '@/core/draft/legs';
-
 import type { GpxResult } from '@/core/gpx/readGpx';
 import { trackLengthM } from '@/core/gpx/trackLengthM';
 import { isInsideBbox } from '@/core/zones/activeZone';

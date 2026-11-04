@@ -33,6 +33,11 @@ export class RouteNameError extends Error {
   }
 }
 
+/** Ends an announcement with one full stop, even if the name had one. */
+export function announcement(text: string): string {
+  return text.replace(/\.\.$/, '.');
+}
+
 /** "Itinéraire du 3 nov.", from the local date. */
 export function defaultRouteName(date: Date): string {
   return t('routes.defaultName', {

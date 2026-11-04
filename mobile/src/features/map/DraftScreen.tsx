@@ -9,6 +9,7 @@ import { listLegs, summarize } from '@/core/draft/legs';
 import { handLengthKm, summarizeInfo } from '@/core/route-info/routeInfo';
 import { findProblem } from '@/core/draft/problem';
 import { RoutesTooNewError } from '@/core/routes/migrations';
+import { announcement } from '@/core/routes/routeName';
 import { getRoute } from '@/core/routes/routeRepo';
 import { getRoutesDb } from '@/shared-data/routes/routesDb';
 import type { SavedLeg } from '@/core/routes/savedRoute';
@@ -355,7 +356,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
       const row = await getRoute(await getRoutesDb(), id);
       if (row) {
         AccessibilityInfo.announceForAccessibility(
-          t('route.savedAnnounce', { name: row.name }),
+          announcement(t('route.savedAnnounce', { name: row.name })),
         );
       }
       // The creation closes once the screen knows nothing is left to save.

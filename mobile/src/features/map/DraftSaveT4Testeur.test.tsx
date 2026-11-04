@@ -287,7 +287,7 @@ describe('C3, C4, choices 1 and 2: "Enregistrer" of a new route', () => {
       mockPush.mock.invocationCallOrder[0]!,
     );
     expect(AccessibilityInfo.announceForAccessibility).toHaveBeenCalledWith(
-      `Itinéraire enregistré : ${todayName()}.`,
+      `Itinéraire enregistré : ${todayName()}`,
     );
   });
 

@@ -41,7 +41,10 @@ function round6(value: number): number {
 }
 
 function cleanName(raw: string): string {
-  const name = raw.replace(/\s+/g, ' ').trim();
+  const name = raw
+    .replace(/\s+/g, ' ')
+    .replace(/\p{Cc}/gu, '')
+    .trim();
   return name.length > MAX_NAME_CHARS
     ? Array.from(name).slice(0, MAX_NAME_CHARS).join('').trim()
     : name;

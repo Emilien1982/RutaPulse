@@ -30,11 +30,14 @@ type Props = {
   onCancel: () => void;
 };
 
-/** Cuts a text to 60 displayed characters (a pasted name is cut). */
+/**
+ * Cuts a text to 60 displayed characters, counted on the normalized name like
+ * the counter (a pasted name is cut).
+ */
 function cut(value: string): string {
-  const chars = [...value];
+  const chars = [...normalizeName(value)];
   return chars.length > MAX_NAME_LENGTH
-    ? chars.slice(0, MAX_NAME_LENGTH).join('')
+    ? chars.slice(0, MAX_NAME_LENGTH).join('').trim()
     : value;
 }
 

@@ -235,7 +235,7 @@ describe('"Enregistrer" of a new route', () => {
       mockPush.mock.invocationCallOrder[0]!,
     );
     expect(AccessibilityInfo.announceForAccessibility).toHaveBeenCalledWith(
-      `Itinéraire enregistré\u00A0: ${defaultRouteName(new Date())}.`,
+      `Itinéraire enregistré\u00A0: ${defaultRouteName(new Date())}`,
     );
   });
 
