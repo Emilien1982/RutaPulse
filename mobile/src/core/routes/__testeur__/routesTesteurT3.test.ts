@@ -1,7 +1,8 @@
 // Tests written by the tester from the spec (docs/phases/p06-..., C2, C3, C4,
 // C5, C8) and ADR 0019 (sections 1, 2, 4, 11, answers 1 and 2), not from the
 // code. Real SQLite (node:sqlite); C3 uses real files on disk, kept in
-// PREUVES_DIR (default: the proofs folder of the tester).
+// PREUVES_DIR (default: a folder in the temporary directory of the machine,
+// because the CI has no /Users folder).
 
 import { MIGRATIONS, migrate, type Migration } from '../migrations';
 import {
@@ -28,9 +29,8 @@ type Fs = {
   existsSync(file: string): boolean;
 };
 const fs = require('fs') as Fs;
-const DIR =
-  process.env.PREUVES_DIR ??
-  '/Users/utilisateur/dev_ai/vtt-nav-preuves/p06/t3-testeur/db';
+const os = require('os') as { tmpdir(): string };
+const DIR = process.env.PREUVES_DIR ?? `${os.tmpdir()}/rutapulse-t3-testeur-db`;
 
 const fresh = async () => {
   const db = createNodeSqlDb();
