@@ -14,8 +14,8 @@ function Art() {
   return (
     <Svg
       width="100%"
-      height={300}
-      viewBox="0 0 390 425"
+      height={180}
+      viewBox="0 244 390 184"
       preserveAspectRatio="xMidYMin meet"
       accessible={false}
     >

@@ -19,6 +19,7 @@ export function SignalMark({
     <View
       testID={testID}
       accessible={false}
+      accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
       style={[
         styles.ring,

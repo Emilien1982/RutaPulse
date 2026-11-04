@@ -44,6 +44,7 @@ function cleanName(raw: string): string {
   const name = raw
     .replace(/\s+/g, ' ')
     .replace(/\p{Cc}/gu, '')
+    .replace(/ {2,}/g, ' ')
     .trim();
   return name.length > MAX_NAME_CHARS
     ? Array.from(name).slice(0, MAX_NAME_CHARS).join('').trim()

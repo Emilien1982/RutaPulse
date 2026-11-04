@@ -5,7 +5,8 @@ export const FIT_MAX_ZOOM = 17;
 /** Free space kept around the route, in points. */
 export const FIT_MARGIN = 48;
 
-const TILE = 256;
+// MapLibre Native draws tiles of 512 points: the world is 512 * 2^zoom wide.
+const TILE = 512;
 
 function mercatorX(lon: number): number {
   return (lon + 180) / 360;

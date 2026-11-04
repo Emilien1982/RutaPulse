@@ -131,6 +131,9 @@ function Probe() {
   return null;
 }
 
+// The announcement ends with one full stop: the name "... nov." has it already.
+const stop = (name: string) => (name.endsWith('.') ? name : `${name}.`);
+
 let db: NodeSqlDb;
 
 async function settle() {
@@ -235,7 +238,7 @@ describe('"Enregistrer" of a new route', () => {
       mockPush.mock.invocationCallOrder[0]!,
     );
     expect(AccessibilityInfo.announceForAccessibility).toHaveBeenCalledWith(
-      `Itinéraire enregistré\u00A0: ${defaultRouteName(new Date())}`,
+      `Itinéraire enregistré\u00A0: ${stop(defaultRouteName(new Date()))}`,
     );
   });
 

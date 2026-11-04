@@ -16,26 +16,43 @@ describe('fitView', () => {
     expect(fitView([6.18, 48.69, 6.18, 48.69], SCREEN, COVERED).zoom).toBe(17);
   });
 
-  it('fits a wide box in the visible width, to the zoom below', () => {
-    const { zoom, center } = fitView([6, 48.6, 6.3, 48.62], SCREEN, COVERED);
-    // 0.3 deg of 360 deg: 256 * 2^z * 0.3 / 360 must fit in 390 - 96.
-    const width = (256 * 2 ** zoom * 0.3) / 360;
-    expect(width).toBeLessThanOrEqual(390 - 96 + 1e-6);
-    expect(width).toBeGreaterThan((390 - 96) * 0.99);
-    expect(center[0]).toBeCloseTo(6.15, 6);
+  // Projection written another way (tangent form), at the zoom z of a map
+  // of 512-point tiles: size in points of the box on screen.
+  const projected = (box: number[], z: number) => {
+    const world = 512 * 2 ** z;
+    const y = (lat: number) =>
+      ((1 - Math.asinh(Math.tan((lat * Math.PI) / 180)) / Math.PI) / 2) * world;
+    return {
+      w: ((box[2]! - box[0]!) / 360) * world,
+      h: y(box[1]!) - y(box[3]!),
+    };
+  };
+  const fits = (box: number[], z: number, screen = SCREEN, c = COVERED) => {
+    const { w, h } = projected(box, z);
+    const eps = 1e-6;
+    return (
+      w <= screen.width - 96 + eps &&
+      h <= screen.height - c.top - c.bottom - 96 + eps
+    );
+  };
+
+  it.each([
+    [[6, 48.6, 6.3, 48.62]],
+    [[6, 48, 6.01, 48.4]],
+    [[6.18, 48.69, 6.1842, 48.69]],
+    [[5.9, 48.5, 6.4, 48.9]],
+  ])('the box %j fits at the zoom chosen, and not at +0.1', (box) => {
+    const { zoom } = fitView(box as never, SCREEN, COVERED);
+    expect(fits(box, zoom)).toBe(true);
+    if (zoom < FIT_MAX_ZOOM) expect(fits(box, zoom + 0.1)).toBe(false);
   });
 
-  it('fits a tall box in the visible height', () => {
-    const { zoom } = fitView([6, 48, 6.01, 48.4], SCREEN, COVERED);
-    const mercY = (lat: number) =>
-      0.5 -
-      Math.log(
-        (1 + Math.sin((lat * Math.PI) / 180)) /
-          (1 - Math.sin((lat * Math.PI) / 180)),
-      ) /
-        (4 * Math.PI);
-    const height = 256 * 2 ** zoom * (mercY(48) - mercY(48.4));
-    expect(height).toBeLessThanOrEqual(800 - 160 - 248 + 1e-6);
-    expect(height).toBeGreaterThan((800 - 408) * 0.99);
+  it('shows the 323 m route of the comparison whole on an iPhone 17', () => {
+    const iphone = { width: 402, height: 874 };
+    const box = [6.18, 48.69, 6.1842, 48.69];
+    const { zoom } = fitView(box as never, iphone, { top: 112, bottom: 230 });
+    // 306 points of width are free; the box is 307 m: zoom 15.6.
+    expect(zoom).toBeCloseTo(15.6, 1);
+    expect(fits(box, zoom, iphone, { top: 112, bottom: 230 })).toBe(true);
   });
 });

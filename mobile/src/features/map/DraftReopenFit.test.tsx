@@ -119,10 +119,10 @@ async function openCreation(routeId?: number) {
   await settle();
 }
 
-// Two points 323 m apart, like the route of the comparison.
+// Two points 60 m apart: tiny, so the zoom is capped at 17.
 const SMALL = [
   { id: 1, lon: 6.18, lat: 48.69 },
-  { id: 2, lon: 6.1842, lat: 48.69 },
+  { id: 2, lon: 6.1808, lat: 48.69 },
 ];
 const BIG = [
   { id: 1, lon: 6.0, lat: 48.6 },
@@ -167,7 +167,7 @@ describe('B3: "Modifier" shows the track', () => {
     expect(mockEaseTo).toHaveBeenCalledTimes(1);
     const view = mockEaseTo.mock.calls[0]![0];
     expect(view.zoom).toBe(17);
-    expect(view.center[0]).toBeCloseTo(6.1821, 4);
+    expect(view.center[0]).toBeCloseTo(6.1804, 4);
     expect(view.center[1]).toBeCloseTo(48.69, 4);
     // The bar (112 until measured) and the panel (200) stay free.
     expect(view.padding).toEqual({
