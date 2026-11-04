@@ -116,6 +116,18 @@ onFlowComplete:
           timeout: 2000
       - assertVisible: 'Mes itinéraires'
       - takeScreenshot: 06-android-retour-vers-liste
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'info-back'
+      - extendedWaitUntil:
+          visible:
+            id: 'route-menu-.*'
+          timeout: 10000
+      - assertVisible: 'Mes itinéraires'
+      - takeScreenshot: 06-ios-retour-vers-liste
 # Menu « ⋮ », puis Renommer avec un nom vide, puis un nom valide.
 - tapOn:
     id: 'route-menu-.*'
@@ -128,6 +140,8 @@ onFlowComplete:
     visible:
       id: 'rename-input'
     timeout: 5000
+- waitForAnimationToEnd:
+    timeout: 3000
 - takeScreenshot: 08-renommer
 # Nom vide : message, bouton sans effet.
 - tapOn:
@@ -142,7 +156,7 @@ onFlowComplete:
     id: 'rename-submit'
 - waitForAnimationToEnd:
     timeout: 2000
-- assertVisible: 'Boucle de Haye'
+- assertVisible: 'Boucle de Haye.*'
 - assertNotVisible: 'Itinéraire du 4 nov.*'
 - takeScreenshot: 10-liste-renomme
 # Ouvrir les infos : le titre est le nouveau nom.
@@ -179,6 +193,15 @@ onFlowComplete:
     start: '19%,44%'
     end: '31%,42%'
     duration: 3000
+- waitForAnimationToEnd:
+    timeout: 3000
+# Si le point tombe à plus de 200 m d'un chemin (cas vu sur iOS), on le relie
+# à la main : le tronçon touché change quand même.
+- runFlow:
+    when:
+      visible: 'Aucun chemin trouvé'
+    commands:
+      - tapOn: 'Relier ce point à la main'
 - extendedWaitUntil:
     visible:
       id: 'route-distance'
@@ -212,7 +235,7 @@ onFlowComplete:
       id: 'route-row-.*'
     timeout: 10000
 # Un seul itinéraire dans la liste : l'ancienne version est remplacée.
-- assertVisible: 'Boucle de Haye'
+- assertVisible: 'Boucle de Haye.*'
 - assertVisible: '.*km.*'
 - assertNotVisible: '338 m.*'
 - takeScreenshot: 15-liste-apres-modification
@@ -220,19 +243,27 @@ onFlowComplete:
 - tapOn:
     id: 'routes-import'
 - extendedWaitUntil:
-    visible: '.*Downloads.*|.*Téléchargements.*|trace-testeur.gpx'
+    visible: '.*Downloads.*|.*Téléchargements.*|trace-testeur.gpx|Sur mon iPhone'
     timeout: 15000
+# Le sélecteur peut lister d'autres fichiers avant : on fait défiler.
+- scrollUntilVisible:
+    element:
+      text: 'trace-testeur.gpx'
+    timeout: 20000
+- takeScreenshot: 16-selecteur-de-fichier
+# iOS : le sélecteur ne réagit pas au toucher sur le nom du fichier, on
+# touche sa vignette (première case de la grille « Sur mon iPhone »).
 - runFlow:
     when:
-      notVisible: 'trace-testeur.gpx'
+      platform: Android
+    commands:
+      - tapOn: 'trace-testeur.gpx'
+- runFlow:
+    when:
+      platform: iOS
     commands:
       - tapOn:
-          text: '.*Downloads.*|.*Téléchargements.*'
-- extendedWaitUntil:
-    visible: 'trace-testeur.gpx'
-    timeout: 10000
-- takeScreenshot: 16-selecteur-de-fichier
-- tapOn: 'trace-testeur.gpx'
+          point: '18%,29%'
 # Après un import réussi, l'écran Infos du GPX s'ouvre (pas de « Modifier »).
 - extendedWaitUntil:
     visible:
@@ -252,8 +283,8 @@ onFlowComplete:
     visible:
       id: 'route-row-.*'
     timeout: 10000
-- assertVisible: 'Trace du testeur'
-- assertVisible: 'Boucle de Haye'
+- assertVisible: 'Trace du testeur.*'
+- assertVisible: 'Boucle de Haye.*'
 - assertVisible: '.*GPX importé le.*'
 - takeScreenshot: 18-liste-avec-gpx
 # Supprimer, avec confirmation : d'abord le GPX (en haut), puis l'autre.
@@ -269,8 +300,8 @@ onFlowComplete:
     text: 'Supprimer'
 - waitForAnimationToEnd:
     timeout: 2000
-- assertNotVisible: 'Trace du testeur'
-- assertVisible: 'Boucle de Haye'
+- assertNotVisible: 'Trace du testeur.*'
+- assertVisible: 'Boucle de Haye.*'
 - tapOn:
     id: 'route-menu-.*'
 - tapOn:

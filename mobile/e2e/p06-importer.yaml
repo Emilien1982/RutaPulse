@@ -1,0 +1,24 @@
+# Phase 6 : importer le GPX posé dans Download, nommé par la variable
+# FICHIER (maestro test -e FICHIER=trace.gpx p06-importer.yaml), puis voir
+# l'écran Infos qui s'ouvre. Android : le fichier est posé avec
+# adb push <fichier> /sdcard/Download/. Partir de l'onglet Itinéraires.
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: false
+- tapOn: 'Itinéraires.*'
+- extendedWaitUntil:
+    visible:
+      id: 'routes-import'
+    timeout: 10000
+- tapOn:
+    id: 'routes-import'
+- extendedWaitUntil:
+    visible: '${FICHIER}'
+    timeout: 15000
+- tapOn: '${FICHIER}'
+- extendedWaitUntil:
+    visible:
+      id: 'info-title'
+    timeout: 30000
