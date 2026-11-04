@@ -181,9 +181,9 @@ describe('menu de /route/[id]', () => {
     await fireEvent.press(screen.getByTestId('info-menu'));
     expect(lastAlert().title).toBe('Boucle');
     expect(lastAlert().buttons.map((b) => b.text)).toEqual([
-      'Renommer',
-      'Exporter en GPX',
       'Supprimer',
+      'Exporter en GPX',
+      'Renommer',
     ]);
   });
 
@@ -208,7 +208,7 @@ describe('menu de /route/[id]', () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[0]);
+    await press(lastAlert().buttons[2]);
     await fireEvent.changeText(
       screen.getByLabelText("Nom de l'itinéraire"),
       'Été 🌲',
@@ -225,7 +225,7 @@ describe('menu de /route/[id]', () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[0]);
+    await press(lastAlert().buttons[2]);
     await fireEvent.changeText(
       screen.getByLabelText("Nom de l'itinéraire"),
       '  ',
@@ -239,7 +239,7 @@ describe('menu de /route/[id]', () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[2]);
+    await press(lastAlert().buttons[0]);
     await press(lastAlert().buttons[0]);
     expect(await listRoutes(db)).toHaveLength(1);
     expect(mockDismissTo).not.toHaveBeenCalled();
@@ -250,7 +250,7 @@ describe('menu de /route/[id]', () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[2]);
+    await press(lastAlert().buttons[0]);
     expect(lastAlert().message).toBe(
       "L'itinéraire sera effacé du téléphone. Pour le garder ailleurs, exportez-le d'abord en GPX.",
     );

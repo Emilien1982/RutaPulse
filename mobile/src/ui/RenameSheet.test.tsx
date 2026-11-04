@@ -36,3 +36,21 @@ describe('RenameSheet cut and counter', () => {
     expect(screen.getByTestId('rename-count')).toHaveTextContent('60 / 60');
   });
 });
+
+describe('RenameSheet, empty name (M6)', () => {
+  it('shows the red "!" disc before the message', async () => {
+    await sheet();
+    expect(
+      screen.queryByTestId('rename-error-icon', {
+        includeHiddenElements: true,
+      }),
+    ).toBeNull();
+    await fireEvent.changeText(input(), '   ');
+    expect(
+      screen.getByTestId('rename-error-icon', { includeHiddenElements: true }),
+    ).toBeTruthy();
+    expect(screen.getByTestId('rename-error')).toHaveTextContent(
+      "Donnez un nom à l'itinéraire.",
+    );
+  });
+});

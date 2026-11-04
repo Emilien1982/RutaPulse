@@ -1,6 +1,7 @@
 // The "⋮" menu of a saved route (ADR 0019, section 13, point 4), with the
 // native boxes of React Native and no new module: an action sheet on iOS, a
-// dialog with the three actions on Android (its maximum of buttons).
+// dialog with the three actions on Android (its maximum of buttons), passed
+// in reverse order because Android stacks them upside down.
 
 import { ActionSheetIOS, Alert, Platform } from 'react-native';
 
@@ -37,14 +38,17 @@ export function openActionMenu(
   Alert.alert(
     name,
     undefined,
+    // Android stacks the buttons in the order positive, negative, neutral: the
+    // third one is shown first. Passed as Delete, Export, Rename, they read
+    // Rename, Export, Delete from the top.
     [
-      { text: t('routes.menuRename'), onPress: onRename },
-      { text: t('routes.menuExport'), onPress: onExport },
       {
         text: t('routes.menuDelete'),
         style: 'destructive',
         onPress: onDelete,
       },
+      { text: t('routes.menuExport'), onPress: onExport },
+      { text: t('routes.menuRename'), onPress: onRename },
     ],
     { cancelable: true },
   );

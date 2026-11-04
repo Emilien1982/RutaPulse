@@ -159,6 +159,17 @@ export function PlusIcon({ size = 20, ...props }: IconProps) {
   );
 }
 
+/** A sheet of paper with a folded corner and a "+" (mockup 40, import). */
+export function ImportFileIcon({ size = 20, ...props }: IconProps) {
+  return (
+    <Icon {...props} size={size} strokeWidth={2.3}>
+      <Path d="M14 3H6v18h12V7z" />
+      <Path d="M14 3v4h4" />
+      <Path d="M12 11v6M9 14h6" />
+    </Icon>
+  );
+}
+
 // Tools of the creation sheet (mockup 10).
 export function UndoIcon({ size = 22, ...props }: IconProps) {
   return (

@@ -179,9 +179,9 @@ describe('the "⋮" menu of the Infos screen', () => {
     await fireEvent.press(screen.getByTestId('info-menu'));
     expect(lastAlert().title).toBe('Boucle');
     expect(lastAlert().buttons.map((b) => b.text)).toEqual([
-      'Renommer',
-      'Exporter en GPX',
       'Supprimer',
+      'Exporter en GPX',
+      'Renommer',
     ]);
   });
 
@@ -189,7 +189,7 @@ describe('the "⋮" menu of the Infos screen', () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[0]);
+    await press(lastAlert().buttons[2]);
     await fireEvent.changeText(screen.getByTestId('rename-input'), 'Autre nom');
     await fireEvent.press(screen.getByTestId('rename-submit'));
     await act(async () => {
@@ -203,7 +203,7 @@ describe('the "⋮" menu of the Infos screen', () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[2]);
+    await press(lastAlert().buttons[0]);
     expect(lastAlert().buttons.map((b) => b.text)).toEqual([
       'Garder',
       'Supprimer',

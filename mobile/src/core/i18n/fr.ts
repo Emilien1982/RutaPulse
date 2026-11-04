@@ -198,7 +198,7 @@ export const fr = {
   'route.abandonChangesText': "L'itinéraire gardé ne change pas.",
   'route.zoneAbsentTitle': 'Zone absente',
   'route.zoneAbsentText':
-    "La zone de cet itinéraire n'est pas en service\u00A0: il ne peut pas être modifié.",
+    "La carte de cet itinéraire n'est pas disponible\u00A0: il ne peut pas être modifié.",
   'route.unreadableText':
     'Cet itinéraire ne peut pas être lu. Il reste dans la liste\u00A0: vous pouvez le renommer ou le supprimer.',
   'routes.tooNewTitle': 'Itinéraires indisponibles',
@@ -220,12 +220,13 @@ export const fr = {
     " carte, profil, terrain et difficulté indisponibles. Téléchargez la zone à nouveau pour les retrouver et pour modifier l'itinéraire.",
   'routes.noticeDeletedGpxText':
     ' carte, profil, terrain et difficulté indisponibles. Téléchargez la zone à nouveau pour les retrouver.',
-  'routes.noticeNotInService': "La zone {zone} n'est pas en service\u00A0:",
+  'routes.noticeNotInService': 'Zone {zone} inactive\u00A0:',
   'routes.noticeNotInServiceText':
-    " carte, profil, terrain et difficulté sont indisponibles pour l'instant.",
+    " carte, profil, terrain et difficulté indisponibles. RutaPulse n'utilise qu'une zone à la fois pour l'instant.",
   'routes.noticeOutside': 'Hors de vos zones\u00A0:',
   'routes.noticeOutsideText':
     ' D+, profil, terrain et difficulté indisponibles.',
+  'routes.noticeOutsideFound': 'Ce tracé est dans la zone {zone}.',
   'routes.noticeLeaves': 'Ce tracé sort de la zone {zone}\u00A0:',
   'routes.noticeLeavesText':
     ' D+, profil, terrain et difficulté indisponibles.',
@@ -238,7 +239,7 @@ export const fr = {
   'routes.rowLabel': '{name}, {distance}, montée {ascent}, {duration}, {meta}',
   'routes.problemOutside': 'Hors de vos zones',
   'routes.problemDeleted': 'Zone {zone} supprimée',
-  'routes.problemNotInService': 'Zone {zone} pas en service',
+  'routes.problemNotInService': 'Zone {zone} inactive',
   'routes.menuLabel': 'Actions de {name}',
   'routes.menuRename': 'Renommer',
   'routes.menuExport': 'Exporter en GPX',

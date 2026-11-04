@@ -13,8 +13,8 @@ import { useExportRoute } from '@/shared-data/routes/exportRoute';
 import { useRouteActions, useRoutes } from '@/shared-data/routes/useRoutes';
 import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
 import { useZoneInService } from '@/shared-data/zones/zoneInService';
-import { PlusIcon } from '@/ui/icons';
-import { ScreenFrame } from '@/ui/ScreenFrame';
+import { ImportFileIcon } from '@/ui/icons';
+import { ScreenFrame, TITLE_TOP } from '@/ui/ScreenFrame';
 import { border, colors, spacing, target, text } from '@/ui/theme';
 import { useRouteMenu } from '@/ui/useRouteMenu';
 
@@ -91,9 +91,16 @@ export function RoutesScreen({
 
   return (
     <View style={styles.screen}>
-      <ScreenFrame title={t('routes.title')}>{content}</ScreenFrame>
+      <ScreenFrame
+        title={t('routes.title')}
+        titleTop={Math.max(TITLE_TOP, insets.top + 66)}
+      >
+        {content}
+      </ScreenFrame>
       <Pressable
         testID="routes-import"
+        // Android redraws a changed borderStyle badly: another key, a new view.
+        key={gpxImport.busy ? 'busy' : 'idle'}
         accessibilityRole="button"
         accessibilityLabel={t('routes.importLabel')}
         accessibilityState={{ disabled: gpxImport.busy }}
@@ -108,7 +115,7 @@ export function RoutesScreen({
         {gpxImport.busy ? (
           <ReadingIcon color={colors.brown2} />
         ) : (
-          <PlusIcon color={colors.brown} size={18} />
+          <ImportFileIcon color={colors.brown} size={20} />
         )}
         <Text
           style={[styles.importText, gpxImport.busy && styles.importTextBusy]}

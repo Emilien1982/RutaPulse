@@ -28,18 +28,21 @@ import { formatRouteDate, zoneLine } from '@/core/routes/routeText';
 import { trackOfCreated } from '@/core/routes/track';
 import { canAttachZone, routeZoneStatus } from '@/core/routes/routeZone';
 import type { RouteZoneStatus } from '@/core/routes/routeZone';
-import type { Zone } from '@/core/zones/catalogue';
+import type { Catalogue, Zone } from '@/core/zones/catalogue';
+import { zonesCovering } from '@/core/zones/zonesCovering';
 import { useExportRoute } from '@/shared-data/routes/exportRoute';
 import {
   routeDetailKey,
   useRouteActions,
   useSavedRoute,
 } from '@/shared-data/routes/useRoutes';
+import { catalogueKey } from '@/shared-data/zones/useCatalogue';
 import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
 import { useZoneHold } from '@/shared-data/zones/zoneInService';
 import { Button } from '@/ui/Button';
 import { HandModeIcon, MoreIcon } from '@/ui/icons';
 import { RoutePreview } from '@/ui/RoutePreview';
+import { SignalMark } from '@/ui/SignalMark';
 import { border, colors, radius, spacing, text } from '@/ui/theme';
 import { useRouteMenu } from '@/ui/useRouteMenu';
 
@@ -448,7 +451,23 @@ function PlainInfos({
   );
   const data = useMemo(() => trackMapData(track), [track]);
   const zoneName = route.zone?.name ?? '';
+  // Outside every zone: the zone that holds the track, when the catalogue is
+  // already in memory (no request here).
+  const client = useQueryClient();
+  const catalogue = client.getQueryData<Catalogue>(catalogueKey);
+  const start = route.origin === 'gpx' ? route.track[0] : undefined;
+  const found =
+    status === 'outside' && catalogue && start
+      ? zonesCovering(catalogue.zones, start[0], start[1])[0]
+      : undefined;
   const notice = noticeOf(status, route.origin, zoneName);
+  if (status === 'outside' && catalogue) {
+    notice.body += ` ${
+      found
+        ? t('routes.noticeOutsideFound', { zone: found.name })
+        : t('routes.outsideNone')
+    }`;
+  }
   // The track leaves the zone: the map is there, the infos are not.
   const map =
     status === 'leaves' && zone ? (
@@ -552,10 +571,13 @@ function Notice({
 }) {
   return (
     <View testID="info-notice" accessibilityRole="alert" style={styles.notice}>
-      <Text style={[text.secondary, styles.noticeText]}>
-        <Text style={styles.bold}>{head}</Text>
-        {body}
-      </Text>
+      <View style={styles.noticeRow}>
+        <SignalMark size={24} testID="info-notice-icon" />
+        <Text style={[text.secondary, styles.noticeText, styles.noticeFlex]}>
+          <Text style={styles.bold}>{head}</Text>
+          {body}
+        </Text>
+      </View>
       {children}
     </View>
   );
@@ -587,6 +609,8 @@ const styles = StyleSheet.create({
     borderColor: colors.brown,
     borderRadius: radius.box,
   },
+  noticeRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 10 },
   noticeText: { color: colors.brown },
+  noticeFlex: { flex: 1 },
   bold: { fontWeight: '700' },
 });

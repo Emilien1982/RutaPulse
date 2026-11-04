@@ -2,7 +2,14 @@ import type { CameraRef } from '@maplibre/maplibre-react-native';
 import { useSelector } from '@tanstack/react-store';
 import { useLocalSearchParams, usePreventRemove, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { AccessibilityInfo, Alert, StyleSheet, Text, View } from 'react-native';
+import {
+  AccessibilityInfo,
+  Alert,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 
 import { canLoop, canUndo, type DraftAction } from '@/core/draft/draft';
 import { listLegs, summarize } from '@/core/draft/legs';
@@ -28,6 +35,8 @@ import {
 } from './DraftMarkers';
 import { DraftTools, ModePicker } from './DraftToolbar';
 import { mainGeometry } from './draftGeometry';
+import { fitView } from './fitView';
+import { routeBounds } from './infoGeometry';
 import { useDraftSession } from './DraftSession';
 import {
   RouteBubble,
@@ -387,6 +396,23 @@ function DraftView({ opening }: { opening?: OpeningView }) {
     [draft, legs, draggedId],
   );
 
+  // A reopened route ("Modifier") opens on its track: the box of the route,
+  // 48 of margin, under the top bar and above the bottom panel, once, as soon
+  // as the panel is measured.
+  const screenSize = useWindowDimensions();
+  const [bottomHeight, setBottomHeight] = useState(0);
+  const fitted = useRef(false);
+  useEffect(() => {
+    if (fitted.current || !reopened || opening || bottomHeight === 0) return;
+    fitted.current = true;
+    const bounds = routeBounds(draft, geometry.lines);
+    if (!bounds) return;
+    camera.current?.easeTo({
+      ...fitView(bounds, screenSize, { top: barHeight, bottom: bottomHeight }),
+      duration: 0,
+    });
+  }, [reopened, opening, bottomHeight, barHeight, draft, geometry, screenSize]);
+
   // Stable handlers for the annotations: they read the latest screen state
   // through a ref, so that the annotations are not drawn again for nothing.
   const latest = useRef<MarkerHandlers | null>(null);
@@ -536,7 +562,12 @@ function DraftView({ opening }: { opening?: OpeningView }) {
         />
       )}
 
-      <View style={styles.bottom} pointerEvents="box-none">
+      <View
+        testID="draft-bottom"
+        style={styles.bottom}
+        pointerEvents="box-none"
+        onLayout={(e) => setBottomHeight(e.nativeEvent.layout.height)}
+      >
         <View style={styles.attribution} pointerEvents="none">
           <Text style={text.attribution} maxFontSizeMultiplier={1}>
             {t('map.attribution')}

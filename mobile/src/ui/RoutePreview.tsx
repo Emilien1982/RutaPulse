@@ -13,6 +13,7 @@ export function RoutePreview({
   padding = 24,
   lineWidth = 5,
   dotRadius = 8,
+  background = mapColors.background,
 }: {
   track: readonly (readonly number[])[];
   width: number;
@@ -21,6 +22,8 @@ export function RoutePreview({
   /** Width of the route line; the casing is 3 wider. */
   lineWidth?: number;
   dotRadius?: number;
+  /** Color behind the track (the map background by default). */
+  background?: string;
 }) {
   if (track.length < 2) return null;
   let west = Infinity;
@@ -55,7 +58,7 @@ export function RoutePreview({
     <Svg
       width={width}
       height={height}
-      style={{ backgroundColor: mapColors.background }}
+      style={{ backgroundColor: background }}
       accessible={false}
     >
       {(

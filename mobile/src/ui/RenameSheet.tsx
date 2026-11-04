@@ -21,6 +21,7 @@ import {
 } from '@/core/routes/routeName';
 
 import { Button } from './Button';
+import { SignalMark } from './SignalMark';
 import { CloseIcon } from './icons';
 import { border, colors, radius, spacing, target, text } from './theme';
 
@@ -94,13 +95,16 @@ export function RenameSheet({ initialName, onSubmit, onCancel }: Props) {
           </View>
           <View style={styles.help}>
             {empty ? (
-              <Text
-                testID="rename-error"
-                accessibilityRole="alert"
-                style={[text.secondary, styles.error]}
-              >
-                {t('routes.renameEmpty')}
-              </Text>
+              <View style={styles.errorRow}>
+                <SignalMark filled testID="rename-error-icon" />
+                <Text
+                  testID="rename-error"
+                  accessibilityRole="alert"
+                  style={[text.secondary, styles.error]}
+                >
+                  {t('routes.renameEmpty')}
+                </Text>
+              </View>
             ) : count >= MAX_NAME_LENGTH ? (
               <Text testID="rename-max" style={text.secondary}>
                 {t('routes.renameMax')}
@@ -183,6 +187,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   countFull: { color: colors.brown, fontWeight: '700' },
+  errorRow: { flex: 1, flexDirection: 'row', alignItems: 'center', gap: 5 },
   error: { color: colors.danger, fontWeight: '700', flex: 1 },
   buttons: { flexDirection: 'row', gap: spacing.s3, marginTop: spacing.s3 },
   button: { flex: 1 },

@@ -259,7 +259,7 @@ describe('liste vide (maquette 40, état 2)', () => {
     await insertRoute(db, sampleCreated({ name: 'Seul' }));
     await open();
     await fireEvent.press(screen.getByLabelText('Actions de Seul'));
-    await press(lastAlert().buttons[2]);
+    await press(lastAlert().buttons[0]);
     await press(lastAlert().buttons[1]);
     expect(screen.getByText("Pas encore d'itinéraire")).toBeTruthy();
     expect(screen.queryByTestId(/^route-row-/)).toBeNull();
@@ -282,11 +282,11 @@ describe('menu (maquette 40, état 3 ; réponse 4)', () => {
     for (const a of [first, second]) {
       expect(a.title).toBe('Une');
       expect(a.buttons.map((b) => b.text)).toEqual([
-        'Renommer',
-        'Exporter en GPX',
         'Supprimer',
+        'Exporter en GPX',
+        'Renommer',
       ]);
-      expect(a.buttons[2]!.style).toBe('destructive');
+      expect(a.buttons[0]!.style).toBe('destructive');
     }
   });
 
@@ -339,7 +339,7 @@ describe('renommer (maquette 40, état 4)', () => {
   async function openSheet(label: string) {
     await open();
     await fireEvent.press(screen.getByLabelText(`Actions de ${label}`));
-    await press(lastAlert().buttons[0]);
+    await press(lastAlert().buttons[2]);
   }
   const input = () => screen.getByLabelText("Nom de l'itinéraire");
 
@@ -425,7 +425,7 @@ describe('supprimer (maquette 40, état 5)', () => {
   async function ask(label: string) {
     await open();
     await fireEvent.press(screen.getByLabelText(`Actions de ${label}`));
-    await press(lastAlert().buttons[2]);
+    await press(lastAlert().buttons[0]);
   }
 
   it("demande d'abord, avec les textes de la maquette", async () => {
@@ -518,7 +518,7 @@ describe('C8 : zone absente dans la liste (maquette 40, état 7a)', () => {
     await open();
     await fireEvent.press(screen.getByLabelText('Actions de Longemer'));
     expect(lastAlert().buttons).toHaveLength(3);
-    await press(lastAlert().buttons[0]);
+    await press(lastAlert().buttons[2]);
     await fireEvent.changeText(
       screen.getByLabelText("Nom de l'itinéraire"),
       'Lac',
@@ -528,7 +528,7 @@ describe('C8 : zone absente dans la liste (maquette 40, état 7a)', () => {
     expect(screen.getByText('Lac')).toBeTruthy();
     expect(screen.getByText('Zone Gérardmer supprimée')).toBeTruthy();
     await fireEvent.press(screen.getByLabelText('Actions de Lac'));
-    await press(lastAlert().buttons[2]);
+    await press(lastAlert().buttons[0]);
     await press(lastAlert().buttons[1]);
     expect(await listRoutes(db)).toHaveLength(0);
     expect(screen.getByText("Pas encore d'itinéraire")).toBeTruthy();

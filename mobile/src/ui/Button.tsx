@@ -31,10 +31,16 @@ export function Button({
 }: ButtonProps) {
   const isPrimary = variant === 'primary';
   const height = variant === 'download' ? target.stop : target.mainButton;
-  const textColor = isPrimary ? colors.onBrown : colors.brown;
+  const textColor = disabled
+    ? colors.brown2
+    : isPrimary
+      ? colors.onBrown
+      : colors.brown;
 
   return (
     <Pressable
+      // Android redraws a changed borderStyle badly: another key, a new view.
+      key={disabled ? 'off' : 'on'}
       testID={testID}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? label}
@@ -51,7 +57,7 @@ export function Button({
       ]}
     >
       {icon &&
-        (isPrimary ? (
+        (isPrimary && !disabled ? (
           <View style={styles.sun}>{icon(colors.brown)}</View>
         ) : (
           icon(textColor)
@@ -80,7 +86,13 @@ const styles = StyleSheet.create({
     borderWidth: border.normal,
     borderColor: colors.brown,
   },
-  disabled: { opacity: 0.5 },
+  // Off, not faded (mockup 40): light cream, dashed brown-2 border.
+  disabled: {
+    backgroundColor: colors.creamLight,
+    borderWidth: border.normal,
+    borderStyle: 'dashed',
+    borderColor: colors.brown2,
+  },
   sun: {
     width: 32,
     height: 32,

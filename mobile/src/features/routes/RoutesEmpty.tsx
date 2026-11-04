@@ -2,7 +2,7 @@
 // two ways to get a first route.
 
 import { StyleSheet, Text, View } from 'react-native';
-import Svg, { Circle, ClipPath, Defs, G, Rect } from 'react-native-svg';
+import Svg from 'react-native-svg';
 
 import { t } from '@/core/i18n/t';
 import { Button } from '@/ui/Button';
@@ -19,17 +19,6 @@ function Art() {
       preserveAspectRatio="xMidYMin meet"
       accessible={false}
     >
-      <Defs>
-        <ClipPath id="sky">
-          <Rect x="0" y="0" width="390" height="220" />
-        </ClipPath>
-      </Defs>
-      <G clipPath="url(#sky)">
-        <Circle cx="195" cy="220" r="90" fill={colors.mustard} />
-        <Rect x="90" y="172" width="210" height="4" fill={colors.cream} />
-        <Rect x="90" y="187" width="210" height="6" fill={colors.cream} />
-        <Rect x="90" y="203" width="210" height="7" fill={colors.cream} />
-      </G>
       <CyclistScene />
     </Svg>
   );

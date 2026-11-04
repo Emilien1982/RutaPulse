@@ -236,7 +236,7 @@ describe('the empty list', () => {
     await insertRoute(db, sampleCreated({ name: 'Seule' }));
     await open();
     await fireEvent.press(screen.getByTestId('route-menu-1'));
-    await press(lastAlert().buttons[2]);
+    await press(lastAlert().buttons[0]);
     await press(lastAlert().buttons[1]);
     expect(screen.getByTestId('routes-empty')).toBeTruthy();
   });
@@ -280,17 +280,17 @@ describe('a zone that is absent (C8)', () => {
     await open();
     await fireEvent.press(screen.getByTestId('route-menu-1'));
     expect(lastAlert().buttons.map((b) => b.text)).toEqual([
-      'Renommer',
-      'Exporter en GPX',
       'Supprimer',
+      'Exporter en GPX',
+      'Renommer',
     ]);
-    await press(lastAlert().buttons[0]);
+    await press(lastAlert().buttons[2]);
     await fireEvent.changeText(screen.getByTestId('rename-input'), 'Autre');
     await fireEvent.press(screen.getByTestId('rename-submit'));
     await settle();
     expect(screen.getByText('Autre')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('route-menu-1'));
-    await press(lastAlert().buttons[2]);
+    await press(lastAlert().buttons[0]);
     await press(lastAlert().buttons[1]);
     expect(await listRoutes(db)).toHaveLength(0);
   });
@@ -324,9 +324,9 @@ describe('the menu', () => {
     await fireEvent(screen.getByTestId('route-row-1'), 'longPress');
     expect(alert).toHaveBeenCalledTimes(2);
     expect(lastAlert().buttons.map((b) => b.text)).toEqual([
-      'Renommer',
-      'Exporter en GPX',
       'Supprimer',
+      'Exporter en GPX',
+      'Renommer',
     ]);
   });
 
@@ -368,7 +368,7 @@ describe('rename (mockup 40, state 4)', () => {
   async function openSheet(id: number) {
     await open();
     await fireEvent.press(screen.getByTestId(`route-menu-${id}`));
-    await press(lastAlert().buttons[0]);
+    await press(lastAlert().buttons[2]);
   }
   const input = () => screen.getByTestId('rename-input');
   const submit = () => screen.getByTestId('rename-submit');
@@ -458,7 +458,7 @@ describe('delete (mockup 40, state 5)', () => {
   async function askDelete(id: number) {
     await open();
     await fireEvent.press(screen.getByTestId(`route-menu-${id}`));
-    await press(lastAlert().buttons[2]);
+    await press(lastAlert().buttons[0]);
   }
 
   it('asks first, with the texts of the mockup', async () => {

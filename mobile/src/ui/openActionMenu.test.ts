@@ -69,11 +69,11 @@ describe('openActionMenu on Android', () => {
     const [title, , buttons, options] = alert.mock.calls[0]!;
     expect(title).toBe('Boucle');
     expect(buttons!.map((b) => b.text)).toEqual([
-      'Renommer',
-      'Exporter en GPX',
       'Supprimer',
+      'Exporter en GPX',
+      'Renommer',
     ]);
-    expect(buttons![2]!.style).toBe('destructive');
+    expect(buttons![0]!.style).toBe('destructive');
     expect(options).toEqual({ cancelable: true });
     buttons![0]!.onPress!();
     buttons![1]!.onPress!();

@@ -285,7 +285,7 @@ describe('C8: zone deleted', () => {
     mockInstalled = [nancy(5, true), mockZone];
     await open();
     expect(screen.getByTestId('info-notice')).toHaveTextContent(
-      /n'est pas en service/,
+      /Zone Nancy inactive/,
     );
     expect(screen.queryByTestId('info-modify')).toBeNull();
     expect(mockHeights).not.toHaveBeenCalled();

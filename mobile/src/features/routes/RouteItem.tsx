@@ -49,6 +49,7 @@ export function RouteItem({
               padding={9}
               lineWidth={3}
               dotRadius={4}
+              background={colors.sand}
             />
           </View>
         </View>
