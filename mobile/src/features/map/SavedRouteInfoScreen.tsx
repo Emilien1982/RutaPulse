@@ -5,7 +5,13 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  AccessibilityInfo,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { Draft } from '@/core/draft/draft';
@@ -24,6 +30,7 @@ import type {
   LonLat,
   SavedRoute,
 } from '@/core/routes/savedRoute';
+import { announcement } from '@/core/routes/routeName';
 import { formatRouteDate, zoneLine } from '@/core/routes/routeText';
 import { trackOfCreated } from '@/core/routes/track';
 import { canAttachZone, routeZoneStatus } from '@/core/routes/routeZone';
@@ -111,6 +118,15 @@ function useInfoMenu(
   const menu = useRouteMenu({
     rename: actions.rename,
     remove: actions.remove,
+    // Back to the list, which shows the copy at the top.
+    duplicate: async (id) => {
+      const copy = await actions.duplicate(id);
+      if (!copy) return;
+      router.dismissTo('/routes');
+      AccessibilityInfo.announceForAccessibility(
+        announcement(t('routes.duplicatedAnnounce', { name: copy.name })),
+      );
+    },
     export: (id) => void exportRoute(id),
     onRemoved: () => router.dismissTo('/routes'),
   });
@@ -301,7 +317,7 @@ function ModifyButton({ routeId }: { routeId: number }) {
       accessibilityLabel={t('info.modifyLabel')}
       icon={(color) => <HandModeIcon color={color} />}
       onPress={() => {
-        setDraftTarget(routeId);
+        setDraftTarget({ kind: 'route', id: routeId });
         router.push('/draft');
       }}
     />

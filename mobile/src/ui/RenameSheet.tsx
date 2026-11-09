@@ -2,10 +2,11 @@
 // The name is selected when it opens, so that typing replaces it. The field
 // takes 60 characters at most (counted as displayed characters).
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -24,6 +25,8 @@ import { Button } from './Button';
 import { SignalMark } from './SignalMark';
 import { CloseIcon } from './icons';
 import { border, colors, radius, spacing, target, text } from './theme';
+
+const FOCUS_AGAIN_MS = 350;
 
 type Props = {
   initialName: string;
@@ -44,6 +47,18 @@ function cut(value: string): string {
 
 export function RenameSheet({ initialName, onSubmit, onCancel }: Props) {
   const [value, setValue] = useState(initialName);
+  const input = useRef<{ focus: () => void; blur: () => void } | null>(null);
+  // `autoFocus` alone leaves the keyboard closed on Android when this Modal
+  // opens just after the menu's Modal: focus again once that one has gone.
+  useEffect(() => {
+    if (Platform.OS !== 'android') return;
+    const timer = setTimeout(() => {
+      // Already focused, `focus()` alone asks nothing of the keyboard.
+      input.current?.blur();
+      input.current?.focus();
+    }, FOCUS_AGAIN_MS);
+    return () => clearTimeout(timer);
+  }, []);
   const check = checkName(value);
   // The name as it will be kept: the same count as the rule of the empty name.
   const count = [...normalizeName(value)].length;
@@ -71,6 +86,9 @@ export function RenameSheet({ initialName, onSubmit, onCancel }: Props) {
           </Text>
           <View style={[styles.field, empty && styles.fieldError]}>
             <TextInput
+              ref={(node) => {
+                input.current = node;
+              }}
               testID="rename-input"
               accessibilityLabel={t('routes.renameField')}
               value={value}

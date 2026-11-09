@@ -16,17 +16,11 @@ export type DraftTarget = { kind: 'route'; id: number } | TrailTarget;
 
 let target: DraftTarget | null = null;
 
-/** A number is the id of a saved route to modify. */
-export function setDraftTarget(next: DraftTarget | number | null): void {
-  target = typeof next === 'number' ? { kind: 'route', id: next } : next;
+export function setDraftTarget(next: DraftTarget | null): void {
+  target = next;
 }
 
-/** The id of the saved route to modify, if that is the target. */
-export function peekDraftTarget(): number | null {
-  return target?.kind === 'route' ? target.id : null;
-}
-
-/** The circuit to start from, if that is the target. */
-export function peekDraftTrail(): TrailTarget | null {
-  return target?.kind === 'trail' ? target : null;
+/** What the creation starts from, or null for an empty creation. */
+export function peekDraftTarget(): DraftTarget | null {
+  return target;
 }

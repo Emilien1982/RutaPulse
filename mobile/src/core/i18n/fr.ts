@@ -247,6 +247,7 @@ export const fr = {
   'routes.menuLabel': 'Actions de {name}',
   'routes.menuRename': 'Renommer',
   'routes.menuExport': 'Exporter en GPX',
+  'routes.menuDuplicate': 'Dupliquer',
   'routes.menuDelete': 'Supprimer',
   'routes.menuCancel': 'Annuler',
   'routes.emptyTitle': "Pas encore d'itinéraire",
@@ -275,6 +276,9 @@ export const fr = {
   'routes.importTooBig':
     'Ce fichier pèse {size}. RutaPulse importe les GPX de 20 Mo au plus.',
   'routes.importOk': 'OK',
+  'routes.copySuffix': ' (copie)',
+  'routes.copySuffixN': ' (copie {n})',
+  'routes.duplicatedAnnounce': 'Copie créée\u00A0: {name}.',
   'routes.importedAnnounce': 'GPX importé\u00A0: {name}.',
   'routes.outsideTitle': 'GPX hors de vos zones',
   'routes.outsideText':

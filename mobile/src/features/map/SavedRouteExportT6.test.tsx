@@ -15,6 +15,8 @@ import {
 import { sampleCreated, sampleGpx } from '@/core/routes/testing/sampleRoutes';
 import type { Zone } from '@/core/zones/catalogue';
 
+import { menuEntry } from '@/ui/testing/androidMenu';
+
 import { SavedRouteInfoScreen } from './SavedRouteInfoScreen';
 
 const mockPush = jest.fn();
@@ -167,14 +169,6 @@ beforeEach(async () => {
 });
 afterEach(() => db.close());
 
-let alert: jest.SpyInstance;
-const lastAlert = () => {
-  const [title, , buttons] = alert.mock.calls.at(-1)!;
-  return { title, buttons } as {
-    title: string;
-    buttons: { text: string; onPress?: () => void }[];
-  };
-};
 async function press(button: { onPress?: () => void } | undefined) {
   await act(async () => button?.onPress?.());
   await act(async () => {
@@ -189,7 +183,7 @@ beforeEach(() => {
     value: 'android',
     configurable: true,
   });
-  alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+  jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
 });
 afterEach(() => {
   Object.defineProperty(Platform, 'OS', {
@@ -202,7 +196,7 @@ afterEach(() => {
 describe('"Exporter en GPX" in the Infos menu', () => {
   async function exportFromMenu() {
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[1]);
+    await press(menuEntry('export'));
   }
 
   it('shares the GPX of a created route, with altitudes on a usable zone', async () => {

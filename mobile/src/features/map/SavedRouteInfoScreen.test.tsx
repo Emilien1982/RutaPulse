@@ -226,7 +226,7 @@ describe('C6: saved track, infos calculated again', () => {
     await insertRoute(db, sampleCreated());
     await open();
     fireEvent.press(screen.getByTestId('info-modify'));
-    expect(peekDraftTarget()).toBe(1);
+    expect(peekDraftTarget()).toEqual({ kind: 'route', id: 1 });
     expect(mockPush).toHaveBeenCalledWith('/draft');
   });
 

@@ -263,7 +263,7 @@ describe('C6: saved track, infos calculated again (fake zone)', () => {
     await insertRoute(db, pathRoute());
     await open();
     await fireEvent.press(screen.getByTestId('info-modify'));
-    expect(peekDraftTarget()).toBe(1);
+    expect(peekDraftTarget()).toEqual({ kind: 'route', id: 1 });
     expect(mockPush).toHaveBeenCalledWith('/draft');
   });
 

@@ -447,7 +447,7 @@ describe('C9: "Enregistrer"', () => {
     await act_(() => fireEvent.press(screen.getByTestId('route-save')));
     const [row] = await listRoutes(db);
     holder.current = null;
-    setDraftTarget(row!.id);
+    setDraftTarget({ kind: 'route', id: row!.id });
     await render(
       <QueryClientProvider client={new QueryClient()}>
         <DraftRoot>

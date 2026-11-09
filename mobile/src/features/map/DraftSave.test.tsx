@@ -417,7 +417,7 @@ describe('C7: "Modifier"', () => {
 
   it('through the root of the layout: "Modifier" reopens the saved route', async () => {
     await insertRoute(db, saved());
-    setDraftTarget(1);
+    setDraftTarget({ kind: 'route', id: 1 });
     await render(
       <QueryClientProvider client={new QueryClient()}>
         <DraftRoot>

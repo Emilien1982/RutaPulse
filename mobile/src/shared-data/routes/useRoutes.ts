@@ -12,6 +12,7 @@ import {
   attachZone,
   countRoutesByZone,
   deleteRoute,
+  duplicateRoute,
   getRoute,
   insertRoute,
   listRoutes,
@@ -112,6 +113,15 @@ export function createRouteActions(queryClient: QueryClient) {
         queryClient.invalidateQueries({ queryKey: routeDetailKey(id) }),
       ]);
       return changed;
+    },
+    /** Returns the id and the name of the copy, or null if the route is gone. */
+    duplicate: async (id: number, now: number = Date.now()) => {
+      const db = await getRoutesDb();
+      const copyId = await duplicateRoute(db, id, now);
+      await queryClient.invalidateQueries({ queryKey: routesKey });
+      if (copyId === null) return null;
+      const copy = await getRoute(db, copyId);
+      return { id: copyId, name: copy?.name ?? '' };
     },
     remove: async (id: number) => {
       const changed = await deleteRoute(await getRoutesDb(), id);

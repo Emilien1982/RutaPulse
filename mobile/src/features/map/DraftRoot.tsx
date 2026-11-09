@@ -5,16 +5,18 @@
 import { useEffect, useState, type ReactNode } from 'react';
 
 import { DraftSession } from './DraftSession';
-import { peekDraftTarget, peekDraftTrail, setDraftTarget } from './draftTarget';
+import { peekDraftTarget, setDraftTarget } from './draftTarget';
 
 export function DraftRoot({ children }: { children: ReactNode }) {
-  const [routeId] = useState(peekDraftTarget);
-  const [trail] = useState(peekDraftTrail);
+  const [target] = useState(peekDraftTarget);
   // Read once, then cleared at once: an older creation closing later cannot
   // clear the target of a newer one.
   useEffect(() => setDraftTarget(null), []);
   return (
-    <DraftSession routeId={routeId ?? undefined} trail={trail ?? undefined}>
+    <DraftSession
+      routeId={target?.kind === 'route' ? target.id : undefined}
+      trail={target?.kind === 'trail' ? target : undefined}
+    >
       {children}
     </DraftSession>
   );

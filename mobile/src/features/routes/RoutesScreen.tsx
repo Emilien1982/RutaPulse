@@ -2,9 +2,17 @@
 // and their actions (ADR 0019, sections 3, 6, 10 and 13).
 
 import { useRouter } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import {
+  AccessibilityInfo,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announcement } from '@/core/routes/routeName';
 import { t } from '@/core/i18n/t';
 import type { Zone } from '@/core/zones/catalogue';
 import { RoutesTooNewError } from '@/core/routes/migrations';
@@ -14,7 +22,7 @@ import { useRouteActions, useRoutes } from '@/shared-data/routes/useRoutes';
 import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
 import { useZoneInService } from '@/shared-data/zones/zoneInService';
 import { ImportFileIcon } from '@/ui/icons';
-import { ScreenFrame, TITLE_TOP } from '@/ui/ScreenFrame';
+import { ScreenFrame, TITLE_TOP, type FrameScroll } from '@/ui/ScreenFrame';
 import { border, colors, spacing, target, text } from '@/ui/theme';
 import { useRouteMenu } from '@/ui/useRouteMenu';
 
@@ -45,10 +53,33 @@ export function RoutesScreen({
   const menu = useRouteMenu({
     rename: actions.rename,
     remove: actions.remove,
+    duplicate: async (id) => {
+      const copy = await actions.duplicate(id);
+      if (copy) {
+        AccessibilityInfo.announceForAccessibility(
+          announcement(t('routes.duplicatedAnnounce', { name: copy.name })),
+        );
+      }
+    },
     export: (id) => void exportRoute(id),
   });
 
   const routes = query.data;
+
+  // A new route (a copy) arrives at the top: bring the list back there, also
+  // when the copy was made from the Infos screen (ADR 0020, section 7 bis).
+  const scroll = useRef<FrameScroll | null>(null);
+  const newestId = routes ? Math.max(0, ...routes.map((r) => r.id)) : null;
+  const seenId = useRef<number | null>(null);
+  useEffect(() => {
+    if (newestId === null) return;
+    const grew = seenId.current !== null && newestId > seenId.current;
+    seenId.current = newestId;
+    if (!grew) return;
+    void AccessibilityInfo.isReduceMotionEnabled().then((reduced) =>
+      scroll.current?.scrollTo({ y: 0, animated: !reduced }),
+    );
+  }, [newestId]);
   const nowYear = new Date().getFullYear();
   const installedIds = installed?.map((marker) => marker.zone.id) ?? [];
 
@@ -94,6 +125,9 @@ export function RoutesScreen({
       <ScreenFrame
         title={t('routes.title')}
         titleTop={Math.max(TITLE_TOP, insets.top + 66)}
+        scrollRef={(node) => {
+          scroll.current = node;
+        }}
       >
         {content}
       </ScreenFrame>

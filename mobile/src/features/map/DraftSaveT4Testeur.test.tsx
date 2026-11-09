@@ -548,8 +548,8 @@ describe('C7: the hand-over by draftTarget', () => {
 
   it('the target is cleared as soon as the creation is mounted', async () => {
     await insertRoute(db, saved());
-    setDraftTarget(1);
-    expect(peekDraftTarget()).toBe(1);
+    setDraftTarget({ kind: 'route', id: 1 });
+    expect(peekDraftTarget()).toEqual({ kind: 'route', id: 1 });
     await openRoot();
     expect(peekDraftTarget()).toBeNull();
     // And the creation did open that route.
@@ -558,7 +558,7 @@ describe('C7: the hand-over by draftTarget', () => {
 
   it('a new creation after a reopened one starts empty', async () => {
     await insertRoute(db, saved());
-    setDraftTarget(1);
+    setDraftTarget({ kind: 'route', id: 1 });
     await openRoot();
     expect(session.store.state.draft.points.length).toBeGreaterThan(0);
     await screen.unmount();

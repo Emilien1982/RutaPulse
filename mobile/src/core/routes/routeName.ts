@@ -89,3 +89,20 @@ export function uniqueDefaultName(
     n++;
   }
 }
+
+/**
+ * Name of a copy (ADR 0020, section 7 bis): `name (copie)`, else
+ * `name (copie 2)`, `name (copie 3)`... the first one free. The name is not
+ * parsed: the copy of "X (copie)" is "X (copie) (copie)". A long name is
+ * shortened so that the suffix stays whole, at 60 characters at most.
+ */
+export function copyName(name: string, existing: readonly string[]): string {
+  const taken = new Set(existing);
+  for (let n = 1; ; n++) {
+    const suffix =
+      n === 1 ? t('routes.copySuffix') : t('routes.copySuffixN', { n });
+    const room = MAX_NAME_LENGTH - [...suffix].length;
+    const copy = `${[...name].slice(0, room).join('').trimEnd()}${suffix}`;
+    if (!taken.has(copy)) return copy;
+  }
+}

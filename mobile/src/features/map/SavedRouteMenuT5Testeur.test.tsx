@@ -17,6 +17,8 @@ import {
 import { sampleCreated } from '@/core/routes/testing/sampleRoutes';
 import type { Zone } from '@/core/zones/catalogue';
 
+import { menuEntry, menuTexts } from '@/ui/testing/androidMenu';
+
 import { SavedRouteInfoScreen } from './SavedRouteInfoScreen';
 
 const mockPush = jest.fn();
@@ -175,15 +177,17 @@ afterEach(() => {
 });
 
 describe('menu de /route/[id]', () => {
-  it('Android : mêmes trois actions que la liste, titre = nom', async () => {
+  it('Android : mêmes quatre actions que la liste, titre = nom', async () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    expect(lastAlert().title).toBe('Boucle');
-    expect(lastAlert().buttons.map((b) => b.text)).toEqual([
-      'Supprimer',
-      'Exporter en GPX',
+    expect(alert).not.toHaveBeenCalled();
+    expect(screen.getAllByText('Boucle').length).toBeGreaterThan(1);
+    expect(menuTexts()).toEqual([
       'Renommer',
+      'Dupliquer',
+      'Exporter en GPX',
+      'Supprimer',
     ]);
   });
 
@@ -196,19 +200,20 @@ describe('menu de /route/[id]', () => {
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
     const opts = sheet.mock.calls[0]![0];
-    expect(opts.options.slice(0, 3)).toEqual([
+    expect(opts.options.slice(0, 4)).toEqual([
       'Renommer',
+      'Dupliquer',
       'Exporter en GPX',
       'Supprimer',
     ]);
-    expect(opts.destructiveButtonIndex).toBe(2);
+    expect(opts.destructiveButtonIndex).toBe(3);
   });
 
   it('renommer met le titre à jour aussitôt', async () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[2]);
+    await press(menuEntry('rename'));
     await fireEvent.changeText(
       screen.getByLabelText("Nom de l'itinéraire"),
       'Été 🌲',
@@ -225,7 +230,7 @@ describe('menu de /route/[id]', () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[2]);
+    await press(menuEntry('rename'));
     await fireEvent.changeText(
       screen.getByLabelText("Nom de l'itinéraire"),
       '  ',
@@ -239,7 +244,7 @@ describe('menu de /route/[id]', () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[0]);
+    await press(menuEntry('delete'));
     await press(lastAlert().buttons[0]);
     expect(await listRoutes(db)).toHaveLength(1);
     expect(mockDismissTo).not.toHaveBeenCalled();
@@ -250,7 +255,7 @@ describe('menu de /route/[id]', () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[0]);
+    await press(menuEntry('delete'));
     expect(lastAlert().message).toBe(
       "L'itinéraire sera effacé du téléphone. Pour le garder ailleurs, exportez-le d'abord en GPX.",
     );
@@ -261,12 +266,12 @@ describe('menu de /route/[id]', () => {
     expect(mockBack).not.toHaveBeenCalled();
   });
 
-  it('C8 : zone supprimée, le menu « ⋮ » reste (renommer, supprimer)', async () => {
+  it('C8 : zone supprimée, le menu « ⋮ » reste (renommer, dupliquer, exporter, supprimer)', async () => {
     await insertRoute(db, sampleCreated({ name: 'Longemer' }));
     mockZone = null;
     mockInstalled = [];
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    expect(lastAlert().buttons).toHaveLength(3);
+    expect(menuTexts()).toHaveLength(4);
   });
 });
