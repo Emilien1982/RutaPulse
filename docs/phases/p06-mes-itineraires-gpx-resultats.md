@@ -91,7 +91,8 @@ vérification des corrections sur `9ffb1d4`, B3 sur `03c0ed5` (Android).
 | `f96a1a0` | correction de la CI | 41750151434 | succès |
 | `9ffb1d4` | corrections T8 | 41752970952 | succès |
 | `03c0ed5` | correction B3 | 42573336098 | annulé (remplacé par le run suivant) |
-| `7a70fc7` | maquette 40 alignée, code de B3 inclus | 42573388157 | voir le message de fin au pilote |
+| `7a70fc7` | maquette 40 alignée | 42573388157 | annulé (remplacé par le run suivant) |
+| `43e2605` | résultats, tout le code de la phase dont B3 | 42573593514 | **succès** |
 
 ## Écarts et réserves
 
