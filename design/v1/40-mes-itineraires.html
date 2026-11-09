@@ -32,19 +32,26 @@
    3. Actions d'un itinéraire : menu « ⋮ » ouvert (menu natif).
    4. Renommer : feuille posée sur le clavier. Variantes : nom vide, 60 caractères.
    5. Confirmation de suppression (boîte native).
-   6. Import : a) refus (boîte native) ; b) import réussi (Infos du GPX, sans
-      « Modifier ») ; c) GPX hors de vos zones (feuille de l'écran 52) ;
-      d) Infos d'un GPX hors zone.
+   6. Import : a) refus (boîte native) ; b) import réussi (Infos du GPX, avec
+      « Modifier » depuis la phase 7) ; c) GPX hors de vos zones (feuille de
+      l'écran 52) ; d) Infos d'un GPX hors zone (sans « Modifier »).
    7. Zone supprimée (C8) : a) la liste ; b) les Infos.
    8. Après « Enregistrer » : Infos avec le nom par défaut en titre. Variantes :
       barre du haut de la création (Enregistrer actif, inactif, « Modifier »).
-  Textes exacts, règles, choix et questions : note en bas de page.
+   9. Phase 7 : origines « circuit balisé » et « GPX modifié » dans la liste,
+      et la création ouverte par « Modifier » d'un GPX.
+  Textes exacts, règles, choix et questions : note en bas de page (phase 6),
+  et sous l'écran 9 (phase 7).
+
+  COMPLÉTÉ EN T1 DE LA PHASE 7 (9 novembre 2026) : écrans 6b et 6d mis à jour,
+  écran 9 ajouté. Le reste ne change pas. Circuits : v1/12.
 
   Inchangé depuis la v1 d'origine : bandeau (soleil rayé sur quatre bandes),
   bouton « Importer un GPX » en haut à droite, lignes en carte crème clair,
   médaillons dessinés depuis le tracé, menu natif non décoré, quatre onglets.
   Noms et chiffres de la liste en police du système (Jost est trop large).
-  La ligne « d'après un circuit balisé » de la v1 d'origine arrive en phase 7.
+  La ligne « d'après un circuit balisé » de la v1 d'origine devient, en
+  phase 7, l'origine « circuit balisé, le 9 nov. » (écran 9).
   Valeurs : design/tokens.md. Noms, dates et chiffres : exemples.
 -->
 <style>
@@ -694,7 +701,7 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
 
 
 <!-- ========== ÉCRAN 6b : import réussi ========== -->
-<div class="cartouche"><b>6b. Import réussi : l'écran Infos du GPX s'ouvre</b><br>Comme après « Enregistrer ». Titre : le nom lu dans le fichier. Pas de bouton « Modifier » pour un GPX importé (décision du 3 nov.). « Démarrer le suivi » viendra ici en phase 8. Retour : la liste, le GPX en haut.</div>
+<div class="cartouche"><b>6b. Import réussi : l'écran Infos du GPX s'ouvre</b><br>Comme après « Enregistrer ». Titre : le nom lu dans le fichier. « Démarrer le suivi » viendra ici en phase 8. Retour : la liste, le GPX en haut.<br><i>Phase 7 :</i> « Modifier » apparaît, au même endroit que pour un itinéraire créé (8a). Il découpe le GPX en points de passage et ouvre la création, tracé intact (écran 9b). Il est là dès qu'une partie du tracé est dans une zone prête ; la partie hors zone garde son tracé (v1/12, écran 8).</div>
 <div class="ecran">
 
 <div class="barre-etat"><span>10:12</span>
@@ -745,7 +752,10 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
   <div class="i-legende"><span><i style="background:#5A5A5A"></i>Route 18 %</span><span><i style="background:#7A4A1E"></i>Piste 47 %</span><span><i style="background:#C62828"></i>Sentier 35 %</span></div>
   <div class="difficulte"><b>Difficulté</b> : S1 (facile) sur 6 % ; S2 (moyen) sur 3 % ; <span class="t2">inconnue sur 91 %, la carte la donne rarement.</span></div>
 </div>
-<!-- Pas de rangée d'actions en phase 6 : ni « Modifier » (GPX importé), ni « Démarrer le suivi » (phase 8). -->
+<!-- Phase 7 : « Modifier » (GPX importé). « Démarrer le suivi » viendra à sa droite en phase 8. -->
+<div class="actions geo">
+  <div class="secondaire" role="button" aria-label="Modifier l'itinéraire"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-1 11-11-3-3L5 16z"/></svg>Modifier</div>
+</div>
 <div class="indicateur fonce"></div>
 </div>
 
@@ -874,7 +884,7 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
 
 
 <!-- ========== ÉCRAN 6d : Infos d'un GPX hors zone ========== -->
-<div class="cartouche"><b>6d. Infos d'un GPX hors de vos zones</b><br>Après « Plus tard » ou « Fermer » de la feuille (6c), et à chaque ouverture tant que la zone manque. Distance et durée seulement. À la place des altitudes et du profil : une carte « Hors de vos zones », qui dit ce qui manque et où trouver la zone.</div>
+<div class="cartouche"><b>6d. Infos d'un GPX hors de vos zones</b><br>Après « Plus tard » ou « Fermer » de la feuille (6c), et à chaque ouverture tant que la zone manque. Distance et durée seulement. À la place des altitudes et du profil : une carte « Hors de vos zones », qui dit ce qui manque et où trouver la zone.<br><i>Phase 7 :</i> pas de « Modifier » (la création a besoin d'une zone). La carte le dit, en une phrase de plus. Dès que la zone est prête, « Modifier » apparaît (6b).</div>
 <div class="ecran">
 
 <div class="barre-etat"><span>10:21</span>
@@ -911,7 +921,7 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
   <div class="manque" role="note">
     <div class="haut">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" stroke-dasharray="3.2 2.6"/><path d="M12 7v6"/><circle cx="12" cy="16.8" r="1.3" fill="#3A1F0F" stroke="none"/></svg>
-      <div><b>Hors de vos zones&nbsp;:</b> D+, profil, terrain et difficulté indisponibles. Ce tracé est dans la zone Metz.</div>
+      <div><b>Hors de vos zones&nbsp;:</b> D+, profil, terrain et difficulté indisponibles. Ce tracé est dans la zone Metz. Téléchargez-la pour modifier l'itinéraire.</div>
     </div>
     <div class="btn geo" role="button"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Voir les zones</div>
   </div>
@@ -1153,6 +1163,123 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
     <div class="dlg-boutons"><span role="button">Continuer</span><span role="button">Abandonner</span></div>
   </div>
   <div class="var-texte" style="margin-top:8px">Sans changement, la croix ferme tout de suite. En création neuve, la boîte actuelle reste (« Abandonner cet itinéraire ? », <code>route.abandonTitle</code>).</div>
+</div>
+
+
+<!-- ========== ÉCRAN 9a (phase 7) : origines « circuit balisé » et « GPX modifié » ========== -->
+<div class="cartouche"><b>9a. Phase 7 : la liste, avec les nouvelles origines</b><br>Rien ne change dans la ligne, sauf l'origine. En haut, un circuit gardé tel quel : « circuit balisé, le 9 nov. ». Puis un GPX modifié : il a remplacé le GPX importé (décision du 9 nov.), d'où « GPX modifié le 9 nov. ». En 3e ligne, un circuit gardé puis modifié plus tard : « circuit modifié le 8 nov. ».</div>
+<div class="ecran">
+
+<svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <defs><clipPath id="sol-9a"><rect x="0" y="0" width="390" height="164"/></clipPath></defs>
+  <g clip-path="url(#sol-9a)">
+    <circle cx="344" cy="164" r="36" fill="#F0A830"/>
+    <rect x="300" y="143" width="90" height="3" fill="#F4E4C1"/>
+    <rect x="300" y="152" width="90" height="4" fill="#F4E4C1"/>
+  </g>
+  <rect x="0" y="164" width="390" height="9" fill="#F0A830"/>
+  <rect x="0" y="173" width="390" height="9" fill="#E2652B"/>
+  <rect x="0" y="182" width="390" height="9" fill="#B5452A"/>
+  <rect x="0" y="191" width="390" height="9" fill="#3A1F0F"/>
+</svg>
+
+<div class="barre-etat"><span>10:08</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<div class="importer geo" role="button" aria-label="Importer un fichier GPX"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M12 11v6M9 14h6"/></svg>Importer un GPX</div>
+<h1 class="geo">MES ITINÉRAIRES</h1>
+
+<div class="liste">
+  <div class="ligne" aria-label="Petite Suisse Lorraine à VTT, 34,9 km, montée 478 m, 2 h 54, zone Nancy, circuit balisé, le 9 nov.">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 30 C20 24 40 40 74 30 V74 H-2 Z" fill="#A9B56A"/><path d="M62 14 C56 30 66 46 58 74" fill="none" stroke="#2D6A66" stroke-width="5"/><path d="M22 52 C14 46 10 36 12 26 C14 16 24 12 34 12 C44 12 50 18 50 28 C50 38 54 46 48 54 C42 60 30 60 22 52 Z" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linejoin="round"/><path d="M22 52 C14 46 10 36 12 26 C14 16 24 12 34 12 C44 12 50 18 50 28 C50 38 54 46 48 54 C42 60 30 60 22 52 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/><circle cx="22" cy="52" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Petite Suisse Lorraine à VTT</div>
+      <div class="chiffres"><b>34,9 km</b> · D+ 478 m · 2 h 54</div>
+      <div class="meta">Zone Nancy · circuit balisé, le 9 nov.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Petite Suisse Lorraine à VTT"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne" aria-label="Rando VTT Ludres, 41,6 km, montée 652 m, 2 h 38, zone Nancy, GPX modifié le 9 nov.">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M20 -2 H74 V40 C50 30 30 30 20 -2 Z" fill="#A9B56A"/><path d="M-2 50 C24 46 48 54 74 48" fill="none" stroke="#FBF1DA" stroke-width="4"/><path d="M8 50 L20 30 L34 26 L40 12 L58 16 L62 34 L50 44 L56 60 L30 62 Z" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linejoin="round"/><path d="M8 50 L20 30 L34 26 L40 12 L58 16 L62 34 L50 44 L56 60 L30 62 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/><circle cx="8" cy="50" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Rando VTT Ludres</div>
+      <div class="chiffres"><b>41,6 km</b> · D+ 652 m · 2 h 38</div>
+      <div class="meta">Zone Nancy · GPX modifié le 9 nov.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Rando VTT Ludres"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne" aria-label="Les Trois Vallées, 19,2 km, montée 311 m, 1 h 16, zone Nancy, circuit modifié le 8 nov.">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 36 C20 30 40 44 74 34 V74 H-2 Z" fill="#A9B56A"/><path d="M12 58 C14 46 10 38 14 30 C20 20 32 22 40 18 C50 14 56 16 62 10" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linecap="round"/><path d="M12 58 C14 46 10 38 14 30 C20 20 32 22 40 18 C50 14 56 16 62 10" fill="none" stroke="#C2007A" stroke-width="4" stroke-linecap="round"/><circle cx="12" cy="58" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/><circle cx="62" cy="10" r="5" fill="#3A1F0F" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Les Trois Vallées</div>
+      <div class="chiffres"><b>19,2 km</b> · D+ 311 m · 1 h 16</div>
+      <div class="meta">Zone Nancy · circuit modifié le 8 nov.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Les Trois Vallées"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 20 C20 14 40 26 74 18 V48 C50 56 20 44 -2 52 Z" fill="#A9B56A"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#FBF1DA" stroke-width="7" stroke-linejoin="round"/><path d="M40 60 C40 50 50 46 50 38 S46 22 40 18 C32 20 22 22 14 24 C14 32 13 38 12 44 C20 50 26 54 33 56 Z" fill="none" stroke="#C2007A" stroke-width="4" stroke-linejoin="round"/><circle cx="40" cy="60" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Itinéraire du 3 nov.</div>
+      <div class="chiffres"><b>25,1 km</b> · D+ 421 m · 1 h 35</div>
+      <div class="meta">Zone Nancy · créé le 3 nov.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Itinéraire du 3 nov."><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+  <div class="ligne">
+    <div class="medaillon"><svg viewBox="0 0 72 72"><rect width="72" height="72" fill="#F7DDA6"/><path d="M-2 -2 H40 C34 20 50 40 30 74 H-2 Z" fill="#A9B56A"/><path d="M58 -2 C50 24 66 44 56 74" fill="none" stroke="#2D6A66" stroke-width="5"/><path d="M24 58 C14 50 8 40 10 28 C12 16 24 10 36 10 C48 10 52 22 50 34 C48 46 52 54 44 60 C38 64 30 63 24 58 Z" fill="none" stroke="#FBF1DA" stroke-width="7"/><path d="M24 58 C14 50 8 40 10 28 C12 16 24 10 36 10 C48 10 52 22 50 34 C48 46 52 54 44 60 C38 64 30 63 24 58 Z" fill="none" stroke="#C2007A" stroke-width="4"/><circle cx="24" cy="58" r="5" fill="#146C2E" stroke="#FBF1DA" stroke-width="2"/></svg></div>
+    <div class="texte">
+      <div class="nom">Tour de la forêt de Haye</div>
+      <div class="chiffres"><b>31,4 km</b> · D+ 512 m · 2 h 05</div>
+      <div class="meta">Zone Nancy · modifié le 28 oct.</div>
+    </div>
+    <div class="plus" role="button" aria-label="Actions de Tour de la forêt de Haye"><svg width="24" height="24" viewBox="0 0 24 24" fill="#3A1F0F"><circle cx="12" cy="5" r="2.3"/><circle cx="12" cy="12" r="2.3"/><circle cx="12" cy="19" r="2.3"/></svg></div>
+  </div>
+</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ========== 9b (phase 7) : « Modifier » d'un GPX, la création s'ouvre ========== -->
+<div class="cartouche"><b>9b. Phase 7 : « Modifier » d'un GPX importé</b><br>Même création que pour un circuit (v1/12, écrans 6 à 8) : le GPX est découpé en points de passage, un par km environ, tracé intact. C'est le mode « Modifier » (8b, C) : titre = nom du GPX, « Enregistrer » inactif tant que rien n'a changé. Une bulle, à l'ouverture, dit que l'enregistrement remplace l'original.</div>
+<div class="variantes">
+  <div class="var-titre">Barre du haut et bulle, à l'ouverture</div>
+  <div class="barre-crea"><div class="contenu-crea">
+    <div class="icone-btn" aria-label="Fermer sans enregistrer"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+    <div class="titre geo">Rando VTT Ludres</div>
+    <div class="enregistrer inactif geo" role="button" aria-disabled="true" aria-label="Enregistrer : aucun changement à enregistrer">Enregistrer</div>
+  </div><div class="rayures"></div></div>
+  <div role="status" style="width:max-content;max-width:344px;margin:10px auto 0;background:var(--brun);color:var(--creme);font-size:15px;font-weight:600;line-height:1.3;padding:10px 18px;border-radius:20px;text-align:center;box-shadow:0 2px 8px rgba(58,31,15,.30)">Tracé du GPX posé. En enregistrant, vous remplacez l'original.</div>
+  <div class="var-texte" style="margin-top:10px">La bulle part au bout de 6 s ou au premier geste. Si une partie du GPX sort de la zone, la bulle de v1/12 (écran 8) suit, 6 s elle aussi. Points de passage : même règle que pour un circuit (points discrets au zoom d'ouverture, numéros au zoom proche). Croix après un changement : <code>route.abandonChangesTitle</code> et <code>route.abandonChangesText</code> (existants, <q>L'itinéraire gardé ne change pas.</q>). « Enregistrer » remplace le GPX, garde son nom et revient à l'écran Infos, avec <q>Zone Nancy · GPX modifié le 9 nov. 2026</q>.</div>
+</div>
+
+<div class="cartouche"><b>Note : phase 7 (T1), textes et règles de cette maquette</b><br>9 novembre 2026. Designer. Les questions de la phase 7 sont dans v1/12, en bas de page.</div>
+<div class="note">
+<h2 class="geo">TEXTES EXACTS (PHASE 7)</h2>
+<ul>
+  <li>Origines, dans <code>routes.meta</code> (<q>Zone {zone} · {origine}</q>) : <code>routes.originTrail</code> <q>circuit balisé, le {date}</q> ; <code>routes.originTrailModified</code> <q>circuit modifié le {date}</q> ; <code>routes.originGpxModified</code> <q>GPX modifié le {date}</q>. En minuscule après « · », comme <q>créé le</q>. Sur l'écran Infos, avec l'année.</li>
+  <li>Écran Infos d'un GPX dans une zone : bouton <q>Modifier</q> (existant, libellé <q>Modifier l'itinéraire</q>).</li>
+  <li>Écran Infos d'un GPX hors de vos zones, à la suite de <code>routes.noticeOutsideFound</code> : <code>routes.noticeOutsideEdit</code> <q>Téléchargez-la pour modifier l'itinéraire.</q> Si le tracé n'est dans aucune zone du catalogue : <code>routes.noticeOutsideNoEdit</code> <q>Ce tracé n'est dans aucune zone de RutaPulse pour l'instant : il ne peut pas être modifié.</q></li>
+  <li>Bulle de la création ouverte par « Modifier » d'un GPX : <code>gpx.placedBubble</code> <q>Tracé du GPX posé. En enregistrant, vous remplacez l'original.</q></li>
+</ul>
+<h2 class="geo">RÈGLES (PHASE 7)</h2>
+<ul>
+  <li><b>Quelle origine</b> : un circuit enregistré, modifié ou non avant le premier « Enregistrer » : <q>circuit balisé, le</q>. Rouvert plus tard par « Modifier » puis enregistré : <q>circuit modifié le</q>. Un GPX importé puis modifié et enregistré : <q>GPX modifié le</q>, à chaque nouvel enregistrement, avec la dernière date.</li>
+  <li><b>Place</b> : <q>Zone Nancy · circuit modifié le 12 nov.</q> tient dans la ligne (environ 214 sur 217 points) ; avec un nom de zone plus long, la ligne est coupée par « … », comme aujourd'hui.</li>
+  <li><b>« Modifier » d'un GPX</b> : présent dès qu'une partie du tracé est dans une zone prête ; absent si le tracé est entièrement hors de vos zones (6d) ou si sa zone est supprimée (7b, règle existante).</li>
+</ul>
 </div>
 
 

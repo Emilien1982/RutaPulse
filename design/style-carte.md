@@ -151,7 +151,7 @@ jusqu'au 18.
 | 22 | `voie-p` | line | `transportation` | LIGNE ; groupe P | 12 | `carte.voie` |
 | 23 | `voie-m` | line | `transportation` | LIGNE ; groupe M | 9 | `carte.voie` |
 | 24 | `voie-g` | line | `transportation` | LIGNE ; groupe G | 8 | `carte.voie` |
-| — | *réservé* | | | Circuits (phase 7), puis itinéraire et marqueurs (phases 3 et 4) se glissent **ici** | | |
+| — | *réservé* | | | Circuits (`circuit`, `circuit-choisi`, phase 7 : voir « Circuits balisés »), puis itinéraire et marqueurs (phases 3 et 4) se glissent **ici** | | |
 | 25 | `cote` | symbol | source `courbes`, `contour` | `major` = 1 | 13 | `carte.cote` |
 | 26 | `nom-eau` | symbol | `waterway` | `class` ∈ river, canal | 13 | `carte.eau-texte` |
 | 27 | `nom-voie` | symbol | `transportation_name` | LIGNE ; `subclass` ∉ footway, pedestrian, steps, corridor, platform | 15 | `carte.etiquette-2` |
@@ -415,6 +415,42 @@ qui est hors de la zone, comme sur l'écran 52.
 | 32 | `bord-zone` | line | `bord-zone` | géométrie `LineString` | `carte.bord-zone` : 2,5 ; tirets 9 / 6, soit `line-dasharray` `[3.6, 2.4]` ; bouts carrés |
 
 Pas de zoom minimal ni maximal : visibles du zoom 8 au zoom 18.
+
+## Circuits balisés (ajouté le 9 novembre 2026, phase 7)
+
+Maquette `v1/12`. Source `circuits` : le fichier `trails.geojson` du paquet
+de zone (ADR 0003), ajoutée par l'app. Trois couches.
+
+| Place | id | Type | Filtre | Couleur et taille |
+|---|---|---|---|---|
+| Dans « réservé », sous l'itinéraire | `circuit` | line | toutes les lignes | `carte.circuit` ; quand un circuit est choisi : `carte.circuit-efface` pour les autres. Bouts et angles ronds |
+| Juste au-dessus de `circuit` | `circuit-choisi` | line, deux fois (liseré puis trait) | l'identifiant du circuit choisi | liseré `#FFFFFF` de 12, trait `carte.circuit-choisi` de 8 ; chevrons `carte.sens-circuit` tous les 150 si le sens est connu |
+| Entre 27 `nom-voie` et 28 `lieu-hameau` | `nom-circuit` | symbol | lignes avec un nom ou un `ref` | `carte.circuit-texte`, Noto Sans Bold, `texte.carte-circuit` ; halo `carte.etiquette-halo` de 2 |
+
+Épaisseur de `circuit` : 2,5 au zoom 10, 3,6 au 12, **6** au 15, 7,8 au 17,
+8,5 au 18. Visible dès le zoom 10 (toute la zone à l'écran).
+
+```json
+{ "id": "circuit", "type": "line", "source": "circuits", "minzoom": 10,
+  "layout": { "line-cap": "round", "line-join": "round" },
+  "paint": { "line-color": "carte.circuit", "line-opacity": 0.55,
+    "line-width": ["interpolate", ["linear"], ["zoom"], 10, 2.5, 12, 3.6, 15, 6, 17, 7.8, 18, 8.5] } },
+{ "id": "nom-circuit", "type": "symbol", "source": "circuits", "minzoom": 12,
+  "layout": { "symbol-placement": "line", "symbol-spacing": 300, "text-max-angle": 30,
+    "text-field": ["coalesce", ["get", "name"], ["concat", "Circuit ", ["get", "ref"]]],
+    "text-font": ["NotoSans-Bold"],
+    "text-size": ["interpolate", ["linear"], ["zoom"], 12, 11, 15, 13, 18, 15] },
+  "paint": { "text-color": "carte.circuit-texte", "text-halo-color": "carte.etiquette-halo", "text-halo-width": 2 } }
+```
+
+- `line-opacity` 0,55 sur chaque ligne : là où deux circuits partagent un
+  chemin, le trait est plus foncé. C'est voulu : on voit le tronçon commun.
+- Le nom passe avant les noms de voies (placé plus haut), après les noms de
+  lieux. Le texte « Circuit {ref} » vient de `fr.ts` (`trails.refLabel`) :
+  l'exemple ci-dessus le montre en dur pour la lisibilité.
+- Dans la création, mêmes couches, sans `circuit-choisi` ; le circuit dont
+  on fait un itinéraire reste dessiné sous lui.
+- Le voile et le bord de la zone restent au-dessus de tout, circuits compris.
 
 ## Étiquettes
 

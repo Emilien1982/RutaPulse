@@ -588,3 +588,42 @@ Statut : celui de l'[ADR 0018](0018-difficulte-et-mise-a-jour-des-zones.md),
   une entrée publiée sans table reste valide. `build` l'écrit toujours
   dans un paquet neuf.
 - `zone.json` et les schémas ne changent pas.
+
+## Complément du 2026-11-09 : la ligne ordonnée des circuits (proposé)
+
+Statut : celui de l'[ADR 0020](0020-circuits-balises-et-trace-modifiable.md),
+§ 1 et § 2, proposé le 2026-11-09, à valider par Émilien.
+
+**Le format de `trails.geojson`** (jusqu'ici décrit par le code de
+`zones/zonefactory/trails.py`) :
+
+- un `FeatureCollection` (collection d'objets GeoJSON), un objet par
+  relation `route=mtb` qui touche le rectangle de la zone ;
+- géométrie : `MultiLineString` (plusieurs lignes), les voies **brutes**
+  du circuit, dans l'ordre de la relation, chacune dans son sens OSM,
+  coordonnées à 6 décimales. C'est ce que la carte dessine ;
+- propriétés existantes : `osm_id` (numéro de la relation), `name`, `ref`,
+  `network`, `colour` (chacune seulement si OSM la donne), `length_m`
+  (somme des voies brutes), `parts` (nombre de morceaux), `max_gap_m`
+  (plus grand trou entre morceaux, `null` au-delà de 50 km).
+
+**Cinq propriétés ajoutées**, toujours présentes dans un fichier fabriqué
+à partir de cette date :
+
+| Propriété | Type | Sens |
+|---|---|---|
+| `ordered` | liste de `[lon, lat]` ou `null` | ligne ordonnée dans le sens du circuit, 6 décimales, sans doublon consécutif ; boucle : dernier point = premier |
+| `loop` | booléen ou `null` | boucle ou aller simple |
+| `ordered_m` | entier ou `null` | longueur de `ordered`, en mètres, sur la sphère de Valhalla (rayon 6 378 160 m) |
+| `removed_m` | entier ou `null` | longueur retirée des voies brutes pour obtenir `ordered` |
+| `refusal` | `parts`, `branches`, `removedTooMuch` ou `null` | raison de l'absence de ligne ordonnée |
+
+- Règle d'ordonnancement, seuils et refus : ADR 0020, § 2.
+- **Un fichier plus ancien n'a pas la clé `ordered`.** L'app le lit
+  toujours : elle affiche les circuits et propose de mettre la zone à
+  jour. Clé à `null` : circuit refusé.
+- `formatVersion` reste 1 (§ 3) : seuls des champs s'ajoutent.
+- Le fichier reste obligatoire (§ 4). Taille pour Nancy : environ 110 Ko
+  au lieu de 56 Ko.
+- Le catalogue, `zone.json` et les schémas ne changent pas.
+- Première zone concernée : Nancy v6.

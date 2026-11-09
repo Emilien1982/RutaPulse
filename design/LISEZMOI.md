@@ -39,13 +39,13 @@
 |---|---|---|
 | `v1/10-creation-itineraire.html` | Création : on glisse un point, l'itinéraire se recalcule pendant le geste ; circuits affichés ; bouton « Boucler » | 2, 9 ; décision 6 |
 | `v1/11-creation-trace-a-la-main.html` | Création : deux tronçons tracés à la main, en tirets | 2 ; décision 8 |
-| `v1/12-circuit-balise.html` | Carte : un circuit balisé touché, son sens, le départ au point le plus proche, « En faire un itinéraire » | 9 ; décision 7 |
+| `v1/12-circuit-balise.html` | Carte : un circuit balisé touché, son sens, le départ au point le plus proche, « En faire un itinéraire ». Depuis le 9 novembre 2026 (phase 7, T1), plusieurs écrans l'un sous l'autre : couche des circuits, boucle, aller simple, circuit non transformable, zone à mettre à jour, variantes (dont plusieurs circuits sous le doigt), création ouverte depuis un circuit (points discrets, numéros au zoom proche, partie hors zone) ; note en bas de page | 9 ; décision 7 |
 | `v1/20-infos-itineraire.html` | Infos : distance, durée, D+ et D−, profil, terrain, difficulté, carte en arche | 3 ; décision 13 |
 | `30-suivi-velo.html` | Suivi, direction B : direction à 50 m, panneau jaune ; « Terminer » en rouge foncé ; roue dentée sous la boussole | 7 ; décisions 6 et 7 (écrans 70) |
 | `31b-suivi-reglages.html` | Suivi, direction B : panneau des réglages du suivi ouvert par la roue dentée, luminosité « Maximum » choisie | 7 ; décision 2, décision 6 (écrans 70) |
 | `31-verrouille-android.html` | Téléphone verrouillé, Android : la notification unique, petite icône A sur un rond rouille | 8 ; décision 7 (écrans 70) |
 | `32-verrouille-ios.html` | Téléphone verrouillé, iOS : la Live Activity (bandeau en direct), icône A | 8 ; décision 7 (écrans 70) |
-| `v1/40-mes-itineraires.html` | Mes itinéraires. Depuis le 3 novembre 2026 (phase 6, T1), plusieurs écrans l'un sous l'autre : liste remplie, liste vide, menu « ⋮ » ouvert, renommer (et ses variantes), confirmation de suppression, import refusé, import réussi (Infos du GPX, sans « Modifier »), GPX hors de vos zones (feuille de l'écran 52, puis Infos), zone supprimée (liste et Infos), Infos après « Enregistrer » avec le nom par défaut, états du bouton « Enregistrer » ; note en bas de page (textes exacts, choix, questions) | 4, 5 ; décisions 9 et 11 |
+| `v1/40-mes-itineraires.html` | Mes itinéraires. Depuis le 3 novembre 2026 (phase 6, T1), plusieurs écrans l'un sous l'autre : liste remplie, liste vide, menu « ⋮ » ouvert, renommer (et ses variantes), confirmation de suppression, import refusé, import réussi (Infos du GPX, avec « Modifier » depuis la phase 7), GPX hors de vos zones (feuille de l'écran 52, puis Infos), zone supprimée (liste et Infos), Infos après « Enregistrer » avec le nom par défaut, états du bouton « Enregistrer » ; note en bas de page (textes exacts, choix, questions). Phase 7 : écran 9 (origines « circuit balisé » et « GPX modifié », « Modifier » d'un GPX) | 4, 5 ; décisions 9 et 11 |
 | `v1/41-zones.html` | Zones : prête, en attente du Wi-Fi, à télécharger ; bandeau « Pas de Wi-Fi » avec l'interrupteur « Wi-Fi seulement ». Depuis le 2 novembre 2026 (phase 5b), trois écrans de plus sous le premier : « Mise à jour disponible », mise à jour en cours, mise à jour en attente du Wi-Fi ; puis les variantes échec, place insuffisante, mise à jour finie, et une note (textes exacts, choix validés le 2 novembre 2026) en bas de page | 6 ; décision 10, décision 5 (écrans 70) |
 | `v1/50-liste-vide.html` | Mes itinéraires vide, avec le vététiste | 4 ; décision 3 |
 | `v1/51-telechargement.html` | Onglet Carte pendant le téléchargement de la première zone : le vététiste roule sur la barre de progression | 6 ; décision 3 |
@@ -64,8 +64,8 @@ Les onglets de `v1/40`, `v1/41`, `v1/50` et `v1/51` ont reçu le 4e onglet
 « Réglages » ; rien d'autre n'y change.
 
 Pas dessinés, car ils découlent des écrans ci-dessus : la carte d'accueil
-complète (l'écran 90, plus le bouton des couches de l'écran 12 et un bouton
-« Nouvel itinéraire ») ; le menu des couches ; les demandes de permission du
+complète (l'écran 90, plus un bouton « Nouvel itinéraire » ; l'écran 1 de
+`v1/12` la montre depuis la phase 7) ; les demandes de permission du
 système ; la liste « Licences et attributions » (une liste de textes, ouverte
 depuis l'écran 80). Les confirmations, la saisie du nom et le message d'un
 GPX importé hors des zones sont dessinés dans `v1/40` depuis la phase 6.
