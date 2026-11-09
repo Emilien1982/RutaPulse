@@ -1,6 +1,6 @@
 # ADR 0020 — Circuits balisés et trace modifiable
 
-- Statut : proposé, à valider par Émilien
+- Statut : accepté le 9 novembre 2026 par Émilien (proposé le même jour)
 - Date : 2026-11-09 (phase 7, tâche T1 de [p07-circuits-balises](../phases/p07-circuits-balises.md))
 - Complète l'[ADR 0003](0003-paquets-de-zone.md) (format de
   `trails.geojson`, voir son complément du 2026-11-09). Précise
@@ -16,7 +16,7 @@ collaborative).
 
 ## Contexte
 
-- La spec validée fait foi : critères C1 à C15, les 6 choix du pilotage,
+- La spec validée fait foi : critères C1 à C16, les 6 choix du pilotage,
   et la décision d'Émilien sur la question 1 : **un GPX modifié remplace
   l'original**, son origine devient « GPX modifié le … ».
 - Une **trace** est ici une ligne déjà ordonnée : la ligne d'un circuit
@@ -122,9 +122,9 @@ n'a pas à porter 2 300 points de propriétés.
 
 **Pourquoi la règle stricte ne suffit pas.** La spec (C2) dit : « fourche,
 variante → pas de ligne ordonnée ». Avec elle, aucun des deux circuits de
-Nancy ne devient un itinéraire. La phase n'aurait rien à montrer. Je
-propose une règle tolérante : elle garde le **tronc principal** et retire
-les annexes courtes. Elle change C2 : **question 1 pour Émilien**.
+Nancy ne devient un itinéraire. La phase n'aurait rien à montrer. La
+règle retenue est tolérante : elle garde le **tronc principal** et retire
+les annexes courtes. Elle change C2 : Émilien l'a accepté (réponse 1).
 
 **Étapes**, pour chaque relation `route=mtb` :
 
@@ -219,7 +219,12 @@ d'osmium, sauf le dernier) :
   trace, pour `k` de 0 à `n` ;
 - tous les tronçons ont la même longueur, entre 667 m et 2 km jusqu'à
   50 km. Au-delà de 50 km, l'écart grandit (100 km : un point tous les
-  2 km).
+  2 km) ;
+- **aucun point intermédiaire hors de la zone** (§ 5) : un point (`k` de
+  1 à `n − 1`) qui tombe hors du rectangle de la zone tenue n'est pas
+  posé. Ses deux morceaux voisins n'en font qu'un. Le départ (`k = 0`) et
+  l'arrivée (`k = n`) sont toujours posés, même hors de la zone : ce sont
+  les bouts de la trace.
 
 Pourquoi le partage égal : un dernier tronçon de 30 m (avec « un point
 tous les 1 000 m pile ») serait inutile et gênant à toucher. Pourquoi 50
@@ -258,7 +263,10 @@ du pilotage).
 - **rotation** : le départ `S` (arrondi à 6 décimales) coupe la ligne. La
   nouvelle ligne est `S`, la fin de la ligne, puis son début, jusqu'à `S`.
   Le point de jonction (premier = dernier) n'apparaît qu'une fois. La
-  longueur ne change pas ;
+  longueur ne change pas. Le contrôle 1 a prouvé cette rotation juste,
+  avec un seul défaut à éviter : quand `S` tombe pile sur un sommet de la
+  ligne, l'essai répétait ce sommet (un segment de longueur nulle). T3
+  ne le répète pas ;
 - le brouillon d'une boucle finit sur un point aux coordonnées du départ,
   avec un autre `id`, comme « Boucler » (ADR 0016).
 
@@ -276,9 +284,26 @@ au départ. C'est le tracé de l'utilisateur ; on ne le fait pas tourner.
 | GPX de 150 000 points (20 Mo) | 50 morceaux de 3 000 points : sous la limite de 16 000 points de `trace_attributes` (ADR 0019, § 5) |
 | Aller-retour sur le même chemin | `legKey` a un sens (départ puis arrivée) : l'aller et le retour ont des clés différentes |
 
-`traceToDraft(line, { loop, position, zoneVersion })` rend
+`traceToDraft(line, { loop, position, zoneVersion, bbox })` rend
 `{ state, kept }`, sur le modèle de `reopenDraft` : l'état de départ du
-Store (historique vide) et les tronçons gardés.
+Store (historique vide) et les tronçons gardés. `bbox` est le rectangle
+de la zone tenue.
+
+**Tests attendus de T3** (Jest, logique pure) :
+
+| Test | Attendu |
+|---|---|
+| Partage égal : 1 400 m, 1 500 m, 35 km, 50 km, 100 km | `n` = 1, 2, 35, 50, 50 ; tronçons de même longueur |
+| Points posés | à 6 décimales, à 0,11 m au plus de la trace ; fin du morceau `k − 1` = début du morceau `k` |
+| Fidélité (C7) sur les deux circuits de Nancy | morceaux mis bout à bout = la trace ; somme des distances = `trackLengthM` à 10 m |
+| Rotation d'une boucle, départ au milieu d'un segment, puis **pile sur un sommet** | même longueur, même suite de sommets ; **aucun point en double**, aucun segment de longueur nulle |
+| Position inconnue ; aller simple ; GPX qui revient au départ | départ au début de la ligne |
+| **Trace qui sort de la zone puis y revient** | aucun point posé hors du rectangle ; un seul tronçon gardé entre le dernier point dans la zone et le suivant dans la zone |
+| **Départ, ou arrivée, hors de la zone** | le bout est posé ; un seul tronçon gardé jusqu'au premier (ou depuis le dernier) point dans la zone |
+| Trace entièrement hors de la zone | départ et arrivée seulement, un tronçon gardé |
+| Cas limites du tableau ci-dessus | règle du tableau |
+| `findProblem` à l'ouverture d'un brouillon qui sort de la zone (§ 5) | aucun problème |
+| Groupes d'altitudes (`heightGroups`, § 6) | une suite de tronçons `trace` non touchés = un groupe ; un tronçon touché coupe la suite en deux |
 
 ### 4. Les tronçons gardés venus d'une trace
 
@@ -333,19 +358,41 @@ les GPX (ADR 0019, question ouverte 2).
 Un tronçon est **hors zone** si un de ses points sort du rectangle de la
 zone tenue.
 
+**Choix du designer, retenu (maquette 12, écran 8) : aucun point de
+passage hors de la zone.** Un point qu'on ne peut pas déplacer serait un
+piège. Au découpage (§ 3), un point intermédiaire qui tomberait hors du
+rectangle n'est pas posé. La partie hors zone devient donc **un seul
+tronçon gardé `trace`**, entre le dernier point dans la zone et le
+suivant dans la zone.
+
+**Départ ou arrivée hors de la zone.** Ce sont les bouts de la trace : ils
+sont toujours posés, même hors de la zone. Sinon le tracé ne serait plus
+entier (C7). Le tronçon hors zone va alors du bout jusqu'au premier point
+dans la zone (ou du dernier point dans la zone jusqu'au bout).
+
+- Un GPX n'a ce cas qu'à l'arrivée : un GPX dont le départ est hors zone
+  n'a pas de zone, donc pas de « Modifier » (§ 8).
+- Un circuit peut commencer hors de la zone : aller simple qui y entre,
+  ou boucle dont le départ choisi (le plus proche de la position, ou le
+  début de la ligne) est hors de la zone. Même règle, rien de plus : le
+  départ est posé là. On ne cherche pas un autre départ dans la zone.
+
 | Moment | Ce qui se passe |
 |---|---|
-| Ouverture | Les tronçons hors zone gardent leur forme. Ils sont dessinés, et leur distance et leur durée comptent. Un message non bloquant le dit (texte du designer, par exemple « Ce tracé sort de la zone Nancy. Hors de la zone, il garde son tracé mais ne peut pas être recalculé. ») |
-| Infos | `infoShape` contrôle aussi le rectangle pour un tronçon `trace`, comme pour un tronçon à la main (ADR 0017, § 5). Un seul tronçon hors zone : « Altitudes indisponibles » et « Terrain indisponible » pour tout l'itinéraire (tout ou rien, réponse 1 d'Émilien du 28 octobre ; cas `leaves` de l'ADR 0019) |
-| Déplacer, ajouter ou supprimer un point, avec un bout hors zone | Le nouveau tronçon est calculé : le moteur le refuse avant tout calcul (`outOfZone`). La feuille d'erreur actuelle s'ouvre : « Relier ce point à la main » ou « Retirer ce point » (ADR 0016, § 5). « Annuler » rend le tronçon gardé |
+| Ouverture | Les tronçons hors zone gardent leur forme. Ils sont dessinés sous le voile, et leur distance et leur durée comptent. Une bulle, 6 s, à l'ouverture seulement : `trails.outsideBubble`, « Une partie du tracé sort de la zone. Elle reste telle quelle : on ne peut pas la modifier. » Pour un circuit, à la place de la bulle d'ouverture ; pour un GPX, après sa bulle (maquette 12, textes) |
+| Infos | `infoShape` contrôle aussi le rectangle pour un tronçon `trace`, comme pour un tronçon à la main (ADR 0017, § 5). Un seul tronçon hors zone : « Altitudes indisponibles » et « Terrain indisponible » pour tout l'itinéraire (tout ou rien, réponse 1 d'Émilien du 28 octobre ; cas `leaves` de l'ADR 0019). La feuille de création montre « — » pour le D+ |
+| Déplacer un point voisin du tronçon hors zone, quand l'autre bout de ce tronçon est **le départ ou l'arrivée hors zone** | Le nouveau tronçon a un bout hors zone : le moteur le refuse avant tout calcul (`outOfZone`). La feuille existante « Point hors de votre zone » (v1/52) s'ouvre : « Relier ce point à la main » ou « Retirer ce point » (ADR 0016, § 5). « Annuler » rend le tronçon gardé |
+| Déplacer un point voisin du tronçon hors zone, quand ce tronçon **sort puis revient** dans la zone | Les deux bouts du nouveau tronçon sont dans la zone : le moteur le calcule, **dans la zone**. La partie hors zone disparaît du tracé. C'est visible sur la carte, et « Annuler » rend le tronçon gardé |
+| Glisser ou poser un point hors de la zone | Même refus `outOfZone`, même feuille (v1/52) |
 | Tronçons dans la zone | Se modifient normalement |
 
 - Pas de feuille d'erreur à l'ouverture : `findProblem` vise le point de
   la dernière action, et il n'y en a pas encore. Un test le prouve.
 - Raison de ne rien inventer : la création sait déjà refuser un point hors
-  zone. Le seul ajout est le contrôle du rectangle dans `infoShape`.
+  zone. Les seuls ajouts sont l'exclusion au découpage, la bulle et le
+  contrôle du rectangle dans `infoShape`.
 
-### 6. Le D+ (C11) et l'écart constaté
+### 6. Le D+ (C11) : une requête par suite de tronçons non touchés
 
 **Ce que C11 compare.** Sur la **même plateforme**, avant et après le
 geste, sans aucune retouche :
@@ -356,8 +403,9 @@ geste, sans aucune retouche :
   joints, ADR 0017, § 4). Écart permis : 5 m. La distance : 10 m ;
 - **circuit** : la feuille ne montre pas de D+ (maquette 12). On compare
   le D+ de la création au D+ de la ligne ordonnée entière en une requête,
-  la méthode d'un GPX. La distance : `trackLengthM(ordered)` de la feuille
-  et la somme des tronçons de la création.
+  la méthode d'un GPX. Pour une boucle : la ligne tournée depuis le même
+  départ. La distance : `trackLengthM(ordered)` de la feuille et la somme
+  des tronçons de la création.
 
 C11 ne compare pas iOS et Android. La phase 5 a prouvé le même D+ sur les
 deux plateformes et sur le Mac pour la même requête (ADR 0017).
@@ -373,49 +421,86 @@ deux plateformes et sur le Mac pour la même requête (ADR 0017).
 
 Rien ne montre donc un écart entre plateformes. Le constat est autre :
 **le même circuit, coupé à d'autres endroits, perd 42 m de D+ (−9 %).**
-Le tracé est pourtant le même (écart 0,000 m, même longueur). Deux causes
-possibles, à départager par une preuve :
+Le tracé est pourtant le même (écart 0,000 m, même longueur).
 
-1. **Le rééchantillonnage repart de zéro à chaque tronçon** : `height`
-   prend une altitude tous les 30 m depuis le début de chaque tronçon.
-   Couper ailleurs déplace tous les échantillons. Avec le seuil de 5 m,
-   une bosse de 5,5 m comptée d'un côté, de 4,8 m de l'autre, change le
-   D+. Si c'est cela, **C11 est aussi en danger pour un GPX** (une
-   requête avant, 23 après), et poser un point au milieu d'une montée
-   change déjà le D+ d'un itinéraire créé ;
-2. **une erreur de la rotation** dans le code de l'essai (point en
-   double, aller-retour minuscule à la jonction, morceau oublié) que la
-   mesure d'écart n'aurait pas vue.
+**Ce que le contrôle 1 a prouvé** (9 novembre, banc jetable sur le Mac,
+Valhalla 3.9.1, Nancy v5, avec les fonctions de l'app ; preuves hors
+dépôt : `vtt-nav-preuves/p07/controle1/LISEZMOI.md`) :
 
-La référence de seuil (première altitude) ne suffit pas à expliquer 42 m :
-sur une boucle, elle change au plus une marche de 5 m.
+- **La cause est le calcul, pas la rotation.** `height` prend une
+  altitude tous les 30 m depuis le début de chaque requête. Le seuil de
+  5 m est sensible à ces échantillons. Couper ailleurs, ou commencer
+  ailleurs, change le D+.
+- Même la ligne entière, en une requête, varie avec son départ : 433 à
+  494 m sur 12 départs, 437 à 488 m sur 40. Pour un même départ,
+  « tronçons moins ligne entière » va de −42 à +31 m, et dépasse 5 m dans
+  28 cas sur 36. Le constat de l'essai (478 et 436 m) est rejoué à
+  l'identique.
+- Un GPX réel de 10 000 points : 0 à 10 m d'écart entre une requête et
+  le découpé. C11 était donc aussi en danger pour un GPX.
+- La rotation de la boucle est juste : même suite de sommets, même
+  longueur au millimètre, aucun demi-tour. Un seul défaut, sans effet sur
+  le D+ : un point en double, de longueur nulle, à la jonction. T3 doit
+  l'éviter, et un test le prouve (§ 3).
 
-**Je ne tranche pas sans preuve** : voir le contrôle 1. Selon son
-résultat :
+**Décision : parade (b), une seule requête d'altitudes par suite de
+tronçons `trace` jamais touchés.**
 
-- cause 2 : on corrige la rotation dans T3 ; rien d'autre ne change ;
-- cause 1 : trois parades, à choisir par le pilotage avec Émilien (elles
-  touchent l'ADR 0017 ou la spec) :
-  - (a) rééchantillonner plus fin (10 m) pour tous les itinéraires :
-    moins sensible, une constante, mais tous les D+ changent un peu et la
-    comparaison au Mac de la phase 5 est à refaire ;
-  - (b) pour une suite de tronçons `trace` jamais touchés, demander les
-    altitudes de la suite entière en une requête : D+ identique à la
-    trace, mais une règle de cache de plus ;
-  - (c) garder la méthode et écrire dans C11 l'écart mesuré comme
-    tolérance.
+- Un **groupe d'altitudes** est une suite, la plus longue possible, de
+  tronçons consécutifs `trace` dont la forme gardée est prise telle
+  quelle. Tout autre tronçon (calculé, à la main, ou `trace` recalculé)
+  est un groupe à lui seul, comme aujourd'hui.
+- Une requête `height` par groupe, sur la forme jointe de ses tronçons
+  (point de jonction une seule fois). Au-delà de 14 000 points, elle est
+  éclaircie par `thinTrack` (`core/routes/track.ts`), comme le tracé d'un
+  GPX (ADR 0019, § 5).
+- **Sans retouche, le D+ est exactement celui de la trace d'origine** :
+  écart 0 m dans 18 cas sur 18 (6 départs × 3 espacements). C'est la même
+  requête. C11 tient donc avec son seuil de 5 m.
+- **Après une retouche, le D+ est un ordre de grandeur.** Les suites
+  avant et après le tronçon touché repartent chacune de zéro. Écart
+  mesuré : −40 à +21 m, environ ±6 %. **Accepté pour la v1.** Pas de
+  lissage des altitudes, pas de nouvelle mesure : « plus tard, peut-être
+  jamais » (spec, hors périmètre).
+- Le même circuit, ouvert depuis deux départs, peut montrer deux D+
+  différents (437 à 488 m). C'est le même bruit, accepté de même.
+
+**Où (b) se branche** (code lu le 9 novembre) :
+
+| Fichier | Changement |
+|---|---|
+| `core/route-info/heightGroups.ts` (nouveau, T3) | `heightGroups(legs)` : les groupes, en indices de tronçons. Logique pure, testée dans Jest |
+| `features/map/useLegResults.ts` | l'état d'un tronçon pris de sa forme gardée porte déjà `shapeVersion` ; il porte aussi `trace` |
+| `features/map/useLegInfos.ts` | une requête `height` par groupe, au lieu d'une par tronçon. Sa clé : la zone, les points de passage du groupe dans l'ordre, et `trace:N`. Les requêtes de terrain restent par tronçon |
+| `core/routing/infoRequest.ts`, `core/routing/infoResponse.ts` | **rien** : `buildHeightRequest` et `parseHeightResponse`, appelées par `computeHeights`, reçoivent simplement une forme plus longue |
+| `core/route-info/routeInfo.ts` | `summarizeInfo` reçoit un profil par groupe. `joinProfiles` (`core/route-info/profile.ts`) les joint sans changement, puis `heightsOf` et `ascentDescent` donnent le D+. La bande de terrain se place le long du profil avec la longueur de la forme de chaque tronçon, et non plus celle de son profil |
+
+L'écran Infos d'un itinéraire gardé passe par les mêmes fonctions : un
+circuit enregistré sans retouche y garde le même D+.
+
+**Si (b) devient coûteuse à coder** (plus que ces fichiers, ou un
+changement visible de l'écran Infos), le développeur s'arrête et le
+pilotage décide.
 
 ### 7. La base passe en version 2
 
 **Deux origines de plus**, de la même forme qu'un itinéraire créé
 (`draft`, `legs`, zone obligatoire) :
 
-| `origin` | Quand | Texte de la liste (designer) |
+| `origin` | Quand | Texte de la liste (maquette 40, écran 9a) |
 |---|---|---|
-| `created` | itinéraire créé point par point | « créé le … » (inchangé) |
+| `created` | itinéraire créé point par point | « créé le … » ou « modifié le … » (inchangé) |
 | `gpx` | GPX importé, jamais modifié | « GPX importé le … » (inchangé) |
-| `trail` | « Enregistrer » d'un circuit balisé | « circuit balisé, le … » (`created_at`) |
-| `editedGpx` | « Enregistrer » d'un GPX ouvert par « Modifier » | « GPX modifié le … » (`saved_at`) |
+| `trail` | « Enregistrer » d'un circuit balisé | jamais réenregistré : « circuit balisé, le {date de `created_at`} » (`routes.originTrail`) ; réenregistré : « circuit modifié le {date de `saved_at`} » (`routes.originTrailModified`) |
+| `editedGpx` | « Enregistrer » d'un GPX ouvert par « Modifier » | « GPX modifié le {date de `saved_at`} » (`routes.originGpxModified`) |
+
+- **« Jamais réenregistré »** se décide comme pour `created` (ADR 0019,
+  § 1) : `saved_at` égale `created_at`. Le premier « Enregistrer » écrit
+  les deux dates du même instant. Un circuit retouché avant ce premier
+  « Enregistrer » reste donc « circuit balisé, le … » (règle du designer).
+- Dans le code : `originText` (`core/routes/routeText.ts`) et `originOf`
+  (`core/routes/routeList.ts`, la date qui décide d'afficher l'année)
+  reçoivent les deux origines, avec la même comparaison.
 
 - **GPX modifié (question 1 tranchée)** : la même ligne est remplacée, en
   un seul `UPDATE` : `origin = 'editedGpx'`, `draft`, `legs`, zone (celle
@@ -427,7 +512,8 @@ résultat :
   d'import) ne changent pas.
 - Une ligne `trail` ou `editedGpx` rouverte par « Modifier » garde son
   origine à chaque « Enregistrer ». « modifié le » vient de `saved_at`,
-  comme aujourd'hui.
+  comme aujourd'hui. « Modifier » écrase toujours la ligne rouverte ; pour
+  garder l'original, on le duplique d'abord (§ 7 bis).
 - Pas de colonne pour le numéro OSM du circuit : aucune fonction de la v1
   ne s'en sert.
 - Dans le code : `RouteOrigin = 'created' | 'gpx' | 'trail' | 'editedGpx'`.
@@ -468,6 +554,99 @@ d'autre à recréer. `MIGRATIONS[0]` ne change pas.
 | Base version 99 | « trop récente », rien n'est écrit |
 | GPX remplacé (`UPDATE`) | même `id`, même nom, même `created_at` ; `origin` `editedGpx`, `track` et `elevations` à `NULL` |
 
+### 7 bis. « Dupliquer » (C16, tâche T6)
+
+**Où.** Une entrée « Dupliquer » dans le menu d'un itinéraire, **juste
+après « Renommer »** : le « ⋮ » de la ligne, l'appui long sur la ligne,
+et le « ⋮ » de l'écran Infos. Pour toutes les origines : `created`,
+`gpx`, `trail`, `editedGpx`. Le menu devient : Renommer, Dupliquer,
+Exporter en GPX, Supprimer (maquette 40, écran 3).
+
+**Le menu sur Android.** `Alert.alert` n'accepte que 3 boutons sur
+Android (doc de React Native). Le menu de l'ADR 0019 (§ 13, point 4) les
+utilise déjà tous. Avec 4 actions, sur Android, le menu devient une
+feuille du bas écrite en React Native (`Modal`, sur le modèle de
+`RenameSheet`) : aucun module nouveau. iOS garde
+`ActionSheetIOS`, avec une option de plus. Voir le contrôle 6.
+
+**Le nom de la copie** : « <nom> (copie) », sinon « <nom> (copie 2) »,
+« <nom> (copie 3) »… Le premier nom libre parmi ceux de la liste
+(comparaison exacte, comme `uniqueDefaultName`).
+
+- **60 caractères au plus** (règle de l'ADR 0019, § 11, comptés en
+  points de code) : le suffixe tient toujours entier. Si besoin, on
+  raccourcit le nom de base à `60 − longueur du suffixe`, puis on retire
+  l'espace de fin.
+- **Un original qui s'appelle déjà « X (copie) »** : on ne lit pas le
+  nom. Sa copie s'appelle « X (copie) (copie) ». C'est la règle la plus
+  simple : une seule règle, sans analyse du texte.
+- `copyName(name, existing)` dans `core/routes/routeName.ts`. Les deux
+  formes du suffixe sont des textes de `fr.ts`.
+
+**L'écriture** : `duplicateRoute(db, id, now)` dans
+`core/routes/routeRepo.ts`. Une seule transaction exclusive : lire les
+noms, choisir le nom, puis
+
+```sql
+INSERT INTO routes (name, origin, created_at, saved_at, zone_id, zone_version, zone_name,
+                    draft, legs, track, elevations, preview, distance_km, duration_s,
+                    ascent_m, descent_m, figures_at)
+SELECT ?, origin, ?, ?, zone_id, zone_version, zone_name,
+       draft, legs, track, elevations, preview, distance_km, duration_s,
+       ascent_m, descent_m, figures_at
+FROM routes WHERE id = ?
+```
+
+- Nouvel `id` (`AUTOINCREMENT`). Toutes les colonnes de l'original sont
+  reprises : origine, tracé, `track`, `elevations`, `draft`, `legs`,
+  chiffres, `figures_at`, `preview`. Sauf `name`, et `created_at` =
+  `saved_at` = l'instant de la copie.
+- Rend le nouvel `id`, ou `null` si l'original n'existe plus (rien
+  d'écrit).
+- La transaction évite que deux copies rapides prennent le même nom.
+- Une ligne illisible se copie telle quelle : la copie est illisible
+  aussi, et se renomme ou se supprime comme elle.
+
+**Conséquences, acceptées** :
+
+- Ses deux dates étant égales, une copie dit toujours la date de la
+  copie : « créé le … », « GPX importé le … », « circuit balisé, le … ».
+  **Une copie d'un circuit modifié s'affiche « circuit balisé, le … »** ;
+  une copie d'un GPX modifié reste « GPX modifié le … ».
+- Elle arrive **en haut de la liste** (tri par `saved_at`).
+- Depuis la liste, on reste sur la liste. **Depuis l'écran Infos, on
+  revient à la liste**, la copie en haut (écran 9c de la maquette 40,
+  choix du pilotage du 9 novembre) : rester sur l'Infos de l'original ne
+  montrerait aucune trace de la copie. Pas de bulle ; une annonce vocale
+  pour le lecteur d'écran (`routes.duplicatedAnnounce`). Si la liste était
+  défilée, elle remonte en haut.
+- **« Modifier » écrase toujours la ligne rouverte** (règle confirmée).
+  Dupliquer puis modifier la copie laisse l'original intact : c'est C16.
+
+**Place du code** : `core/routes/` (`copyName`, `duplicateRoute`) ;
+`shared-data/routes/useRoutes.ts` (action `duplicate`, qui invalide
+`['routes']` : liste et comptes par zone) ; `ui/openActionMenu.ts` et
+`ui/useRouteMenu.tsx` (l'entrée, et la feuille d'Android) : c'est là
+qu'est le menu commun à la liste et à l'écran Infos (ADR 0019, § 3) ;
+`features/routes/RoutesScreen.tsx` et
+`features/map/SavedRouteInfoScreen.tsx` passent l'action ;
+`core/i18n/fr.ts`.
+
+**Tests (C16)**, sur `node:sqlite` :
+
+| Test | Attendu |
+|---|---|
+| Dupliquer un itinéraire de chaque origine (dont un GPX avec altitudes et un GPX sans zone) | nouvel `id`, plus grand que tous ; chaque colonne égale à l'original, sauf `name`, `created_at` et `saved_at` (= l'instant donné) |
+| Noms | « (copie) », puis « (copie 2) » ; premier numéro libre ; « X (copie) » donne « X (copie) (copie) » ; nom de 60 caractères (avec un emoji) : base raccourcie, suffixe entier, 60 au total |
+| Ordre | `listRoutes` rend la copie en premier |
+| Original absent | `null`, rien d'écrit |
+| **Modifier la copie** (`UPDATE` d'un itinéraire, puis d'un GPX vers `editedGpx`) | l'original est identique, colonne par colonne |
+| Copie d'un circuit modifié | « circuit balisé, le … » |
+
+Plus un **parcours Maestro** : dupliquer depuis la liste, ouvrir la
+copie, « Modifier », déplacer un point, « Enregistrer » ; l'original
+garde sa distance dans la liste.
+
 ### 8. « Modifier » d'un GPX importé (C10)
 
 **Où** : l'écran Infos d'un GPX (`SavedRouteInfoScreen`).
@@ -488,8 +667,12 @@ déjà son écran Infos.
 **Le geste** : `setDraftTarget({ kind: 'gpx', id })`, puis
 `router.push('/draft')`. `DraftSession` lit le GPX, prend sa prise de
 zone, contrôle que la zone tenue est celle du GPX, puis
-`traceToDraft(route.track, { loop: false, position: null, zoneVersion })`.
+`traceToDraft(route.track, { loop: false, position: null, zoneVersion, bbox })`.
 Même découpage, même fidélité (C7).
+
+**À l'ouverture** : une bulle de 6 s dit que l'enregistrement remplace
+l'original (`gpx.placedBubble`, maquette 40, écran 9b). Pas de boîte de
+confirmation (réponse 8).
 
 **« Enregistrer »** :
 
@@ -529,19 +712,20 @@ avec la copie légère (§ 1) :
   différents) ;
 - `event.stopPropagation()` : un appui sur un circuit n'est pas aussi un
   appui sur la carte ;
-- plusieurs circuits sous le doigt : on prend celui dont le trait passe
-  le plus près du point touché, puis le plus petit `osm_id`
-  (`nearestTrail`, `core/trails/`) ;
+- plusieurs circuits sous le doigt : une courte liste pour choisir
+  (« {n} circuits passent ici », maquette 12, variante G ; réponse 5).
+  Ordre : le trait le plus proche du point touché d'abord, puis le plus
+  petit `osm_id` (`sortByDistance`, `core/trails/`) ;
 - toucher ailleurs ferme la feuille.
 
 **La feuille du circuit** (maquette 12, textes du designer) :
 
 | Cas | Contenu |
 |---|---|
-| Ligne ordonnée | nom, sinon `ref`, sinon « Circuit » ; longueur (`trackLengthM(ordered)`) ; « Boucle » ou « Aller simple » ; « Tracé du circuit : OpenStreetMap » ; bouton « En faire un itinéraire » |
+| Ligne ordonnée | nom, sinon `ref`, sinon « Circuit » ; longueur (`trackLengthM(ordered)`) ; « Boucle » ou « Aller simple » ; si `removed_m` > 0, « Les petites variantes du circuit ne sont pas reprises. » (réponse 6) ; « Tracé du circuit : OpenStreetMap » ; bouton « En faire un itinéraire » |
 | Refus `parts` | nom, longueur (`length_m`), « Ce circuit est en plusieurs morceaux… » ; pas de bouton |
 | Refus `branches` ou `removedTooMuch` | nom, longueur (`length_m`), un message (« … ne se suit pas d'un bout à l'autre ») ; pas de bouton |
-| Zone ancienne (`ordered` absent) | nom, longueur (`length_m`), « Mettez la zone à jour pour en faire un itinéraire », bouton « Voir les zones » |
+| Zone ancienne (`ordered` absent) | nom, longueur (`length_m`), « Zone à mettre à jour. » ; le bouton « Mettre à jour » lance la mise à jour puis ouvre l'onglet Zones, même geste que « Télécharger » d'un GPX hors zone (réponse 7). Sans réseau, mise à jour en cours, ou pas de version plus récente : variantes de la maquette 12, écran 5 |
 
 **« En faire un itinéraire »** : `setDraftTarget({ kind: 'trail', osmId, position })`
 (dernière position connue, ou `null`), puis `router.push('/draft')`.
@@ -573,9 +757,13 @@ type DraftTarget =
 - Le cadrage d'ouverture est celui d'un itinéraire rouvert (tout le tracé
   à l'écran).
 - **Marqueurs serrés** : 35 marqueurs se chevauchent au zoom
-  d'ouverture. Le designer propose leur aspect à faible zoom (plus petits,
-  sans numéro, ou seulement départ et arrivée). L'espacement reste 1 km :
-  il sert à retoucher un passage une fois zoomé.
+  d'ouverture. Au zoom d'ouverture, les points intermédiaires sont de
+  petits ronds sans numéro ; au zoom proche, ils ont leur numéro
+  (réponse 3). Règle « tout ou rien » de la maquette 12 : distance
+  médiane à l'écran entre points voisins, mesurée à chaque fin de zoom.
+  L'espacement reste 1 km : il sert à retoucher un passage une fois zoomé.
+- Le titre de la création est le nom par défaut, donc le nom du circuit
+  (réponse 4).
 
 ### 11. Rapidité (C12) et place du calcul
 
@@ -601,11 +789,13 @@ type DraftTarget =
 | Dossier | Contenu |
 |---|---|
 | `zones/zonefactory/trails.py` | rôles dans `parse_opl` ; coupe, graphe, retraits, refus, parcours (§ 2) ; les 5 propriétés ; le rapport. Tests dans `zones/tests/` |
-| `core/trails/` (nouveau) | `trails.ts` : type `Trail`, `parseTrails`, copie légère pour la carte, `nearestTrail`. Tests Jest |
-| `core/routes/` | `traceDraft.ts` : `cutTrace`, `rotateLoop`, `nearestOnLine`, `traceToDraft` (§ 3, § 4). `savedRoute.ts` : origines, `trace`. `migrations.ts` : `MIGRATIONS[1]`. `routeRepo.ts` : remplacer un GPX. `routeName.ts` : nom d'un circuit |
-| `core/route-info/legShape.ts` | `infoShape` : contrôle du rectangle pour un tronçon `trace` (§ 5) |
-| `features/map/` | `useTrails.ts`, `TrailsLayer.tsx`, `TrailSheet.tsx` ; `ZoneMap` (couche, toucher, feuille) ; la création (couche sans toucher) ; `draftTarget.ts`, `DraftRoot.tsx`, `DraftSession.tsx` (§ 10) ; `useLegResults` et `useLegInfos` (clé `trace:N`) ; `SavedRouteInfoScreen` (« Modifier » d'un GPX) |
-| `features/routes/` | l'origine dans une ligne de la liste (textes de `fr.ts`) |
+| `core/trails/` (nouveau) | `trails.ts` : type `Trail`, `parseTrails`, copie légère pour la carte, `sortByDistance`. Tests Jest |
+| `core/routes/` | `traceDraft.ts` : `cutTrace`, `rotateLoop`, `nearestOnLine`, `traceToDraft` (§ 3, § 4, § 5). `savedRoute.ts` : origines, `trace`. `migrations.ts` : `MIGRATIONS[1]`. `routeRepo.ts` : remplacer un GPX, `duplicateRoute` (§ 7 bis). `routeName.ts` : nom d'un circuit, `copyName`. `routeText.ts` et `routeList.ts` : les nouvelles origines (§ 7) |
+| `core/route-info/` | `legShape.ts` : `infoShape`, contrôle du rectangle pour un tronçon `trace` (§ 5). `heightGroups.ts` (nouveau) et `routeInfo.ts` : un profil par groupe d'altitudes (§ 6) |
+| `features/map/` | `useTrails.ts`, `TrailsLayer.tsx`, `TrailSheet.tsx` ; `ZoneMap` (couche, toucher, feuille) ; la création (couche sans toucher, bulles) ; `draftTarget.ts`, `DraftRoot.tsx`, `DraftSession.tsx` (§ 10) ; `useLegResults` et `useLegInfos` (clé `trace:N`, groupes d'altitudes) ; `SavedRouteInfoScreen` (« Modifier » d'un GPX, « Dupliquer ») |
+| `features/routes/` | `RoutesScreen.tsx` : l'action « Dupliquer » passée au menu |
+| `shared-data/routes/` | `useRoutes.ts` : action `duplicate` |
+| `ui/` | `openActionMenu.ts`, `useRouteMenu.tsx` : l'entrée « Dupliquer », la feuille du menu sur Android (§ 7 bis) |
 | `core/i18n/fr.ts` | tous les textes nouveaux |
 
 - `useTrails` reste dans `features/map/` : seuls les écrans de ce dossier
@@ -642,6 +832,39 @@ type DraftTarget =
   (sommets jusqu'à 303 m l'un de l'autre sur les circuits).
 - **Pas de plafond** : 200 marqueurs pour un GPX de 200 km.
 
+**Hors zone**
+- **Des « attaches » invisibles au bord de la zone** (proposition du
+  designer) : une complexité de plus ; la feuille « Point hors de votre
+  zone » existante suffit.
+- **Des points de passage hors de la zone** : des points qu'on ne peut
+  pas déplacer, donc un piège (designer).
+
+**D+** (mesures du contrôle 1)
+- **(a) Rééchantillonner à 10 m** : n'aide pas. La ligne entière varie
+  encore de 439 à 480 m (41 m, contre 61 m à 30 m). Pour un même départ,
+  « tronçons moins ligne entière » va de −36 à +25 m, et dépasse encore
+  5 m dans 27 cas sur 36. Le bruit vient des altitudes (grille d'environ
+  30 m) et du seuil, pas du pas. En plus, tous les D+ changeraient, et la
+  comparaison au Mac de la phase 5 serait à refaire.
+- **(c) Une tolérance dans C11** : l'écart d'une trace non touchée va de
+  −42 à +31 m (jusqu'à 9 % du D+). Il faudrait environ 45 m au lieu de
+  5 m : la comparaison ne prouverait presque plus rien. (b) donne 0 m.
+- **Couper aux multiples de 30 m** : essayé, la grille dérive quand même
+  (471, 475 et 458 m contre 482 m), car le moteur ne compte pas les
+  distances comme l'app.
+- **Lisser les altitudes avant le seuil** : non mesuré. Plus tard,
+  peut-être jamais.
+
+**Dupliquer**
+- **Lire le nom pour numéroter « X (copie) » en « X (copie 2) »** : une
+  analyse du texte pour un cas rare.
+- **Ouvrir la copie après « Dupliquer »** : une navigation de plus ; la
+  copie est en haut de la liste.
+- **Le menu Android en `Alert` à 3 boutons, avec un sous-menu « Plus… »** :
+  deux appuis pour une action courante.
+- **`@expo/ui` pour un menu natif** : un module et un essai jetable pour
+  une liste de 4 actions.
+
 **Durée**
 - **12 km/h (essai)** ou **16 km/h (vitesse VTT de Valhalla)** : une règle
   de plus, et un GPX changerait de durée en devenant itinéraire.
@@ -660,6 +883,8 @@ type DraftTarget =
   déplacement de la carte près d'un circuit. 44 dp suffit au doigt.
 - **Toucher les circuits dans la création** : conflit avec « toucher pose
   un point » (choix 3).
+- **Prendre seul le circuit le plus proche sous le doigt** : on ouvrirait
+  l'un des deux au hasard, sans savoir qu'il y en a un autre (réponse 5).
 
 ## Conséquences
 
@@ -682,30 +907,29 @@ type DraftTarget =
 - Négatif : un GPX modifié perd les altitudes de son fichier.
 - Négatif : la clé des infos d'un tronçon change encore (`trace:N`) : les
   tests qui l'écrivent sont à adapter.
-- À l'acceptation : l'ADR 0003 reçoit son complément (déjà écrit, statut
-  « proposé ») ; l'ADR 0019 reçoit « origines `trail` et `editedGpx`,
-  base version 2, marqueur `trace` : ADR 0020 » ; l'ADR 0017 reçoit
-  « rectangle contrôlé pour un tronçon `trace` : ADR 0020 ».
+- Négatif : après une retouche, le D+ est un ordre de grandeur (environ
+  ±6 %). Le même circuit, ouvert depuis deux départs, peut montrer deux
+  D+ différents.
+- Négatif : une partie hors zone qui revient dans la zone disparaît si
+  l'on déplace un de ses points voisins (§ 5). « Annuler » la rend.
+- Négatif : sur Android, le menu d'un itinéraire n'est plus une boîte
+  native mais une feuille de l'app.
+- L'ADR 0003 a reçu son complément (« la ligne ordonnée des circuits »),
+  accepté avec cet ADR. Restent à écrire : dans l'ADR 0019, « origines
+  `trail` et `editedGpx`, base version 2, marqueur `trace`, Dupliquer,
+  menu Android : ADR 0020 » ; dans l'ADR 0017, « rectangle contrôlé pour
+  un tronçon `trace`, groupes d'altitudes : ADR 0020 ».
 
 ## Contrôles avant de bâtir dessus
 
-1. **Avant T3, sur le Mac : l'origine de l'écart de D+** (§ 6). Banc
-   jetable (programme de mesure), Valhalla 3.9.1 en Docker, tuiles et
-   altitudes de Nancy v5, méthode de l'ADR 0017, § 4, sur la Petite Suisse
-   Lorraine :
-   - (a) la ligne entière en une requête `height` ;
-   - (b) coupée depuis le départ du circuit (attendu : 478 m) ;
-   - (c) coupée depuis le départ « le plus proche » de l'essai (attendu :
-     436 m) ;
-   - (d) dix autres départs, et les espacements 500, 1 000 et 2 000 m ;
-   - (e) la ligne tournée relue point par point : doublons, segments nuls,
-     retours en arrière à la jonction.
-   Si (a) à (d) varient de plus de 5 m sans défaut en (e) : cause 1, le
-   pilotage choisit une parade du § 6 avec Émilien. Si (e) montre un
-   défaut : cause 2, corrigée en T3. Puis, sur iOS, refaire l'ouverture
-   « le plus proche » jusqu'au bout : même valeur qu'Android attendue.
-   Le même banc mesure un GPX réel de 10 000 points : D+ en une requête
-   contre D+ découpé (C11).
+1. **Fait le 9 novembre, sur le Mac : l'origine de l'écart de D+**
+   (§ 6). Banc jetable, Valhalla 3.9.1 en Docker, Nancy v5, fonctions de
+   l'app. Résultat : le D+ dépend de l'endroit où l'on coupe (cause 1) ;
+   la rotation est juste, à un point en double près. Parade (b) retenue.
+   **Reste, en T7** : sur iOS, l'ouverture « le plus proche » jusqu'au
+   bout (même valeur qu'Android attendue) ; et C11 sur un GPX de plus de
+   14 000 points, où `thinTrack` peut garder d'autres points dans la
+   forme jointe que dans le tracé du fichier.
 2. **Début de T5, sur `node:sqlite` puis sur les deux simulateurs** : la
    reconstruction de la table avec `STRICT` et `AUTOINCREMENT`, et le
    compteur `sqlite_sequence` après `RENAME`. Parade si le compteur ne
@@ -721,28 +945,34 @@ type DraftTarget =
    T5, le signaler tout de suite au pilotage.
 5. **T4** : l'ordre des couches (`beforeId`) et le nom le long du trait,
    sur les deux simulateurs, avec les polices hors ligne déjà installées.
+6. **Début de T6, menu à 4 actions** (§ 7 bis) : sur Android, la feuille
+   du menu (`Modal`) s'ouvre depuis le « ⋮ » et l'appui long, se ferme
+   par « Annuler », un toucher hors de la feuille et la touche Retour ;
+   sur iOS, la feuille d'actions montre bien 4 actions et « Annuler ». Le
+   designer juge son aspect (maquette 40, écran 9c). S'il refuse une
+   feuille de l'app, le pilotage décide (`@expo/ui`, avec un essai
+   jetable).
 
-## Questions pour Émilien
+## Réponses d'Émilien (9 novembre 2026)
 
-1. **La règle d'ordonnancement tolérante change le critère C2.** La spec
-   dit : « fourche ou variante → le circuit n'est pas transformable ».
-   Avec cette règle, aucun des deux circuits de Nancy ne l'est. Je
-   propose de garder le **tronc principal** : la fabrique retire les
-   impasses et petites boucles de moins de 500 m, les variantes (en
-   gardant la branche listée en premier par OSM) et les membres marqués
-   « variante », « excursion », « accès » ou « liaison ». Elle refuse
-   encore un circuit en morceaux, en fourche à branches longues, en 8, en
-   aller-retour, ou si elle doit retirer plus de 15 % de sa longueur.
-   - **Recommandation : accepter.** À Nancy : deux boucles, 5 % et 0,5 %
-     retirés. Ce qui est retiré est écrit dans le rapport de chaque zone.
-     Le prix : l'itinéraire ne contient pas les petites annexes balisées
-     (une impasse de 152 m, une variante de 1,1 km).
-   - Autre choix : garder la règle stricte. La phase ne livre alors que la
-     couche, la feuille et le geste pour les GPX.
+Pour chaque question, la recommandation est retenue.
 
-Une deuxième question peut venir du contrôle 1 : si le D+ dépend de
-l'endroit où l'on coupe le tracé, il faudra choisir une parade (§ 6). Je
-ne la pose pas avant la preuve.
+1. Règle d'ordonnancement tolérante, qui change C2 : **acceptée** (§ 2).
+2. Parade du D+, après le contrôle 1 : **(b)**, une requête par suite de
+   tronçons non touchés ; après une retouche, le D+ reste un ordre de
+   grandeur (§ 6).
+3. Points intermédiaires en petits ronds sans numéro au zoom d'ouverture,
+   numéros au zoom proche (maquette 12, question 1) : **oui** (§ 10).
+4. Titre de la création = nom du circuit (maquette 12, question 2) :
+   **oui** (§ 10).
+5. Plusieurs circuits sous le doigt : une courte liste pour choisir
+   (maquette 12, question 3) : **oui** (§ 9).
+6. Dire dans la feuille que les petites variantes ne sont pas reprises
+   (maquette 12, question 4) : **oui** (§ 9).
+7. Zone ancienne : le bouton lance la mise à jour, puis ouvre l'onglet
+   Zones (maquette 12, question 5) : **oui** (§ 9).
+8. GPX modifié : une bulle à l'ouverture prévient du remplacement, sans
+   boîte de confirmation (maquette 12, question 6) : **oui** (§ 8).
 
 ## Sources (relevées le 9 novembre 2026)
 
@@ -757,6 +987,20 @@ ne la pose pas avant la preuve.
   `ios-proche-1-ouverture.png`, `android-C4-proche-1-ouverture.png`
   (valeurs de D+ du § 6). Branche jetable `claude/p07-essai`, commit
   `384d458` (code non relu).
+- Contrôle 1 : `/Users/utilisateur/dev_ai/vtt-nav-preuves/p07/controle1/LISEZMOI.md`
+  (hors dépôt), sorties `sortie-mesures.txt`, `sortie-diagnostic.txt`,
+  `sortie-parade-b.txt`.
+- Maquettes : `design/v1/12-circuit-balise.html` (écran 8, textes,
+  questions) et `design/v1/40-mes-itineraires.html` (écrans 3, 9a, 9b).
+- Code lu pour l'alignement du 9 novembre : `core/route-info/routeInfo.ts`,
+  `profile.ts` ; `core/routing/infoRequest.ts`, `infoResponse.ts`,
+  `routingEngine.ts` ; `core/routes/routeRepo.ts`, `routeName.ts`,
+  `routeText.ts`, `routeList.ts`, `track.ts` ; `core/draft/problem.ts` ;
+  `features/map/useLegInfos.ts`, `useLegResults.ts` ;
+  `shared-data/routes/useRoutes.ts` ; `ui/openActionMenu.ts`,
+  `useRouteMenu.tsx`.
+- React Native, `Alert` : « On Android at most three buttons can be
+  specified » : https://reactnative.dev/docs/alert
 - Code lu sur la branche de phase (`9edfa8b`) : `zones/zonefactory/trails.py` ;
   `mobile/src/core/routes/` (`reopen.ts`, `migrations.ts`,
   `savedRoute.ts`, `importedRoute.ts`, `track.ts`) ;

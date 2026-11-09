@@ -589,10 +589,10 @@ Statut : celui de l'[ADR 0018](0018-difficulte-et-mise-a-jour-des-zones.md),
   dans un paquet neuf.
 - `zone.json` et les schémas ne changent pas.
 
-## Complément du 2026-11-09 : la ligne ordonnée des circuits (proposé)
+## Complément du 2026-11-09 : la ligne ordonnée des circuits (accepté)
 
 Statut : celui de l'[ADR 0020](0020-circuits-balises-et-trace-modifiable.md),
-§ 1 et § 2, proposé le 2026-11-09, à valider par Émilien.
+§ 1 et § 2, accepté le 2026-11-09 par Émilien.
 
 **Le format de `trails.geojson`** (jusqu'ici décrit par le code de
 `zones/zonefactory/trails.py`) :
