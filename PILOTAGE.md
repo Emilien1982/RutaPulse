@@ -24,10 +24,12 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 ✅ ([résultats](docs/phases/p06-mes-itineraires-gpx-resultats.md)) ; phase 7 à spécifier (circuits VTT balisés, et GPX importé modifiable) |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 ✅ ([résultats](docs/phases/p06-mes-itineraires-gpx-resultats.md)) ; phase 7 🔧 lancée ([spec](docs/phases/p07-circuits-balises.md)) |
 
 ## Décisions prises
 
+- 2026-11-09 — Spec de la phase 7 (circuits VTT balisés et trace modifiable, taille G) validée par Émilien, avec les choix du pilotage. Un GPX modifié remplace l'original (origine « GPX modifié le … »). Ordre des voies des circuits fait dans la fabrique : zone Nancy v6 à publier.
+- 2026-11-09 — Nouvelle session de pilotage : `local_1ea128ca-dd2d-45af-b97e-66ec21c85b89` (passation après la phase 6). CI de 9799484 verte.
 - 2026-11-09 — Phase 6 fusionnée dans main : Enregistrer (nom « Itinéraire du 9 nov. »), onglet Itinéraires (liste, menu « ⋮ », renommer, exporter, supprimer), itinéraire gardé (tracé fixe, infos recalculées sur la zone en service), « Modifier » cadré sur le tracé, import et export GPX 1.1. 16 critères tenus avec réserves (C6 pas joué de bout en bout sur simulateur ; C11 sur la longueur du tracé ; C13 une mesure iOS à 1,09 s à cause du fond de carte ; C14 iOS sans mode avion ; B3 revérifié sur Android seulement). 2 193 tests, 228 pytest, CI verte. ADR 0019 ; maquette 40 alignée sur l'app (nom au-dessus de l'arche, feuille « hors de vos zones » sur la liste).
 - 2026-11-09 — Phase 6, détails tranchés par le pilotage : 3e aller-retour accordé sur B3 seul ; écarts M1 et M2 du designer : on garde l'app, la maquette suit. CI rouge un temps sur 423cdee (un test écrivait dans /Users), corrigée en 940f434.
 - 2026-11-07 — Règle d'Émilien complétée : le dimanche, pas de réserve de quota (pas de nouvelles offres d'emploi) ; tout le quota restant peut servir à RutaPulse.
@@ -109,7 +111,7 @@
 
 ## Prochaine étape
 
-Écrire la spec de la phase 7 (circuits VTT balisés, docs/05 ligne 7), la faire valider par Émilien, puis la lancer dans une session de phase. À y faire : le geste « trace → itinéraire modifiable », commun aux circuits balisés et aux GPX importés (décision d'Émilien du 3 novembre).
+Phase 7 en cours dans sa session de phase (worktree). Prochain point d'arrêt : maquette 12 complétée et ADR 0020 à faire valider par Émilien (T1).
 
 ## Passation du pilotage (9 novembre 2026)
 
