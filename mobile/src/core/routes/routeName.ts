@@ -46,7 +46,34 @@ export function defaultRouteName(date: Date): string {
   });
 }
 
-/** `base`, else `base (2)`, `base (3)`... the smallest free number. */
+/**
+ * Default name of a route made from a trail (ADR 0020, section 10): its name,
+ * else its number (`ref`), else "Circuit du 9 nov.". Cut to the longest valid
+ * name.
+ */
+export function trailRouteName(
+  trail: { name?: string; ref?: string },
+  date: Date,
+): string {
+  const name = normalizeName(trail.name ?? '');
+  const ref = normalizeName(trail.ref ?? '');
+  const base =
+    name !== ''
+      ? name
+      : ref !== ''
+        ? t('trails.refLabel', { ref })
+        : t('routes.defaultTrailName', {
+            day: date.getDate(),
+            month: t(`zones.month.${date.getMonth() + 1}` as TextKey),
+          });
+  return [...base].slice(0, MAX_NAME_LENGTH).join('').trim();
+}
+
+/**
+ * `base`, else `base (2)`, `base (3)`... the smallest free number. A long
+ * base is shortened so that the whole name keeps 60 characters at most: the
+ * suffix stays whole.
+ */
 export function uniqueDefaultName(
   base: string,
   existing: readonly string[],
@@ -54,6 +81,11 @@ export function uniqueDefaultName(
   const taken = new Set(existing);
   if (!taken.has(base)) return base;
   let n = 2;
-  while (taken.has(`${base} (${n})`)) n++;
-  return `${base} (${n})`;
+  for (;;) {
+    const suffix = ` (${n})`;
+    const room = MAX_NAME_LENGTH - [...suffix].length;
+    const name = `${[...base].slice(0, room).join('').trimEnd()}${suffix}`;
+    if (!taken.has(name)) return name;
+    n++;
+  }
 }

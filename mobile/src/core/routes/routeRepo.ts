@@ -84,7 +84,7 @@ export type ReplaceInput = Pick<
   | 'savedAt'
 >;
 
-/** Replaces a created route. False if there is no such created route. */
+/** Replaces a created, trail or edited-GPX route. False if there is none. */
 export async function replaceRoute(
   db: SqlDb,
   id: number,
@@ -94,7 +94,7 @@ export async function replaceRoute(
     `UPDATE routes SET draft = ?, legs = ?, zone_id = ?, zone_version = ?, zone_name = ?,
        preview = ?, distance_km = ?, duration_s = ?, ascent_m = ?, descent_m = ?,
        figures_at = ?, saved_at = ?
-     WHERE id = ? AND origin = 'created'`,
+     WHERE id = ? AND origin IN ('created', 'trail', 'editedGpx')`,
     [
       draftToJson(input.draft),
       legsToJson(input.legs),
@@ -170,6 +170,41 @@ export async function attachZone(
     `UPDATE routes SET zone_id = ?, zone_version = ?, zone_name = ?
      WHERE id = ? AND origin = 'gpx' AND zone_id IS NULL`,
     [zone.id, zone.version, zone.name, id],
+  );
+  return result.changes > 0;
+}
+
+/**
+ * Replaces an imported GPX by the route made from it (ADR 0020, section 7).
+ * One `UPDATE`: the track now lives in the legs, so `track` and `elevations`
+ * go. Name and creation date stay. False if there is no such GPX.
+ */
+export async function replaceGpx(
+  db: SqlDb,
+  id: number,
+  input: ReplaceInput,
+): Promise<boolean> {
+  const result = await db.run(
+    `UPDATE routes SET origin = 'editedGpx', draft = ?, legs = ?, track = NULL,
+       elevations = NULL, zone_id = ?, zone_version = ?, zone_name = ?,
+       preview = ?, distance_km = ?, duration_s = ?, ascent_m = ?, descent_m = ?,
+       figures_at = ?, saved_at = ?
+     WHERE id = ? AND origin = 'gpx'`,
+    [
+      draftToJson(input.draft),
+      legsToJson(input.legs),
+      input.zone.id,
+      input.zone.version,
+      input.zone.name,
+      input.preview,
+      input.distanceKm,
+      input.durationS,
+      roundOrNull(input.ascentM),
+      roundOrNull(input.descentM),
+      input.figuresAt,
+      input.savedAt,
+      id,
+    ],
   );
   return result.changes > 0;
 }

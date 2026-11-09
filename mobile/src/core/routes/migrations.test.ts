@@ -3,6 +3,9 @@ import { createNodeSqlDb } from './testing/nodeSqlDb';
 import { sampleCreated } from './testing/sampleRoutes';
 import { insertRoute, getRoute } from './routeRepo';
 
+// Version 1 of the schema: these tests describe the first migration.
+const V1 = MIGRATIONS.slice(0, 1);
+
 const version = async (db: ReturnType<typeof createNodeSqlDb>) =>
   (await db.first<{ user_version: number }>('PRAGMA user_version'))!
     .user_version;
@@ -21,7 +24,7 @@ describe('migrate', () => {
     const db = createNodeSqlDb();
     expect(await version(db)).toBe(0);
 
-    expect(await migrate(db, MIGRATIONS)).toEqual({
+    expect(await migrate(db, V1)).toEqual({
       status: 'ready',
       version: 1,
     });
@@ -32,7 +35,7 @@ describe('migrate', () => {
 
   it('creates a STRICT table: a wrong type is refused', async () => {
     const db = createNodeSqlDb();
-    await migrate(db, MIGRATIONS);
+    await migrate(db, V1);
     await expect(
       db.run(
         "INSERT INTO routes (name, origin, created_at, saved_at, zone_id, zone_version, zone_name, draft, legs, preview, distance_km, duration_s) VALUES ('a', 'created', 'not a number', 1, 'z', 1, 'Z', '{}', '[]', 'p', 1, 1)",
@@ -42,7 +45,7 @@ describe('migrate', () => {
 
   it('refuses the rows the CHECK rules forbid', async () => {
     const db = createNodeSqlDb();
-    await migrate(db, MIGRATIONS);
+    await migrate(db, V1);
     // GPX without track
     await expect(
       db.run(
@@ -77,11 +80,11 @@ describe('migrate', () => {
 
   it('does nothing when opened a second time', async () => {
     const db = createNodeSqlDb();
-    await migrate(db, MIGRATIONS);
+    await migrate(db, V1);
     const id = await insertRoute(db, sampleCreated());
     const before = await getRoute(db, id);
 
-    expect(await migrate(db, MIGRATIONS)).toEqual({
+    expect(await migrate(db, V1)).toEqual({
       status: 'ready',
       version: 1,
     });
@@ -92,11 +95,11 @@ describe('migrate', () => {
 
   it('climbs from version 1 to a (test) version 2 and keeps the rows', async () => {
     const db = createNodeSqlDb();
-    await migrate(db, MIGRATIONS);
+    await migrate(db, V1);
     const id = await insertRoute(db, sampleCreated());
     const before = await getRoute(db, id);
 
-    expect(await migrate(db, [...MIGRATIONS, addColumn])).toEqual({
+    expect(await migrate(db, [...V1, addColumn])).toEqual({
       status: 'ready',
       version: 2,
     });
@@ -111,7 +114,7 @@ describe('migrate', () => {
 
   it('climbs from 0 to 2 in one call, one migration at a time', async () => {
     const db = createNodeSqlDb();
-    expect(await migrate(db, [...MIGRATIONS, addColumn])).toEqual({
+    expect(await migrate(db, [...V1, addColumn])).toEqual({
       status: 'ready',
       version: 2,
     });
@@ -120,7 +123,7 @@ describe('migrate', () => {
 
   it('cancels a failing migration: version and tables stay as before', async () => {
     const db = createNodeSqlDb();
-    await migrate(db, MIGRATIONS);
+    await migrate(db, V1);
     const id = await insertRoute(db, sampleCreated());
     const failing: Migration = async (tx) => {
       await tx.exec('ALTER TABLE routes ADD COLUMN note TEXT');
@@ -129,7 +132,7 @@ describe('migrate', () => {
       throw new Error('broken migration');
     };
 
-    await expect(migrate(db, [...MIGRATIONS, failing])).rejects.toThrow(
+    await expect(migrate(db, [...V1, failing])).rejects.toThrow(
       'broken migration',
     );
 
@@ -147,20 +150,20 @@ describe('migrate', () => {
     const failing: Migration = async () => {
       throw new Error('boom');
     };
-    await expect(
-      migrate(db, [...MIGRATIONS, addColumn, failing]),
-    ).rejects.toThrow('boom');
+    await expect(migrate(db, [...V1, addColumn, failing])).rejects.toThrow(
+      'boom',
+    );
     expect(await version(db)).toBe(2);
   });
 
   it('declares a database newer than the app "tooNew" and writes nothing', async () => {
     const db = createNodeSqlDb();
-    await migrate(db, MIGRATIONS);
+    await migrate(db, V1);
     const id = await insertRoute(db, sampleCreated());
     await db.exec('PRAGMA user_version = 99');
     await db.exec('CREATE TABLE future (a INTEGER)');
 
-    expect(await migrate(db, MIGRATIONS)).toEqual({
+    expect(await migrate(db, V1)).toEqual({
       status: 'tooNew',
       version: 99,
     });

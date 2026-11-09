@@ -1,12 +1,12 @@
 // Routes used by the tests of this folder and of shared-data/routes/.
 
-import type { CreatedRoute, GpxRoute, NewRoute } from '../savedRoute';
+import type { CreatedRoute, GpxRoute } from '../savedRoute';
 
 const ZONE = { id: 'nancy', version: 5, name: 'Nancy' };
 
 export function sampleCreated(
   patch: Partial<Omit<CreatedRoute, 'id' | 'readable'>> = {},
-): Extract<NewRoute, { origin: 'created' }> {
+): Omit<CreatedRoute, 'id' | 'readable'> {
   return {
     name: 'Boucle du Bois',
     origin: 'created',
@@ -48,7 +48,7 @@ export function sampleCreated(
 
 export function sampleGpx(
   patch: Partial<Omit<GpxRoute, 'id' | 'readable'>> = {},
-): Extract<NewRoute, { origin: 'gpx' }> {
+): Omit<GpxRoute, 'id' | 'readable'> {
   return {
     name: 'Sortie importée',
     origin: 'gpx',

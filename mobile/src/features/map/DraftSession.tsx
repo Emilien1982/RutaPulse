@@ -96,7 +96,7 @@ function ReopenedSession({
   const query = useSavedRoute(routeId);
   const route = query.data;
   const usable =
-    route && route.readable && route.origin === 'created' ? route : null;
+    route && route.readable && route.origin !== 'gpx' ? route : null;
   const refused =
     (route !== undefined || query.isError) &&
     (!usable || usable.zone.id !== zone.id);

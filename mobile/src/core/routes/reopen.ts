@@ -37,6 +37,7 @@ export function reopenDraft(route: CreatedRoute): {
       distanceKm: leg.distanceKm,
       durationS: leg.durationS,
       zoneVersion: leg.zoneVersion,
+      ...(leg.trace ? { trace: true as const } : {}),
     });
   });
   const nextId = Math.max(0, ...draft.points.map((p) => p.id)) + 1;

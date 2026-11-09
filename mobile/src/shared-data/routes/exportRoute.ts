@@ -45,7 +45,7 @@ export async function exportRoute(
   usable: boolean,
 ): Promise<void> {
   let heights: (number | null)[] | null = null;
-  if (route.origin === 'created' && usable) {
+  if (route.origin !== 'gpx' && usable) {
     const track = exportTrackOf(route);
     const result = await computePointHeights(track);
     if (result.ok && result.heights.length === track.length) {

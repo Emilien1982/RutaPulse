@@ -213,7 +213,7 @@ function LoadedRoute({
   let infos: ReactNode;
   if (status === 'usable' && zone) {
     infos =
-      effective.origin === 'created' ? (
+      effective.origin !== 'gpx' ? (
         <CreatedInfos route={effective} zone={zone} menu={button} />
       ) : (
         <GpxInfos route={effective} zone={zone} menu={button} />
@@ -444,7 +444,7 @@ function PlainInfos({
   const router = useRouter();
   const track = useMemo(
     () =>
-      route.origin === 'created'
+      route.origin !== 'gpx'
         ? trackOfCreated(route.draft, route.legs)
         : route.track,
     [route],
@@ -518,7 +518,7 @@ function PlainInfos({
         </Notice>
       }
       actions={
-        route.origin === 'created' && status === 'usable' ? (
+        route.origin !== 'gpx' && status === 'usable' ? (
           <ModifyButton routeId={route.id} />
         ) : undefined
       }
@@ -536,7 +536,7 @@ function noticeOf(
       return {
         head: t('routes.noticeDeleted', { zone }),
         body: t(
-          origin === 'created'
+          origin !== 'gpx'
             ? 'routes.noticeDeletedText'
             : 'routes.noticeDeletedGpxText',
         ),
