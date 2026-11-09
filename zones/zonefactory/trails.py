@@ -4,6 +4,8 @@ osmium only filters the extract and converts it to OPL (osmium's text format).
 Everything else is pure Python and testable without osmium.
 A "part" is a group of ways linked by shared nodes. A trail with one part is
 continuous, otherwise it has gaps.
+A continuous trail also gets an ordered line (ADR 0020, section 2): the main
+trunk, in the direction of the OSM relation, without short side branches.
 """
 
 import json
@@ -15,6 +17,10 @@ from pathlib import Path
 
 CELL_M = 500.0  # grid cell size for the gap search
 MAX_RING = 100  # gap search radius: 100 cells = 50 km
+MAX_ANNEX_M = 500.0  # a dead end or a small loop shorter than this is an annex, removed
+MAX_REMOVED_SHARE = 0.15  # more removed than this share of length_m: the trail is refused
+DROPPED_ROLES = {"alternative", "excursion", "approach", "connection"}  # member roles that are not the trunk
+VALHALLA_RADIUS_M = 6378160.0  # sphere of Valhalla, as `trackLengthM` in the app
 
 
 def _unescape(s: str) -> str:
@@ -31,7 +37,7 @@ def _parse_tags(s: str) -> dict:
 
 
 def parse_opl(text: str):
-    """Return nodes {id: (lon, lat)}, ways {id: [node ids]}, rels {id: (tags, members)}."""
+    """Return nodes {id: (lon, lat)}, ways {id: [node ids]}, rels {id: (tags, [(type, id, role)])}."""
     nodes, ways, rels = {}, {}, {}
     for line in text.splitlines():
         f = line.split(" ")
@@ -46,7 +52,8 @@ def parse_opl(text: str):
             members = []
             for m in fields.get("M", "").split(","):
                 if m:
-                    members.append((m[0], int(m[1:].split("@", 1)[0])))
+                    ref, _, role = m[1:].partition("@")
+                    members.append((m[0], int(ref), _unescape(role)))
             rels[oid] = (_parse_tags(fields.get("T", "")), members)
     return nodes, ways, rels
 
@@ -58,17 +65,21 @@ def dist_m(a, b) -> float:
     return math.hypot(dx, dy)
 
 
-def _collect_ways(rid, rels, seen_rels) -> list[int]:
-    """Way ids of a relation, following sub-relations (each visited once)."""
+def _collect_ways(rid, rels, seen_rels, dropped=False) -> list[tuple[int, str, bool]]:
+    """(way id, role, dropped) of a relation, following sub-relations (each visited once).
+
+    `dropped` is true for a way whose role, or the role of a sub-relation above it, is in DROPPED_ROLES.
+    """
     if rid in seen_rels or rid not in rels:
         return []
     seen_rels.add(rid)
     result = []
-    for t, ref in rels[rid][1]:
+    for t, ref, role in rels[rid][1]:
+        out = dropped or role in DROPPED_ROLES
         if t == "w":
-            result.append(ref)
+            result.append((ref, role, out))
         elif t == "r":
-            result += _collect_ways(ref, rels, seen_rels)
+            result += _collect_ways(ref, rels, seen_rels, out)
     return result
 
 
@@ -147,14 +158,224 @@ def _max_gap(parts, ways, nodes):
     return max(gap)
 
 
+def valhalla_length_m(line) -> float:
+    """Length of a [lon, lat] line on the sphere of Valhalla (same formula as `trackLengthM` in the app)."""
+    rad = math.pi / 180
+    total = 0.0
+    for (lon1, lat1), (lon2, lat2) in zip(line, line[1:]):
+        h = math.sin((lat2 - lat1) * rad / 2) ** 2 + math.cos(lat1 * rad) * math.cos(lat2 * rad) * math.sin(
+            (lon2 - lon1) * rad / 2
+        ) ** 2
+        total += 2 * VALHALLA_RADIUS_M * math.asin(min(1.0, math.sqrt(h)))
+    return total
+
+
+def _seq_len(seq, nodes) -> float:
+    return sum(dist_m(nodes[a], nodes[b]) for a, b in zip(seq, seq[1:]))
+
+
+def _cut_pieces(way_ids, ways, nodes) -> list[tuple[int, list[int]]]:
+    """Cut every way at its middle nodes that another way also uses. Pieces keep the order of the relation."""
+    seqs = {w: [n for n in ways[w] if n in nodes] for w in way_ids}
+    seqs = {w: s for w, s in seqs.items() if len(s) >= 2}
+    users = defaultdict(set)
+    for w, s in seqs.items():
+        for n in s:
+            users[n].add(w)
+    pieces = []
+    for w, s in seqs.items():
+        start = 0
+        for j in range(1, len(s) - 1):
+            if len(users[s[j]]) > 1:
+                pieces.append((w, s[start : j + 1]))
+                start = j
+        pieces.append((w, s[start:]))
+    return pieces
+
+
+def _chains(pieces, active, nodes):
+    """Chains of pieces between junctions or free ends. Return (chains, degree of every node)."""
+    at = defaultdict(list)  # node -> one entry per piece end
+    for i in sorted(active):
+        at[pieces[i][1][0]].append(i)
+        at[pieces[i][1][-1]].append(i)
+    deg = {n: len(v) for n, v in at.items()}
+    special = sorted(n for n, d in deg.items() if d != 2)
+    done, chains = set(), []
+    for n in special:
+        for i in at[n]:
+            if i in done:
+                continue
+            cur, p, chain = n, i, []
+            while True:
+                done.add(p)
+                chain.append(p)
+                a, b = pieces[p][1][0], pieces[p][1][-1]
+                nxt = b if a == cur else a
+                if deg[nxt] != 2:
+                    break
+                cur, p = nxt, next(q for q in at[nxt] if q != p)
+            length = sum(_seq_len(pieces[q][1], nodes) for q in chain)
+            chains.append({"from": n, "to": nxt, "pieces": chain, "len": length})
+    return chains, deg
+
+
+def _connected(pieces, active) -> bool:
+    parent = {}
+
+    def find(x):
+        parent.setdefault(x, x)
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    for i in active:
+        parent[find(pieces[i][1][0])] = find(pieces[i][1][-1])
+    return len({find(x) for x in list(parent)}) <= 1
+
+
+def _walk(pieces, active, start_piece, forward):
+    """Follow the pieces from one end (path) or round the loop. Return [(piece, reversed)]."""
+    at = defaultdict(list)
+    for i in active:
+        at[pieces[i][1][0]].append(i)
+        at[pieces[i][1][-1]].append(i)
+    p, rev = start_piece, not forward
+    seq = []
+    while True:
+        seq.append((p, rev))
+        s = pieces[p][1]
+        node = s[0] if rev else s[-1]
+        nxt = [q for q in at[node] if q != p]
+        if not nxt or nxt[0] == start_piece:
+            return seq
+        p = nxt[0]
+        rev = pieces[p][1][-1] == node and pieces[p][1][0] != node
+
+
+def _order_pieces(pieces, active, deg):
+    """Sequence [(piece, reversed)] in the direction of the relation, and whether it is a loop."""
+    first = min(active)
+    others = sorted(active - {first})
+    second = others[0] if others else None
+    ones = sorted(n for n, d in deg.items() if d == 1)
+    if second is None and ones:  # a single way: its OSM direction
+        return [(first, False)], False
+    if not ones:  # simple loop: starts at the beginning of the first piece, turned towards the second
+        forward = True
+        if second is not None:
+            a, b = pieces[first][1][0], pieces[first][1][-1]
+            ends2 = {pieces[second][1][0], pieces[second][1][-1]}
+            forward = b in ends2 or a not in ends2
+        return _walk(pieces, active, first, forward), True
+    at = defaultdict(list)
+    for i in active:
+        at[pieces[i][1][0]].append(i)
+        at[pieces[i][1][-1]].append(i)
+    start = at[ones[0]][0]
+    seq = _walk(pieces, active, start, pieces[start][1][0] == ones[0])
+    if second is not None:
+        order = [p for p, _ in seq]
+        if order.index(first) > order.index(second):
+            seq = [(p, not r) for p, r in reversed(seq)]
+    return seq, False
+
+
+def _ways_text(n: int) -> str:
+    return f"{n} voie" + ("s" if n > 1 else "")
+
+
+def order_trail(way_ids, dropped, roles, ways, nodes, length_m, parts) -> dict:
+    """Ordered line of a trail (ADR 0020, section 2). `way_ids` are all the ways, `dropped` the ones whose role removes them.
+
+    Return {ordered, loop, ordered_m, removed_m, refusal, notes}; `notes` are report lines (French).
+    """
+    refused = {"ordered": None, "loop": None, "ordered_m": None, "removed_m": None}
+
+    def refuse(reason, note):
+        return {**refused, "refusal": reason, "notes": [f"REFUS ({reason}) : {note}"]}
+
+    if parts > 1:
+        return refuse("parts", f"{parts} morceaux")
+    kept = [w for w in way_ids if w not in dropped]
+    notes, removed_total = [], 0.0
+    role_dropped = [w for w in way_ids if w in dropped and len(ways[w]) >= 2]
+    if role_dropped:
+        removed_total += sum(_seq_len([n for n in ways[w] if n in nodes], nodes) for w in role_dropped)
+        notes.append(f"retiré : rôle écarté, {_ways_text(len(role_dropped))}, {removed_total:.0f} m")
+    pieces = _cut_pieces(kept, ways, nodes)
+    active = set(range(len(pieces)))
+    while active:
+        chains, deg = _chains(pieces, active, nodes)
+        gone = []  # (chain, reason)
+        for c in chains:
+            ends = sorted((deg[c["from"]], deg[c["to"]]))
+            if c["from"] == c["to"] and c["len"] < MAX_ANNEX_M and deg[c["from"]] >= 3:
+                gone.append((c, "petite boucle"))
+            elif c["len"] < MAX_ANNEX_M and ends[0] == 1 and ends[1] >= 3:
+                gone.append((c, "impasse"))
+        if not gone:  # variants only when this pass removed no annex: an annex can hide a loop
+            groups = defaultdict(list)
+            for c in chains:
+                if c["from"] != c["to"]:
+                    groups[frozenset((c["from"], c["to"]))].append(c)
+            for group in groups.values():
+                group.sort(key=lambda c: min(c["pieces"]))
+                # parallel chains that are the whole remaining graph make the loop: keep the first two
+                keep = 2 if len(group) == len(chains) else 1
+                gone += [(c, "variante") for c in group[keep:]]
+        if not gone:
+            break
+        for c, reason in gone:
+            active -= set(c["pieces"])
+            removed_total += c["len"]
+            notes.append(f"retiré : {reason}, {_ways_text(len(c['pieces']))}, {c['len']:.0f} m")
+    if not active:
+        return refuse("branches", "plus aucune voie après les retraits")
+    if not _connected(pieces, active):
+        return refuse("parts", "plusieurs morceaux après les retraits")
+    _, deg = _chains(pieces, active, nodes)
+    free_ends = sum(1 for d in deg.values() if d == 1)
+    if any(d > 2 for d in deg.values()) or free_ends not in (0, 2):
+        junctions = sum(1 for d in deg.values() if d > 2)
+        return refuse("branches", f"ni chemin ni boucle après les retraits ({junctions} jonctions, {free_ends} bouts libres)")
+    if length_m and removed_total > MAX_REMOVED_SHARE * length_m:
+        return refuse("removedTooMuch", f"{removed_total:.0f} m retirés sur {length_m:.0f} m")
+    seq, loop = _order_pieces(pieces, active, deg)
+    line = []
+    for p, rev in seq:
+        s = pieces[p][1][::-1] if rev else pieces[p][1]
+        role = roles.get(pieces[p][0])
+        if (role == "forward" and rev) or (role == "backward" and not rev):
+            notes.append(f"ALERTE : voie {pieces[p][0]} de rôle {role} parcourue à l'envers")
+        for n in s:
+            pt = [round(nodes[n][0], 6), round(nodes[n][1], 6)]
+            if not line or line[-1] != pt:
+                line.append(pt)
+    return {
+        "ordered": line,
+        "loop": loop,
+        "ordered_m": round(valhalla_length_m(line)),
+        "removed_m": round(removed_total),
+        "refusal": None,
+        "notes": notes,
+    }
+
+
 def analyse(nodes, ways, rels) -> list[dict]:
     """One entry per route=mtb relation that has at least one usable way."""
     trails = []
     for rid, (tags, _members) in sorted(rels.items()):
         if tags.get("route") != "mtb":
             continue
-        way_ids = [w for w in dict.fromkeys(_collect_ways(rid, rels, set())) if w in ways]
-        way_ids = [w for w in way_ids if len(ways[w]) >= 2]
+        listed = {}  # way id -> [role, dropped]; a way is dropped only if every mention is dropped
+        for w, role, dropped in _collect_ways(rid, rels, set()):
+            if w in listed:
+                listed[w][1] = listed[w][1] and dropped
+            else:
+                listed[w] = [role, dropped]
+        way_ids = [w for w in listed if w in ways and len(ways[w]) >= 2]
         if not way_ids:
             continue
         parts = _find_parts(way_ids, ways)
@@ -162,6 +383,15 @@ def analyse(nodes, ways, rels) -> list[dict]:
             dist_m(nodes[a], nodes[b]) for w in way_ids for a, b in zip(ways[w], ways[w][1:]) if a in nodes and b in nodes
         )
         gap = _max_gap(parts, ways, nodes)
+        order = order_trail(
+            way_ids,
+            {w for w in way_ids if listed[w][1]},
+            {w: listed[w][0] for w in way_ids},
+            ways,
+            nodes,
+            length,
+            len(parts),
+        )
         trails.append(
             {
                 "id": rid,
@@ -170,6 +400,7 @@ def analyse(nodes, ways, rels) -> list[dict]:
                 "parts": len(parts),
                 "length_m": round(length),
                 "max_gap_m": None if gap is None else round(gap),
+                "order": order,
             }
         )
     return trails
@@ -196,6 +427,7 @@ def build_geojson(nodes, ways, rels, bbox: dict) -> tuple[dict, list[str]]:
             if t["tags"].get(k):
                 props[k] = t["tags"][k]
         props.update(length_m=t["length_m"], parts=t["parts"], max_gap_m=t["max_gap_m"])
+        props.update({k: t["order"][k] for k in ("ordered", "loop", "ordered_m", "removed_m", "refusal")})
         lines = [[[round(nodes[n][0], 6), round(nodes[n][1], 6)] for n in ways[w] if n in nodes] for w in t["ways"]]
         lines = [ln for ln in lines if len(ln) >= 2]
         features.append(
@@ -203,11 +435,19 @@ def build_geojson(nodes, ways, rels, bbox: dict) -> tuple[dict, list[str]]:
         )
     continuous = sum(1 for t in in_zone if t["parts"] == 1)
     report = [f"{len(in_zone)} circuits balisés dans la zone ({continuous} continus, {len(in_zone) - continuous} avec coupures)"]
-    report += [
-        f"  {t['id']} | {t['tags'].get('name', t['tags'].get('ref', '-'))} | {t['length_m']} m | "
-        f"{t['parts']} morceaux | plus grand écart {t['max_gap_m']} m"
-        for t in in_zone
-    ]
+    for t in in_zone:
+        report.append(
+            f"  {t['id']} | {t['tags'].get('name', t['tags'].get('ref', '-'))} | {t['length_m']} m | "
+            f"{t['parts']} morceaux | plus grand écart {t['max_gap_m']} m"
+        )
+        order = t["order"]
+        if order["refusal"] is None:
+            share = 100 * order["removed_m"] / t["length_m"] if t["length_m"] else 0
+            report.append(
+                f"    ligne ordonnée : {'boucle' if order['loop'] else 'aller simple'}, {order['ordered_m']} m, "
+                f"{order['removed_m']} m retirés ({share:.1f} %)"
+            )
+        report += [f"    {note}" for note in order["notes"]]
     return {"type": "FeatureCollection", "features": features}, report
 
 
