@@ -21,6 +21,8 @@ let mockPermission: { granted: boolean; canAskAgain: boolean } = {
 const mockRequest = jest.fn();
 const mockGet = jest.fn();
 
+// The circuits of the zone are read by their own tests (TrailsMapT4).
+jest.mock('./useTrails', () => ({ useTrails: () => [] }));
 jest.mock('@maplibre/maplibre-react-native', () => {
   const { View, Text } = jest.requireActual('react-native');
   return {
@@ -34,6 +36,7 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       return null;
     },
     Layer: () => null,
+    GeoJSONSource: () => null,
     UserLocation: () => <Text>blue dot</Text>,
     useCurrentPosition: () => mockPosition,
   };

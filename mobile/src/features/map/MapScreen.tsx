@@ -1,7 +1,10 @@
+import type { Store } from '@tanstack/react-store';
 import { useRouter } from 'expo-router';
 import { View } from 'react-native';
 
 import { t } from '@/core/i18n/t';
+import type { Zone } from '@/core/zones/catalogue';
+import type { DownloadEntry } from '@/core/zones/zoneRow';
 import { useZoneInService } from '@/shared-data/zones/zoneInService';
 import { colors } from '@/ui/theme';
 
@@ -11,7 +14,15 @@ import { ZoneMap } from './ZoneMap';
 
 export const mapTitle = t('tabs.map');
 
-export function MapScreen() {
+// `downloadStore` and `onUpdateZone` come from the route file: the downloader
+// belongs to the Zones tab.
+export function MapScreen({
+  downloadStore,
+  onUpdateZone,
+}: {
+  downloadStore?: Store<Record<string, DownloadEntry>>;
+  onUpdateZone?: (zone: Zone) => void;
+}) {
   const router = useRouter();
   const zone = useZoneInService();
   const glyphsReady = useGlyphsReady();
@@ -26,5 +37,12 @@ export function MapScreen() {
   if (!glyphsReady) {
     return <View style={{ flex: 1, backgroundColor: colors.cream }} />;
   }
-  return <ZoneMap key={`${zone.id}-${zone.version}`} zone={zone} />;
+  return (
+    <ZoneMap
+      key={`${zone.id}-${zone.version}`}
+      zone={zone}
+      downloadStore={downloadStore}
+      onUpdateZone={onUpdateZone}
+    />
+  );
 }

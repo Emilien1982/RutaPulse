@@ -52,6 +52,8 @@ import {
 import { useDragPreviewStore } from './useDragPreview';
 import { useLegInfos } from './useLegInfos';
 import { sameLegs, useLegResults } from './useLegResults';
+import { TrailsLayer } from './TrailsLayer';
+import { useTrails } from './useTrails';
 import { ZoneBaseMap, type OpeningView } from './ZoneBaseMap';
 
 // A touch on the map waits this long before it adds a point; a touch on an
@@ -187,6 +189,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   // Position of the user: the blue dot and the button "Ma position".
   const zoom = useRef(opening?.zoom ?? 15);
   const { granted, recenter } = useMapPosition(zone, camera, zoom);
+  const trails = useTrails(zone);
   const [sheetHeight, setSheetHeight] = useState(0);
 
   // Dragging: the point being dragged, until its two legs are computed again.
@@ -520,6 +523,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
           touchMap(lon, lat);
         }}
       >
+        <TrailsLayer trails={trails} />
         <DraftLayers lines={geometry.lines} links={geometry.links} />
         <PreviewLayer
           store={previewStore}

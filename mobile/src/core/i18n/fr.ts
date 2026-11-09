@@ -292,6 +292,47 @@ export const fr = {
     '{n} itinéraires utilisent cette zone. Ils resteront, sans carte ni terrain.',
   'zones.deleteRoutesOne':
     '1 itinéraire utilise cette zone. Il restera, sans carte ni terrain.',
+  'trails.kicker': 'Circuit VTT balisé',
+  'trails.kickerMany': 'Circuits VTT balisés',
+  'trails.noName': 'Circuit sans nom',
+  'trails.refLabel': 'Circuit {ref}',
+  'trails.loop': '{distance} · boucle',
+  'trails.oneWay': '{distance} · aller simple',
+  'trails.about': 'environ {n}\u202Fkm',
+  'trails.explain':
+    'RutaPulse en fait un itinéraire qui suit le circuit, dans son sens.',
+  'trails.startNearest':
+    'Départ\u00A0: le point du circuit le plus proche de vous.',
+  'trails.startUnknown':
+    'Départ\u00A0: le début du circuit, car votre position est inconnue.',
+  'trails.startOneWay': 'Départ\u00A0: le début du circuit.',
+  'trails.editLater': 'Vous pourrez ensuite le modifier.',
+  'trails.variantsDropped':
+    'Les petites variantes du circuit ne sont pas reprises.',
+  'trails.make': 'En faire un itinéraire',
+  'trails.makeLabel': 'Faire un itinéraire du circuit {name}',
+  'trails.source': 'Tracé du circuit\u00A0: OpenStreetMap',
+  'trails.close': 'Fermer',
+  'trails.cannotTitle': 'Ce circuit ne peut pas devenir un itinéraire.',
+  'trails.cannotText':
+    'Il est en plusieurs morceaux, ou il a des fourches. RutaPulse ne sait pas dans quel ordre le suivre.',
+  'trails.cannotHint':
+    'Pour le rouler, créez un itinéraire par-dessus. Le circuit reste visible pendant la création.',
+  'trails.oldZoneTitle': 'Zone à mettre à jour.',
+  'trails.oldZoneText':
+    'Pour en faire un itinéraire, RutaPulse a besoin de la nouvelle version de la zone {zone}.',
+  'trails.oldZoneTextOffline':
+    "Pour en faire un itinéraire, RutaPulse a besoin d'une version plus récente de la zone {zone}. Sans réseau, RutaPulse ne peut pas la chercher.",
+  'trails.oldZoneUpdate': 'Mettre à jour · {size}',
+  'trails.updatingTitle': 'Mise à jour en cours.',
+  'trails.updatingText':
+    'Quand elle sera finie, vous pourrez faire de ce circuit un itinéraire.',
+  'trails.updateFailedTitle': "La mise à jour n'a pas abouti.",
+  'trails.updateFailedText': "Reprenez-la depuis l'onglet Zones.",
+  'trails.notYetTitle': 'Ce circuit ne peut pas encore devenir un itinéraire.',
+  'trails.notYetText': 'Une prochaine version de la zone le permettra.',
+  'trails.manyTitle': '{n} circuits passent ici',
+  'trails.manyLabel': '{name}, {summary}',
 } as const;
 
 export type TextKey = keyof typeof fr;

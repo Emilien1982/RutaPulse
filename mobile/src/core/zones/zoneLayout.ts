@@ -8,6 +8,7 @@ export const PLAN_NAME = '.plan.json';
 export const READY_NAME = '.ready.json';
 export const LOCAL_FORMAT = 1;
 export const DIFFICULTY_FILE = 'difficulty.json';
+export const TRAILS_FILE = 'trails.geojson';
 
 /** True when the package of the zone has a difficulty table (ADR 0018). */
 export function hasDifficultyTable(zone: Zone): boolean {
