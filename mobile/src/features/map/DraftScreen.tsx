@@ -398,20 +398,39 @@ function DraftView({ opening }: { opening?: OpeningView }) {
 
   // A reopened route ("Modifier") opens on its track: the box of the route,
   // 48 of margin, under the top bar and above the bottom panel, once, as soon
-  // as the panel is measured.
+  // as the panel is measured and the map has loaded. Before that the native
+  // camera does not exist yet (the Map mounts its children after its first
+  // layout), so `camera.current` is null and an easeTo would be lost.
   const screenSize = useWindowDimensions();
   const [bottomHeight, setBottomHeight] = useState(0);
+  const [mapLoaded, setMapLoaded] = useState(false);
   const fitted = useRef(false);
   useEffect(() => {
-    if (fitted.current || !reopened || opening || bottomHeight === 0) return;
-    fitted.current = true;
+    if (
+      fitted.current ||
+      !reopened ||
+      opening ||
+      bottomHeight === 0 ||
+      !mapLoaded
+    )
+      return;
     const bounds = routeBounds(draft, geometry.lines);
-    if (!bounds) return;
-    camera.current?.easeTo({
+    if (!bounds || !camera.current) return;
+    fitted.current = true;
+    camera.current.easeTo({
       ...fitView(bounds, screenSize, { top: barHeight, bottom: bottomHeight }),
       duration: 0,
     });
-  }, [reopened, opening, bottomHeight, barHeight, draft, geometry, screenSize]);
+  }, [
+    reopened,
+    opening,
+    bottomHeight,
+    mapLoaded,
+    barHeight,
+    draft,
+    geometry,
+    screenSize,
+  ]);
 
   // Stable handlers for the annotations: they read the latest screen state
   // through a ref, so that the annotations are not drawn again for nothing.
@@ -490,6 +509,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
         zone={zone}
         cameraRef={camera}
         opening={opening}
+        onDidFinishLoadingMap={() => setMapLoaded(true)}
         onRegionDidChange={(e) => {
           zoom.current = e.nativeEvent.zoom;
         }}
