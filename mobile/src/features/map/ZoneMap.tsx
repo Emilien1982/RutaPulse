@@ -6,7 +6,12 @@ import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { Store, useSelector } from '@tanstack/react-store';
 
 import { t } from '@/core/i18n/t';
-import { sortByDistance, trailBounds, type Trail } from '@/core/trails/trails';
+import {
+  plannedEnds,
+  sortByDistance,
+  trailBounds,
+  type Trail,
+} from '@/core/trails/trails';
 import { updatePhase } from '@/core/trails/updateOffer';
 import type { Zone } from '@/core/zones/catalogue';
 import type { DownloadEntry } from '@/core/zones/zoneRow';
@@ -31,6 +36,8 @@ import {
   useMapPosition,
 } from './MapPosition';
 import { fitView } from './fitView';
+import { setDraftTarget } from './draftTarget';
+import { TrailEnds } from './TrailEnds';
 import { TrailPanel } from './TrailSheet';
 import { TrailsLayer } from './TrailsLayer';
 import { useTrails } from './useTrails';
@@ -150,10 +157,17 @@ export function ZoneMap({
     [trailsById],
   );
 
-  // T5 completes this: the draft target and the creation. For now the sheet
-  // only closes.
+  // "En faire un itinéraire": the creation cuts the circuit once it opens
+  // (ADR 0020, section 9). It starts from the last known position.
   function startDraftFromTrail() {
+    if (!chosen) return;
+    setDraftTarget({
+      kind: 'trail',
+      osmId: chosen.osmId,
+      position: lon !== undefined && lat !== undefined ? { lon, lat } : null,
+    });
     setSelection(null);
+    router.push('/draft');
   }
 
   function seeZones() {
@@ -196,6 +210,14 @@ export function ZoneMap({
       >
         <TrailsLayer trails={trails} onPress={onTrailPress} chosen={chosen} />
         <UserPositionLayers granted={granted} />
+        {chosen && (
+          <TrailEnds
+            ends={plannedEnds(
+              chosen,
+              lon !== undefined && lat !== undefined ? [lon, lat] : null,
+            )}
+          />
+        )}
       </ZoneBaseMap>
 
       {selection && (

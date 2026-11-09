@@ -12,16 +12,21 @@ import {
 } from 'react-native';
 
 import { canLoop, canUndo, type DraftAction } from '@/core/draft/draft';
+import { discreteMarkers } from '@/core/draft/markerSpacing';
 import { listLegs, summarize } from '@/core/draft/legs';
 import { handLengthKm, summarizeInfo } from '@/core/route-info/routeInfo';
 import { findProblem } from '@/core/draft/problem';
 import { RoutesTooNewError } from '@/core/routes/migrations';
-import { announcement } from '@/core/routes/routeName';
+import { announcement, uniqueDefaultName } from '@/core/routes/routeName';
 import { getRoute } from '@/core/routes/routeRepo';
 import { getRoutesDb } from '@/shared-data/routes/routesDb';
 import type { SavedLeg } from '@/core/routes/savedRoute';
 import { previewOf, trackOfCreated } from '@/core/routes/track';
-import { useRouteActions, useSavedRoute } from '@/shared-data/routes/useRoutes';
+import {
+  useRouteActions,
+  useRoutes,
+  useSavedRoute,
+} from '@/shared-data/routes/useRoutes';
 import { t } from '@/core/i18n/t';
 import { HelpCard } from '@/ui/HelpCard';
 import { HandModeIcon } from '@/ui/icons';
@@ -116,9 +121,20 @@ function DraftView({ opening }: { opening?: OpeningView }) {
     router.push('/draft/infos');
   }
   const camera = useRef<CameraRef>(null);
-  const { zone, store, savedStore, kept, dispatch } = useDraftSession();
+  const { zone, store, savedStore, kept, trail, dispatch } = useDraftSession();
   const saved = useSelector(savedStore, (s) => s);
   const savedName = useSavedRoute(saved.routeId).data?.name;
+  // A route that was already saved when the creation opened ("Modifier") goes
+  // back to its Infos screen; a new one opens its Infos on top.
+  const [reopened] = useState(() => saved.routeId !== null);
+  // A draft placed on the map at once (a route or a circuit): framed whole.
+  const placed = kept !== undefined;
+  // Default name of a route made from a circuit: its title, until saved.
+  const names = useRoutes().data;
+  const trailTitle =
+    trail && saved.routeId === null
+      ? uniqueDefaultName(trail.name, names?.map((r) => r.name) ?? [])
+      : undefined;
   const actions = useRouteActions();
   const [saving, setSaving] = useState(false);
   // Set at once, unlike `saving`, which a second press in the same tick
@@ -126,7 +142,6 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   const saveLock = useRef(false);
   const [exitFor, setExitFor] = useState<number | null>(null);
   const exited = useRef(false);
-  const reopened = kept !== undefined;
   const draft = useSelector(store, (s) => s.draft);
   const chosenId = useSelector(store, (s) => s.selected);
   const nextMode = useSelector(store, (s) => s.nextMode);
@@ -138,6 +153,32 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   // The help of the "À la main" mode: from each entry in the mode until the
   // first touch on the map in that mode (mockup 11).
   const [handTouched, setHandTouched] = useState(false);
+  // The bubble of the opening of a circuit (mockup 12): 4 s, or 6 s when a
+  // part of the trace leaves the zone. It goes away at the first touch.
+  const [bubble, setBubble] = useState<string | null>(() =>
+    trail
+      ? t(trail.outside ? 'trails.outsideBubble' : 'trails.placedBubble')
+      : null,
+  );
+  const outsideBubble = trail?.outside === true;
+  useEffect(() => {
+    if (bubble === null) return;
+    const timer = setTimeout(
+      () => setBubble(null),
+      outsideBubble ? 6000 : 4000,
+    );
+    return () => clearTimeout(timer);
+  }, [bubble, outsideBubble]);
+  const trailName = trail?.title;
+  const pointCount = draft.points.length;
+  useEffect(() => {
+    if (trailName === undefined) return;
+    AccessibilityInfo.announceForAccessibility(
+      t('trails.placedAnnounce', { name: trailName, n: pointCount }),
+    );
+    // Once, at the opening.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   function act(action: DraftAction) {
     const before = store.state.draft.points;
     dispatch(action);
@@ -161,6 +202,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   function touchedAnnotation() {
     // Touching or dragging a point is also a first touch in the hand mode.
     if (nextMode === 'hand') setHandTouched(true);
+    setBubble(null);
     annotationAt.current = Date.now();
     pending.current.forEach(clearTimeout);
     pending.current.clear();
@@ -188,6 +230,14 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   const [barHeight, setBarHeight] = useState(112);
   // Position of the user: the blue dot and the button "Ma position".
   const zoom = useRef(opening?.zoom ?? 15);
+  // Zoom at the end of each move: numbered or discrete markers (mockup 12).
+  const [shownZoom, setShownZoom] = useState<number | null>(null);
+  const [fromTrace] = useState(
+    () => kept !== undefined && [...kept.values()].some((leg) => leg.trace),
+  );
+  const discrete =
+    fromTrace &&
+    (shownZoom === null || discreteMarkers(draft.points, shownZoom));
   const { granted, recenter } = useMapPosition(zone, camera, zoom);
   const trails = useTrails(zone);
   const [sheetHeight, setSheetHeight] = useState(0);
@@ -286,10 +336,14 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   // button of Android).
   const [leaving, setLeaving] = useState(false);
   // A saved route asks only when the draft differs from what is saved.
-  const isSaved = saved.savedDraft !== null;
-  const hasChanges = isSaved
-    ? draft !== saved.savedDraft
-    : draft.points.length >= 2;
+  // A circuit not yet saved starts from a saved draft too (the one it was cut
+  // into): closing without a change asks nothing, and the ask is the one of a
+  // route not saved (ADR 0020, section 10).
+  const isSaved = saved.routeId !== null;
+  const hasChanges =
+    saved.savedDraft !== null
+      ? draft !== saved.savedDraft
+      : draft.points.length >= 2;
   usePreventRemove(hasChanges && !leaving, ({ repeat }) => {
     Alert.alert(
       t(isSaved ? 'route.abandonChangesTitle' : 'route.abandonTitle'),
@@ -339,6 +393,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
           distanceKm: leg.result.distanceKm,
           durationS: leg.result.durationS,
           shape: leg.result.shape,
+          ...(leg.trace ? { trace: true as const } : {}),
         });
       } else return;
     }
@@ -360,7 +415,14 @@ function DraftView({ opening }: { opening?: OpeningView }) {
       };
       let id = saved.routeId;
       if (id === null) {
-        id = await actions.create({ origin: 'created', ...input, now });
+        id = trail
+          ? await actions.create({
+              origin: 'trail',
+              baseName: trail.name,
+              ...input,
+              now,
+            })
+          : await actions.create({ origin: 'created', ...input, now });
       } else {
         await actions.replace(id, { ...input, savedAt: now });
       }
@@ -411,7 +473,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   useEffect(() => {
     if (
       fitted.current ||
-      !reopened ||
+      !placed ||
       opening ||
       bottomHeight === 0 ||
       !mapLoaded
@@ -420,12 +482,13 @@ function DraftView({ opening }: { opening?: OpeningView }) {
     const bounds = routeBounds(draft, geometry.lines);
     if (!bounds || !camera.current) return;
     fitted.current = true;
-    camera.current.easeTo({
-      ...fitView(bounds, screenSize, { top: barHeight, bottom: bottomHeight }),
-      duration: 0,
+    const fit = fitView(bounds, screenSize, {
+      top: barHeight,
+      bottom: bottomHeight,
     });
+    camera.current.easeTo({ ...fit, duration: 0 });
   }, [
-    reopened,
+    placed,
     opening,
     bottomHeight,
     mapLoaded,
@@ -488,21 +551,25 @@ function DraftView({ opening }: { opening?: OpeningView }) {
       : 0;
   const hint = problem
     ? undefined
-    : dragNumber > 0
-      ? {
-          id: 'route-bubble-drag',
-          label: t('route.dragBubble', { n: dragNumber }),
-        }
-      : chosenId !== null
-        ? { id: 'route-hint-drag', label: t('route.hintDrag') }
-        : draft.points.length < 2
-          ? {
-              id: 'route-hint',
-              label: t(
-                draft.points.length === 0 ? 'route.hintStart' : 'route.hintEnd',
-              ),
-            }
-          : undefined;
+    : bubble !== null
+      ? { id: 'trail-bubble', label: bubble }
+      : dragNumber > 0
+        ? {
+            id: 'route-bubble-drag',
+            label: t('route.dragBubble', { n: dragNumber }),
+          }
+        : chosenId !== null
+          ? { id: 'route-hint-drag', label: t('route.hintDrag') }
+          : draft.points.length < 2
+            ? {
+                id: 'route-hint',
+                label: t(
+                  draft.points.length === 0
+                    ? 'route.hintStart'
+                    : 'route.hintEnd',
+                ),
+              }
+            : undefined;
 
   const showHandHelp = !problem && nextMode === 'hand' && !handTouched;
 
@@ -515,8 +582,10 @@ function DraftView({ opening }: { opening?: OpeningView }) {
         onDidFinishLoadingMap={() => setMapLoaded(true)}
         onRegionDidChange={(e) => {
           zoom.current = e.nativeEvent.zoom;
+          if (fromTrace) setShownZoom(e.nativeEvent.zoom);
         }}
         onPress={(e) => {
+          setBubble(null);
           if (problem) return;
           if (nextMode === 'hand') setHandTouched(true);
           const [lon, lat] = e.nativeEvent.lngLat;
@@ -536,6 +605,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
           points={draft.points}
           chosenId={chosenId}
           refusedId={problem?.pointId ?? null}
+          discrete={discrete}
           handlers={handlers}
         />
         {refused && (
@@ -554,7 +624,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
       <RouteTopBar
         onClose={() => router.back()}
         onHeight={setBarHeight}
-        title={savedName}
+        title={savedName ?? trailTitle}
         onSave={{ enabled: canSave, press: () => void save() }}
         saveLabel={
           savedName

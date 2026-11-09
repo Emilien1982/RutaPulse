@@ -337,6 +337,15 @@ export const fr = {
   'trails.notYetText': 'Une prochaine version de la zone le permettra.',
   'trails.manyTitle': '{n} circuits passent ici',
   'trails.manyLabel': '{name}, {summary}',
+  'trails.goneTitle': 'Circuit introuvable',
+  'trails.goneText':
+    "Ce circuit n'est plus dans la zone. Choisissez-le de nouveau sur la carte.",
+  'trails.placedBubble':
+    'Tracé du circuit posé. Déplacez un point pour le modifier.',
+  'trails.placedAnnounce':
+    'Itinéraire posé sur le circuit {name}\u00A0: {n} points de passage.',
+  'trails.outsideBubble':
+    'Une partie du tracé sort de la zone. Elle reste telle quelle\u00A0: on ne peut pas la modifier.',
 } as const;
 
 export type TextKey = keyof typeof fr;

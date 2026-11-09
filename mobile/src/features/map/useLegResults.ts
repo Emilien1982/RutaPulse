@@ -29,6 +29,8 @@ export type LegState =
       result: RouteSuccess;
       /** Version of the zone that calculated the shape (default: the zone). */
       shapeVersion?: number;
+      /** The shape is a kept piece of a trace, not from the engine. */
+      trace?: true;
     }
   | { status: 'error'; error: RouteErrorKind };
 
@@ -80,7 +82,12 @@ export function useLegResults(
     const query = queries[next++];
     const saved = keptOf(leg);
     if (saved) {
-      return { status: 'done', result: saved, shapeVersion: saved.zoneVersion };
+      return {
+        status: 'done',
+        result: saved,
+        shapeVersion: saved.zoneVersion,
+        ...(saved.trace ? { trace: true as const } : {}),
+      };
     }
     if (query?.data) return { status: 'done', result: query.data };
     if (query?.error) {

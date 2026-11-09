@@ -230,3 +230,23 @@ export function trailBounds(trail: Trail): [number, number, number, number] {
   }
   return [west, south, east, north];
 }
+
+/**
+ * Where the creation will start, and end, for an ordered circuit (ADR 0020,
+ * section 3): a loop starts at the point nearest to the position (or at the
+ * beginning of the line) and ends there; a one-way circuit starts at its
+ * beginning and ends at its end. Null when the order is unknown.
+ */
+export function plannedEnds(
+  trail: Trail,
+  position: LonLat | null,
+): { start: LonLat; end: LonLat | null } | null {
+  const line = trail.line;
+  if (line.kind !== 'ordered') return null;
+  const points = line.ordered;
+  if (line.loop) {
+    const start = position ? nearestOnLine(points, position).point : points[0];
+    return { start, end: null };
+  }
+  return { start: points[0], end: points[points.length - 1] };
+}

@@ -77,17 +77,22 @@ type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
 export type CreateRouteInput = DistributiveOmit<
   NewRoute,
   'name' | 'createdAt' | 'savedAt'
-> & { name?: string; now?: number };
+> & {
+  name?: string;
+  /** Default name before "(2)", instead of "Itinéraire du 9 nov.". */
+  baseName?: string;
+  now?: number;
+};
 
 export function createRouteActions(queryClient: QueryClient) {
   return {
     /** Returns the id of the new route. */
-    create: async ({ name, now, ...rest }: CreateRouteInput) => {
+    create: async ({ name, baseName, now, ...rest }: CreateRouteInput) => {
       const db = await getRoutesDb();
       const date = new Date(now ?? Date.now());
       const route = {
         ...rest,
-        name: name ?? (await newDefaultName(db, date)),
+        name: name ?? (await newDefaultName(db, date, baseName)),
         createdAt: date.getTime(),
         savedAt: date.getTime(),
       };

@@ -47,11 +47,18 @@ export async function getRoute(
   return row ? rowToRoute(row) : null;
 }
 
-/** Default name of a route saved now: unique among the existing names. */
-export async function newDefaultName(db: SqlDb, now: Date): Promise<string> {
+/**
+ * Default name of a route saved now: unique among the existing names. `base`
+ * replaces "Itinéraire du 9 nov." (the name of a circuit).
+ */
+export async function newDefaultName(
+  db: SqlDb,
+  now: Date,
+  base?: string,
+): Promise<string> {
   const rows = await db.all<{ name: string }>('SELECT name FROM routes');
   return uniqueDefaultName(
-    defaultRouteName(now),
+    base ?? defaultRouteName(now),
     rows.map((r) => r.name),
   );
 }

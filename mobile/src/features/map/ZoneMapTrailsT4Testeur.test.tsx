@@ -45,6 +45,7 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       mockSources[props.id] = props;
       return <>{props.children}</>;
     },
+    Marker: (props: { children: ReactNode }) => <>{props.children}</>,
   };
 });
 jest.mock('react-native/Libraries/Modal/Modal', () => {

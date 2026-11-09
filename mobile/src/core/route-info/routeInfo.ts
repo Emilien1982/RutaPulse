@@ -30,6 +30,15 @@ export type LegInfo = {
   height: HeightResult | undefined;
   /** Not used for a hand leg. */
   terrain: TraceResult | undefined;
+  /**
+   * Altitudes in one request for a run of legs kept from a trace (ADR 0020,
+   * section 6): the first leg of the run holds the profile of the whole run,
+   * the others are `inGroup` and hold none.
+   */
+  inGroup?: boolean;
+  /** Length of the shape of the leg (m); places its terrain along the profile
+   * of a group. Default: the length of the profile of the leg. */
+  shapeLengthM?: number;
 };
 
 export type Block<T> =
@@ -64,8 +73,9 @@ export function handLengthKm(legs: Leg[]): number {
     .reduce((sum, leg) => sum + handLeg(leg.from, leg.to).distanceKm, 0);
 }
 
-function altitudes(legs: LegInfo[]): Block<AltitudeInfo> {
-  if (legs.length === 0) return { status: 'missing' };
+function altitudes(all: LegInfo[]): Block<AltitudeInfo> {
+  if (all.length === 0) return { status: 'missing' };
+  const legs = all.filter((leg) => !leg.inGroup);
   const broken = (leg: LegInfo) =>
     !!leg.height && (!leg.height.ok || heightsOf(leg.height.profile) === null);
   if (legs.some(broken)) return { status: 'missing' };
@@ -106,7 +116,7 @@ function terrain(
     let offset = 0;
     for (const leg of legs) {
       const profile = leg.height && leg.height.ok ? leg.height.profile : [];
-      const length = profileLength(profile);
+      const length = leg.shapeLengthM ?? profileLength(profile);
       if (leg.mode === 'hand') segments.push(handSegment(length, offset));
       else if (leg.terrain && leg.terrain.ok) {
         segments.push(...terrainSegments(leg.terrain.edges, length, offset));

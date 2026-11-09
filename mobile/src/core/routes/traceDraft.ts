@@ -226,3 +226,13 @@ export function traceToDraft(
   };
   return { state, kept };
 }
+
+/** True when a point of a kept leg is outside the rectangle of the zone. */
+export function hasLegOutside(kept: KeptLegs, bbox: Bbox): boolean {
+  for (const leg of kept.values()) {
+    if (leg.shape.some(([lon, lat]) => !isInsideBbox(bbox, lon, lat))) {
+      return true;
+    }
+  }
+  return false;
+}
