@@ -1,7 +1,7 @@
 import { useSelector } from '@tanstack/react-store';
 import { useRouter } from 'expo-router';
 import { useMemo, useState, type ReactNode } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { summarize } from '@/core/draft/legs';
@@ -16,10 +16,18 @@ import {
   summarizeDifficulty,
   type DifficultyInfo,
 } from '@/core/route-info/difficulty';
-import { summarizeInfo } from '@/core/route-info/routeInfo';
+import {
+  summarizeInfo,
+  type AltitudeInfo,
+  type Block,
+  type TerrainInfo,
+} from '@/core/route-info/routeInfo';
+import type { TextKey } from '@/core/i18n/fr';
+import { zoneLine } from '@/core/routes/routeText';
+import { useSavedRoute } from '@/shared-data/routes/useRoutes';
 import { Button } from '@/ui/Button';
 import { DashedStroke } from '@/ui/DashedStroke';
-import { HandModeIcon } from '@/ui/icons';
+import { ChevronIcon, HandModeIcon, MoreIcon } from '@/ui/icons';
 import {
   border,
   colors,
@@ -141,15 +149,260 @@ function Message({
   );
 }
 
+// A figure of the grid: being calculated, missing, or a value.
+export type Figure =
+  | { status: 'pending' }
+  | { status: 'missing' }
+  | { status: 'ready'; value: number };
+
+function figureText(figure: Figure, format: (value: number) => string) {
+  return figure.status === 'ready'
+    ? format(figure.value)
+    : figure.status === 'missing'
+      ? t('route.noFigure')
+      : t('info.pending');
+}
+
+// What the Infos screens show, in mockup 20: title, map, four figures, then
+// the profile, the terrain and the difficulty (a block left out when its
+// prop is absent). The creation and the saved routes both use it.
+export function RouteInfoView({
+  title,
+  subtitle,
+  back,
+  menu,
+  map,
+  distance,
+  duration,
+  ascent,
+  descent,
+  caption,
+  altitudes,
+  terrain,
+  difficulty,
+  notice,
+  actions,
+}: {
+  title: string;
+  subtitle?: string;
+  back?: { label: string; accessibilityLabel: string; onPress: () => void };
+  /** The "⋮" button, at the right of the back button. */
+  menu?: { accessibilityLabel: string; onPress: () => void };
+  map: ReactNode;
+  distance: Figure;
+  duration: Figure;
+  /** Left out: the cell is not drawn. */
+  ascent?: Figure;
+  descent?: Figure;
+  /** Under the figures: "Chiffres du dernier calcul…". */
+  caption?: string;
+  altitudes?: Block<AltitudeInfo>;
+  terrain?: Block<TerrainInfo>;
+  difficulty?: Block<DifficultyInfo>;
+  notice?: ReactNode;
+  actions?: ReactNode;
+}) {
+  const insets = useSafeAreaInsets();
+  const bandsDrawn = terrain?.status === 'ready' ? terrain.segments : null;
+  const missingLabel = (figure: Figure, key: TextKey) =>
+    figure.status === 'missing' ? t(key) : undefined;
+
+  return (
+    <View style={styles.screen}>
+      <View style={{ paddingTop: insets.top }}>
+        {(back || menu) && (
+          <View style={styles.topBar}>
+            {back && (
+              <Pressable
+                testID="info-back"
+                accessibilityRole="button"
+                accessibilityLabel={back.accessibilityLabel}
+                onPress={back.onPress}
+                style={styles.back}
+              >
+                <View style={styles.backIcon}>
+                  <ChevronIcon color={colors.brown} />
+                </View>
+                <Text style={styles.backText}>{back.label}</Text>
+              </Pressable>
+            )}
+            {menu && (
+              <Pressable
+                testID="info-menu"
+                accessibilityRole="button"
+                accessibilityLabel={menu.accessibilityLabel}
+                onPress={menu.onPress}
+                style={styles.menu}
+              >
+                <MoreIcon color={colors.brown} />
+              </Pressable>
+            )}
+          </View>
+        )}
+        <View style={styles.header}>
+          <Text
+            testID="info-title"
+            accessibilityRole="header"
+            numberOfLines={1}
+            style={text.titleName}
+          >
+            {title}
+          </Text>
+          {subtitle && (
+            <Text testID="info-subtitle" style={text.secondary}>
+              {subtitle}
+            </Text>
+          )}
+        </View>
+      </View>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        contentInsetAdjustmentBehavior="never"
+      >
+        {map}
+
+        <View style={styles.grid}>
+          <InfoCell
+            testID="info-distance"
+            value={figureText(distance, formatDistance)}
+            label={t('route.distance')}
+            color={colors.mustard}
+          />
+          <InfoCell
+            testID="info-duration"
+            value={figureText(duration, formatDuration)}
+            label={t('route.duration')}
+            color={colors.orange}
+          />
+          {ascent && (
+            <InfoCell
+              testID="info-ascent"
+              value={figureText(ascent, formatAscent)}
+              label={t('route.ascent')}
+              color={colors.rust}
+              accessibilityLabel={missingLabel(
+                ascent,
+                'route.ascentMissingLabel',
+              )}
+            />
+          )}
+          {descent && (
+            <InfoCell
+              testID="info-descent"
+              value={figureText(descent, formatAscent)}
+              label={t('info.descent')}
+              color={colors.petrol}
+              accessibilityLabel={missingLabel(
+                descent,
+                'info.descentMissingLabel',
+              )}
+            />
+          )}
+        </View>
+        {caption && (
+          <Text testID="info-caption" style={[text.caption, styles.caption]}>
+            {caption}
+          </Text>
+        )}
+        {notice}
+
+        {altitudes && (
+          <>
+            <View style={styles.blockTitle}>
+              <Text style={text.sectionLabel}>{t('info.profileTitle')}</Text>
+              {altitudes.status === 'ready' && (
+                <Text testID="info-range" style={text.caption}>
+                  {t('info.range', {
+                    min: groupThousands(altitudes.minM),
+                    max: groupThousands(altitudes.maxM),
+                  })}
+                </Text>
+              )}
+            </View>
+            {altitudes.status === 'ready' ? (
+              <ElevationProfile altitudes={altitudes} segments={bandsDrawn} />
+            ) : altitudes.status === 'missing' ? (
+              <Message testID="info-altitudes-missing">
+                {t('info.altitudesMissing')}
+              </Message>
+            ) : (
+              <Message testID="info-profile-pending">
+                {t('info.pending')}
+              </Message>
+            )}
+          </>
+        )}
+
+        {terrain &&
+          (terrain.status === 'ready' ? (
+            <View testID="info-legend" style={styles.legend}>
+              {terrain.shares.map((share) => (
+                <View key={share.part} style={styles.legendItem}>
+                  {share.part === 'hand' ? (
+                    <DashedStroke color={terrainColors.hand} />
+                  ) : (
+                    <View
+                      style={[
+                        styles.dot,
+                        { backgroundColor: terrainColors[share.part] },
+                      ]}
+                    />
+                  )}
+                  <Text style={[text.secondary, styles.legendText]}>
+                    {t('info.share', {
+                      part: t(`info.${share.part}`),
+                      n: share.percent,
+                    })}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          ) : terrain.status === 'missing' ? (
+            <Message testID="info-terrain-missing">
+              {t('info.terrainMissing')}
+            </Message>
+          ) : (
+            <Message testID="info-terrain-pending">{t('info.pending')}</Message>
+          ))}
+
+        {difficulty &&
+          (difficulty.status === 'ready' ? (
+            <DifficultyLine shares={difficulty.shares} />
+          ) : difficulty.status === 'missing' ? (
+            <Message testID="info-difficulty-missing">
+              {t('info.difficultyMissing')}
+            </Message>
+          ) : (
+            <Message testID="info-difficulty-pending">
+              {t('info.pending')}
+            </Message>
+          ))}
+      </ScrollView>
+      {actions && (
+        <View
+          style={[
+            styles.actions,
+            { paddingBottom: insets.bottom + spacing.s3 },
+          ]}
+        >
+          {actions}
+        </View>
+      )}
+    </View>
+  );
+}
+
 // Infos of the route being created (mockup 20). It computes nothing: the
 // legs, the altitudes and the terrain come from the cache of the creation
-// screen, under the same keys (ADR 0017, sections 6 and 7).
+// screen, under the same keys (ADR 0017, sections 6 and 7). Once the route
+// is saved, the title is its name (ADR 0019, section 4).
 export function RouteInfoScreen() {
   const router = useRouter();
-  const insets = useSafeAreaInsets();
-  const { zone, store } = useDraftSession();
+  const { zone, store, savedStore, kept } = useDraftSession();
   const draft = useSelector(store, (s) => s.draft);
-  const rawLegs = useLegResults(draft, zone);
+  const routeId = useSelector(savedStore, (s) => s.routeId);
+  const route = useSavedRoute(routeId).data;
+  const rawLegs = useLegResults(draft, zone, kept);
   // `useLegResults` gives a new array at each render: keep the old one while
   // nothing changed, so that the geometry below is not computed again.
   const [legs, setLegs] = useState(rawLegs);
@@ -167,148 +420,45 @@ export function RouteInfoScreen() {
   const difficulty = summarizeDifficulty(legInfos, useDifficultyTable(zone));
   const { altitudes, terrain } = info;
   const known = summary.complete;
-  const bandsDrawn = terrain.status === 'ready' ? terrain.segments : null;
+  const readyOr = (value: number | undefined): Figure =>
+    value !== undefined
+      ? { status: 'ready', value }
+      : altitudes.status === 'missing'
+        ? { status: 'missing' }
+        : { status: 'pending' };
 
   return (
-    <View style={styles.screen}>
-      <View style={{ paddingTop: insets.top }}>
-        <View style={styles.header}>
-          <Text accessibilityRole="header" style={text.titleName}>
-            {t('route.new')}
-          </Text>
-        </View>
-      </View>
-      <ScrollView
-        contentContainerStyle={styles.content}
-        contentInsetAdjustmentBehavior="never"
-      >
+    <RouteInfoView
+      title={route && route.readable ? route.name : t('route.new')}
+      subtitle={route ? zoneLine(route, 'usable') : undefined}
+      map={
         <RouteInfoMap
           zone={zone}
           draft={draft}
           lines={geometry.lines}
           links={geometry.links}
         />
-
-        <View style={styles.grid}>
-          <InfoCell
-            testID="info-distance"
-            value={
-              known ? formatDistance(summary.distanceKm) : t('info.pending')
-            }
-            label={t('route.distance')}
-            color={colors.mustard}
-          />
-          <InfoCell
-            testID="info-duration"
-            value={
-              known ? formatDuration(summary.durationS) : t('info.pending')
-            }
-            label={t('route.duration')}
-            color={colors.orange}
-          />
-          <InfoCell
-            testID="info-ascent"
-            value={
-              altitudes.status === 'ready'
-                ? formatAscent(altitudes.ascentM)
-                : altitudes.status === 'missing'
-                  ? t('route.noFigure')
-                  : t('info.pending')
-            }
-            label={t('route.ascent')}
-            color={colors.rust}
-            accessibilityLabel={
-              altitudes.status === 'missing'
-                ? t('route.ascentMissingLabel')
-                : undefined
-            }
-          />
-          <InfoCell
-            testID="info-descent"
-            value={
-              altitudes.status === 'ready'
-                ? formatAscent(altitudes.descentM)
-                : altitudes.status === 'missing'
-                  ? t('route.noFigure')
-                  : t('info.pending')
-            }
-            label={t('info.descent')}
-            color={colors.petrol}
-            accessibilityLabel={
-              altitudes.status === 'missing'
-                ? t('info.descentMissingLabel')
-                : undefined
-            }
-          />
-        </View>
-
-        <View style={styles.blockTitle}>
-          <Text style={text.sectionLabel}>{t('info.profileTitle')}</Text>
-          {altitudes.status === 'ready' && (
-            <Text testID="info-range" style={text.caption}>
-              {t('info.range', {
-                min: groupThousands(altitudes.minM),
-                max: groupThousands(altitudes.maxM),
-              })}
-            </Text>
-          )}
-        </View>
-        {altitudes.status === 'ready' ? (
-          <ElevationProfile altitudes={altitudes} segments={bandsDrawn} />
-        ) : altitudes.status === 'missing' ? (
-          <Message testID="info-altitudes-missing">
-            {t('info.altitudesMissing')}
-          </Message>
-        ) : (
-          <Message testID="info-profile-pending">{t('info.pending')}</Message>
-        )}
-
-        {terrain.status === 'ready' ? (
-          <View testID="info-legend" style={styles.legend}>
-            {terrain.shares.map((share) => (
-              <View key={share.part} style={styles.legendItem}>
-                {share.part === 'hand' ? (
-                  <DashedStroke color={terrainColors.hand} />
-                ) : (
-                  <View
-                    style={[
-                      styles.dot,
-                      { backgroundColor: terrainColors[share.part] },
-                    ]}
-                  />
-                )}
-                <Text style={[text.secondary, styles.legendText]}>
-                  {t('info.share', {
-                    part: t(`info.${share.part}`),
-                    n: share.percent,
-                  })}
-                </Text>
-              </View>
-            ))}
-          </View>
-        ) : terrain.status === 'missing' ? (
-          <Message testID="info-terrain-missing">
-            {t('info.terrainMissing')}
-          </Message>
-        ) : (
-          <Message testID="info-terrain-pending">{t('info.pending')}</Message>
-        )}
-
-        {difficulty.status === 'ready' ? (
-          <DifficultyLine shares={difficulty.shares} />
-        ) : difficulty.status === 'missing' ? (
-          <Message testID="info-difficulty-missing">
-            {t('info.difficultyMissing')}
-          </Message>
-        ) : (
-          <Message testID="info-difficulty-pending">
-            {t('info.pending')}
-          </Message>
-        )}
-      </ScrollView>
-      <View
-        style={[styles.actions, { paddingBottom: insets.bottom + spacing.s3 }]}
-      >
+      }
+      distance={
+        known
+          ? { status: 'ready', value: summary.distanceKm }
+          : { status: 'pending' }
+      }
+      duration={
+        known
+          ? { status: 'ready', value: summary.durationS }
+          : { status: 'pending' }
+      }
+      ascent={readyOr(
+        altitudes.status === 'ready' ? altitudes.ascentM : undefined,
+      )}
+      descent={readyOr(
+        altitudes.status === 'ready' ? altitudes.descentM : undefined,
+      )}
+      altitudes={altitudes}
+      terrain={terrain}
+      difficulty={difficulty}
+      actions={
         <Button
           testID="info-modify"
           variant="secondary"
@@ -317,18 +467,39 @@ export function RouteInfoScreen() {
           icon={(color) => <HandModeIcon color={color} />}
           onPress={() => router.back()}
         />
-      </View>
-    </View>
+      }
+    />
   );
 }
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.cream },
   header: {
-    height: 56,
+    minHeight: 56,
     justifyContent: 'center',
     paddingHorizontal: spacing.s4,
   },
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  menu: {
+    width: 48,
+    height: 48,
+    marginRight: spacing.s3,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  back: {
+    minHeight: 48,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: spacing.s1,
+  },
+  backIcon: { transform: [{ scaleX: -1 }] },
+  backText: { fontSize: 17, fontWeight: '600', color: colors.brown },
+  caption: { marginTop: 6 },
   content: { paddingHorizontal: spacing.s4, paddingBottom: spacing.s4 },
   grid: {
     flexDirection: 'row',

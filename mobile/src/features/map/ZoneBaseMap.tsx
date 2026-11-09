@@ -37,6 +37,7 @@ export function ZoneBaseMap({
   labels,
   onPress,
   onRegionDidChange,
+  onDidFinishLoadingMap,
   children,
 }: {
   zone: Zone;
@@ -49,6 +50,7 @@ export function ZoneBaseMap({
   labels?: boolean;
   onPress?: MapProps['onPress'];
   onRegionDidChange?: MapProps['onRegionDidChange'];
+  onDidFinishLoadingMap?: MapProps['onDidFinishLoadingMap'];
   children?: ReactNode;
 }) {
   const style = useMemo(
@@ -82,6 +84,7 @@ export function ZoneBaseMap({
       doubleTapHoldZoom={!fit}
       onPress={onPress}
       onRegionDidChange={onRegionDidChange}
+      onDidFinishLoadingMap={onDidFinishLoadingMap}
     >
       <Camera
         ref={cameraRef}

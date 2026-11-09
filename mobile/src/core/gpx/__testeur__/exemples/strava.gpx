@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx creator="StravaGPX" version="1.1" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd http://www.garmin.com/xmlschemas/GpxExtensions/v3 http://www.garmin.com/xmlschemas/GpxExtensionsv3.xsd" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1">
+ <metadata>
+  <time>2026-10-12T07:31:02Z</time>
+ </metadata>
+ <trk>
+  <name>Sortie VTT du matin</name>
+  <type>mountain_biking</type>
+  <trkseg>
+   <trkpt lat="48.6921000" lon="6.1844000">
+    <ele>212.4</ele>
+    <time>2026-10-12T07:31:02Z</time>
+    <extensions>
+     <gpxtpx:TrackPointExtension>
+      <gpxtpx:hr>101</gpxtpx:hr>
+      <gpxtpx:cad>60</gpxtpx:cad>
+     </gpxtpx:TrackPointExtension>
+    </extensions>
+   </trkpt>
+   <trkpt lat="48.6923500" lon="6.1849120">
+    <ele>213.0</ele>
+    <time>2026-10-12T07:31:05Z</time>
+   </trkpt>
+   <trkpt lat="48.6926000" lon="6.1853000">
+    <ele>214.6</ele>
+    <time>2026-10-12T07:31:09Z</time>
+   </trkpt>
+  </trkseg>
+ </trk>
+</gpx>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="test">
+  <rte><name>route</name><rtept lat="1" lon="1"/><rtept lat="2" lon="2"/></rte>
+  <trk><name>trace</name><trkseg><trkpt lat="20" lon="20"/><trkpt lat="21" lon="21"/></trkseg></trk>
+</gpx>

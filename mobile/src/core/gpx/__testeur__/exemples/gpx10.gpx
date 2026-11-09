@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<gpx version="1.0" creator="Vieux GPS" xmlns="http://www.topografix.com/GPX/1/0">
+  <name>Ancien format 1.0</name>
+  <desc>desc</desc>
+  <time>2020-01-01T00:00:00Z</time>
+  <trk>
+    <name>nom de trace ignoré car nom racine</name>
+    <number>1</number>
+    <trkseg>
+      <trkpt lat="44.0" lon="3.0"><ele>50.5</ele><time>2020-01-01T00:00:00Z</time><course>10</course><speed>3</speed></trkpt>
+      <trkpt lat="44.001" lon="3.001"><ele>51.5</ele></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

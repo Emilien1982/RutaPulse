@@ -1,0 +1,33 @@
+# Phase 6 : importer un fichier GPX que l'app doit refuser (variable
+# FICHIER, déjà posé dans Download), voir le message « Import impossible »,
+# le photographier (variable CAPTURE) et le fermer avec « OK ». Aucun
+# itinéraire n'est ajouté à la liste.
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: false
+- tapOn: 'Itinéraires.*'
+- extendedWaitUntil:
+    visible:
+      id: 'routes-import'
+    timeout: 10000
+- tapOn:
+    id: 'routes-import'
+- extendedWaitUntil:
+    visible: 'Downloads'
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      text: '${FICHIER}'
+    timeout: 20000
+- tapOn: '${FICHIER}'
+- extendedWaitUntil:
+    visible: 'Import impossible'
+    timeout: 30000
+- takeScreenshot: ${CAPTURE}
+- tapOn: 'OK'
+- extendedWaitUntil:
+    visible:
+      id: 'routes-import'
+    timeout: 10000

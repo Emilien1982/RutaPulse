@@ -45,7 +45,7 @@
 | `31b-suivi-reglages.html` | Suivi, direction B : panneau des réglages du suivi ouvert par la roue dentée, luminosité « Maximum » choisie | 7 ; décision 2, décision 6 (écrans 70) |
 | `31-verrouille-android.html` | Téléphone verrouillé, Android : la notification unique, petite icône A sur un rond rouille | 8 ; décision 7 (écrans 70) |
 | `32-verrouille-ios.html` | Téléphone verrouillé, iOS : la Live Activity (bandeau en direct), icône A | 8 ; décision 7 (écrans 70) |
-| `v1/40-mes-itineraires.html` | Mes itinéraires, menu natif d'une ligne ouvert, import GPX | 4, 5 |
+| `v1/40-mes-itineraires.html` | Mes itinéraires. Depuis le 3 novembre 2026 (phase 6, T1), plusieurs écrans l'un sous l'autre : liste remplie, liste vide, menu « ⋮ » ouvert, renommer (et ses variantes), confirmation de suppression, import refusé, import réussi (Infos du GPX, sans « Modifier »), GPX hors de vos zones (feuille de l'écran 52, puis Infos), zone supprimée (liste et Infos), Infos après « Enregistrer » avec le nom par défaut, états du bouton « Enregistrer » ; note en bas de page (textes exacts, choix, questions) | 4, 5 ; décisions 9 et 11 |
 | `v1/41-zones.html` | Zones : prête, en attente du Wi-Fi, à télécharger ; bandeau « Pas de Wi-Fi » avec l'interrupteur « Wi-Fi seulement ». Depuis le 2 novembre 2026 (phase 5b), trois écrans de plus sous le premier : « Mise à jour disponible », mise à jour en cours, mise à jour en attente du Wi-Fi ; puis les variantes échec, place insuffisante, mise à jour finie, et une note (textes exacts, choix validés le 2 novembre 2026) en bas de page | 6 ; décision 10, décision 5 (écrans 70) |
 | `v1/50-liste-vide.html` | Mes itinéraires vide, avec le vététiste | 4 ; décision 3 |
 | `v1/51-telechargement.html` | Onglet Carte pendant le téléchargement de la première zone : le vététiste roule sur la barre de progression | 6 ; décision 3 |
@@ -65,11 +65,10 @@ Les onglets de `v1/40`, `v1/41`, `v1/50` et `v1/51` ont reçu le 4e onglet
 
 Pas dessinés, car ils découlent des écrans ci-dessus : la carte d'accueil
 complète (l'écran 90, plus le bouton des couches de l'écran 12 et un bouton
-« Nouvel itinéraire ») ; le menu des couches ; les boîtes de confirmation ; la
-saisie du nom ; les demandes de permission du système ; le message d'un GPX
-importé hors des zones (décision 11 : même feuille que l'écran 52, avec
-« Télécharger la zone ») ; la liste « Licences et attributions » (une liste
-de textes, ouverte depuis l'écran 80).
+« Nouvel itinéraire ») ; le menu des couches ; les demandes de permission du
+système ; la liste « Licences et attributions » (une liste de textes, ouverte
+depuis l'écran 80). Les confirmations, la saisie du nom et le message d'un
+GPX importé hors des zones sont dessinés dans `v1/40` depuis la phase 6.
 
 ### Historique (ne plus s'en servir pour développer)
 

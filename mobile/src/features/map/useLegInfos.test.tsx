@@ -117,8 +117,8 @@ describe('keys and activation', () => {
       .map((q) => q.queryKey)
       .filter((k) => k[1] !== 'leg');
     expect(keys).toEqual([
-      ['routing', 'height', 'z', 2, 'path', A[0], A[1], B[0], B[1]],
-      ['routing', 'terrain', 'z', 2, 'path', A[0], A[1], B[0], B[1]],
+      ['routing', 'height', 'z', 2, 'path', A[0], A[1], B[0], B[1], 2],
+      ['routing', 'terrain', 'z', 2, 'path', A[0], A[1], B[0], B[1], 2],
     ]);
     expect(mockHeights).toHaveBeenCalledTimes(1);
     expect(mockTerrain).toHaveBeenCalledTimes(1);
@@ -151,7 +151,7 @@ describe('keys and activation', () => {
       .getAll()
       .map((q) => q.queryKey);
     expect(keys).toEqual([
-      ['routing', 'height', 'z', 2, 'hand', A[0], A[1], B[0], B[1]],
+      ['routing', 'height', 'z', 2, 'hand', A[0], A[1], B[0], B[1], null],
     ]);
   });
 });

@@ -133,6 +133,7 @@ export const fr = {
   'zones.gigabytes': '{n} Go',
   'zones.meta': '{size} · carte du {date}',
   'zones.date': '{day} {month}',
+  'routes.defaultName': 'Itinéraire du {day} {month}',
   'zones.month.1': 'janv.',
   'zones.month.2': 'févr.',
   'zones.month.3': 'mars',
@@ -183,6 +184,114 @@ export const fr = {
   'zones.updateRetryLabel': 'Réessayer la mise à jour de {name}',
   'zones.updateProgressLabel': 'Mise à jour de {name}',
   'zones.updated': 'Zone {name} mise à jour.',
+  'route.save': 'Enregistrer',
+  'route.saveLabel': "Enregistrer l'itinéraire",
+  'route.saveChangesLabel': 'Enregistrer les changements de {name}',
+  'route.saveOffLabel':
+    "Enregistrer\u00A0: posez d'abord le départ et l'arrivée",
+  'route.saveNoChangeLabel':
+    'Enregistrer\u00A0: aucun changement à enregistrer',
+  'route.savedAnnounce': 'Itinéraire enregistré\u00A0: {name}.',
+  'route.saveFailedTitle': 'Enregistrement impossible',
+  'route.saveFailedText': "L'itinéraire n'a pas pu être gardé. Réessayez.",
+  'route.abandonChangesTitle': 'Abandonner les changements\u202F?',
+  'route.abandonChangesText': "L'itinéraire gardé ne change pas.",
+  'route.zoneAbsentTitle': 'Zone absente',
+  'route.zoneAbsentText':
+    "La carte de cet itinéraire n'est pas disponible\u00A0: il ne peut pas être modifié.",
+  'route.unreadableText':
+    'Cet itinéraire ne peut pas être lu. Il reste dans la liste\u00A0: vous pouvez le renommer ou le supprimer.',
+  'routes.tooNewTitle': 'Itinéraires indisponibles',
+  'routes.tooNewText':
+    'Mettez à jour RutaPulse pour retrouver vos itinéraires.',
+  'routes.notFound': "Cet itinéraire n'existe plus.",
+  'routes.back': 'Itinéraires',
+  'routes.backLabel': 'Retour à Mes itinéraires',
+  'routes.meta': 'Zone {zone} · {origin}',
+  'routes.metaDeleted': 'Zone {zone} supprimée · {origin}',
+  'routes.metaOutside': 'Hors de vos zones · {origin}',
+  'routes.originCreated': 'créé le {date}',
+  'routes.originModified': 'modifié le {date}',
+  'routes.originGpx': 'GPX importé le {date}',
+  'routes.lastFigures': 'Chiffres du dernier calcul, le {date}',
+  'routes.seeZones': 'Voir les zones',
+  'routes.noticeDeleted': 'Zone {zone} supprimée\u00A0:',
+  'routes.noticeDeletedText':
+    " carte, profil, terrain et difficulté indisponibles. Téléchargez la zone à nouveau pour les retrouver et pour modifier l'itinéraire.",
+  'routes.noticeDeletedGpxText':
+    ' carte, profil, terrain et difficulté indisponibles. Téléchargez la zone à nouveau pour les retrouver.',
+  'routes.noticeNotInService': 'Zone {zone} inactive\u00A0:',
+  'routes.noticeNotInServiceText':
+    " carte, profil, terrain et difficulté indisponibles. RutaPulse n'utilise qu'une zone à la fois pour l'instant.",
+  'routes.noticeOutside': 'Hors de vos zones\u00A0:',
+  'routes.noticeOutsideText':
+    ' D+, profil, terrain et difficulté indisponibles.',
+  'routes.noticeOutsideFound': 'Ce tracé est dans la zone {zone}.',
+  'routes.noticeLeaves': 'Ce tracé sort de la zone {zone}\u00A0:',
+  'routes.noticeLeavesText':
+    ' D+, profil, terrain et difficulté indisponibles.',
+  'routes.arcLabel': "Tracé de l'itinéraire, sans fond de carte",
+  'routes.title': 'Mes itinéraires',
+  'routes.import': 'Importer un GPX',
+  'routes.importLabel': 'Importer un fichier GPX',
+  'routes.figuresRest': ' · D+ {ascent} · {duration}',
+  'routes.ascentUnknown': 'indisponible',
+  'routes.rowLabel': '{name}, {distance}, montée {ascent}, {duration}, {meta}',
+  'routes.problemOutside': 'Hors de vos zones',
+  'routes.problemDeleted': 'Zone {zone} supprimée',
+  'routes.problemNotInService': 'Zone {zone} inactive',
+  'routes.menuLabel': 'Actions de {name}',
+  'routes.menuRename': 'Renommer',
+  'routes.menuExport': 'Exporter en GPX',
+  'routes.menuDelete': 'Supprimer',
+  'routes.menuCancel': 'Annuler',
+  'routes.emptyTitle': "Pas encore d'itinéraire",
+  'routes.emptyText':
+    'Tracez une sortie sur la carte, puis touchez « Enregistrer ». Vous pouvez aussi importer un fichier GPX.',
+  'routes.emptyCreate': 'Créer un itinéraire',
+  'routes.loadFailed':
+    'Vos itinéraires ne peuvent pas être lus pour le moment.',
+  'routes.renameTitle': "Renommer l'itinéraire",
+  'routes.renameField': "Nom de l'itinéraire",
+  'routes.renameClear': 'Effacer le nom',
+  'routes.renameCount': '{n} / 60',
+  'routes.renameEmpty': "Donnez un nom à l'itinéraire.",
+  'routes.renameMax': '60 caractères au plus.',
+  'routes.renameAction': 'Renommer',
+  'routes.renameCancel': 'Annuler',
+  'routes.deleteTitle': 'Supprimer « {name} » ?',
+  'routes.deleteText':
+    "L'itinéraire sera effacé du téléphone. Pour le garder ailleurs, exportez-le d'abord en GPX.",
+  'routes.importBusy': 'Lecture du fichier…',
+  'routes.importFailedTitle': 'Import impossible',
+  'routes.importEmpty': 'Ce fichier est vide.',
+  'routes.importUnreadable': "Ce fichier n'est pas un GPX lisible.",
+  'routes.importNoTrack':
+    'Ce fichier GPX ne contient aucun tracé. RutaPulse lit les traces et les routes, pas les points isolés.',
+  'routes.importTooBig':
+    'Ce fichier pèse {size}. RutaPulse importe les GPX de 20 Mo au plus.',
+  'routes.importOk': 'OK',
+  'routes.importedAnnounce': 'GPX importé\u00A0: {name}.',
+  'routes.outsideTitle': 'GPX hors de vos zones',
+  'routes.outsideText':
+    "L'itinéraire est importé, avec sa distance. Le D+, le terrain et la difficulté sont indisponibles hors zone.",
+  'routes.outsideFound':
+    'Ce tracé est dans la zone {zone}, pas encore sur le téléphone.',
+  'routes.outsideNone':
+    "Ce tracé n'est dans aucune zone de RutaPulse pour l'instant.",
+  'routes.outsideOffline':
+    'Sans réseau, RutaPulse ne peut pas chercher la zone de ce tracé.',
+  'routes.outsideDownload': 'Télécharger {zone} · {size}',
+  'routes.outsideLater': 'Plus tard',
+  'routes.outsideClose': 'Fermer',
+  'routes.exportFailedTitle': 'Export impossible',
+  'routes.exportFailedText': "Le fichier GPX n'a pas pu être écrit. Réessayez.",
+  'routes.actionFailedTitle': 'Action impossible',
+  'routes.actionFailedText': "L'action n'a pas pu être faite. Réessayez.",
+  'zones.deleteRoutes':
+    '{n} itinéraires utilisent cette zone. Ils resteront, sans carte ni terrain.',
+  'zones.deleteRoutesOne':
+    '1 itinéraire utilise cette zone. Il restera, sans carte ni terrain.',
 } as const;
 
 export type TextKey = keyof typeof fr;

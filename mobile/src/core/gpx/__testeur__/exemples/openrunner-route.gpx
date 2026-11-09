@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="Openrunner">
+  <rte>
+    <name>Openrunner parcours 123</name>
+    <desc>Route seule, pas de trace</desc>
+    <rtept lat="46.000000" lon="4.000000"><ele>100</ele><name>1</name></rtept>
+    <rtept lat="46.001000" lon="4.001000"><ele>101</ele></rtept>
+    <rtept lat="46.002000" lon="4.002000"/>
+  </rte>
+</gpx>

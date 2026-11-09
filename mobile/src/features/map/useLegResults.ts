@@ -4,6 +4,7 @@
 import { useQueries } from '@tanstack/react-query';
 
 import type { Draft } from '@/core/draft/draft';
+import { legKey, type KeptLegs } from '@/core/routes/reopen';
 import { handLeg, listLegs, type LegResult } from '@/core/draft/legs';
 import type {
   RouteErrorKind,
@@ -23,7 +24,12 @@ export class LegError extends Error {
 export type LegState =
   | { status: 'hand'; result: LegResult }
   | { status: 'pending' }
-  | { status: 'done'; result: RouteSuccess }
+  | {
+      status: 'done';
+      result: RouteSuccess;
+      /** Version of the zone that calculated the shape (default: the zone). */
+      shapeVersion?: number;
+    }
   | { status: 'error'; error: RouteErrorKind };
 
 const MINUTE = 60_000;
@@ -31,8 +37,14 @@ const MINUTE = 60_000;
 export function useLegResults(
   draft: Draft,
   zone: Pick<Zone, 'id' | 'version'>,
+  /** Saved shapes (ADR 0019, section 4): a leg with the same two ends takes
+   * its saved shape, with no calculation. */
+  kept?: KeptLegs,
 ): LegState[] {
   const legs = listLegs(draft);
+  type End = { lon: number; lat: number };
+  const keptOf = (leg: { from: End; to: End }) =>
+    kept?.get(legKey(leg.from, leg.to));
   const pathLegs = legs.filter((leg) => leg.mode === 'path');
   const queries = useQueries({
     queries: pathLegs.map(({ from, to }) => ({
@@ -47,6 +59,7 @@ export function useLegResults(
         to.lon,
         to.lat,
       ],
+      enabled: !keptOf({ from, to }),
       queryFn: async ({ signal }: { signal: AbortSignal }) => {
         const result = await computeRoute([from, to], signal);
         if (!result.ok) throw new LegError(result.error);
@@ -65,6 +78,10 @@ export function useLegResults(
       return { status: 'hand', result: handLeg(leg.from, leg.to) };
     }
     const query = queries[next++];
+    const saved = keptOf(leg);
+    if (saved) {
+      return { status: 'done', result: saved, shapeVersion: saved.zoneVersion };
+    }
     if (query?.data) return { status: 'done', result: query.data };
     if (query?.error) {
       const error = query.error;

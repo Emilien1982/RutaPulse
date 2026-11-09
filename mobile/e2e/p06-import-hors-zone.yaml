@@ -1,0 +1,38 @@
+# Phase 6 : importer un GPX hors de toutes les zones (variable FICHIER, par
+# exemple une trace à Paris posée dans Download) : la feuille « GPX hors de
+# vos zones » s'affiche, puis « Fermer » ouvre l'écran Infos du GPX, sans
+# D+ ni terrain. Captures dans le dossier de sortie de Maestro.
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: false
+- tapOn: 'Itinéraires.*'
+- extendedWaitUntil:
+    visible:
+      id: 'routes-import'
+    timeout: 10000
+- tapOn:
+    id: 'routes-import'
+- extendedWaitUntil:
+    visible: 'Downloads'
+    timeout: 15000
+- scrollUntilVisible:
+    element:
+      text: '${FICHIER}'
+    timeout: 20000
+- tapOn: '${FICHIER}'
+- extendedWaitUntil:
+    visible: 'GPX hors de vos zones'
+    timeout: 30000
+- takeScreenshot: feuille-hors-zone
+- tapOn:
+    id: 'outside-close'
+- extendedWaitUntil:
+    visible:
+      id: 'info-title'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertVisible: 'Hors de vos zones.*'
+- takeScreenshot: infos-gpx-hors-zone

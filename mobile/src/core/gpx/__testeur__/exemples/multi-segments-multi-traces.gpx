@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" version="1.1" creator="test">
+  <trk>
+    <name>Première</name>
+    <trkseg>
+      <trkpt lat="10.0" lon="10.0"/>
+      <trkpt lat="10.1" lon="10.1"/>
+    </trkseg>
+    <trkseg>
+      <trkpt lat="10.2" lon="10.2"/>
+      <trkpt lat="10.3" lon="10.3"/>
+    </trkseg>
+  </trk>
+  <trk>
+    <name>Seconde</name>
+    <trkseg>
+      <trkpt lat="10.4" lon="10.4"/>
+      <trkpt lat="10.5" lon="10.5"/>
+    </trkseg>
+  </trk>
+</gpx>

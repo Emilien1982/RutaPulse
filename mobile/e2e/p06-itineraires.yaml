@@ -1,0 +1,318 @@
+# C14 (phase 6) : créer, enregistrer, retrouver dans la liste, renommer,
+# ouvrir les infos, modifier, supprimer, hors ligne. Android : mode avion
+# réel (coupé à la fin, même en cas d'échec). iOS : sans mode avion.
+# Prérequis : zone Nancy installée, liste d'itinéraires vide.
+# iOS : position du simulateur avant : xcrun simctl location booted set 48.751,5.967
+# Pensé pour une version release.
+appId: fr.rutapulse.app
+onFlowComplete:
+  - runFlow:
+      when:
+        platform: Android
+      commands:
+        - setAirplaneMode: disabled
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setAirplaneMode: enabled
+- launchApp:
+    clearState: false
+    stopApp: true
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setLocation:
+          latitude: 48.751
+          longitude: 5.967
+      - extendedWaitUntil:
+          visible:
+            id: 'new-route-button'
+          timeout: 30000
+      - setLocation:
+          latitude: 48.751
+          longitude: 5.967
+      - waitForAnimationToEnd:
+          timeout: 4000
+- tapOn:
+    text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
+    optional: true
+# Liste vide au départ.
+- tapOn: 'Itinéraires.*'
+- extendedWaitUntil:
+    visible:
+      id: 'routes-empty'
+    timeout: 10000
+- takeScreenshot: 01-liste-vide
+# Création : départ, arrivée.
+- tapOn: 'Carte.*'
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- tapOn:
+    id: 'new-route-button'
+- extendedWaitUntil:
+    visible: 'Touchez le départ sur la carte'
+    timeout: 10000
+# Avant le 1er point : « Enregistrer » inactif.
+- takeScreenshot: 02-creation-enregistrer-inactif
+- tapOn:
+    point: '50%,50%'
+- extendedWaitUntil:
+    visible: "Touchez l'arrivée sur la carte"
+    timeout: 10000
+- tapOn:
+    point: '50%,38%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: 03-creation-enregistrer-actif
+- tapOn:
+    id: 'route-save'
+# Après « Enregistrer » : l'écran de l'itinéraire s'ouvre, titré par son nom.
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertVisible:
+    id: 'info-title'
+    text: 'Itinéraire du .*'
+- assertNotVisible:
+    id: 'route-save'
+- takeScreenshot: 04-infos-apres-enregistrer
+# « Retour » mène à la liste : un seul itinéraire.
+- tapOn:
+    id: 'info-back'
+- extendedWaitUntil:
+    visible:
+      id: 'route-row-.*'
+    timeout: 10000
+- assertVisible: 'Mes itinéraires'
+- assertVisible: 'Itinéraire du 4 nov.*'
+- takeScreenshot: 05-liste-un-itineraire
+# Le bouton retour d'Android depuis les infos revient à la liste, sans
+# second jeu d'onglets.
+- tapOn:
+    id: 'route-row-.*'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 10000
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - pressKey: back
+      - waitForAnimationToEnd:
+          timeout: 2000
+      - assertVisible: 'Mes itinéraires'
+      - takeScreenshot: 06-android-retour-vers-liste
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          id: 'info-back'
+      - extendedWaitUntil:
+          visible:
+            id: 'route-menu-.*'
+          timeout: 10000
+      - assertVisible: 'Mes itinéraires'
+      - takeScreenshot: 06-ios-retour-vers-liste
+# Menu « ⋮ », puis Renommer avec un nom vide, puis un nom valide.
+- tapOn:
+    id: 'route-menu-.*'
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: 07-menu
+- tapOn:
+    text: 'Renommer'
+- extendedWaitUntil:
+    visible:
+      id: 'rename-input'
+    timeout: 5000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: 08-renommer
+# Nom vide : message, bouton sans effet.
+- tapOn:
+    id: 'rename-clear'
+- tapOn:
+    id: 'rename-submit'
+- assertVisible:
+    id: 'rename-error'
+- takeScreenshot: 09-renommer-nom-vide
+- inputText: 'Boucle de Haye'
+- tapOn:
+    id: 'rename-submit'
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertVisible: 'Boucle de Haye.*'
+- assertNotVisible: 'Itinéraire du 4 nov.*'
+- takeScreenshot: 10-liste-renomme
+# Ouvrir les infos : le titre est le nouveau nom.
+- tapOn:
+    id: 'route-row-.*'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 10000
+- assertVisible:
+    id: 'info-title'
+    text: 'Boucle de Haye'
+- assertVisible:
+    id: 'info-ascent'
+    text: '.*[1-9].*'
+- takeScreenshot: 11-infos-titre-nom
+# Modifier : déplacer l'arrivée (appui long puis glissement), enregistrer.
+- tapOn:
+    id: 'info-modify'
+- extendedWaitUntil:
+    visible:
+      id: 'route-save'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertVisible:
+    id: 'route-distance'
+    text: '.*[1-9].*'
+- takeScreenshot: 12-modifier-avant
+# Appui long puis glissement : un swipe lent de 3 s est pris pour un glisser.
+# L'arrivée est reprise par la carte d'ensemble : le point de départ se
+# déplace de quelques km.
+- swipe:
+    start: '19%,44%'
+    end: '31%,42%'
+    duration: 3000
+- waitForAnimationToEnd:
+    timeout: 3000
+# Si le point tombe à plus de 200 m d'un chemin (cas vu sur iOS), on le relie
+# à la main : le tronçon touché change quand même.
+- runFlow:
+    when:
+      visible: 'Aucun chemin trouvé'
+    commands:
+      - tapOn: 'Relier ce point à la main'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*km.*'
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: 13-modifier-apres-glissement
+- tapOn:
+    id: 'route-save'
+# On revient au même écran, relu : même nom, nouvelle distance.
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertVisible:
+    id: 'info-title'
+    text: 'Boucle de Haye'
+- assertVisible:
+    id: 'info-distance'
+    text: '.*km.*'
+- assertNotVisible:
+    id: 'route-save'
+- takeScreenshot: 14-infos-apres-modification
+- tapOn:
+    id: 'info-back'
+- extendedWaitUntil:
+    visible:
+      id: 'route-row-.*'
+    timeout: 10000
+# Un seul itinéraire dans la liste : l'ancienne version est remplacée.
+- assertVisible: 'Boucle de Haye.*'
+- assertVisible: '.*km.*'
+- assertNotVisible: '338 m.*'
+- takeScreenshot: 15-liste-apres-modification
+# Importer un GPX posé dans Download (sélecteur du système).
+- tapOn:
+    id: 'routes-import'
+- extendedWaitUntil:
+    visible: '.*Downloads.*|.*Téléchargements.*|trace-testeur.gpx|Sur mon iPhone'
+    timeout: 15000
+# Le sélecteur peut lister d'autres fichiers avant : on fait défiler.
+- scrollUntilVisible:
+    element:
+      text: 'trace-testeur.gpx'
+    timeout: 20000
+- takeScreenshot: 16-selecteur-de-fichier
+# iOS : le sélecteur ne réagit pas au toucher sur le nom du fichier, on
+# touche sa vignette (première case de la grille « Sur mon iPhone »).
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - tapOn: 'trace-testeur.gpx'
+- runFlow:
+    when:
+      platform: iOS
+    commands:
+      - tapOn:
+          point: '18%,29%'
+# Après un import réussi, l'écran Infos du GPX s'ouvre (pas de « Modifier »).
+- extendedWaitUntil:
+    visible:
+      id: 'info-title'
+    timeout: 20000
+- assertVisible:
+    id: 'info-title'
+    text: 'Trace du testeur'
+- assertNotVisible:
+    id: 'info-modify'
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: 17-infos-gpx-importe
+- tapOn:
+    id: 'info-back'
+- extendedWaitUntil:
+    visible:
+      id: 'route-row-.*'
+    timeout: 10000
+- assertVisible: 'Trace du testeur.*'
+- assertVisible: 'Boucle de Haye.*'
+- assertVisible: '.*GPX importé le.*'
+- takeScreenshot: 18-liste-avec-gpx
+# Supprimer, avec confirmation : d'abord le GPX (en haut), puis l'autre.
+- tapOn:
+    id: 'route-menu-.*'
+- tapOn:
+    text: 'Supprimer'
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertVisible: 'Supprimer.{1,3}Trace du testeur.*'
+- takeScreenshot: 19-confirmation-suppression
+- tapOn:
+    text: 'Supprimer'
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertNotVisible: 'Trace du testeur.*'
+- assertVisible: 'Boucle de Haye.*'
+- tapOn:
+    id: 'route-menu-.*'
+- tapOn:
+    text: 'Supprimer'
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: 20-confirmation-suppression-2
+- tapOn:
+    text: 'Supprimer'
+- extendedWaitUntil:
+    visible:
+      id: 'routes-empty'
+    timeout: 10000
+- takeScreenshot: 21-liste-vide-apres-suppression

@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<gpx xmlns="http://www.topografix.com/GPX/1/1" xmlns:ns3="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" creator="Garmin Connect" version="1.1">
+  <metadata>
+    <link href="connect.garmin.com"><text>Garmin Connect</text></link>
+    <time>2026-10-13T08:00:00.000Z</time>
+  </metadata>
+  <wpt lat="48.0" lon="6.0"><name>Col</name></wpt>
+  <trk>
+    <name>Garmin
+      Boucle</name>
+    <type>mountain_biking</type>
+    <trkseg>
+      <trkpt lat="48.1000000" lon="6.1000000"><ele>300.2</ele><time>2026-10-13T08:00:00.000Z</time><extensions><ns3:TrackPointExtension><ns3:atemp>12.0</ns3:atemp></ns3:TrackPointExtension></extensions></trkpt>
+      <trkpt lat="48.1010000" lon="6.1010000"><ele>301.2</ele><time>2026-10-13T08:00:01.000Z</time></trkpt>
+      <trkpt lat="48.1020000" lon="6.1020000"><ele>302.2</ele><time>2026-10-13T08:00:02.000Z</time></trkpt>
+    </trkseg>
+  </trk>
+</gpx>

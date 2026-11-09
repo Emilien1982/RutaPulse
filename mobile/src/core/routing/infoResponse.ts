@@ -22,6 +22,10 @@ export type TerrainEdge = {
 
 export type HeightResult = { ok: true; profile: ProfilePoint[] } | RouteFailure;
 
+/** One altitude (m) per point of the shape, null without data. */
+export type PointHeightsResult =
+  { ok: true; heights: (number | null)[] } | RouteFailure;
+
 export type TraceResult = { ok: true; edges: TerrainEdge[] } | RouteFailure;
 
 function isObject(value: unknown): value is Record<string, unknown> {
@@ -64,6 +68,21 @@ export function parseHeightResponse(text: string): HeightResult {
     return failure('failed');
   }
   return { ok: true, profile: range as ProfilePoint[] };
+}
+
+/** Reads the JSON text returned by `height` without `range`. */
+export function parsePointHeights(text: string): PointHeightsResult {
+  const value = parseObject(text);
+  if (!value) return failure('failed');
+  const heights = value.height;
+  if (!Array.isArray(heights)) return refusal(value);
+  if (
+    heights.length === 0 ||
+    !heights.every((h) => h === null || typeof h === 'number')
+  ) {
+    return failure('failed');
+  }
+  return { ok: true, heights: heights as (number | null)[] };
 }
 
 /** Reads the JSON text returned by `trace_attributes`. */
