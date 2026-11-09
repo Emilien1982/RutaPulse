@@ -24,10 +24,13 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 🔧 spec validée ([spec](docs/phases/p06-mes-itineraires-gpx.md)) |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 ✅ ([résultats](docs/phases/p06-mes-itineraires-gpx-resultats.md)) ; phase 7 à spécifier (circuits VTT balisés, et GPX importé modifiable) |
 
 ## Décisions prises
 
+- 2026-11-09 — Phase 6 fusionnée dans main : Enregistrer (nom « Itinéraire du 9 nov. »), onglet Itinéraires (liste, menu « ⋮ », renommer, exporter, supprimer), itinéraire gardé (tracé fixe, infos recalculées sur la zone en service), « Modifier » cadré sur le tracé, import et export GPX 1.1. 16 critères tenus avec réserves (C6 pas joué de bout en bout sur simulateur ; C11 sur la longueur du tracé ; C13 une mesure iOS à 1,09 s à cause du fond de carte ; C14 iOS sans mode avion ; B3 revérifié sur Android seulement). 2 193 tests, 228 pytest, CI verte. ADR 0019 ; maquette 40 alignée sur l'app (nom au-dessus de l'arche, feuille « hors de vos zones » sur la liste).
+- 2026-11-09 — Phase 6, détails tranchés par le pilotage : 3e aller-retour accordé sur B3 seul ; écarts M1 et M2 du designer : on garde l'app, la maquette suit. CI rouge un temps sur 423cdee (un test écrivait dans /Users), corrigée en 940f434.
+- 2026-11-07 — Règle d'Émilien complétée : le dimanche, pas de réserve de quota (pas de nouvelles offres d'emploi) ; tout le quota restant peut servir à RutaPulse.
 - 2026-11-03 — Règle d'Émilien : à chaque fin de phase et à chaque pause, garder au moins 2 % du quota hebdomadaire par jour restant avant le renouvellement (lundi 7 h), dimanche non compté. Cette réserve sert à sa veille emploi. Sinon, la phase finit sa tâche, commite et s'arrête.
 - 2026-11-03 — Phase 6, T1 : ADR 0019 et maquette 40 validés par Émilien, avec les recommandations : nom par défaut « Itinéraire du 3 nov. » (commune en V2, trouvée hors ligne dans 68 % des cas seulement), « (2) » le même jour, renommer ne fait pas remonter, pas de balayage (menu « ⋮ » et appui long), import → écran Infos, GPX importé à 10 km/h, avertissement à la suppression d'une zone utilisée.
 - 2026-11-03 — Spec de la phase 6 (mes itinéraires et GPX, taille G) validée par Émilien, avec les choix du pilotage. Un GPX importé n'est pas modifiable ; le geste « trace → itinéraire modifiable » se fera en phase 7, pour les circuits et les GPX.
@@ -106,9 +109,46 @@
 
 ## Prochaine étape
 
-Phase 6 (mes itinéraires et GPX) lancée dans une session de phase. Maquette 40 et ADR 0019 validés ; prochain point avec Émilien : la fusion.
+Écrire la spec de la phase 7 (circuits VTT balisés, docs/05 ligne 7), la faire valider par Émilien, puis la lancer dans une session de phase. À y faire : le geste « trace → itinéraire modifiable », commun aux circuits balisés et aux GPX importés (décision d'Émilien du 3 novembre).
 
-## Passation du pilotage (3 novembre 2026)
+## Passation du pilotage (9 novembre 2026)
+
+La session de pilotage du 3 au 9 novembre passe la main après la fusion de
+la phase 6, comme le veut la règle d'Émilien.
+
+**État exact**
+- `main` à jour et poussé : phases 0 à 6 fusionnées. Rien en cours.
+- Worktree de la phase 6 (`.claude/worktrees/phase-6-itineraires-gpx-60a1e0`)
+  gardé comme trace ; tout est poussé. À retirer si la place manque.
+- Place libre : environ 70 Go après le ménage d'Émilien. Une construction
+  iOS reprend environ 8 Go (DerivedData). Seuil d'arrêt d'une phase : 12 Go.
+- Simulateur iOS : deux fichiers d'essai dans « File Provider Storage »
+  (`00-cible.gpx`, `trace-testeur.gpx`), à retirer à la main.
+- À faire en premier : créer le réveil horaire (`CronCreate`, minute 23),
+  avec le contrôle de la réserve de quota (mémoire
+  `reserve-quota-veille-emploi`).
+
+**Règle de quota d'Émilien (3 et 7 novembre)** : à chaque pause et fin de
+phase, garder 2 % du quota hebdomadaire par jour restant, du lundi au
+samedi, jusqu'au renouvellement du lundi 7 h ; pas de réserve le dimanche.
+Lire le quota par `get_usage`. Approche de la réserve (marge 5 points) :
+la phase finit sa tâche, commite, et s'arrête ; relance par un réveil
+unique. La phase 6 a été arrêtée du 4 au 9 novembre pour cette règle.
+
+**Leçons de la phase 6**
+- Le pilotage s'appelle `local_2a5da08c` ; le brief de départ donnait
+  par erreur l'adresse de la session parente. Vérifier `startedBy` dans
+  `list_sessions` et donner la bonne adresse dans le brief.
+- Le garde-fou refuse `rm -rf` sur DerivedData et sur les fichiers du
+  simulateur : c'est Émilien qui efface. Les copies Time Machine locales
+  gardent la place des fichiers effacés (le Finder les compte comme libres,
+  pas `df`).
+- Une phase de taille G avec simulateurs coûte cher : environ 6 points du
+  quota de la semaine par heure en T7. Prévoir la pause dans le brief.
+- Les sous-agents doivent être lancés depuis le worktree, sinon le
+  garde-fou du relecteur refuse git et npm.
+
+## Passation du pilotage (3 novembre 2026, archive)
 
 La session de pilotage du 2 au 3 novembre passe la main après la fusion de
 la phase 5b, comme le veut la règle d'Émilien.
@@ -224,5 +264,6 @@ valide spec, design, architecture et fusion ; tests sur simulateurs.
 - Petites tâches : écarts non bloquants de la phase 2, nettoyage des fichiers partiels iOS dans `tmp/`, minuteur Jest.
 - Non testé sur simulateur : geste de pincement, vrai mode avion iOS.
 - Phase 10 (finition) : très grandes tailles de texte dans toute l'app ; Android, garder le brouillon quand l'activité est recréée.
+- Phase 6, pour plus tard : itinéraire d'une zone prête mais pas en service sans infos (à la 2e zone) ; commune dans le nom par défaut (V2) ; règle ESLint interdisant `fetch` dans `core/` ; écarts de design N1, N3, N7 et nom sous l'arche de la maquette 20 (phase 10) ; message Jest « worker process has failed to exit ».
 - Prochain passage sur la création : vider le point choisi à l'ajout d'un point ; nom accessible du résumé compact non touchable.
 - Plus tard (comparaison p05-t8) : écarts P1 à P7 du designer, avec leur phase ; capture iOS « Altitudes indisponibles ».
