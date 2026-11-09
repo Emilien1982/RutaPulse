@@ -18,6 +18,7 @@ import {
   listRoutes,
   newDefaultName,
   renameRoute,
+  replaceGpx,
   replaceRoute,
   updateFigures,
   type ReplaceInput,
@@ -103,6 +104,12 @@ export function createRouteActions(queryClient: QueryClient) {
     },
     replace: async (id: number, input: ReplaceInput) => {
       const changed = await replaceRoute(await getRoutesDb(), id, input);
+      await queryClient.invalidateQueries({ queryKey: routesKey });
+      return changed;
+    },
+    /** Replaces an imported GPX by the route made from it. */
+    replaceGpx: async (id: number, input: ReplaceInput) => {
+      const changed = await replaceGpx(await getRoutesDb(), id, input);
       await queryClient.invalidateQueries({ queryKey: routesKey });
       return changed;
     },

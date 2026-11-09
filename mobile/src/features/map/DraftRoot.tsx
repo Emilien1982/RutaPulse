@@ -15,6 +15,7 @@ export function DraftRoot({ children }: { children: ReactNode }) {
   return (
     <DraftSession
       routeId={target?.kind === 'route' ? target.id : undefined}
+      gpxId={target?.kind === 'gpx' ? target.id : undefined}
       trail={target?.kind === 'trail' ? target : undefined}
     >
       {children}

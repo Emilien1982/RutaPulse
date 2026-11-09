@@ -348,6 +348,8 @@ export const fr = {
     'Tracé du circuit posé. Déplacez un point pour le modifier.',
   'trails.placedAnnounce':
     'Itinéraire posé sur le circuit {name}\u00A0: {n} points de passage.',
+  'gpx.placedBubble':
+    "Tracé du GPX posé. En enregistrant, vous remplacez l'original.",
   'trails.outsideBubble':
     'Une partie du tracé sort de la zone. Elle reste telle quelle\u00A0: on ne peut pas la modifier.',
 } as const;

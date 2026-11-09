@@ -191,7 +191,7 @@ afterEach(async () => {
 });
 
 describe('answers 5 and 6: the Infos screen of a GPX just imported (6b)', () => {
-  it('shows the name, 42,1 km and 4 h 13 at 10 km/h, and no "Modifier"', async () => {
+  it('shows the name, 42,1 km and 4 h 13 at 10 km/h, and "Modifier"', async () => {
     const span = 42_100 / ((6_378_160 * Math.PI) / 180);
     const pts: [number, number][] = Array.from({ length: 101 }, (_, i) => [
       6.2,
@@ -206,8 +206,8 @@ describe('answers 5 and 6: the Infos screen of a GPX just imported (6b)', () => 
     expect(screen.getByTestId('info-duration')).toHaveTextContent(
       /4[\s\u00A0]h[\s\u00A0]13/,
     );
-    expect(screen.queryByTestId('info-modify')).toBeNull();
-    expect(screen.queryByText('Modifier')).toBeNull();
+    expect(screen.getByTestId('info-modify')).toBeTruthy();
+    expect(screen.getByText('Modifier')).toBeTruthy();
   });
 
   it('the subtitle says the origin: "GPX importé"', async () => {

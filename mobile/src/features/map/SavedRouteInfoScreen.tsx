@@ -307,7 +307,13 @@ function useSyncFigures(route: Readable, altitudes: Block<AltitudeInfo>) {
   ]);
 }
 
-function ModifyButton({ routeId }: { routeId: number }) {
+function ModifyButton({
+  routeId,
+  kind = 'route',
+}: {
+  routeId: number;
+  kind?: 'route' | 'gpx';
+}) {
   const router = useRouter();
   return (
     <Button
@@ -317,7 +323,7 @@ function ModifyButton({ routeId }: { routeId: number }) {
       accessibilityLabel={t('info.modifyLabel')}
       icon={(color) => <HandModeIcon color={color} />}
       onPress={() => {
-        setDraftTarget({ kind: 'route', id: routeId });
+        setDraftTarget({ kind, id: routeId });
         router.push('/draft');
       }}
     />
@@ -440,6 +446,7 @@ function GpxInfos({
       altitudes={altitudes}
       terrain={terrain}
       difficulty={difficulty}
+      actions={<ModifyButton routeId={route.id} kind="gpx" />}
     />
   );
 }
@@ -536,6 +543,8 @@ function PlainInfos({
       actions={
         route.origin !== 'gpx' && status === 'usable' ? (
           <ModifyButton routeId={route.id} />
+        ) : route.origin === 'gpx' && status === 'leaves' ? (
+          <ModifyButton routeId={route.id} kind="gpx" />
         ) : undefined
       }
     />

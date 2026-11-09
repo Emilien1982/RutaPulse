@@ -121,7 +121,8 @@ function DraftView({ opening }: { opening?: OpeningView }) {
     router.push('/draft/infos');
   }
   const camera = useRef<CameraRef>(null);
-  const { zone, store, savedStore, kept, trail, dispatch } = useDraftSession();
+  const { zone, store, savedStore, kept, trail, gpx, dispatch } =
+    useDraftSession();
   const saved = useSelector(savedStore, (s) => s);
   const savedName = useSavedRoute(saved.routeId).data?.name;
   // A route that was already saved when the creation opened ("Modifier") goes
@@ -155,20 +156,31 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   const [handTouched, setHandTouched] = useState(false);
   // The bubble of the opening of a circuit (mockup 12): 4 s, or 6 s when a
   // part of the trace leaves the zone. It goes away at the first touch.
-  const [bubble, setBubble] = useState<string | null>(() =>
-    trail
-      ? t(trail.outside ? 'trails.outsideBubble' : 'trails.placedBubble')
-      : null,
-  );
-  const outsideBubble = trail?.outside === true;
+  // A GPX opens with its own bubble (6 s), then the one of the part outside.
+  const [bubbles, setBubbles] = useState<string[]>(() => {
+    if (trail) {
+      return [
+        t(trail.outside ? 'trails.outsideBubble' : 'trails.placedBubble'),
+      ];
+    }
+    if (gpx) {
+      return [
+        t('gpx.placedBubble'),
+        ...(gpx.outside ? [t('trails.outsideBubble')] : []),
+      ];
+    }
+    return [];
+  });
+  const bubble = bubbles[0] ?? null;
+  const longBubble = trail?.outside === true || gpx !== undefined;
   useEffect(() => {
     if (bubble === null) return;
     const timer = setTimeout(
-      () => setBubble(null),
-      outsideBubble ? 6000 : 4000,
+      () => setBubbles((list) => list.slice(1)),
+      longBubble ? 6000 : 4000,
     );
     return () => clearTimeout(timer);
-  }, [bubble, outsideBubble]);
+  }, [bubble, longBubble]);
   const trailName = trail?.title;
   const pointCount = draft.points.length;
   useEffect(() => {
@@ -202,7 +214,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   function touchedAnnotation() {
     // Touching or dragging a point is also a first touch in the hand mode.
     if (nextMode === 'hand') setHandTouched(true);
-    setBubble(null);
+    setBubbles([]);
     annotationAt.current = Date.now();
     pending.current.forEach(clearTimeout);
     pending.current.clear();
@@ -424,7 +436,11 @@ function DraftView({ opening }: { opening?: OpeningView }) {
             })
           : await actions.create({ origin: 'created', ...input, now });
       } else {
-        await actions.replace(id, { ...input, savedAt: now });
+        const full = { ...input, savedAt: now };
+        // A GPX becomes "editedGpx" once; a second press replaces that row.
+        if (!gpx || !(await actions.replaceGpx(id, full))) {
+          await actions.replace(id, full);
+        }
       }
       savedStore.setState(() => ({ routeId: id, savedDraft: draft }));
       const row = await getRoute(await getRoutesDb(), id);
@@ -585,7 +601,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
           if (fromTrace) setShownZoom(e.nativeEvent.zoom);
         }}
         onPress={(e) => {
-          setBubble(null);
+          setBubbles([]);
           if (problem) return;
           if (nextMode === 'hand') setHandTouched(true);
           const [lon, lat] = e.nativeEvent.lngLat;

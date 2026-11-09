@@ -12,7 +12,8 @@ export type TrailTarget = {
   position: { lon: number; lat: number } | null;
 };
 
-export type DraftTarget = { kind: 'route'; id: number } | TrailTarget;
+export type DraftTarget =
+  { kind: 'route'; id: number } | { kind: 'gpx'; id: number } | TrailTarget;
 
 let target: DraftTarget | null = null;
 

@@ -360,13 +360,13 @@ describe('C8 and mockup 7b: zone deleted', () => {
 });
 
 describe('Question 1 and answer 6: imported GPX', () => {
-  it('has no "Modifier", in the zone', async () => {
+  it('shows "Modifier", in the zone', async () => {
     await insertRoute(
       db,
       sampleGpx({ zone: { id: 'nancy', version: 5, name: 'Nancy' } }),
     );
     await open();
-    expect(screen.queryByTestId('info-modify')).toBeNull();
+    expect(screen.getByTestId('info-modify')).toBeTruthy();
     expect(screen.getByTestId('info-subtitle')).toHaveTextContent(
       /^Zone Nancy · GPX importé le/,
     );
