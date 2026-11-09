@@ -499,3 +499,181 @@ Aucune. Tous les écarts relèvent du design. Deux corrections portent sur la
 maquette 40, pas sur l'app (M1 : nom au-dessus de l'arche ; M2 : feuille
 hors zone sur la liste). Elles ne changent pas ce que fait l'app ; le
 pilotage dit si Émilien doit les revoir avant la fusion.
+
+---
+
+## Vérification des corrections (9 novembre 2026)
+
+> Designer. Captures release (version finale) de 9ffb1d4, iPhone 17 (iOS
+> 26.5) et Pixel 6 (Android 14), prises après les corrections. Dossier :
+> `/Users/utilisateur/dev_ai/vtt-nav-preuves/p06/t8-verif/` (noté `v/`
+> ci-dessous). Parcours Maestro p06-itineraires rejoué sans échec sur les
+> deux (`v/android/c14-maestro.log`, `v/ios/c14-maestro.log`).
+> B3 : capture Android release de la correction dans
+> `/Users/utilisateur/dev_ai/vtt-nav-preuves/p06/b3/` (noté `b3/`).
+> Mesures comme plus haut (points iOS, dp Android).
+
+### Bilan
+
+| Écart | Gravité | État | Capture |
+|---|---|---|---|
+| B1 | bloquant | **corrigé** | `v/ios/shots/B1-M4-M5-liste-remplie.png`, `v/android/shots/B1-M4-M5-liste-remplie.png` |
+| B2 | bloquant | **corrigé** | `v/ios/shots/B2-2-nom-vide-M6.png`, `v/android/shots/B2-4-nom-vide-redessin.png`, `v/android/shots/B2-3-nom-rempli-actif.png` |
+| B3 | bloquant | **corrigé sur Android ; à voir sur iOS** | `b3/B3-court-modifier.png` ; avant correction : `v/ios/shots/B3-modifier-long-49km.png`, `v/ios/shots/B3-modifier-petit.png`, `v/android/shots/B3-modifier-petit-564m.png`, `v/android/shots/B3-modifier-long-49km.png` |
+| B4 | bloquant | **corrigé** | `v/android/shots/B4-menu.png` |
+| M1 | mineur | **réglé par la maquette 40** (l'app fait foi) | `v/ios/shots/infos-petit.png`, `v/android/shots/infos-long.png` |
+| M2 | mineur | **réglé par la maquette 40** (l'app fait foi) | `v/ios/shots/M10-feuille-hors-zone.png`, `v/android/shots/M10-feuille-hors-zone-bouton-normal.png` |
+| M3 | mineur | **corrigé** | `v/ios/shots/M3-M5-liste-vide.png`, `v/android/shots/M3-M5-liste-vide.png` |
+| M4 | mineur | **corrigé** | `v/ios/shots/B1-M4-M5-liste-remplie.png`, `v/android/shots/B1-M4-M5-liste-remplie.png` |
+| M5 | mineur | **corrigé** | mêmes captures, et `*/shots/M3-M5-liste-vide.png` |
+| M6 | mineur | **corrigé** | `v/ios/shots/B2-2-nom-vide-M6.png`, `v/android/shots/B2-4-nom-vide-redessin.png` |
+| M7 | mineur | **corrigé** | `v/ios/shots/M7-M8-infos-gpx-hors-zone.png`, `v/android/shots/M7-M8-infos-gpx-hors-zone.png` |
+| M8 | mineur | **corrigé pour la phrase « aucune zone »** ; phrase « dans la zone {zone} » pas vue | mêmes captures |
+| M9 | mineur | **textes corrigés, pas vus à l'écran** | aucune (lu dans `fr.ts`) |
+| M10 | mineur | **corrigé** | `v/android/shots/M10-feuille-hors-zone-bouton-normal.png` |
+| M11 | mineur | **corrigé** | `v/android/shots/M11-feuille-de-partage-nom-finissant-par-point.png` |
+| N1 à N6 | à noter | inchangés, comme prévu | — |
+| N7 | à noter | **nouveau** | `v/android/shots/B2-3-nom-rempli-actif.png` |
+
+**Écarts restants** : aucun bloquant sur Android. Un bloquant à confirmer
+sur iOS (B3). Aucun mineur ouvert dans l'app ; M8 et M9 restent à voir à
+l'écran quand une deuxième zone sera publiée. Une note nouvelle (N7).
+
+**Verdict sur C16 : tenu sur Android ; tenu sur iOS dès qu'une capture
+release montre B3 corrigé.** La correction de B3 est dans le code commun
+(`DraftScreen`, `ZoneBaseMap`), mais il faut la preuve sur iOS : MapLibre
+y charge la carte par un autre chemin.
+
+### Détail
+
+**B1, corrigé.** iOS : bouton de x 202 à 386, y 70 à 116 ; lettres du
+titre (accent compris) de y 131 à 158 : 15 d'écart, rien ne se touche.
+Android : bouton y 56 à 103, lettres du titre y 121 à 145 : 18 d'écart.
+Le titre reste au-dessus des rayures sur les deux.
+
+**B2, corrigé.** « Renommer » inactif : fond crème clair, bord en tirets
+`hn.brun-2`, texte `hn.brun-2`, sans transparence, sur les deux. iOS :
+x 208 à 383, y 460 à 515. Android : x 212 à 392, y 498 à 553. Le passage
+inactif → actif → inactif se redessine bien sur Android (`B2-3`, bouton
+brun plein ; `B2-4`, de nouveau en tirets).
+
+**B3, corrigé sur Android, à voir sur iOS.** `b3/B3-court-modifier.png`
+(Android, release, itinéraire de 564 m) : la création s'ouvre sur le
+tracé, pas sur toute la zone. Départ à x 48, y 172 (48 du bord gauche,
+58 sous la barre) ; point le plus à droite à x 368 (43 du bord) ; point
+le plus bas à y 587, 78 au-dessus du panneau. Les deux points et tout le
+tracé se voient et se touchent ; le bouton « position » (x 347 à 395,
+y 178 à 225) ne couvre rien. Les captures `v/*/shots/B3-*` sont d'avant la
+correction (toute la zone Nancy). Reste à prouver : iOS, et un long tracé
+(49 km) sur les deux.
+
+**B4, corrigé.** Android : « RENOMMER » (y 466), « EXPORTER EN GPX »
+(y 520), « SUPPRIMER » (y 574), dans l'ordre de la maquette. iOS reste
+juste (`v/ios/shots/menu.png` : Renommer, Exporter en GPX, Supprimer en
+rouge, Annuler).
+
+**M1 et M2, réglés par la maquette.** Décision du pilotage : on garde
+l'app. La maquette 40 est mise à jour (voir plus bas). La maquette 20
+montre encore le nom sous l'arche (`.arche` à 120, `.contenu` à 292) :
+elle n'est pas changée ici. Elle décrit l'écran Infos de la phase 5 ; à
+mettre d'accord avec la 40 si le pilotage le demande.
+
+**M3, corrigé.** Plus de soleil au-dessus du vététiste, sur les deux. La
+scène est remontée. Le vététiste est environ 1,4 fois plus grand qu'avant
+(herbe de 184 de large en T7, 254 maintenant sur iOS, 256 sur Android).
+**Ce n'est pas un écart** : la maquette 40 (état 2) dessine une herbe de
+262 de large. L'ancienne scène était trop petite ; la nouvelle est à la
+taille de la maquette, à 8 près. Le bloc « scène, titre, texte, bouton »
+est 16 à 44 plus haut que dans la maquette (titre à y 397 contre 430,
+bouton à y 526 contre 570) : il y a plus de vide en bas, rien ne gêne.
+Rien à corriger.
+
+**M4, corrigé.** Fond des médaillons en `hn.sable` sur les deux. Anneau
+moutarde et bord brun justes.
+
+**M5, corrigé.** « Importer un GPX » porte l'icône de fichier au coin plié
+avec « + », sur les deux. Sur la liste vide, elle se distingue du « + »
+de « Créer un itinéraire ».
+
+**M6, corrigé.** Rond `hn.danger` avec « ! » devant « Donnez un nom à
+l'itinéraire. », sur les deux (iOS x 19 à 35, y 435 ; Android x 19 à 35,
+y 474).
+
+**M7, corrigé.** Rond en tirets avec « ! » à gauche du texte de la carte
+« Hors de vos zones », aligné sur la première ligne, sur les deux.
+
+**M8, corrigé en partie vue.** La carte dit « Hors de vos zones : D+,
+profil, terrain et difficulté indisponibles. Ce tracé n'est dans aucune
+zone de RutaPulse pour l'instant. » sur les deux. La phrase « Ce tracé est
+dans la zone {zone}. » est dans `fr.ts` (`routes.noticeOutsideFound`)
+mais n'est pas vue : une seule zone est publiée. À voir avec la deuxième
+zone ; pas un blocage.
+
+**M9, textes corrigés, pas vus.** `fr.ts` porte les textes demandés :
+`routes.problemNotInService` « Zone {zone} inactive »,
+`routes.noticeNotInService` « Zone {zone} inactive : »,
+`routes.noticeNotInServiceText` et `route.zoneAbsentText`, mot pour mot.
+Le cas ne se simule pas avec une seule zone publiée.
+
+**M10, corrigé.** Android : derrière la feuille hors zone, « Importer un
+GPX » a de nouveau un bord plein (x 217 à 395, y 56 à 103).
+
+**M11, corrigé.** Android : « Balade du 4 nov.gpx » (y 606), un seul
+point.
+
+### Nouvel écart
+
+#### N7. Android : un fond gris carré reste sur la ligne touchée
+
+- **Capture** : `v/android/shots/B2-3-nom-rempli-actif.png` : sur la ligne
+  « Itinéraire du 4 nov. », derrière le voile, un rectangle plus clair à
+  angles droits, de x 36 à 347, y 219 à 301, à l'intérieur de la carte
+  arrondie. Absent de `B2-4` et de `B4-menu`, prises juste après ou avant.
+- **Lecture** : l'effet d'appui d'Android (ripple, l'onde qui suit le
+  doigt) finit de s'effacer ; il est carré et ne suit pas les coins de 24
+  de la ligne.
+- **Gravité** : à noter pour plus tard (phase 10). Vu une seule fois,
+  derrière le voile, pendant moins d'une seconde.
+- **Correction** : couper l'effet d'appui aux coins de la ligne
+  (`borderRadius: 24` et `overflow: 'hidden'` sur le conteneur de la
+  ligne, ou `android_ripple` avec `foreground` sur le `Pressable` de la
+  carte entière).
+
+### Ce qui reste comme prévu
+
+- **N1** (Android : boîte à trois boutons) et **N2** (ancien style des
+  boîtes Android) : `v/android/shots/B4-menu.png`. Phase 10.
+- **N3** (« Voir les zones » pleine largeur, sans icône) : je garde
+  l'app. La maquette 40 dessine encore le bouton étroit avec la flèche :
+  sa mise à jour n'est pas faite dans ce passage (le pilotage n'a demandé
+  que M1 et M2). À faire avec la prochaine reprise de la maquette 40.
+- **N5** (boutons inactifs pâlis dans le panneau de création) : toujours
+  pâlis, `« Annuler »` et `« Supprimer »` dans `b3/B3-court-modifier.png`.
+  Ces boutons ne passent pas par `ui/Button`. Phase 10.
+- **N4, N6** : inchangés.
+- La note « Export » de la maquette 40 ne dit pas encore qu'un point
+  final du nom est retiré avant `.gpx` (M11). Même reprise que N3.
+
+### Mise à jour de la maquette 40 (M1, M2)
+
+Fichier : `design/v1/40-mes-itineraires.html`. Note en tête du fichier :
+« Mis à jour en T8 de la phase 6, l'app fait foi ».
+
+- **M1**, écrans 6b, 6d, 7b, 8a : le nom (22) et la ligne du dessous (15)
+  sont dans un bloc `.i-tete` à y 106, juste sous la barre
+  « ‹ Itinéraires ». L'arche descend de y 120 à y 174. Le contenu
+  commence à y 338 : les cases de chiffres restent à y 350, comme avant,
+  et « Modifier » (8a) reste à y 744. Les noms trop longs se coupent par
+  « … ».
+- **M2**, écran 6c : la feuille s'ouvre sur la liste (bandeau, « Importer
+  un GPX » au bord plein, titre, le nouveau GPX en haut avec « Hors de vos
+  zones », puis l'itinéraire précédent), sous un voile brun. La phrase du
+  cartouche dit : « La feuille s'ouvre une seule fois, sur la liste, juste
+  après l'import […]. "Fermer" ou "Plus tard" ouvrent ensuite l'écran
+  Infos du GPX (6d). » Le texte sous les variantes et le cartouche 6d le
+  redisent ; « Voir les zones » et « Télécharger » ouvrent l'onglet Zones.
+- Note de la maquette, « Choix, en une ligne » : les deux choix sont
+  ajoutés, avec leur raison.
+- La capture pleine page `design/v1/captures/40-mes-itineraires.png` n'est
+  **pas** refaite : je n'ai pas d'accès au terminal dans ce passage. À
+  refaire par la session de phase.
