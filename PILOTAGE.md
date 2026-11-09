@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-09 — Phase 7, T1 : ADR 0020 et maquette 12 validés par Émilien, avec les recommandations des 8 questions (ordre des voies par une règle tolérante qui garde le tronc et refuse au-delà de 15 % retirés ; D+ d'une trace non touchée calculé d'un seul tenant). Ajout : « Dupliquer » un itinéraire (copie modifiable, l'original reste), critère C16. Le D+ est un ordre de grandeur en v1 : pas de travail de précision en plus.
 - 2026-11-09 — Spec de la phase 7 (circuits VTT balisés et trace modifiable, taille G) validée par Émilien, avec les choix du pilotage. Un GPX modifié remplace l'original (origine « GPX modifié le … »). Ordre des voies des circuits fait dans la fabrique : zone Nancy v6 à publier.
 - 2026-11-09 — Nouvelle session de pilotage : `local_1ea128ca-dd2d-45af-b97e-66ec21c85b89` (passation après la phase 6). CI de 9799484 verte.
 - 2026-11-09 — Phase 6 fusionnée dans main : Enregistrer (nom « Itinéraire du 9 nov. »), onglet Itinéraires (liste, menu « ⋮ », renommer, exporter, supprimer), itinéraire gardé (tracé fixe, infos recalculées sur la zone en service), « Modifier » cadré sur le tracé, import et export GPX 1.1. 16 critères tenus avec réserves (C6 pas joué de bout en bout sur simulateur ; C11 sur la longueur du tracé ; C13 une mesure iOS à 1,09 s à cause du fond de carte ; C14 iOS sans mode avion ; B3 revérifié sur Android seulement). 2 193 tests, 228 pytest, CI verte. ADR 0019 ; maquette 40 alignée sur l'app (nom au-dessus de l'arche, feuille « hors de vos zones » sur la liste).
@@ -111,7 +112,7 @@
 
 ## Prochaine étape
 
-Phase 7 en cours dans sa session de phase (worktree). Prochain point d'arrêt : maquette 12 complétée et ADR 0020 à faire valider par Émilien (T1).
+Phase 7 en cours dans sa session de phase (worktree). T1 validé ; prochain point : Émilien lance le workflow de la zone Nancy v6 (T2).
 
 ## Passation du pilotage (9 novembre 2026)
 
