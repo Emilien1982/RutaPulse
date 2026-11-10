@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-10 — Phase 8a, T1 : ADR 0021 (suivi sur le vélo) et maquette 30 complétée validés par Émilien, avec les 11 recommandations : directions par `trace_route` (map_snap), morceau mal recalé = « Suivez le tracé » ; suivi perdu si le système ferme l'app (sauvegarde en V2) ; GPX hors zones suivable (fond uni, D+ « — ») ; « Terminer » avant 100 m = pas de résumé ; départ loin du tracé = guidage à vol d'oiseau. Partie B de l'essai (simulateurs) en attente de place (13 Go libres).
 - 2026-11-10 — Spec de la phase 8 ([p08-suivi-velo.md](docs/phases/p08-suivi-velo.md)) validée par Émilien, avec les recommandations : le trait de liaison ne compte ni dans la distance ni dans le GPX, et le suivi ne guide pas dessus ; hors zone à moins de 10 km, la carte cadre la position et le bord de la zone, et le suivi suit partout ; flèche de cap, halo et « suit ma position » faits en phase 8. Question 4 : **deux phases**, 8a (suivi, M) puis 8b (luminosité, onglet Carte, trait de liaison, P).
 - 2026-11-10 — Décision d'Émilien : la phase 9 (suivi téléphone verrouillé) passe en **V2**. La phase 8 reste complète, puis vient la phase 10 (finition et test interne). Le niveau de process ne change pas. But : un essai réel au plus tôt après la phase 8 (le projet lui paraît long et coûteux en quota).
 - 2026-11-10 — Nouvelle session de pilotage : `local_b89c76a2-43a1-4417-8c81-ac486e333c4d` (passation après la phase 7). C'est l'adresse à donner dans les briefs de phase.
