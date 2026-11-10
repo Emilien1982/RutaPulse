@@ -1,0 +1,15 @@
+3d map_snap 0.019s 52 directions {'original_points': 1292, 'original_m': 34904, 'matched_points': 1262, 'matched_m': 34167, 'length_ratio': 0.979, 'mean_gap_m': 4.7, 'p95_gap_m': 0.1, 'max_gap_m': 276.2, 'share_original_over_20m': 0.027, 'share_matched_over_20m_from_original': 0.0}
+     (1, 'direction de moins de 30 m', "Tournez à gauche dans Rue de l'Orpheline.")
+     (28, 'direction de moins de 30 m', 'Tournez à gauche.')
+     (42, 'direction de moins de 30 m', 'Serrez à gauche.')
+     (44, 'direction de moins de 30 m', 'Serrez à gauche.')
+     (47, 'direction de moins de 30 m', 'Serrez à gauche pour rester sur Place Duroc.')
+noiseless: 52 directions; noisy GPX: 52
+--- sans bruit
++++ GPX bruité
+@@ -21 +21,2 @@
+-Tournez à droite.
++Faites demi-tour à droite.
++Tournez à gauche.
+@@ -48 +48,0 @@
+-Serrez à gauche pour rester sur Place Duroc.

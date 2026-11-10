@@ -1,0 +1,12 @@
+sans bruit, tel que dans le paquet (1292 pts)            1292 pts, original  34904 m -> rendu  34169 m (98%), legs 1, 52 directions
+sans bruit, tous les 8 m                                 3928 pts, original  34904 m -> rendu  34169 m (98%), legs 1, 52 directions
+bruit 2 m, tous les 8 m                                  3928 pts, original  35852 m -> rendu  34174 m (95%), legs 1, 53 directions
+bruit 4 m, tous les 8 m                                  3928 pts, original  38863 m -> rendu  11336 m (29%), legs 1, 17 directions
+bruit 4 m, 8 m, trace_options gps_accuracy=10            3928 pts, original  38863 m -> rendu  11336 m (29%), legs 1, 17 directions
+bruit 4 m, 8 m, gps_accuracy=10 search_radius=50         3928 pts, original  38863 m -> rendu  11336 m (29%), legs 1, 17 directions
+bruit 4 m, 8 m, gps_accuracy=20 search_radius=100        3928 pts, original  38863 m -> rendu  11336 m (29%), legs 1, 17 directions
+bruit 4 m, 8 m, gps_accuracy=10 turn_penalty=0           3928 pts, original  38863 m -> rendu  11336 m (29%), legs 1, 17 directions
+bruit 4 m, tous les 20 m                                 1831 pts, original  35891 m -> rendu  34170 m (95%), legs 1, 52 directions
+erreur lente 4 m, tous les 8 m (comme 3-gpx.py)          3928 pts, original  35322 m -> rendu  34196 m (97%), legs 1, 52 directions
+erreur lente 8 m, tous les 8 m                           3928 pts, original  36519 m -> rendu  34306 m (94%), legs 1, 60 directions
+erreur lente 4 m, tous les 3 m                          11029 pts, original  37933 m -> rendu  34198 m (90%), legs 1, 52 directions
