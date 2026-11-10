@@ -227,3 +227,32 @@ Oui, il est exposé sur iOS et sur Android, **sur le même modèle que
 - Un tracé hors zone ou tracé à la main (la spec prévoit « Suivez le tracé »).
 - `trace_options` avec un `turn_penalty_factor` plus fort contre le demi-tour
   fantôme : seulement essayé sur le cas du bruit blanc.
+
+## T2, contrôle M1 (10 novembre, Mac, Docker Valhalla 3.9.1, zone Nancy v6)
+
+Fait au début de la tâche T2 (ADR 0021, « Contrôles avant de bâtir dessus »).
+Les tuiles de la phase 7 n'étaient plus sur le disque : `valhalla_tiles.tar`
+et `trails.geojson` de la release `zone-nancy-v6` ont été retéléchargés
+(`gh release download`), empreintes identiques à celles de `SHA256SUMS`.
+`7-forme-allegee.py` envoie, pour chacun des 4 itinéraires, la ligne éclaircie
+à **un point tous les 20 m** à `trace_route` et à `trace_attributes`
+(`map_snap`) ; sortie dans `resultats/7-forme-allegee.txt`.
+
+- **Mêmes directions qu'avec tous les points** : oui pour 1 (68), 2 (40) et 3d
+  (52). Pour 3 (GPX bruité) : 53 au lieu de 52, la direction de plus est
+  « Serrez à gauche pour rester sur Place Duroc », celle que le bruit faisait
+  disparaître avec tous les points (elle est dans la version sans bruit).
+  Le demi-tour fantôme du km 16,3 reste dans les deux cas.
+- **B6, deux formes recalées** (`trace_route` et `trace_attributes`) :
+  identiques point pour point pour 1 et 2. Pas pour 3 et 3d : sur 3d,
+  `trace_attributes` rend le circuit entier (34 904 m) alors que `trace_route`
+  s'arrête 740 m avant la fin (34 167 m), mais les 1 262 premiers points sont
+  identiques ; sur 3, les formes se séparent au point 533, au demi-tour
+  fantôme. Le code compare donc les deux formes depuis le début et ne donne le
+  type de voie qu'aux manœuvres dont l'indice est dans la partie commune.
+- Réponses gardées : `resultats/m1-<n>-trace_route-20m-reponse.json` et
+  `m1-<n>-trace_attributes-20m-reponse.json`. Les fixtures de Jest en sont
+  tirées par `8-fixtures.py` (`mobile/src/core/tracking/fixtures/`), et la
+  liste de directions de référence par `9-reference-directions.py`.
+- Temps sur le Mac : 12 à 97 ms pour `trace_route` (le 97 ms est le premier
+  appel), 9 à 15 ms pour `trace_attributes`.

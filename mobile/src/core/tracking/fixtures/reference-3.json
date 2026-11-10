@@ -1,0 +1,215 @@
+{
+  "free": [
+    {
+      "fromM": 34550,
+      "toM": 35310,
+      "reason": "noMatch"
+    }
+  ],
+  "directions": [
+    {
+      "atM": 1195,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 1205,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 1500,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 1563,
+      "text": "Légèrement à gauche sur la piste"
+    },
+    {
+      "atM": 1873,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 7673,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 7953,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 8023,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 8178,
+      "text": "À la fourche, à droite sur la piste"
+    },
+    {
+      "atM": 8528,
+      "text": "Légèrement à gauche sur la piste"
+    },
+    {
+      "atM": 9537,
+      "text": "Tournez à gauche sur la piste"
+    },
+    {
+      "atM": 12033,
+      "text": "Tournez à gauche sur la piste"
+    },
+    {
+      "atM": 12292,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 12385,
+      "text": "Légèrement à gauche sur la piste"
+    },
+    {
+      "atM": 13228,
+      "text": "Légèrement à droite sur la route"
+    },
+    {
+      "atM": 13404,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 14481,
+      "text": "Tournez à gauche sur la piste"
+    },
+    {
+      "atM": 15435,
+      "text": "Tournez à gauche sur la piste"
+    },
+    {
+      "atM": 15994,
+      "text": "Virage serré à droite sur la piste"
+    },
+    {
+      "atM": 16494,
+      "text": "Tournez à gauche"
+    },
+    {
+      "atM": 17672,
+      "text": "Tournez à droite"
+    },
+    {
+      "atM": 17930,
+      "text": "Légèrement à droite"
+    },
+    {
+      "atM": 18133,
+      "text": "Virage serré à gauche"
+    },
+    {
+      "atM": 19008,
+      "text": "Légèrement à droite"
+    },
+    {
+      "atM": 21177,
+      "text": "Tournez à gauche"
+    },
+    {
+      "atM": 21350,
+      "text": "Tournez à droite"
+    },
+    {
+      "atM": 21510,
+      "text": "Tournez à gauche"
+    },
+    {
+      "atM": 25002,
+      "text": "Tournez à gauche"
+    },
+    {
+      "atM": 25012,
+      "text": "Légèrement à droite"
+    },
+    {
+      "atM": 26992,
+      "text": "Tournez à gauche"
+    },
+    {
+      "atM": 29610,
+      "text": "Tournez à gauche"
+    },
+    {
+      "atM": 29662,
+      "text": "Tournez à droite"
+    },
+    {
+      "atM": 29754,
+      "text": "Légèrement à gauche"
+    },
+    {
+      "atM": 29917,
+      "text": "Tournez à droite"
+    },
+    {
+      "atM": 32066,
+      "text": "Tournez à droite"
+    },
+    {
+      "atM": 32138,
+      "text": "Tournez à gauche"
+    },
+    {
+      "atM": 32367,
+      "text": "Au rond-point, 2e sortie"
+    },
+    {
+      "atM": 33041,
+      "text": "Tournez à droite"
+    },
+    {
+      "atM": 33096,
+      "text": "Tournez à gauche"
+    },
+    {
+      "atM": 33299,
+      "text": "Tournez à droite"
+    },
+    {
+      "atM": 33417,
+      "text": "Légèrement à gauche"
+    },
+    {
+      "atM": 33435,
+      "text": "Tournez à droite"
+    },
+    {
+      "atM": 33559,
+      "text": "Légèrement à gauche"
+    },
+    {
+      "atM": 33580,
+      "text": "Tournez à gauche"
+    },
+    {
+      "atM": 33816,
+      "text": "Légèrement à droite"
+    },
+    {
+      "atM": 33948,
+      "text": "Légèrement à gauche"
+    },
+    {
+      "atM": 33982,
+      "text": "Tournez à gauche"
+    },
+    {
+      "atM": 34338,
+      "text": "Tournez à droite"
+    },
+    {
+      "atM": 34388,
+      "text": "Tournez à gauche"
+    },
+    {
+      "atM": 34550,
+      "text": "Suivez le tracé"
+    },
+    {
+      "atM": 35323,
+      "text": "Arrivée"
+    }
+  ]
+}

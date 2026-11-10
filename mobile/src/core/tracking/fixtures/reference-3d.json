@@ -1,0 +1,215 @@
+{
+  "free": [
+    {
+      "fromM": 34150,
+      "toM": 34890,
+      "reason": "noMatch"
+    }
+  ],
+  "directions": [
+    {
+      "atM": 1179,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 1191,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 1482,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 1546,
+      "text": "Légèrement à gauche sur la piste"
+    },
+    {
+      "atM": 1856,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 7591,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 7872,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 7937,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 8090,
+      "text": "À la fourche, à droite sur la piste"
+    },
+    {
+      "atM": 8437,
+      "text": "Légèrement à gauche sur la piste"
+    },
+    {
+      "atM": 9438,
+      "text": "Tournez à gauche sur la piste"
+    },
+    {
+      "atM": 11910,
+      "text": "Tournez à gauche sur la piste"
+    },
+    {
+      "atM": 12165,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 12245,
+      "text": "Légèrement à gauche sur la piste"
+    },
+    {
+      "atM": 13073,
+      "text": "Légèrement à droite sur la route"
+    },
+    {
+      "atM": 13245,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 14313,
+      "text": "Tournez à gauche sur la piste"
+    },
+    {
+      "atM": 15262,
+      "text": "Tournez à gauche sur la piste"
+    },
+    {
+      "atM": 15815,
+      "text": "Virage serré à droite sur la piste"
+    },
+    {
+      "atM": 16303,
+      "text": "Tournez à droite sur la piste"
+    },
+    {
+      "atM": 17456,
+      "text": "Tournez à droite sur la piste"
+    },
+    {
+      "atM": 17713,
+      "text": "Légèrement à droite sur la piste"
+    },
+    {
+      "atM": 17914,
+      "text": "Virage serré à gauche sur la piste"
+    },
+    {
+      "atM": 18783,
+      "text": "Légèrement à droite sur la piste"
+    },
+    {
+      "atM": 20930,
+      "text": "Tournez à gauche sur la piste"
+    },
+    {
+      "atM": 21102,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 21257,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 24708,
+      "text": "Tournez à gauche sur la piste"
+    },
+    {
+      "atM": 24719,
+      "text": "Légèrement à droite sur la piste"
+    },
+    {
+      "atM": 26672,
+      "text": "Tournez à gauche sur la piste"
+    },
+    {
+      "atM": 29265,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 29310,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 29399,
+      "text": "Légèrement à gauche sur la route"
+    },
+    {
+      "atM": 29564,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 31688,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 31761,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 31994,
+      "text": "Au rond-point, 2e sortie"
+    },
+    {
+      "atM": 32649,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 32702,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 32903,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 33021,
+      "text": "Légèrement à gauche sur la route"
+    },
+    {
+      "atM": 33039,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 33162,
+      "text": "Légèrement à gauche sur la route"
+    },
+    {
+      "atM": 33182,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 33415,
+      "text": "Légèrement à droite sur la route"
+    },
+    {
+      "atM": 33549,
+      "text": "Légèrement à gauche sur la route"
+    },
+    {
+      "atM": 33572,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 33927,
+      "text": "Tournez à droite sur la route"
+    },
+    {
+      "atM": 33972,
+      "text": "Tournez à gauche sur la route"
+    },
+    {
+      "atM": 34150,
+      "text": "Suivez le tracé"
+    },
+    {
+      "atM": 34904,
+      "text": "Arrivée"
+    }
+  ]
+}
