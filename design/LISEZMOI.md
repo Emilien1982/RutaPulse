@@ -41,7 +41,7 @@
 | `v1/11-creation-trace-a-la-main.html` | Création : deux tronçons tracés à la main, en tirets | 2 ; décision 8 |
 | `v1/12-circuit-balise.html` | Carte : un circuit balisé touché, son sens, le départ au point le plus proche, « En faire un itinéraire ». Depuis le 9 novembre 2026 (phase 7, T1), plusieurs écrans l'un sous l'autre : couche des circuits, boucle, aller simple, circuit non transformable, zone à mettre à jour, variantes (dont plusieurs circuits sous le doigt), création ouverte depuis un circuit (points discrets, numéros au zoom proche, partie hors zone) ; note en bas de page | 9 ; décision 7 |
 | `v1/20-infos-itineraire.html` | Infos : distance, durée, D+ et D−, profil, terrain, difficulté, carte en arche | 3 ; décision 13 |
-| `30-suivi-velo.html` | Suivi, direction B : direction à 50 m, panneau jaune ; « Terminer » en rouge foncé ; roue dentée sous la boussole | 7 ; décisions 6 et 7 (écrans 70) |
+| `30-suivi-velo.html` | Suivi, direction B. Depuis le 10 novembre 2026 (phase 8a, T1), huit écrans l'un sous l'autre : normal, panneau jaune sous 100 m, « Suivez le tracé », écart au tracé, arrivée en vue, confirmation de « Terminer », attente du GPS, départ loin du tracé ; D+ restant en bas, « Terminer » flottant au-dessus du bandeau ; note (règles, textes exacts, pictogrammes) et questions pour Émilien. **8a : sans roue dentée ; 8b : roue + 31b** | 7 ; décisions 3, 4 ; décisions 6 et 7 (écrans 70) |
 | `31b-suivi-reglages.html` | Suivi, direction B : panneau des réglages du suivi ouvert par la roue dentée, luminosité « Maximum » choisie | 7 ; décision 2, décision 6 (écrans 70) |
 | `31-verrouille-android.html` | Téléphone verrouillé, Android : la notification unique, petite icône A sur un rond rouille | 8 ; décision 7 (écrans 70) |
 | `32-verrouille-ios.html` | Téléphone verrouillé, iOS : la Live Activity (bandeau en direct), icône A | 8 ; décision 7 (écrans 70) |
@@ -50,7 +50,7 @@
 | `v1/50-liste-vide.html` | Mes itinéraires vide, avec le vététiste | 4 ; décision 3 |
 | `v1/51-telechargement.html` | Onglet Carte pendant le téléchargement de la première zone : le vététiste roule sur la barre de progression | 6 ; décision 3 |
 | `v1/52-erreur.html` | Création : point touché hors de la zone, calcul impossible, trois sorties | 2, 6 ; décisions 3, 10 |
-| `v1/60-arrivee.html` | Arrivée : résumé aux chiffres réels (distance parcourue, D+, durée), suivi arrêté, podium fixe, un seul bouton « Fermer » | décisions 4, 5 (questions) ; décisions 2 à 4 (écrans 70) |
+| `v1/60-arrivee.html` | Arrivée : résumé aux chiffres réels (distance parcourue, D+, durée), suivi arrêté, podium fixe, un seul bouton « Fermer ». Depuis le 10 novembre 2026 (phase 8a) : écran 2 « SORTIE TERMINÉE » (après « Terminer »), titre en 32, et une note | décisions 4, 5 (questions) ; décisions 2 à 4 (écrans 70) ; retouche 4 |
 | `v1/70-icone.html` | Icône : A, le soleil rayé, choisie ; B et C pour mémoire ; iOS, Android adaptative, 48 points | décision 5 (style) ; décision 1 (écrans 70) |
 | `v1/80-reglages.html` | Réglages, 4e onglet : Wi-Fi seulement, luminosité pendant le suivi, licences et attributions, version | décisions 2, 10, 13 ; décision 6 (écrans 70) |
 | `v1/90-carte.html` | Onglet Carte avec une zone prête (phase 2) : carte, position, bouton de recentrage, attributions | 1, 6 ; décisions 8, 13 |
@@ -145,6 +145,15 @@ GPX importé hors des zones sont dessinés dans `v1/40` depuis la phase 6.
 - **Panneau en blanc et noir, segments et « Fermer » de 64, textes de 20 et plus** : c'est un écran de navigation (décision 7 : pas de rayures sur le suivi).
 - **En suivi, relief et courbes à 50 %, sentiers plus épais, partie roulée en gris** : à une fourche, c'est le sentier qu'on cherche.
 - **Distance restante et D+ restant ; écart à l'itinéraire affiché en distance, sans alerte** : décisions 3 et 4.
+
+Ajoutés en phase 8a (10 novembre 2026, écran 30) :
+- **« Terminer » flotte au-dessus du bandeau du bas, à droite** : les deux chiffres en 36 et « Terminer » ne tiennent pas sur 358 de large (« 128 km », « 1 250 m », texte à 120 %).
+- **Un seul panneau du haut, même structure dans tous les états** (pictogramme, distance, consigne, précision) : l'écran ne saute pas, on regarde toujours au même endroit.
+- **Jaune réservé aux directions et à l'arrivée** : il garde son sens, « agir bientôt ». L'écart et « Suivez le tracé » restent blancs.
+- **Écart : la distance remplace la direction, pointillés noirs vers le tracé** : hors du tracé, la distance de la direction est fausse ; le noir ne se confond pas avec le trait de liaison magenta.
+- **« Suivez le tracé » avec la distance jusqu'à la reprise du guidage et la raison** : on sait combien de temps se fier à la carte, et que l'app n'est pas en panne.
+- **Confirmation de « Terminer » dans la boîte native**, même boîte pour le retour d'Android : convention des deux plateformes, et un retour par erreur n'arrête rien.
+- **Consigne = geste + type de voie (« sur la piste »), sans nom de rue** : en forêt, le type de voie se voit, le nom presque jamais.
 
 ### Général
 
@@ -266,11 +275,13 @@ tranchées dans `docs/06-decisions-design.md`, « Écrans années 70 :
 décisions » ; les 4 suivantes (durée de l'arrivée, luminosité changée
 pendant le suivi, panneau des réglages sous 100 m, « Terminer » avant
 l'arrivée) dans le même document, section « Retouches : décisions ». Ce
-document fait foi. Les commentaires de `31b` et `v1/60` ne décrivent pas
-encore deux de ces décisions : le panneau des réglages du suivi se ferme
-seul à moins de 100 m d'une direction, et « Terminer » avant l'arrivée
-montre le même résumé, titré « Sortie terminée ». À compléter quand on
-reprendra ces écrans.
+document fait foi. Le commentaire de `31b` ne décrit pas encore une de ces
+décisions : le panneau des réglages du suivi se ferme seul à moins de 100 m
+d'une direction. À compléter en phase 8b. « Sortie terminée » est dessiné
+dans `v1/60` depuis la phase 8a.
+
+**Phase 8a (10 novembre 2026)** : huit questions ouvertes sur l'écran de
+suivi, chacune avec ma recommandation, en haut de `30-suivi-velo.html`.
 
 Les questions nées de la comparaison de la phase 2 sont dans
 [`comparaisons/p02-t7.md`](comparaisons/p02-t7.md), fin du document.

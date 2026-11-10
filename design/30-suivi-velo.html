@@ -3,110 +3,271 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=390, initial-scale=1">
-<title>RutaPulse – Suivi sur le vélo : direction imminente</title>
+<title>RutaPulse – Suivi sur le vélo : tous les états (phase 8a)</title>
 <!--
-  Écran 30 (direction B, recommandée). Fonction 7 du cadrage.
-  Instant montré : la prochaine direction est à 50 m. Sous 100 m, le
-  panneau passe au jaune : on le remarque du coin de l'œil sans lire.
-  Carte orientée dans le sens de la marche, zoom rapproché à l'approche
-  d'une direction. Partie déjà roulée en gris.
-  Retouches validées le 21 octobre 2026 :
-  - « Terminer » en #8A1C12 (9,3:1 sur blanc, au lieu de 6,5:1) ;
-  - roue dentée sous la boussole : ouvre le panneau des réglages du suivi
-    (31b-suivi-reglages.html), la luminosité pour l'instant. Dessin de 48,
-    plus petit que la boussole (64) pour rester discret ; zone de toucher de
-    64 (agrandie de 8 de chaque côté, « hitSlop »), à 16 de celle de la
-    boussole. Même côté que la boussole : les boutons de carte s'empilent à
-    droite sur les deux plateformes, et la gauche reste libre pour la carte.
-  Valeurs : design/tokens.md. Carte : dessin simplifié en SVG.
+  Écran 30 (direction B). Fonction 7 du cadrage.
+
+  PHASE 8a — ÉTATS AJOUTÉS (10 novembre 2026, T1, designer).
+  Ce fichier contient maintenant plusieurs écrans, l'un sous l'autre (comme
+  v1/40), puis une note (règles, textes exacts, pictogrammes) en bas de page.
+  La note et les questions pour Émilien sont aussi visibles en haut de la page.
+   1. Suivi normal, direction à plus de 100 m (panneau blanc).
+   2. Direction à moins de 100 m (panneau jaune). C'était l'écran unique
+      d'origine (21 octobre 2026).
+   3. « Suivez le tracé » : pas de direction (tronçon tracé à la main, hors
+      zone).
+   4. Écart au tracé (plus de 30 m) : distance jusqu'au tracé, sans alerte.
+   5. Arrivée en vue, puis passage à l'écran v1/60 (« ARRIVÉE ! »).
+   6. Confirmation de « Terminer » (même boîte pour le retour d'Android).
+   7. En attente du GPS, au départ.
+   8. Départ loin du tracé (au parking, à 500 m du départ).
+  Après l'arrivée ou « Terminer » : v1/60-arrivee.html (écrans 1 et 2).
+
+  Ce qui change par rapport à la version du 21 octobre 2026 :
+   - en bas, le D+ restant à côté de la distance restante (décision 3) ;
+   - « Terminer » quitte le bandeau du bas : il flotte au-dessus, à droite
+     (même taille, même rouge). Raison : les deux chiffres en 36 et
+     « Terminer » ne tiennent pas sur 358 de large avec « 128 km » ou
+     « 1 250 m », ni avec le texte agrandi à 120 %.
+   - 8a : SANS ROUE DENTÉE. 8b : roue dentée sous la boussole (dessin de 368
+     à 416, voir tokens.md, suivi.bouton-reglages) + panneau 31b.
+
+  Valeurs : design/tokens.md (section « États du suivi »). Carte : dessin
+  simplifié en SVG, défini une fois (#fond-carte) et repris par chaque écran.
+  Les chiffres sont des exemples ; la carte n'est pas à l'échelle exacte.
 -->
 <style>
 :root{
   --fond:#FFFFFF; --texte:#111111; --texte-2:#4A4A4A;
   --contour-flottant:rgba(17,17,17,.35); --ombre:0 2px 8px rgba(0,0,0,.25);
   --danger:#8A1C12; --imminent:#FFD400; --itineraire:#C2007A; --position:#1A73E8;
+  --depart:#146C2E; --arrivee:#111111;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:390px;height:844px;overflow:hidden;background:#fff}
+html,body{width:390px;background:#fff}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--texte);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
-.ecran{position:relative;width:390px;height:844px;overflow:hidden}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden;background:#fff}
 .barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20}
 .barre-etat .icones{display:flex;gap:6px;align-items:center}
-.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#111;z-index:30}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#111;z-index:60}
 
-.guidage{position:absolute;top:0;left:0;right:0;height:262px;background:var(--imminent);border-bottom:3px solid #111;padding:51px 16px 0 16px;z-index:10}
+/* Panneau de guidage : 262 de haut, bord du bas bord.guidage */
+.guidage{position:absolute;top:0;left:0;right:0;height:262px;background:var(--fond);border-bottom:3px solid #111;padding:51px 16px 0 16px;z-index:10}
+.guidage.imminent{background:var(--imminent)}
 .guidage .ligne{display:flex;align-items:center;gap:12px;height:124px}
-.guidage .dist{font-size:72px;font-weight:800;line-height:1;letter-spacing:-1px}
+.guidage .picto{flex:none;width:124px;height:124px}
+.guidage .dist{font-size:72px;font-weight:800;line-height:1;letter-spacing:-1px;white-space:nowrap}
 .guidage .unite{font-size:40px;font-weight:800;letter-spacing:0}
-.guidage .consigne{font-size:28px;font-weight:700;line-height:1.2;margin-top:12px;padding-left:4px}
+.guidage .titre-ligne{font-size:28px;font-weight:700;line-height:1.2}
+.guidage .consigne{font-size:28px;font-weight:700;line-height:1.2;margin-top:8px;padding-left:4px}
+/* guidage.precision : 20, 600, couleur.texte (lisible aussi sur le jaune) */
+.guidage .precision{font-size:20px;font-weight:600;line-height:1.2;margin-top:6px;padding-left:4px}
 
-svg.carte{position:absolute;left:0;top:262px;width:390px;height:438px}
+/* Carte : de 262 à 724 (462 de haut) */
+svg.carte{position:absolute;left:0;top:262px;width:390px;height:462px}
 svg.carte *{vector-effect:non-scaling-stroke}
-.etiquettes,.relief{display:none}
-.courbes{opacity:.5}
-.position{position:absolute;left:175px;top:549px;width:40px;height:40px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
-.halo{position:absolute;left:165px;top:539px;width:60px;height:60px;border-radius:50%;background:rgba(26,115,232,.16)}
+svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointer-events:none}
+.position{position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.position-sans-cap{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+.halo{position:absolute;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;background:rgba(26,115,232,.16)}
+.marqueur{position:absolute;width:32px;height:32px;margin:-16px 0 0 -16px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.marqueur.depart{background:var(--depart)}
+.marqueur.arrivee{background:var(--arrivee)}
 .boussole{position:absolute;right:16px;top:280px;width:64px;height:64px;border-radius:32px;background:var(--fond);border:1px solid var(--contour-flottant);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
-/* Roue dentée : dessin 48 (top 368 à 416), zone de toucher 64 (360 à 424),
-   centrée sur l'axe de la boussole (x = 342). */
-.reglages{position:absolute;right:24px;top:368px;width:48px;height:48px;border-radius:24px;background:var(--fond);border:1px solid var(--contour-flottant);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
-.reglages::before{content:"";position:absolute;inset:-8px;border-radius:32px}
-.attribution{position:absolute;left:8px;top:682px;font-size:11px;color:#4A4A4A;background:rgba(255,255,255,.75);padding:1px 4px;border-radius:4px}
+.attribution{position:absolute;left:8px;top:702px;font-size:11px;color:#4A4A4A;background:rgba(255,255,255,.75);padding:1px 4px;border-radius:4px}
 
-.bas{position:absolute;left:0;right:0;top:700px;bottom:0;background:var(--fond);border-top:3px solid #111;display:flex;align-items:flex-start;justify-content:space-between;padding:14px 16px 0 20px}
+/* suivi.terminer : bouton flottant, à droite, 16 au-dessus du bandeau du bas */
+.terminer{position:absolute;right:16px;top:644px;width:140px;height:64px;border-radius:32px;background:var(--fond);border:2px solid var(--danger);color:var(--danger);font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:var(--ombre);z-index:11}
+
+/* suivi.bas : deux colonnes égales, « Reste » et « D+ restant » */
+.bas{position:absolute;left:0;right:0;top:724px;bottom:0;background:var(--fond);border-top:3px solid #111;display:flex;gap:16px;padding:10px 16px 0 20px;z-index:10}
+.bas .col{flex:1;min-width:0}
 .bas .etiquette{font-size:20px;color:var(--texte-2);font-weight:600;line-height:1.1}
-.bas .valeur{font-size:36px;font-weight:800;line-height:1.1}
-.terminer{height:64px;min-width:150px;border-radius:32px;border:2px solid var(--danger);color:var(--danger);font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:4px}
+.bas .valeur{font-size:36px;font-weight:800;line-height:1.1;white-space:nowrap}
+
+/* Boîte de dialogue native (ici Android, Material 3) : non décorée */
+.voile-natif{position:absolute;inset:0;background:rgba(0,0,0,.32);z-index:40}
+.dialogue{position:absolute;left:39px;width:312px;background:#FFFFFF;border-radius:28px;padding:24px 24px 14px;z-index:45;font-family:Roboto,-apple-system,system-ui,sans-serif;color:#1C1B1F;box-shadow:0 6px 24px rgba(0,0,0,.3)}
+.dialogue h3{font-size:24px;line-height:32px;font-weight:400}
+.dialogue p{font-size:16px;line-height:24px;color:#49454F;margin-top:14px}
+.dlg-boutons{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}
+.dlg-boutons span{height:48px;padding:0 12px;display:flex;align-items:center;font-size:16px;font-weight:600;color:#3A1F0F}
+
+/* Hors du téléphone : légendes, note (direction B : noir, blanc, jaune) */
+.cartouche{background:#111;color:#fff;padding:14px 16px;font-size:15px;line-height:1.35;border-top:9px solid var(--imminent)}
+.cartouche b{font-size:17px}
+.cartouche i{font-style:normal;background:var(--imminent);color:#111;padding:0 4px;border-radius:3px;font-weight:700}
+.note{padding:8px 16px 48px;font-size:15px;line-height:1.4}
+.note.haut{padding-bottom:16px;border-bottom:9px solid #111}
+.note h2{font-size:20px;margin:20px 0 8px}
+.note h3{font-size:16px;margin:16px 0 4px}
+.note p{margin:4px 0}
+.note ul,.note ol{padding-left:18px;margin:4px 0}
+.note li{margin:3px 0}
+.note q{quotes:"« " " »"}
+.note table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0}
+.note td,.note th{border:1px solid #BDBDBD;padding:4px 5px;vertical-align:top;text-align:left}
+.planche{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0}
+.planche div{border:1px solid #BDBDBD;border-radius:10px;padding:6px 4px;text-align:center;font-size:13px;line-height:1.25}
+.planche svg{display:block;margin:0 auto 4px;width:64px;height:64px}
 </style>
 </head>
 <body>
+
+<!-- ===== Dessins communs : carte, icônes, pictogrammes (repris par <use>) ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <!-- Fond de carte du suivi : relief et courbes à 50 %, sentiers épais (tokens : trace.*) -->
+  <g id="fond-carte">
+    <rect x="-400" y="-400" width="1200" height="1700" fill="#EEEBE4"/>
+    <path d="M-60 140 C60 120 120 160 170 150 C230 140 280 170 300 220 C310 280 290 340 250 360 C200 380 160 360 120 380 C80 395 30 380 -60 390 Z" fill="#D3E4C0"/>
+    <path d="M-60 -60 L120 -60 C110 20 60 60 -60 70 Z" fill="#D3E4C0"/>
+    <g fill="none" stroke="#C9B293" stroke-width="1" opacity=".5">
+      <path vector-effect="non-scaling-stroke" d="M-60 190 C40 170 110 215 175 195 S265 150 330 170"/>
+      <path vector-effect="non-scaling-stroke" d="M-60 230 C40 210 110 260 180 235 S270 195 320 210"/>
+      <path vector-effect="non-scaling-stroke" d="M-60 300 C50 285 110 320 185 290 S275 260 300 280"/>
+      <path vector-effect="non-scaling-stroke" d="M-60 90 C30 70 100 110 160 95 S250 60 330 80"/>
+    </g>
+    <g fill="none" stroke="#B89C78" stroke-width="1.8" opacity=".5">
+      <path vector-effect="non-scaling-stroke" d="M-60 265 C45 248 110 290 182 262 S272 228 310 245"/>
+    </g>
+    <g fill="none" stroke-linecap="round">
+      <path vector-effect="non-scaling-stroke" d="M138 -60 C148 120 128 260 150 400 S160 640 190 900" stroke="#BFB7AA" stroke-width="8"/>
+      <path vector-effect="non-scaling-stroke" d="M138 -60 C148 120 128 260 150 400 S160 640 190 900" stroke="#FFFFFF" stroke-width="5.5"/>
+    </g>
+    <g fill="none" stroke="#7A4A1E" stroke-width="2.5" stroke-linecap="round">
+      <path vector-effect="non-scaling-stroke" d="M250 300 C235 270 215 240 190 215"/>
+      <path vector-effect="non-scaling-stroke" d="M70 250 C66 280 62 305 60 330"/>
+      <path vector-effect="non-scaling-stroke" d="M60 330 C90 360 120 385 150 400"/>
+      <path vector-effect="non-scaling-stroke" d="M86 436 C110 430 135 415 150 400"/>
+      <path vector-effect="non-scaling-stroke" d="M190 215 C200 170 215 120 210 60 C208 20 200 -20 205 -60"/>
+      <path vector-effect="non-scaling-stroke" d="M60 330 C40 360 20 400 -60 440"/>
+    </g>
+    <g fill="none" stroke="#C62828" stroke-width="2.5" stroke-dasharray="5 4">
+      <path vector-effect="non-scaling-stroke" d="M190 215 C150 220 110 235 70 250"/>
+      <path vector-effect="non-scaling-stroke" d="M70 250 C40 220 20 180 -60 160"/>
+      <path vector-effect="non-scaling-stroke" d="M150 400 C175 385 195 360 205 330 S215 280 230 262"/>
+    </g>
+  </g>
+
+  <!-- Barre d'état -->
+  <symbol id="i-reseau" viewBox="0 0 18 12"><g fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1" opacity=".3"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></g></symbol>
+  <symbol id="i-batterie" viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="13" height="8" rx="1.5" fill="#111"/><rect x="25" y="4" width="2" height="4" rx="1" fill="#111" opacity=".5"/></symbol>
+
+  <!-- Boussole (la flèche nord garde son rouge de dessin #B3261E, ce n'est pas un texte) -->
+  <symbol id="i-boussole" viewBox="0 0 36 36"><path d="M18 3 L24 18 L12 18 Z" fill="#B3261E"/><path d="M18 33 L24 18 L12 18 Z" fill="#4A4A4A"/><text x="18" y="15" font-size="8" font-weight="800" fill="#fff" text-anchor="middle" font-family="-apple-system,Roboto,sans-serif">N</text></symbol>
+
+  <!-- Position : flèche de cap (marqueur.position, 40 en suivi) ; sans cap (marqueur.position-sans-cap) ; perdue (marqueur.position-perdue) -->
+  <symbol id="i-position" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#1A73E8" stroke="#fff" stroke-width="3"/><path d="M20 8 L28.5 28 L20 23.5 L11.5 28 Z" fill="#fff"/></symbol>
+  <symbol id="i-position-sans-cap" viewBox="0 0 30 30"><circle cx="15" cy="15" r="12.5" fill="#1A73E8" stroke="#fff" stroke-width="3"/></symbol>
+  <symbol id="i-position-perdue" viewBox="0 0 30 30"><circle cx="15" cy="15" r="12.5" fill="#8C8C8C" stroke="#fff" stroke-width="3"/></symbol>
+
+  <!-- Pictogrammes du panneau de guidage : carré de 96, trait 13, bouts ronds, couleur.texte -->
+  <symbol id="p-gauche" viewBox="0 0 96 96"><g fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"><path d="M62 88 V50 C62 38 54 32 42 32 H24"/><path d="M36 14 L16 32 L36 50"/></g></symbol>
+  <symbol id="p-tout-droit" viewBox="0 0 96 96"><g fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"><path d="M48 88 V18"/><path d="M28 38 L48 16 L68 38"/></g></symbol>
+  <symbol id="p-leger-gauche" viewBox="0 0 96 96"><g fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"><path d="M60 88 V58 L33 27"/><path d="M31 49 L32 26 L55 27"/></g></symbol>
+  <symbol id="p-serre-gauche" viewBox="0 0 96 96"><g fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"><path d="M64 88 V34 L25 66"/><path d="M24 44 L24 67 L47 67"/></g></symbol>
+  <symbol id="p-demi-tour" viewBox="0 0 96 96"><g fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"><path d="M66 88 V40 C66 18 30 18 30 40 V62"/><path d="M16 48 L30 64 L44 48"/></g></symbol>
+  <symbol id="p-rond-point" viewBox="0 0 96 96"><g fill="none" stroke="#111" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"><circle cx="46" cy="48" r="15"/><path d="M46 88 V63"/><path d="M57 37 L76 18"/><path d="M56 16 L77 17 L78 38"/></g><text x="46" y="55" font-size="20" font-weight="800" fill="#111" text-anchor="middle" font-family="-apple-system,Roboto,sans-serif">2</text></symbol>
+  <symbol id="p-fourche-gauche" viewBox="0 0 96 96"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M48 58 L70 22" stroke="#8C8C8C" stroke-width="9"/><g stroke="#111" stroke-width="13"><path d="M48 88 V58 L29 24"/><path d="M23 44 L28 22 L49 28"/></g></g></symbol>
+  <symbol id="p-arrivee" viewBox="0 0 96 96"><path d="M28 90 V10" stroke="#111" stroke-width="10" stroke-linecap="round"/><rect x="34" y="12" width="48" height="36" fill="#fff" stroke="#111" stroke-width="5"/><g fill="#111"><rect x="34" y="12" width="12" height="12"/><rect x="58" y="12" width="12" height="12"/><rect x="46" y="24" width="12" height="12"/><rect x="70" y="24" width="12" height="12"/><rect x="34" y="36" width="12" height="12"/><rect x="58" y="36" width="12" height="12"/></g></symbol>
+  <symbol id="p-suivre" viewBox="0 0 96 96"><g fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"><path d="M56 90 C56 70 32 66 32 48 C32 32 50 30 50 18"/><path d="M34 30 L50 12 L66 30"/></g></symbol>
+  <symbol id="p-ecart" viewBox="0 0 96 96"><path d="M76 8 V88" stroke="#fff" stroke-width="20" stroke-linecap="round"/><path d="M76 8 V88" stroke="#C2007A" stroke-width="13" stroke-linecap="round"/><path d="M40 48 H64" stroke="#111" stroke-width="7" stroke-linecap="round" stroke-dasharray="0 12"/><circle cx="22" cy="48" r="15" fill="#1A73E8"/><circle cx="22" cy="48" r="15" fill="none" stroke="#111" stroke-width="2"/></symbol>
+  <symbol id="p-depart" viewBox="0 0 96 96"><circle cx="48" cy="48" r="34" fill="#146C2E"/><path d="M38 30 L64 48 L38 66 Z" fill="#fff"/></symbol>
+  <symbol id="p-gps" viewBox="0 0 96 96"><g fill="none" stroke="#111" stroke-width="9" stroke-linecap="round"><circle cx="48" cy="48" r="24"/><path d="M48 8 V20 M48 76 V88 M8 48 H20 M76 48 H88"/></g><circle cx="48" cy="48" r="8" fill="#111"/></symbol>
+</defs>
+</svg>
+
+
+<!-- ===================== NOTE EN TÊTE ===================== -->
+<div class="note haut">
+<h2>Écran 30 — Phase 8a : états ajoutés</h2>
+<p>10 novembre 2026, T1 de la phase 8a. Huit écrans l'un sous l'autre, puis une note en bas de page (règles, textes exacts, pictogrammes). Chiffres d'exemple ; carte simplifiée.</p>
+<ol>
+  <li>Suivi normal (direction à plus de 100 m).</li>
+  <li>Direction à moins de 100 m : panneau jaune.</li>
+  <li>« Suivez le tracé » : pas de direction.</li>
+  <li>Écart au tracé : la distance jusqu'au tracé, sans alerte.</li>
+  <li>Arrivée en vue, puis l'écran « ARRIVÉE ! » (v1/60).</li>
+  <li>Confirmation de « Terminer » (et retour d'Android).</li>
+  <li>En attente du GPS.</li>
+  <li>Départ loin du tracé.</li>
+</ol>
+<p><b>8a : sans roue dentée. 8b : roue dentée sous la boussole + panneau 31b.</b> Aucun écran de cette page ne montre la roue.</p>
+<p><b>Changé depuis le 21 octobre :</b> le D+ restant s'ajoute en bas (décision 3) ; « Terminer » flotte au-dessus du bandeau du bas, à droite, pour lui laisser la place.</p>
+
+<h3>Questions pour Émilien (avec ma recommandation)</h3>
+<ol>
+  <li><b>« Terminer » au-dessus du bandeau du bas, à droite</b> (écran 1). Il faut la place pour le D+ restant. <b>Recommandation : oui.</b> Autre choix : un bandeau du bas sur deux lignes (chiffres, puis « Terminer »), qui prend 48 points à la carte.</li>
+  <li><b>« Suivez le tracé » : quelle distance ?</b> (écran 3). <b>Recommandation : la distance jusqu'à la fin du tronçon sans direction</b> (là où le guidage reprend), avec la raison en dessous (« Tronçon tracé à la main », « Hors de la zone téléchargée »). Autre choix : pas de distance.</li>
+  <li><b>Après la dernière direction</b> (écran 5). <b>Recommandation : le panneau annonce l'arrivée</b> (drapeau, distance, « Arrivée »), jaune sous 100 m comme une direction. Autre choix : « Suivez le tracé » jusqu'au bout.</li>
+  <li><b>Écart au tracé</b> (écran 4). <b>Recommandation : l'écart remplace la direction dans le panneau</b>, qui reste blanc ; des pointillés noirs relient la position au point du tracé le plus proche. Autre choix : garder la direction et afficher l'écart en petit sur la carte (mais la distance de la direction est fausse quand on est hors du tracé).</li>
+  <li><b>Départ loin du tracé</b> (écran 8). <b>Recommandation : l'app montre le départ</b> (distance à vol d'oiseau et pointillés). Si tu rejoins le tracé ailleurs, le guidage part de là où tu es (règle détaillée par l'architecte dans l'ADR 0021). Autre choix : montrer le point du tracé le plus proche.</li>
+  <li><b>« Terminer » sans avoir roulé</b> (moins de 100 m parcourus, par exemple pendant l'attente du GPS). <b>Recommandation : pas de résumé</b>, retour direct à l'écran Infos après la confirmation. Un résumé « 0,0 km » n'apprend rien. Autre choix : le résumé quand même.</li>
+  <li><b>« Démarrer le suivi » pour un GPX hors de vos zones</b> (v1/40, écran 6d ; zone supprimée, écran 7b). <b>Recommandation : oui, le bouton est là.</b> Le suivi marche sur fond uni, tout en « Suivez le tracé », D+ restant « — ». Autre choix : pas de bouton, comme pour « Modifier ».</li>
+  <li><b>« Fermer » sur le résumé</b> (v1/60). <b>Recommandation : retour à l'écran Infos de l'itinéraire</b>, d'où l'on a démarré. Autre choix : retour à l'onglet Carte.</li>
+</ol>
+</div>
+
+
+<!-- ===================== ÉCRAN 1 : suivi normal ===================== -->
+<div class="cartouche"><b>1. Suivi normal : direction à plus de 100 m</b><br>Panneau blanc. Distance en 72 (unité en 40), pictogramme de 124, consigne en 28 sur deux lignes au plus. Carte orientée dans le sens de la marche, zoom moyen (la direction est loin). Partie roulée en gris. En bas : « Reste » et « D+ restant ». « Terminer » flotte à droite au-dessus du bandeau. <i>8a</i> : pas de roue dentée sous la boussole.</div>
 <div class="ecran">
 
-<div class="guidage">
+<div class="guidage" aria-label="Dans 170 mètres, tournez à gauche sur la piste">
   <div class="ligne">
-    <svg width="124" height="124" viewBox="0 0 96 96" aria-hidden="true"><path d="M62 88 V50 C62 38 54 32 42 32 H24" fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/><path d="M36 14 L16 32 L36 50" fill="none" stroke="#111" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg class="picto" viewBox="0 0 96 96" aria-hidden="true"><use href="#p-gauche"/></svg>
+    <div class="dist">170<span class="unite"> m</span></div>
+  </div>
+  <div class="consigne">Tournez à gauche sur la piste</div>
+</div>
+
+<div class="barre-etat"><span>10:40</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<svg class="carte" viewBox="50.1 26.1 243.75 288.75" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g transform="rotate(101 172 218)">
+  <use href="#fond-carte"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C184 216 178 217 172 218" stroke="#8C8C8C" stroke-opacity=".7" stroke-width="8"/>
+    <path d="M172 218 C150 222 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="16"/>
+    <path d="M172 218 C150 222 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#C2007A" stroke-width="10"/>
+  </g>
+</g>
+</svg>
+
+<div class="halo" style="left:195px;top:569px"></div>
+<svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
+
+<div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(101deg)"><use href="#i-boussole"/></svg></div>
+
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="terminer" role="button">Terminer</div>
+
+<div class="bas">
+  <div class="col"><div class="etiquette">Reste</div><div class="valeur">18,0 km</div></div>
+  <div class="col"><div class="etiquette">D+ restant</div><div class="valeur">330 m</div></div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ===================== ÉCRAN 2 : direction à moins de 100 m ===================== -->
+<div class="cartouche"><b>2. Direction à moins de 100 m : panneau jaune</b><br>Même direction que l'écran 1, 120 m plus loin. Le panneau passe au jaune (<code>couleur.imminent</code>) : on le voit du coin de l'œil, sans lire. Le zoom se rapproche. Le jaune ne sert qu'aux directions et à l'arrivée, jamais à l'écart ni à « Suivez le tracé ». Il repasse au blanc dès que la direction est passée et que la suivante est à plus de 100 m.</div>
+<div class="ecran">
+
+<div class="guidage imminent" aria-label="Dans 50 mètres, tournez à gauche sur la piste">
+  <div class="ligne">
+    <svg class="picto" viewBox="0 0 96 96" aria-hidden="true"><use href="#p-gauche"/></svg>
     <div class="dist">50<span class="unite"> m</span></div>
   </div>
-  <div class="consigne">Tournez à gauche</div>
+  <div class="consigne">Tournez à gauche sur la piste</div>
 </div>
 
-<div class="barre-etat"><span>10:41</span>
-  <span class="icones">
-    <svg width="18" height="12" viewBox="0 0 18 12" fill="#111"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1" opacity=".3"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
-    <svg width="27" height="12" viewBox="0 0 27 12" fill="#111"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="#111" opacity=".5"/><rect x="2" y="2" width="13" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
-  </span>
-</div>
+<div class="barre-etat"><span>10:41</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
 
-<svg class="carte" viewBox="11.4 99.6 177.3 199.1" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+<svg class="carte" viewBox="11.4 99.6 177.3 210" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 <g transform="rotate(110 100 239)">
-  <rect x="-400" y="-400" width="1200" height="1700" fill="#EEEBE4"/>
-  <path d="M-60 140 C60 120 120 160 170 150 C230 140 280 170 300 220 C310 280 290 340 250 360 C200 380 160 360 120 380 C80 395 30 380 -60 390 Z" fill="#D3E4C0"/>
-  <path d="M-60 -60 L120 -60 C110 20 60 60 -60 70 Z" fill="#D3E4C0"/>
-  <g class="courbes" fill="none" stroke="#C9B293" stroke-width="1">
-    <path d="M-60 190 C40 170 110 215 175 195 S265 150 330 170"/>
-    <path d="M-60 230 C40 210 110 260 180 235 S270 195 320 210"/>
-    <path d="M-60 300 C50 285 110 320 185 290 S275 260 300 280"/>
-    <path d="M-60 90 C30 70 100 110 160 95 S250 60 330 80"/>
-  </g>
-  <g class="courbes" fill="none" stroke="#B89C78" stroke-width="1.8">
-    <path d="M-60 265 C45 248 110 290 182 262 S272 228 310 245"/>
-  </g>
-  <g fill="none" stroke-linecap="round">
-    <path d="M138 -60 C148 120 128 260 150 400 S160 640 190 900" stroke="#BFB7AA" stroke-width="8"/>
-    <path d="M138 -60 C148 120 128 260 150 400 S160 640 190 900" stroke="#FFFFFF" stroke-width="5.5"/>
-  </g>
-  <g class="pistes" fill="none" stroke="#7A4A1E" stroke-width="2.5" stroke-linecap="round">
-    <path d="M250 300 C235 270 215 240 190 215"/>
-    <path d="M70 250 C66 280 62 305 60 330"/>
-    <path d="M60 330 C90 360 120 385 150 400"/>
-    <path d="M190 215 C200 170 215 120 210 60 C208 20 200 -20 205 -60"/>
-    <path d="M60 330 C40 360 20 400 -60 440"/>
-  </g>
-  <g class="sentiers" fill="none" stroke="#C62828" stroke-width="2.5" stroke-dasharray="5 4">
-    <path d="M190 215 C150 220 110 235 70 250"/>
-    <path d="M70 250 C40 220 20 180 -60 160"/>
-    <path d="M150 400 C175 385 195 360 205 330 S215 280 230 262"/>
-  </g>
+  <use href="#fond-carte"/>
   <g fill="none" stroke-linecap="round" stroke-linejoin="round">
     <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C160 219 128 229 100 239" stroke="#8C8C8C" stroke-opacity=".7" stroke-width="8"/>
     <path d="M100 239 C90 243 80 247 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="16"/>
@@ -115,28 +276,387 @@ svg.carte *{vector-effect:non-scaling-stroke}
 </g>
 </svg>
 
-<div class="halo"></div>
-<svg class="position" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#1A73E8" stroke="#fff" stroke-width="3"/><path d="M20 8 L28.5 28 L20 23.5 L11.5 28 Z" fill="#fff"/></svg>
+<div class="halo" style="left:195px;top:569px"></div>
+<svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
 
-<div class="boussole" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut">
-  <svg width="36" height="36" viewBox="0 0 36 36" style="transform:rotate(110deg)"><path d="M18 3 L24 18 L12 18 Z" fill="#B3261E"/><path d="M18 33 L24 18 L12 18 Z" fill="#4A4A4A"/><text x="18" y="15" font-size="8" font-weight="800" fill="#fff" text-anchor="middle" font-family="-apple-system,Roboto,sans-serif">N</text></svg>
-</div>
-
-<div class="reglages" role="button" aria-label="Réglages du suivi : luminosité">
-  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#111" aria-hidden="true"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.2"/></svg>
-</div>
+<div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(110deg)"><use href="#i-boussole"/></svg></div>
 
 <div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="terminer" role="button">Terminer</div>
 
 <div class="bas">
-  <div>
-    <div class="etiquette">Reste</div>
-    <div class="valeur">17,8 km</div>
-  </div>
-  <div class="terminer">Terminer</div>
+  <div class="col"><div class="etiquette">Reste</div><div class="valeur">17,8 km</div></div>
+  <div class="col"><div class="etiquette">D+ restant</div><div class="valeur">320 m</div></div>
 </div>
-
 <div class="indicateur"></div>
 </div>
+
+
+<!-- ===================== ÉCRAN 3 : « Suivez le tracé » ===================== -->
+<div class="cartouche"><b>3. « Suivez le tracé » : pas de direction</b><br>Sur un tronçon tracé à la main (ici, en tirets), hors de la zone, ou si le moteur ne rend pas de direction. Le panneau reste blanc. Grande distance : ce qui reste <b>jusqu'à la fin du tronçon sans direction</b>, là où le guidage reprend (question 2). Ligne du dessous : la raison, pour qu'on sache que l'app n'est pas en panne. À la fin du tronçon, la direction suivante prend la place, avec les règles des écrans 1 et 2. <b>Avant d'y entrer</b>, le passage sans direction s'annonce comme une direction : pictogramme « Suivez le tracé », « 300 m », consigne <q>Suivez le tracé</q>, panneau blanc (jamais jaune).</div>
+<div class="ecran">
+
+<div class="guidage" aria-label="Suivez le tracé sur 180 mètres. Tronçon tracé à la main">
+  <div class="ligne">
+    <svg class="picto" viewBox="0 0 96 96" aria-hidden="true"><use href="#p-suivre"/></svg>
+    <div class="dist">180<span class="unite"> m</span></div>
+  </div>
+  <div class="consigne">Suivez le tracé</div>
+  <div class="precision">Tronçon tracé à la main</div>
+</div>
+
+<div class="barre-etat"><span>10:44</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<svg class="carte" viewBox="-35.1 206 177.3 210" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g transform="rotate(157.25 53.5 345.5)">
+  <use href="#fond-carte"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C150 220 110 235 70 250 C66 280 62 305 60 330 L53.5 345.5" stroke="#8C8C8C" stroke-opacity=".7" stroke-width="8"/>
+    <!-- Tronçon tracé à la main : liseré continu, magenta en tirets (trace.a-la-main) -->
+    <path d="M53.5 345.5 L34 392 L86 436" stroke="#FFFFFF" stroke-width="16"/>
+    <path d="M53.5 345.5 L34 392 L86 436" stroke="#C2007A" stroke-width="10" stroke-dasharray="20 10" stroke-linecap="butt"/>
+    <!-- Puis de nouveau calculé : trait plein -->
+    <path d="M86 436 C110 430 135 415 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="16"/>
+    <path d="M86 436 C110 430 135 415 150 400 C151 415 152 430 152 440" stroke="#C2007A" stroke-width="10"/>
+  </g>
+</g>
+</svg>
+
+<div class="halo" style="left:195px;top:569px"></div>
+<svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
+
+<div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(157deg)"><use href="#i-boussole"/></svg></div>
+
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="terminer" role="button">Terminer</div>
+
+<div class="bas">
+  <div class="col"><div class="etiquette">Reste</div><div class="valeur">16,9 km</div></div>
+  <div class="col"><div class="etiquette">D+ restant</div><div class="valeur">310 m</div></div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+<div class="note">
+<h3>Variantes de l'écran 3 (même panneau, seule la ligne du dessous change)</h3>
+<ul>
+  <li><b>Tronçon tracé à la main</b> : <q>Tronçon tracé à la main</q>.</li>
+  <li><b>Hors de la zone téléchargée</b> : <q>Hors de la zone téléchargée</q>. La carte n'a pas de fond (<code>carte.fond</code> uni) ; le tracé, la position et les marqueurs restent visibles. La caméra suit la position, même hors de la zone (question 2 de la spec, validée).</li>
+  <li><b>Le moteur n'a pas rendu de direction</b> sur un passage (recalage raté) : pas de ligne du dessous, seulement <q>Suivez le tracé</q>.</li>
+  <li>Si le tronçon sans direction va <b>jusqu'à l'arrivée</b>, c'est l'écran 5 (« Arrivée ») qui s'affiche, avec la ligne du dessous de l'écran 3.</li>
+</ul>
+</div>
+
+
+<!-- ===================== ÉCRAN 4 : écart au tracé ===================== -->
+<div class="cartouche"><b>4. Écart au tracé : plus de 30 m</b><br>On a manqué le virage à gauche et continué tout droit. Pas d'alerte, pas de son, pas de vibration, pas de rouge (décision 4). Le panneau reste blanc : l'écart remplace la direction, car sa distance est fausse hors du tracé. Grande distance : la distance à vol d'oiseau jusqu'au point du tracé le plus proche (en tenant compte de l'avancement). Sur la carte, des pointillés noirs (<code>trace.ecart</code>) vont de la position à ce point ; la caméra s'éloigne s'il le faut pour garder les deux à l'écran. « Reste » et « D+ restant » gardent la valeur du point le plus proche. De retour à moins de 30 m, la direction revient, sans message.</div>
+<div class="ecran">
+
+<div class="guidage" aria-label="Vous êtes à 80 mètres du tracé. Le guidage reprend sur le tracé">
+  <div class="ligne">
+    <svg class="picto" viewBox="0 0 96 96" aria-hidden="true"><use href="#p-ecart"/></svg>
+    <div class="dist">80<span class="unite"> m</span></div>
+  </div>
+  <div class="consigne">jusqu'au tracé</div>
+  <div class="precision">Le guidage reprend sur le tracé.</div>
+</div>
+
+<div class="barre-etat"><span>10:42</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<svg class="carte" viewBox="11.4 99.6 177.3 210" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g transform="translate(0 90.9)">
+<g transform="rotate(110 100 239)">
+  <use href="#fond-carte"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C160 219 128 229 100 239 C90 243 80 247 70 250" stroke="#8C8C8C" stroke-opacity=".7" stroke-width="8"/>
+    <path d="M70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="16"/>
+    <path d="M70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#C2007A" stroke-width="10"/>
+  </g>
+</g>
+</g>
+</svg>
+<!-- trace.ecart : de la position (195, 569) au point le plus proche du tracé (143, 671) -->
+<svg class="surcouche" viewBox="0 0 390 462" aria-hidden="true">
+  <path d="M185 327 L143 409" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-dasharray="0 10"/>
+  <path d="M185 327 L143 409" fill="none" stroke="#111111" stroke-width="5" stroke-linecap="round" stroke-dasharray="0 10"/>
+</svg>
+
+<div class="halo" style="left:195px;top:569px"></div>
+<svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
+
+<div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(110deg)"><use href="#i-boussole"/></svg></div>
+
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="terminer" role="button">Terminer</div>
+
+<div class="bas">
+  <div class="col"><div class="etiquette">Reste</div><div class="valeur">17,8 km</div></div>
+  <div class="col"><div class="etiquette">D+ restant</div><div class="valeur">320 m</div></div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ===================== ÉCRAN 5 : arrivée en vue ===================== -->
+<div class="cartouche"><b>5. Arrivée en vue, puis « ARRIVÉE ! »</b><br>Après la dernière direction, le panneau annonce l'arrivée : drapeau, distance, <q>Arrivée</q> (question 3). Blanc au-delà de 100 m, jaune en dessous, comme une direction. <b>À moins de 30 m de l'arrivée, après au moins 90 % du tracé</b>, l'écran de suivi est remplacé par <code>v1/60-arrivee.html</code>, écran 1 (« ARRIVÉE ! ») : le suivi s'arrête (GPS coupé, écran libéré). Passage par le fondu normal du système, sans animation à nous, sans son ni vibration. Pas de retour possible vers le suivi (décision 3 : pas de « Continuer le suivi »).</div>
+<div class="ecran">
+
+<div class="guidage imminent" aria-label="Arrivée dans 50 mètres">
+  <div class="ligne">
+    <svg class="picto" viewBox="0 0 96 96" aria-hidden="true"><use href="#p-arrivee"/></svg>
+    <div class="dist">50<span class="unite"> m</span></div>
+  </div>
+  <div class="consigne">Arrivée</div>
+</div>
+
+<div class="barre-etat"><span>11:15</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<svg class="carte" viewBox="62.4 265.5 177.3 210" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g transform="rotate(180 151 405)">
+  <use href="#fond-carte"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C160 219 128 229 100 239 C90 243 80 247 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 L151 405" stroke="#8C8C8C" stroke-opacity=".7" stroke-width="8"/>
+    <path d="M151 405 C151.5 418 152 430 152 440" stroke="#FFFFFF" stroke-width="16"/>
+    <path d="M151 405 C151.5 418 152 430 152 440" stroke="#C2007A" stroke-width="10"/>
+  </g>
+</g>
+</svg>
+
+<div class="marqueur depart" style="left:142px;top:426px" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M3 1.5 L10.5 6 L3 10.5 Z" fill="#fff"/></svg></div>
+<div class="marqueur arrivee" style="left:193px;top:492px" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 15V1.5" stroke="#fff" stroke-width="1.8"/><path d="M3.9 2h10v7h-10z" fill="#fff"/><path d="M3.9 2h3.3v3.5H3.9zM10.6 2h3.3v3.5h-3.3zM7.2 5.5h3.4V9H7.2z" fill="#111"/></svg></div>
+
+<div class="halo" style="left:195px;top:569px"></div>
+<svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
+
+<div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(180deg)"><use href="#i-boussole"/></svg></div>
+
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="terminer" role="button">Terminer</div>
+
+<div class="bas">
+  <div class="col"><div class="etiquette">Reste</div><div class="valeur">50 m</div></div>
+  <div class="col"><div class="etiquette">D+ restant</div><div class="valeur">0 m</div></div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ===================== ÉCRAN 6 : confirmation de « Terminer » ===================== -->
+<div class="cartouche"><b>6. Confirmation de « Terminer »</b><br>Boîte de dialogue native, non décorée (ici Android, Material 3). Même boîte pour le <b>retour d'Android</b> (bouton ou geste) pendant le suivi. Toucher en dehors, ou le retour d'Android quand la boîte est ouverte = « Continuer ». Sur iOS : alerte du système, « Continuer » en gras (style « cancel »), « Terminer » en rouge (style « destructive ») ; le geste de retour depuis le bord est coupé sur l'écran de suivi. Pendant la boîte, le suivi continue derrière (le panneau se met à jour). « Terminer » ouvre <code>v1/60-arrivee.html</code>, écran 2 (« SORTIE TERMINÉE »), ou l'écran Infos s'il n'y a rien à résumer (question 6).</div>
+<div class="ecran">
+
+<div class="guidage" aria-hidden="true">
+  <div class="ligne">
+    <svg class="picto" viewBox="0 0 96 96"><use href="#p-gauche"/></svg>
+    <div class="dist">170<span class="unite"> m</span></div>
+  </div>
+  <div class="consigne">Tournez à gauche sur la piste</div>
+</div>
+
+<div class="barre-etat"><span>10:40</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<svg class="carte" viewBox="50.1 26.1 243.75 288.75" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g transform="rotate(101 172 218)">
+  <use href="#fond-carte"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C184 216 178 217 172 218" stroke="#8C8C8C" stroke-opacity=".7" stroke-width="8"/>
+    <path d="M172 218 C150 222 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="16"/>
+    <path d="M172 218 C150 222 110 235 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#C2007A" stroke-width="10"/>
+  </g>
+</g>
+</svg>
+
+<div class="halo" style="left:195px;top:569px"></div>
+<svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
+<div class="boussole" aria-hidden="true"><svg width="36" height="36" style="transform:rotate(101deg)"><use href="#i-boussole"/></svg></div>
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="terminer" aria-hidden="true">Terminer</div>
+<div class="bas" aria-hidden="true">
+  <div class="col"><div class="etiquette">Reste</div><div class="valeur">18,0 km</div></div>
+  <div class="col"><div class="etiquette">D+ restant</div><div class="valeur">330 m</div></div>
+</div>
+
+<div class="voile-natif"></div>
+<div class="dialogue" role="alertdialog" aria-labelledby="titre-terminer" style="top:300px">
+  <h3 id="titre-terminer">Terminer la sortie&#8239;?</h3>
+  <p>Le suivi s'arrête et le résumé de la sortie s'affiche.</p>
+  <div class="dlg-boutons"><span role="button">Continuer</span><span role="button">Terminer</span></div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ===================== ÉCRAN 7 : en attente du GPS ===================== -->
+<div class="cartouche"><b>7. En attente du GPS, au départ</b><br>Juste après « Démarrer le suivi », tant qu'aucune position n'est arrivée. Pas de distance dans le panneau. La carte montre tout l'itinéraire, le nord en haut, sans point de position. En bas, les chiffres de tout l'itinéraire. « Terminer » marche déjà. Dès la première position : écran 8 si l'on est à plus de 30 m du tracé, sinon écran 1 ou 2. Si aucune position n'arrive en 30 secondes, la ligne du dessous devient <q>Le GPS ne répond pas. Vérifiez que la position est activée.</q> ; le suivi continue d'attendre.</div>
+<div class="ecran">
+
+<div class="guidage" aria-label="Recherche du GPS. Restez à découvert quelques secondes">
+  <div class="ligne">
+    <svg class="picto" viewBox="0 0 96 96" aria-hidden="true"><use href="#p-gps"/></svg>
+    <div class="titre-ligne">Recherche du GPS…</div>
+  </div>
+  <div class="precision">Restez à découvert quelques secondes.</div>
+</div>
+
+<div class="barre-etat"><span>09:59</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<svg class="carte" viewBox="40 182 270 320" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <use href="#fond-carte"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C160 219 128 229 100 239 C90 243 80 247 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="16"/>
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C160 219 128 229 100 239 C90 243 80 247 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#C2007A" stroke-width="10"/>
+  </g>
+</svg>
+<div class="marqueur arrivee" style="left:162px;top:635px" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 15V1.5" stroke="#fff" stroke-width="1.8"/><path d="M3.9 2h10v7h-10z" fill="#fff"/><path d="M3.9 2h3.3v3.5H3.9zM10.6 2h3.3v3.5h-3.3zM7.2 5.5h3.4V9H7.2z" fill="#111"/></svg></div>
+<div class="marqueur depart" style="left:195px;top:678px" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M3 1.5 L10.5 6 L3 10.5 Z" fill="#fff"/></svg></div>
+
+<div class="boussole" role="button" aria-label="Nord en haut"><svg width="36" height="36"><use href="#i-boussole"/></svg></div>
+
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="terminer" role="button">Terminer</div>
+
+<div class="bas">
+  <div class="col"><div class="etiquette">Reste</div><div class="valeur">25,1 km</div></div>
+  <div class="col"><div class="etiquette">D+ restant</div><div class="valeur">421 m</div></div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ===================== ÉCRAN 8 : départ loin du tracé ===================== -->
+<div class="cartouche"><b>8. Départ loin du tracé : au parking, à 500 m du départ</b><br>Même principe que l'écart (écran 4), mais la cible est le <b>départ</b> (question 5) : pictogramme du départ, distance à vol d'oiseau, pointillés <code>trace.ecart</code> jusqu'au marqueur du départ. À l'arrêt, le cap est inconnu : nord en haut et point de position sans flèche. Dès qu'on roule, la carte s'oriente dans le sens de la marche. « Reste » et « D+ restant » ne comptent pas les 500 m d'approche. À moins de 30 m du tracé, le guidage normal commence (écran 1 ou 2), sans message.</div>
+<div class="ecran">
+
+<div class="guidage" aria-label="Le départ est à 500 mètres. Le guidage commence au départ">
+  <div class="ligne">
+    <svg class="picto" viewBox="0 0 96 96" aria-hidden="true"><use href="#p-depart"/></svg>
+    <div class="dist">500<span class="unite"> m</span></div>
+  </div>
+  <div class="consigne">jusqu'au départ</div>
+  <div class="precision">Le guidage commence au départ.</div>
+</div>
+
+<div class="barre-etat"><span>10:01</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<svg class="carte" viewBox="20 300 310 367" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <use href="#fond-carte"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C160 219 128 229 100 239 C90 243 80 247 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#FFFFFF" stroke-width="16"/>
+    <path d="M175 470 C195 470 215 470 235 470 C255 440 272 415 270 390 S255 330 250 300 C235 270 215 240 190 215 C160 219 128 229 100 239 C90 243 80 247 70 250 C66 280 62 305 60 330 C90 360 120 385 150 400 C151 415 152 430 152 440" stroke="#C2007A" stroke-width="10"/>
+  </g>
+</svg>
+<!-- trace.ecart : de la position (191, 627) au départ (195, 476), arrêté au bord des marqueurs -->
+<svg class="surcouche" viewBox="0 0 390 462" aria-hidden="true">
+  <path d="M191.5 345 L194.5 233" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" stroke-dasharray="0 10"/>
+  <path d="M191.5 345 L194.5 233" fill="none" stroke="#111111" stroke-width="5" stroke-linecap="round" stroke-dasharray="0 10"/>
+</svg>
+<div class="marqueur arrivee" style="left:166px;top:438px" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"><path d="M3 15V1.5" stroke="#fff" stroke-width="1.8"/><path d="M3.9 2h10v7h-10z" fill="#fff"/><path d="M3.9 2h3.3v3.5H3.9zM10.6 2h3.3v3.5h-3.3zM7.2 5.5h3.4V9H7.2z" fill="#111"/></svg></div>
+<div class="marqueur depart" style="left:195px;top:476px" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M3 1.5 L10.5 6 L3 10.5 Z" fill="#fff"/></svg></div>
+
+<div class="halo" style="left:191px;top:627px"></div>
+<svg class="position-sans-cap" style="left:191px;top:627px" viewBox="0 0 30 30" aria-hidden="true"><use href="#i-position-sans-cap"/></svg>
+
+<div class="boussole" role="button" aria-label="Nord en haut"><svg width="36" height="36"><use href="#i-boussole"/></svg></div>
+
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="terminer" role="button">Terminer</div>
+
+<div class="bas">
+  <div class="col"><div class="etiquette">Reste</div><div class="valeur">25,1 km</div></div>
+  <div class="col"><div class="etiquette">D+ restant</div><div class="valeur">421 m</div></div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ===================== APRÈS LE SUIVI ===================== -->
+<div class="cartouche"><b>Après le suivi : v1/60-arrivee.html</b><br>Écran 1 : « ARRIVÉE ! », ouvert seul à l'arrivée (écran 5 ci-dessus). Écran 2 : « SORTIE TERMINÉE », ouvert par « Terminer » (écran 6). Même résumé aux chiffres réels (distance parcourue, D+, durée pauses comprises), un seul bouton « Fermer ».</div>
+
+
+<!-- ===================== NOTE ===================== -->
+<div class="note">
+<h2>Règles de l'écran de suivi (phase 8a)</h2>
+
+<h3>Quel état s'affiche</h3>
+<p>Dans cet ordre de priorité, le premier qui s'applique gagne :</p>
+<ol>
+  <li><b>Pas encore de position</b> : écran 7.</li>
+  <li><b>Pas encore arrivé sur le tracé</b> et à plus de 30 m : écran 8 (cible : le départ).</li>
+  <li><b>À plus de 30 m du tracé</b> : écran 4 (cible : le point du tracé le plus proche, avec l'avancement).</li>
+  <li><b>Sur un passage sans direction</b> : écran 3.</li>
+  <li><b>Après la dernière direction</b> : écran 5 (« Arrivée »).</li>
+  <li>Sinon : la prochaine direction, écran 1 (plus de 100 m) ou 2 (100 m ou moins).</li>
+</ol>
+<p>Un passage sans direction <b>à venir</b> compte comme une direction : « Suivez le tracé » dans {distance}, panneau blanc même sous 100 m ; une fois dedans, écran 3.</p>
+<p>Pas de clignotement au seuil des 30 m : l'architecte fixe dans l'ADR 0021 un seuil de retour plus bas (par exemple 20 m) ou un délai. Seuils de référence : ADR 0021 (écart 30 m, jaune 100 m, arrivée 30 m et 90 %).</p>
+
+<h3>Mise en page (valeurs : tokens.md, « États du suivi »)</h3>
+<ul>
+  <li><b>Panneau du haut</b> : 262 de haut, toujours la même structure : pictogramme de 124, grande distance (72, unité 40), consigne (28, deux lignes au plus), ligne du dessous (<code>guidage.precision</code>, 20, en <code>couleur.texte</code>, une ligne). Ainsi l'écran ne saute pas d'un état à l'autre.</li>
+  <li><b>Carte</b> : de 262 à 724. Position au tiers du bas (centre à 569), pour voir loin devant.</li>
+  <li><b>Boussole</b> : 64, à 16 du bord droit, en haut de la carte. Toucher : nord en haut ; toucher encore : de nouveau dans le sens de la marche (comme Google Maps et Plans). <i>8b</i> : la roue dentée de 48 vient dessous.</li>
+  <li><b>« Terminer »</b> : 140 × 64, à 16 du bord droit et 16 au-dessus du bandeau du bas. Loin de la boussole et de la future roue dentée.</li>
+  <li><b>Bandeau du bas</b> : de 724 au bas de l'écran. Deux colonnes égales : <q>Reste</q> et <q>D+ restant</q> (20, <code>couleur.texte-2</code>), valeurs en 36.</li>
+</ul>
+
+<h3>Caméra</h3>
+<ul>
+  <li>Sur le tracé, la carte suit le cap du tracé au point placé, même à l'arrêt : elle ne repasse pas au nord à chaque pause (ADR 0021). Nord en haut et point sans flèche seulement avant le premier mouvement, ou à l'arrêt hors du tracé.</li>
+  <li>Zoom moyen quand la direction est loin (écran 1), rapproché sous 100 m (écran 2). Écran 4 et 8 : la caméra s'éloigne juste assez pour montrer la position et la cible.</li>
+  <li>Déplacer la carte à la main : la caméra revient seule sur la position après 10 secondes sans toucher. Pas de bouton de recentrage de plus.</li>
+</ul>
+
+<h3>GPS perdu en route</h3>
+<p>Plus de 10 secondes sans nouvelle position : le point devient gris, sans flèche (<code>marqueur.position-perdue</code>) ; le panneau garde le dernier état ; ligne du dessous : <q>Signal GPS perdu</q>. Tout reprend seul à la position suivante. Pas d'écran à part.</p>
+
+<h3>Arrière-plan</h3>
+<p>Le suivi se met en pause (spec). Au retour, l'écran montre le dernier état jusqu'à la position suivante. Pas de message.</p>
+
+<h3>Formats des nombres</h3>
+<table>
+  <tr><th>Quoi</th><th>Règle</th><th>Exemples</th></tr>
+  <tr><td>Distance du panneau</td><td>1 km et plus : une décimale (10 km et plus : sans décimale). 300 à 999 m : arrondi à 50 m. Moins de 300 m : arrondi à 10 m. Jamais « 0 m » : 10 m au moins jusqu'au passage.</td><td>1,2 km ; 12 km ; 650 m ; 170 m ; 10 m</td></tr>
+  <tr><td>Reste</td><td>1 km et plus : une décimale (100 km et plus : sans décimale). Moins de 1 km : arrondi à 10 m.</td><td>17,8 km ; 850 m ; 50 m</td></tr>
+  <tr><td>D+ restant</td><td>Mètres entiers, espace fine des milliers. Inconnu (hors zone) : « — ».</td><td>421 m ; 1 250 m ; —</td></tr>
+</table>
+<p>Virgule décimale forcée, quelle que soit la langue du téléphone.</p>
+
+<h3>Textes exacts (pour <code>fr.ts</code>)</h3>
+<ul>
+  <li>Bas : <q>Reste</q>, <q>D+ restant</q>. Bouton : <q>Terminer</q>.</li>
+  <li>Écran 3 : <q>Suivez le tracé</q> ; <q>Tronçon tracé à la main</q> ; <q>Hors de la zone téléchargée</q>.</li>
+  <li>Écran 4 : <q>jusqu'au tracé</q> ; <q>Le guidage reprend sur le tracé.</q></li>
+  <li>Écran 5 : <q>Arrivée</q>.</li>
+  <li>Écran 6 : titre <q>Terminer la sortie ?</q> ; texte <q>Le suivi s'arrête et le résumé de la sortie s'affiche.</q> ; boutons <q>Continuer</q>, <q>Terminer</q>.</li>
+  <li>Écran 7 : <q>Recherche du GPS…</q> ; <q>Restez à découvert quelques secondes.</q> ; après 30 s : <q>Le GPS ne répond pas. Vérifiez que la position est activée.</q></li>
+  <li>Écran 8 : <q>jusqu'au départ</q> ; <q>Le guidage commence au départ.</q></li>
+  <li>GPS perdu : <q>Signal GPS perdu</q>.</li>
+  <li>Lecteur d'écran, panneau : <q>Dans {distance}, {consigne}</q> ; écart : <q>Vous êtes à {distance} du tracé</q>.</li>
+  <li>Position refusée au moment de « Démarrer le suivi » : la boîte existante de l'onglet Carte (<q>Position désactivée</q>, <q>Annuler</q>, <q>Ouvrir les réglages</q>), avec le texte <q>Autorisez la position dans les réglages pour suivre l'itinéraire.</q> On reste sur l'écran Infos.</li>
+</ul>
+
+<h3>Consignes et pictogrammes (proposition, relue au critère C2)</h3>
+<p>Consigne = le geste, puis le type de la voie prise s'il est connu : <q>sur le sentier</q>, <q>sur la piste</q>, <q>sur la route</q>. Pas de nom de rue : rare en forêt, et trop long. Deux lignes au plus ; au-delà, on coupe le type de voie. « Tout droit » seulement à un carrefour où l'on pourrait se tromper.</p>
+<div class="planche">
+  <div><svg viewBox="0 0 96 96"><use href="#p-tout-droit"/></svg>Continuez tout droit</div>
+  <div><svg viewBox="0 0 96 96"><use href="#p-leger-gauche"/></svg>Légèrement à gauche</div>
+  <div><svg viewBox="0 0 96 96"><use href="#p-gauche"/></svg>Tournez à gauche</div>
+  <div><svg viewBox="0 0 96 96"><use href="#p-serre-gauche"/></svg>Virage serré à gauche</div>
+  <div><svg viewBox="0 0 96 96"><use href="#p-fourche-gauche"/></svg>À la fourche, à gauche</div>
+  <div><svg viewBox="0 0 96 96"><use href="#p-demi-tour"/></svg>Faites demi-tour</div>
+  <div><svg viewBox="0 0 96 96"><use href="#p-rond-point"/></svg>Au rond-point, 2<sup>e</sup> sortie</div>
+  <div><svg viewBox="0 0 96 96"><g transform="translate(96 0) scale(-1 1)"><use href="#p-gauche"/></g></svg>Tournez à droite</div>
+  <div><svg viewBox="0 0 96 96"><use href="#p-arrivee"/></svg>Arrivée</div>
+  <div><svg viewBox="0 0 96 96"><use href="#p-suivre"/></svg>Suivez le tracé</div>
+  <div><svg viewBox="0 0 96 96"><use href="#p-ecart"/></svg>Écart au tracé</div>
+  <div><svg viewBox="0 0 96 96"><use href="#p-depart"/></svg>Départ</div>
+  <div><svg viewBox="0 0 96 96"><use href="#p-gps"/></svg>Recherche du GPS</div>
+</div>
+<p>Côté droit : le pictogramme de gauche retourné (miroir horizontal), consigne avec <q>à droite</q>. Rond-point : le chiffre change avec la sortie. Les icônes Material ou SF Symbols de même forme peuvent les remplacer, à trait aussi épais.</p>
+
+<h3>Hors périmètre (absent exprès)</h3>
+<p>Son, voix, vibration, alerte d'écart, chemin recalculé pour rejoindre le tracé, suivi téléphone verrouillé (V2). Roue dentée et panneau 31b : phase 8b.</p>
+</div>
+
 </body>
 </html>

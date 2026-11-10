@@ -27,6 +27,17 @@
   Pose du vététiste « podium » : bras avant levé à 50° vers l'avant (au-delà, il
   passerait devant le visage), bras arrière levé derrière la tête.
   Valeurs : design/tokens.md.
+
+  PHASE 8a — ÉCRAN AJOUTÉ (10 novembre 2026, T1, designer). Deux écrans l'un
+  sous l'autre, puis une note :
+   1. « ARRIVÉE ! » : ouvert seul quand le suivi détecte l'arrivée (30, écran 5).
+   2. « SORTIE TERMINÉE » : ouvert par « Terminer » confirmé (30, écran 6).
+      Décision du 21 octobre 2026 (retouche 4) : même résumé aux chiffres
+      réels, seul le titre change. Titre en 32 (texte.titre-fete-long) : en
+      44, il ne tient pas sur une ligne. Même illustration : pas de nouveau
+      dessin en v1 (décision 6), et le ton reste souriant.
+  Vérifié : distance parcourue, D+ et durée réels, un seul bouton « Fermer ».
+  « Notification retirée » ci-dessus : sans objet en v1 (suivi verrouillé en V2).
 -->
 <style>
 :root{
@@ -34,7 +45,7 @@
   --moutarde:#F0A830; --moutarde-pale:#F6CB7A; --orange:#E2652B; --rouille:#B5452A; --petrole:#2D6A66;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:390px;height:844px;overflow:hidden;background:var(--creme)}
+html,body{width:390px;background:var(--creme)}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--brun);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
 .geo{font-family:"Futura","Futura PT",Jost,"Century Gothic","Avenir Next",sans-serif;font-weight:700}
 .ecran{position:relative;width:390px;height:844px;overflow:hidden;background:var(--creme)}
@@ -55,9 +66,22 @@ h1{position:absolute;top:384px;left:0;right:0;text-align:center;font-size:44px;l
 
 .note{position:absolute;top:662px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:6px;font-size:15px;color:var(--brun-2)}
 .principal{position:absolute;top:698px;left:16px;right:16px;height:64px;border-radius:32px;background:var(--brun);color:var(--creme);font-size:20px;display:flex;align-items:center;justify-content:center;gap:10px}
+/* texte.titre-fete-long : 32, même centre vertical que le titre de 44 */
+h1.long{top:391px;font-size:32px}
+
+/* Hors du téléphone : légendes et note */
+.cartouche{background:var(--brun);color:var(--creme);padding:14px 16px;font-size:15px;line-height:1.35;border-top:9px solid var(--moutarde)}
+.cartouche b{font-size:17px}
+.texte-note{padding:8px 16px 48px;font-size:15px;line-height:1.4}
+.texte-note h2{font-size:20px;margin:20px 0 8px}
+.texte-note ul{padding-left:18px;margin:4px 0}
+.texte-note li{margin:3px 0}
+.texte-note q{quotes:"« " " »"}
 </style>
 </head>
 <body>
+
+<div class="cartouche"><b>1. ARRIVÉE !</b><br>Ouvert seul par le suivi : à moins de 30 m de l'arrivée, après au moins 90 % du tracé (écran 30, n° 5). Le suivi est déjà arrêté.</div>
 <div class="ecran">
 
 <div class="barre-etat"><span>11:16</span>
@@ -68,6 +92,7 @@ h1{position:absolute;top:384px;left:0;right:0;text-align:center;font-size:44px;l
 </div>
 
 <svg class="illustration" width="390" height="330" viewBox="0 0 390 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<g id="podium">
   <!-- Rayons de soleil (moutarde pâle sur crème) -->
   <g fill="#F6CB7A">
     <polygon points="195,250 -135,250 -130.1,192.6"/>
@@ -188,6 +213,7 @@ h1{position:absolute;top:384px;left:0;right:0;text-align:center;font-size:44px;l
       </g>
     </g>
   </g>
+</g>
 </svg>
 
 <h1 class="geo">ARRIVÉE !</h1>
@@ -203,6 +229,49 @@ h1{position:absolute;top:384px;left:0;right:0;text-align:center;font-size:44px;l
 <div class="principal geo">Fermer</div>
 
 <div class="indicateur"></div>
+</div>
+
+
+<div class="cartouche"><b>2. SORTIE TERMINÉE</b><br>Ouvert par « Terminer », confirmé dans la boîte (écran 30, n° 6). Même écran que le 1 : seul le titre change, en 32 pour tenir sur une ligne. Chiffres réels, du « Démarrer le suivi » au « Terminer » confirmé, pauses comprises. Ici, une sortie arrêtée à mi-chemin.</div>
+<div class="ecran">
+
+<div class="barre-etat"><span>10:52</span>
+  <span class="icones">
+    <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1" opacity=".3"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></svg>
+    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="13" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
+  </span>
+</div>
+
+<svg class="illustration" width="390" height="330" viewBox="0 0 390 330" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><use href="#podium"/></svg>
+
+<h1 class="geo long">SORTIE TERMINÉE</h1>
+<div class="nom">Boucle du Bois de la Côte</div>
+
+<div class="resume" role="list" aria-label="Résumé de la sortie">
+  <div class="ligne" role="listitem" style="box-shadow:inset 9px 0 0 var(--moutarde)"><span class="e">Distance parcourue</span><span class="v">11,4<u> km</u></span></div>
+  <div class="ligne" role="listitem" style="box-shadow:inset 9px 0 0 var(--orange)"><span class="e">Montée (D+)</span><span class="v">187<u> m</u></span></div>
+  <div class="ligne" role="listitem" style="box-shadow:inset 9px 0 0 var(--rouille)"><span class="e">Durée</span><span class="v">52<u> min</u></span></div>
+</div>
+
+<div class="note"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5A3A28" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"/></svg>Le suivi est arrêté.</div>
+<div class="principal geo">Fermer</div>
+
+<div class="indicateur"></div>
+</div>
+
+
+<div class="texte-note">
+<h2>Règles des deux écrans (phase 8a)</h2>
+<ul>
+  <li><b>Titres</b> : <q>ARRIVÉE !</q> (44, <code>texte.titre-fete</code>) ; <q>SORTIE TERMINÉE</q> (32, <code>texte.titre-fete-long</code>). Lecteur d'écran : <q>Arrivée</q>, <q>Sortie terminée</q>.</li>
+  <li><b>Libellés</b> : <q>Distance parcourue</q>, <q>Montée (D+)</q>, <q>Durée</q> ; note <q>Le suivi est arrêté.</q> ; bouton <q>Fermer</q>.</li>
+  <li><b>Distance</b> : une décimale (« 11,4 km ») ; moins de 1 km : arrondi à 10 m (« 850 m »).</li>
+  <li><b>D+</b> : mètres entiers, tiré de l'altitude du relief aux positions reçues. Inconnu (sortie hors de la zone) : <q>—</q>.</li>
+  <li><b>Durée</b> : moins d'une heure : <q>52 min</q> ; sinon <q>1 h 52</q>. Pauses et arrière-plan compris (décision 1 des retouches).</li>
+  <li><b>Fermer</b>, ou le retour d'Android : retour à l'écran Infos de l'itinéraire (question 8 de l'écran 30). Pas de retour possible vers le suivi.</li>
+  <li><b>Rien à résumer</b> (moins de 100 m parcourus) : pas d'écran 2, retour direct à l'écran Infos (question 6 de l'écran 30, à valider).</li>
+  <li>Le résumé n'est pas enregistré (spec, choix 6).</li>
+</ul>
 </div>
 </body>
 </html>
