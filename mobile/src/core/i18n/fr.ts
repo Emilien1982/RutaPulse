@@ -405,6 +405,8 @@ export const fr = {
     'Nord en haut\u00A0; toucher pour orienter la carte dans le sens de la marche',
   'ride.arrived': 'ARRIVÉE\u202F!',
   'ride.finished': 'SORTIE TERMINÉE',
+  'ride.arrivedLabel': 'Arrivée',
+  'ride.finishedLabel': 'Sortie terminée',
   'ride.close': 'Fermer',
   'ride.distance': 'Distance parcourue',
   'ride.stopped': 'Le suivi est arrêté.',

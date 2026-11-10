@@ -10,8 +10,15 @@ import {
   formatDistance,
   formatDuration,
 } from '@/core/routing/formatRoute';
+import { CheckIcon } from '@/ui/icons';
 import { RidePodium } from '@/ui/RidePodium';
 import { border, colors, radius, spacing, text } from '@/ui/theme';
+
+// Under 1 km, rounded to 10 m ("440 m"); formatDistance is shared, so the
+// rounding is done here. 995 m rounds to 1 000 m: "1,0 km".
+function roundedKm(meters: number): number {
+  return meters < 1000 ? Math.round(meters / 10) / 100 : meters / 1000;
+}
 
 type RideSummaryProps = {
   arrived: boolean;
@@ -53,6 +60,9 @@ export function RideSummary({
       <RidePodium />
       <Text
         accessibilityRole="header"
+        accessibilityLabel={t(
+          arrived ? 'ride.arrivedLabel' : 'ride.finishedLabel',
+        )}
         style={[styles.title, arrived ? styles.titleShort : styles.titleLong]}
       >
         {t(arrived ? 'ride.arrived' : 'ride.finished')}
@@ -67,7 +77,7 @@ export function RideSummary({
           testID="ride-distance"
           color={colors.mustard}
           label={t('ride.distance')}
-          value={formatDistance(distanceM / 1000)}
+          value={formatDistance(roundedKm(distanceM))}
           first
         />
         <Row
@@ -83,12 +93,16 @@ export function RideSummary({
           value={formatDuration(durationS)}
         />
       </View>
-      <Text style={styles.note}>{`✓ ${t('ride.stopped')}`}</Text>
+      <View style={styles.note}>
+        <CheckIcon size={18} color={colors.brown2} />
+        <Text style={text.secondary}>{t('ride.stopped')}</Text>
+      </View>
       <Pressable
         testID="ride-close"
         accessibilityRole="button"
         onPress={onClose}
-        style={styles.close}
+        android_ripple={{ color: colors.ripple }}
+        style={({ pressed }) => [styles.close, pressed && styles.pressed]}
       >
         <Text style={styles.closeText} maxFontSizeMultiplier={1.2}>
           {t('ride.close')}
@@ -112,6 +126,7 @@ function Row({
   first?: boolean;
 }) {
   // Figures big, units small: "25,6 km", "1 h 52".
+  const hasFigure = /\d/.test(value);
   const parts = value.split(/(\d+(?: \d{3})*(?:,\d+)?)/);
   return (
     <View style={[styles.row, first ? null : styles.rowBorder]}>
@@ -119,7 +134,7 @@ function Row({
       <Text style={styles.label}>{label}</Text>
       <Text testID={testID} style={styles.value} accessibilityLabel={value}>
         {parts.map((part, index) =>
-          index % 2 === 1 || part === '' ? (
+          index % 2 === 1 || part === '' || !hasFigure ? (
             part
           ) : (
             <Text key={index} style={styles.unit}>
@@ -167,7 +182,12 @@ const styles = StyleSheet.create({
     fontVariant: ['tabular-nums'],
   },
   unit: { fontSize: 20, fontWeight: '700' },
-  note: { ...text.secondary, textAlign: 'center' },
+  note: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 6,
+  },
   close: {
     height: 64,
     marginHorizontal: spacing.s4,
@@ -176,5 +196,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  pressed: { opacity: 0.85 },
   closeText: { ...text.buttonAction, fontSize: 20, color: colors.onBrown },
 });

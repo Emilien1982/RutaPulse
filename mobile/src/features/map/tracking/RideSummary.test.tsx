@@ -1,4 +1,5 @@
 // The end screen (mockup v1/60; spec C6, C7).
+import { StyleSheet } from 'react-native';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import { RideSummary } from './RideSummary';
@@ -68,5 +69,54 @@ describe('RideSummary', () => {
     expect(screen.getAllByRole('button')).toHaveLength(1);
     await fireEvent.press(screen.getByText('Fermer'));
     expect(onClose).toHaveBeenCalledTimes(1);
+  });
+
+  it('rounds under 1 km to 10 m', async () => {
+    const view = await show({ distanceM: 437 });
+    expect(screen.getByTestId('ride-distance')).toHaveTextContent('440 m');
+    await view.rerender(
+      <RideSummary
+        arrived
+        distanceM={995}
+        durationS={600}
+        ascentM={1}
+        onClose={onClose}
+      />,
+    );
+    expect(screen.getByTestId('ride-distance')).toHaveTextContent('1,0 km');
+  });
+
+  it('draws "…" and "—" in the size of the figures', async () => {
+    const view = await show({ ascentM: undefined });
+    const size = () =>
+      StyleSheet.flatten(screen.getByText('…').props.style).fontSize;
+    expect(size()).toBe(36);
+    await view.rerender(
+      <RideSummary
+        arrived
+        distanceM={500}
+        durationS={600}
+        ascentM={null}
+        onClose={onClose}
+      />,
+    );
+    expect(StyleSheet.flatten(screen.getByText('—').props.style).fontSize).toBe(
+      36,
+    );
+  });
+
+  it('is read "Arrivée" or "Sortie terminée"', async () => {
+    const view = await show();
+    expect(screen.getByRole('header')).toHaveAccessibleName('Arrivée');
+    await view.rerender(
+      <RideSummary
+        arrived={false}
+        distanceM={500}
+        durationS={600}
+        ascentM={1}
+        onClose={onClose}
+      />,
+    );
+    expect(screen.getByRole('header')).toHaveAccessibleName('Sortie terminée');
   });
 });
