@@ -24,10 +24,11 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 10 phases (la 9 passe en V2) → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 ✅ ([résultats](docs/phases/p06-mes-itineraires-gpx-resultats.md)) ; phase 7 ✅ ([résultats](docs/phases/p07-circuits-balises-resultats.md)) ; phase 8 spécifiée, à valider (suivi sur le vélo) ; phase 9 passée en V2 ; puis phase 10 |
+| 4+ | Développement en 10 phases (la 9 passe en V2) → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 ✅ ([résultats](docs/phases/p06-mes-itineraires-gpx-resultats.md)) ; phase 7 ✅ ([résultats](docs/phases/p07-circuits-balises-resultats.md)) ; phase 8a en cours (suivi sur le vélo), puis 8b ; phase 9 passée en V2 ; puis phase 10 |
 
 ## Décisions prises
 
+- 2026-11-10 — Spec de la phase 8 ([p08-suivi-velo.md](docs/phases/p08-suivi-velo.md)) validée par Émilien, avec les recommandations : le trait de liaison ne compte ni dans la distance ni dans le GPX, et le suivi ne guide pas dessus ; hors zone à moins de 10 km, la carte cadre la position et le bord de la zone, et le suivi suit partout ; flèche de cap, halo et « suit ma position » faits en phase 8. Question 4 : **deux phases**, 8a (suivi, M) puis 8b (luminosité, onglet Carte, trait de liaison, P).
 - 2026-11-10 — Décision d'Émilien : la phase 9 (suivi téléphone verrouillé) passe en **V2**. La phase 8 reste complète, puis vient la phase 10 (finition et test interne). Le niveau de process ne change pas. But : un essai réel au plus tôt après la phase 8 (le projet lui paraît long et coûteux en quota).
 - 2026-11-10 — Nouvelle session de pilotage : `local_b89c76a2-43a1-4417-8c81-ac486e333c4d` (passation après la phase 7). C'est l'adresse à donner dans les briefs de phase.
 - 2026-11-10 — Phase 7 fusionnée dans main (679b66d) : couche des circuits balisés et leur feuille, « En faire un itinéraire » (tracé gardé, aucun calcul à l'ouverture), « Modifier » d'un GPX (remplace l'original), « Dupliquer », base en version 2, fabrique qui ordonne les circuits, zone Nancy v6. 15 critères sur 16 ; C12 en partie (iOS 1,25 s, cause : vol de la carte vers la position, à corriger en phase 10 ; glisser non mesuré, l'émulateur limite la mesure). 2 529 tests, 280 pytest, CI verte. ADR 0020 ; ADR 0003 complété.
@@ -102,7 +103,7 @@
 
 ## Décisions en attente
 
-- Spec de la phase 8 ([p08-suivi-velo.md](docs/phases/p08-suivi-velo.md)), avec ses questions 1 à 4 (trait de liaison, cadrage hors zone, états de la maquette 90, une phase G ou 8a + 8b) : présentée à Émilien le 10 novembre.
+- Aucune.
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 

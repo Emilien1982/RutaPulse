@@ -1,8 +1,10 @@
 # Phase 8 — Suivi sur le vélo
 
-> 10 novembre 2026. Spec de la session de pilotage, **à valider par
-> Émilien**. Tient compte de sa décision du même jour : la phase 9
-> (suivi téléphone verrouillé) passe en V2, la phase 8 reste complète. Découpage : [docs/05](../05-decoupage-v1.md), ligne 8.
+> 10 novembre 2026. Spec de la session de pilotage, **validée par
+> Émilien le 10 novembre**, avec les recommandations des questions 1 à 3.
+> Question 4 : il choisit **deux phases plus petites, 8a puis 8b** (voir
+> « Découpage en 8a et 8b »). Tient compte de sa décision du même jour : la
+> phase 9 (suivi téléphone verrouillé) passe en V2. Découpage : [docs/05](../05-decoupage-v1.md), ligne 8.
 > Fonction du cadrage : 7 (suivi sur le vélo). S'appuie sur l'ADR 0006
 > (suivi, GPS, écran allumé), l'ADR 0016 (itinéraire en création, trait de
 > liaison), l'ADR 0017 (calcul des infos), l'ADR 0019 (itinéraires gardés),
@@ -126,6 +128,24 @@ dès la fin de T3, pour éviter une longue tâche de corrections à la fin.
 Une tâche de corrections suit T7 si le designer trouve des écarts
 bloquants.
 
+## Découpage en 8a et 8b (décision d'Émilien, 10 novembre)
+
+**Phase 8a — le suivi (taille M)** : T1 (essai, ADR 0021, maquette 30
+complétée ; la maquette 90 attend la 8b), T2, T3, puis T4 **sans la
+luminosité** (arrivée et « Sortie terminée »), puis T6 et T7 sur ce
+périmètre. Critères : C1 à C8, C12 à C15. Dans l'écran de suivi, la roue
+dentée est absente en 8a ; elle arrive en 8b avec son panneau.
+
+**Phase 8b — les finitions du suivi (taille P)** : luminosité (C9 :
+réglage dans l'onglet Réglages, roue dentée et panneau 31b), onglet Carte
+(C10 : flèche de cap, halo, états du recentrage, cadrage hors zone ;
+maquette 90 complétée par le designer), trait de liaison (C11). Puis
+tests, captures et comparaison du designer sur ce périmètre ; C14 et C15
+de nouveau. Elle a sa propre session, sa fusion et sa passation.
+
+Chaque phase a son fichier de résultats :
+`p08a-suivi-velo-resultats.md`, puis `p08b-suivi-velo-resultats.md`.
+
 ## Coût et risques
 
 - **Taille : G**, soit 3 sessions de travail ou plus, enchaînées. Échelle
@@ -211,7 +231,7 @@ repasse au repos dès que tu déplaces la carte).
   la carte. Pendant le suivi, c'est la carte qui tourne (maquette 30).
 - Autre choix : les reporter à la phase 10 (finition).
 
-## Question 4 : une seule phase G, ou deux phases plus petites ?
+## Question 4 : une seule phase G, ou deux phases plus petites ? (tranchée : deux phases)
 
 - **Recommandation : une seule phase G, lancée dès ta validation.** Elle
   s'arrêtera proprement si elle approche la réserve de quota, et
@@ -222,7 +242,10 @@ repasse au repos dès que tu déplaces la carte).
   Carte, luminosité, trait de liaison). 8a tient avant lundi ; 8b viendrait
   après. Prix : une fusion et une passation de plus.
 
-## Choix déjà faits par le pilotage (tu peux les changer)
+**Décision d'Émilien (10 novembre)** : deux phases plus petites, 8a puis
+8b. Questions 1 à 3 : recommandations validées.
+
+## Choix déjà faits par le pilotage (validés)
 
 1. Les directions viennent du moteur (`trace_route`), recalculées au
    départ du suivi, pour tous les itinéraires. Rien de nouveau n'est gardé
