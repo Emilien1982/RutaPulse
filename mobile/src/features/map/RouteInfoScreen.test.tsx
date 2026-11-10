@@ -222,7 +222,7 @@ describe('Infos screen (mockup 20)', () => {
     expect(north).toBeCloseTo(48.7, 10);
     expect(
       mockSources['info-ends'].features.map((f: any) => f.properties.role),
-    ).toEqual(['start', 'end']);
+    ).toEqual(['end', 'start']); // the start is drawn last, above
   });
 
   it('the "i" button opens the attributions', async () => {

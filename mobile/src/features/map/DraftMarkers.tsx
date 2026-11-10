@@ -1,6 +1,6 @@
 import { Marker, ViewAnnotation } from '@maplibre/maplibre-react-native';
 import { memo, useEffect, useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 import type { DraftPoint } from '@/core/draft/draft';
@@ -182,9 +182,21 @@ export const DraftMarkers = memo(function DraftMarkers({
   refusedId: number | null;
   handlers: MarkerHandlers;
 }) {
+  // A loop (start and arrival at the same place): the start is drawn above
+  // the arrival. The first annotation is the top one on Android, the last one
+  // on iOS.
+  const order = points.map((_, index) => index);
+  const first = points[0];
+  const last = points[points.length - 1];
+  const loop =
+    points.length > 1 &&
+    Math.abs(first.lon - last.lon) < 1e-5 &&
+    Math.abs(first.lat - last.lat) < 1e-5;
+  if (loop && Platform.OS === 'ios') order.push(order.shift()!);
   return (
     <>
-      {points.map((point, index) => {
+      {order.map((index) => {
+        const point = points[index];
         if (point.id === refusedId) return null;
         const role = roleOf(index, points.length);
         const number = index + 1;

@@ -436,6 +436,6 @@ describe('redraws', () => {
         },
       })),
     );
-    expect(screen.getByText(/La mise à jour n'a pas abouti\./)).toBeTruthy();
+    expect(screen.getByText(/La mise à jour a échoué\./)).toBeTruthy();
   });
 });

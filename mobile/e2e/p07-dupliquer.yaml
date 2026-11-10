@@ -132,16 +132,19 @@ appId: fr.rutapulse.app
       visible: 'Aucun chemin trouvé'
     commands:
       - tapOn: 'Relier ce point à la main'
-- waitForAnimationToEnd:
-    timeout: 5000
+# La distance est lue une fois le tronçon calculé : on attend qu'elle change
+# (pendant le calcul, l'ancienne reste affichée, pâlie).
+- extendedWaitUntil:
+    notVisible:
+      id: 'route-distance'
+      text: '${output.distOriginal}'
+    timeout: 60000
 - copyTextFrom:
     id: 'route-distance'
 - evalScript: '${output.distCopy = maestro.copiedText}'
 - assertTrue:
     condition: ${output.distCopy != output.distOriginal}
-    label: 'Le point déplacé change la distance de la copie'
-- waitForAnimationToEnd:
-    timeout: 4000
+    label: 'Le point ajouté change la distance de la copie'
 - takeScreenshot: captures/p07-dupliquer-05-modifier-copie-apres
 - tapOn:
     id: 'route-save'
@@ -158,9 +161,11 @@ appId: fr.rutapulse.app
     visible:
       id: 'route-row-.*'
     timeout: 10000
-# L'original garde sa distance, la copie a changé.
+# L'original garde sa distance et la copie montre la sienne, différente (deux
+# assertions positives : une absence ne prouverait rien si le texte de la
+# ligne n'avait pas la forme attendue).
 - assertVisible: 'Original, .*${output.distOriginal}.*'
-- assertNotVisible: 'Original \(copie\), .*${output.distOriginal}.*'
+- assertVisible: 'Original \(copie\), .*${output.distCopy}.*'
 - takeScreenshot: captures/p07-dupliquer-06-liste-apres
 # Nettoyage : supprimer les deux itinéraires.
 - repeat:

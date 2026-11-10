@@ -4,14 +4,12 @@
 import { t } from '@/core/i18n/t';
 import { formatDistance } from '@/core/routing/formatRoute';
 
-import type { Trail } from './trails';
+import { refLabel, type Trail } from './trails';
 
 /** The name, else "Circuit {ref}", else "Circuit sans nom". */
 export function trailTitle(trail: Trail): string {
   if (trail.name) return trail.name;
-  return trail.ref
-    ? t('trails.refLabel', { ref: trail.ref })
-    : t('trails.noName');
+  return trail.ref ? refLabel(trail.ref) : t('trails.noName');
 }
 
 /**

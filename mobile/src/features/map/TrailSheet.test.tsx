@@ -247,7 +247,7 @@ describe('sheet of a circuit of an old zone', () => {
 
   it('says the update failed, not "en cours", with "Voir les zones"', async () => {
     await show(old, { phase: 'failed' });
-    expect(screen.getByText(/La mise à jour n'a pas abouti\./)).toBeTruthy();
+    expect(screen.getByText(/La mise à jour a échoué\./)).toBeTruthy();
     expect(screen.queryByText(/Mise à jour en cours/)).toBeNull();
     await fireEvent.press(screen.getByTestId('trail-see-zones'));
     expect(handlers.onSeeZones).toHaveBeenCalledTimes(1);

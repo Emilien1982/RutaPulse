@@ -2,6 +2,7 @@
 
 import { t } from '@/core/i18n/t';
 import type { TextKey } from '@/core/i18n/fr';
+import { refLabel } from '@/core/trails/trails';
 
 export const MAX_NAME_LENGTH = 60;
 
@@ -61,7 +62,7 @@ export function trailRouteName(
     name !== ''
       ? name
       : ref !== ''
-        ? t('trails.refLabel', { ref })
+        ? refLabel(ref)
         : t('routes.defaultTrailName', {
             day: date.getDate(),
             month: t(`zones.month.${date.getMonth() + 1}` as TextKey),

@@ -66,6 +66,9 @@ import { ZoneBaseMap, type OpeningView } from './ZoneBaseMap';
 const MAP_TOUCH_DELAY_MS = 120;
 const ANNOTATION_TOUCH_MS = 300;
 const OPEN_LOCK_MS = 1000;
+// Height of the bottom panel before it is measured, for the first frame:
+// about 285 pt on iOS and 275 dp on Android (captures of T7, phase 7).
+const PANEL_GUESS = 280;
 
 // The point of the last action: the one the error sheet is about (ADR 0016,
 // section 5). `before` is the draft before the action, `after` the one after.
@@ -155,7 +158,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   // first touch on the map in that mode (mockup 11).
   const [handTouched, setHandTouched] = useState(false);
   // The bubble of the opening of a circuit (mockup 12): 4 s, or 6 s when a
-  // part of the trace leaves the zone. It goes away at the first touch.
+  // part of the trace leaves the zone. Each touch removes one bubble.
   // A GPX opens with its own bubble (6 s), then the one of the part outside.
   const [bubbles, setBubbles] = useState<string[]>(() => {
     if (trail) {
@@ -211,10 +214,18 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   const problemOpen = useRef(false);
   // Id of the point being dragged (null: no gesture).
   const dragging = useRef<number | null>(null);
-  function touchedAnnotation() {
+  // One touch removes one bubble, whatever the order in which the map and the
+  // annotation hear it (iOS): nothing is removed if one went less than 300 ms ago.
+  const bubbleDroppedAt = useRef(0);
+  function dropBubble() {
+    if (Date.now() - bubbleDroppedAt.current < ANNOTATION_TOUCH_MS) return;
+    bubbleDroppedAt.current = Date.now();
+    setBubbles((list) => list.slice(1));
+  }
+  function touchedAnnotation(dropsBubble = true) {
     // Touching or dragging a point is also a first touch in the hand mode.
     if (nextMode === 'hand') setHandTouched(true);
-    setBubbles([]);
+    if (dropsBubble) dropBubble();
     annotationAt.current = Date.now();
     pending.current.forEach(clearTimeout);
     pending.current.clear();
@@ -484,6 +495,18 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   // layout), so `camera.current` is null and an easeTo would be lost.
   const screenSize = useWindowDimensions();
   const [bottomHeight, setBottomHeight] = useState(0);
+  // A placed draft opens already framed on its track (a first guess of the
+  // panel height; the exact fit below follows without animation), instead of
+  // the whole zone.
+  const [placedView] = useState<OpeningView | undefined>(() => {
+    if (!placed || opening) return undefined;
+    const bounds = routeBounds(draft, geometry.lines);
+    if (!bounds) return undefined;
+    return fitView(bounds, screenSize, {
+      top: barHeight,
+      bottom: PANEL_GUESS,
+    });
+  });
   const [mapLoaded, setMapLoaded] = useState(false);
   const fitted = useRef(false);
   useEffect(() => {
@@ -540,7 +563,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
       },
       onDrag: (id, p) => drag(id, p.lon, p.lat),
       onDragEnd: (id, p) => {
-        touchedAnnotation();
+        touchedAnnotation(false);
         dragging.current = null;
         // The move first: the preview must not be judged on the old legs.
         release(id, p.lon, p.lat);
@@ -594,14 +617,14 @@ function DraftView({ opening }: { opening?: OpeningView }) {
       <ZoneBaseMap
         zone={zone}
         cameraRef={camera}
-        opening={opening}
+        opening={opening ?? placedView}
         onDidFinishLoadingMap={() => setMapLoaded(true)}
         onRegionDidChange={(e) => {
           zoom.current = e.nativeEvent.zoom;
           if (fromTrace) setShownZoom(e.nativeEvent.zoom);
         }}
         onPress={(e) => {
-          setBubbles([]);
+          dropBubble();
           if (problem) return;
           if (nextMode === 'hand') setHandTouched(true);
           const [lon, lat] = e.nativeEvent.lngLat;

@@ -23,11 +23,13 @@ const HITBOX = { top: 22, right: 22, bottom: 22, left: 22 } as const;
 
 const NOT_EMPTY = ['!=', ['get', 'label'], ''] as never;
 
-// The line: 2.5 at zoom 10, 6 at zoom 15, 8.5 at zoom 18.
+// The line: 1.5 at zoom 8, 2.5 at zoom 10, 6 at zoom 15, 8.5 at zoom 18.
 const LINE_WIDTH = [
   'interpolate',
   ['linear'],
   ['zoom'],
+  8,
+  1.5,
   10,
   2.5,
   12,
@@ -84,7 +86,7 @@ export const TrailsLayer = memo(function TrailsLayer({
           id="circuit"
           type="line"
           beforeId={TRAILS_LINE_BEFORE}
-          minzoom={10}
+          minzoom={8}
           layout={{ 'line-cap': 'round', 'line-join': 'round' }}
           paint={{
             'line-color': mapColors.circuit,

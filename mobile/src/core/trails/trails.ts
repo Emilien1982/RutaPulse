@@ -138,10 +138,17 @@ export function parseTrails(source: string | null): Trail[] {
   return trails;
 }
 
+/** "Circuit {ref}", but the ref "Circuit 3" stays "Circuit 3". */
+export function refLabel(ref: string): string {
+  return /^circuit\b/i.test(ref.trim())
+    ? ref.trim()
+    : t('trails.refLabel', { ref });
+}
+
 /** The label along the line; empty when the circuit has no name nor number. */
 export function mapLabel(trail: Trail): string {
   if (trail.name) return trail.name;
-  return trail.ref ? t('trails.refLabel', { ref: trail.ref }) : '';
+  return trail.ref ? refLabel(trail.ref) : '';
 }
 
 export type TrailsMapData = {

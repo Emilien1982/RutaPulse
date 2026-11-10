@@ -56,6 +56,7 @@ export function ActionMenuSheet({ title, entries, onClose }: Props) {
                 onClose();
                 entry.onPress();
               }}
+              android_ripple={{ color: colors.sand, foreground: true }}
               style={styles.entry}
             >
               <Text
@@ -97,6 +98,6 @@ const styles = StyleSheet.create({
     paddingBottom: spacing.s6,
   },
   title: { marginBottom: spacing.s2 },
-  entry: { minHeight: target.stop, justifyContent: 'center' },
+  entry: { minHeight: target.mainButton, justifyContent: 'center' },
   cancel: { marginTop: spacing.s3 },
 });

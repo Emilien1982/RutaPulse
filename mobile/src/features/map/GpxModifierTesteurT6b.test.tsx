@@ -30,6 +30,7 @@ const mockTerrain = jest.fn();
 const mockBack = jest.fn();
 const mockPush = jest.fn();
 let mockPrevent: { value: boolean; cb?: (e: any) => void } | undefined;
+const mockAnnotations: Record<string, any> = {};
 let mockMapProps: Record<string, any> = {};
 let mockDb: Promise<unknown>;
 let mockId = '1';
@@ -51,7 +52,10 @@ jest.mock('@maplibre/maplibre-react-native', () => {
     Layer: () => null,
     GeoJSONSource: () => null,
     Marker: (props: { children: ReactNode }) => <>{props.children}</>,
-    ViewAnnotation: (props: { children: ReactNode }) => <>{props.children}</>,
+    ViewAnnotation: (props: { id: string; children: ReactNode }) => {
+      mockAnnotations[props.id] = props;
+      return <>{props.children}</>;
+    },
   };
 });
 jest.mock('expo-location', () => ({
@@ -523,31 +527,55 @@ describe('ADR 0020 section 5: a GPX that leaves the zone', () => {
     }
   });
 
-  // Reported defect (non blocking): a touch on the map during the first bubble
-  // empties the whole queue (DraftScreen setBubbles([]) in onPress and in
-  // touchedAnnotation), so the user never learns that part of the trace
-  // cannot be modified. ADR 0020 section 5 says the bubble of the outside
-  // part comes "after" the first one, "at the opening".
-  it.failing(
-    'DEFECT: a touch during the first bubble still leaves the outside bubble to come',
-    async () => {
-      jest.useFakeTimers({ advanceTimers: true });
-      try {
-        const id = await insertGpx(LEAVING);
-        await openDraft({ kind: 'gpx', id });
-        await act(async () =>
-          mockMapProps.onPress({ nativeEvent: { lngLat: [6.2, 48.65] } }),
-        );
-        await act(async () => {
-          jest.advanceTimersByTime(1000);
-        });
-        // Expected by the spec: the outside bubble is shown at some point.
-        expect(screen.getByTestId('trail-bubble')).toHaveTextContent(
-          /^Une partie du tracé sort de la zone/,
-        );
-      } finally {
-        jest.useRealTimers();
-      }
-    },
-  );
+  // ADR 0020 section 5: the bubble of the outside part comes "after" the first
+  // one. A touch removes the bubble shown, not the whole queue.
+  it('a touch during the first bubble still leaves the outside bubble to come', async () => {
+    jest.useFakeTimers({ advanceTimers: true });
+    try {
+      const id = await insertGpx(LEAVING);
+      await openDraft({ kind: 'gpx', id });
+      await act(async () =>
+        mockMapProps.onPress({ nativeEvent: { lngLat: [6.2, 48.65] } }),
+      );
+      await act(async () => {
+        jest.advanceTimersByTime(1000);
+      });
+      // Expected by the spec: the outside bubble is shown at some point.
+      expect(screen.getByTestId('trail-bubble')).toHaveTextContent(
+        /^Une partie du tracé sort de la zone/,
+      );
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
+  // One touch removes one bubble, whatever the order of the events (iOS can
+  // report the map before the point, and a drag has a start and an end).
+  const OUTSIDE = /^Une partie du tracé sort de la zone/;
+  const pointId = () => `draft-point-${session.store.state.draft.points[1].id}`;
+  const later = (ms: number) =>
+    act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, ms));
+    });
+
+  it('a touch on the map then on a point removes one bubble, not two', async () => {
+    const id = await insertGpx(LEAVING);
+    await openDraft({ kind: 'gpx', id });
+    await act(async () =>
+      mockMapProps.onPress({ nativeEvent: { lngLat: [6.2, 48.65] } }),
+    );
+    await act(async () => mockAnnotations[pointId()].onPress());
+    expect(screen.getByTestId('trail-bubble')).toHaveTextContent(OUTSIDE);
+  });
+
+  it('a whole drag removes one bubble, not two', async () => {
+    const id = await insertGpx(LEAVING);
+    await openDraft({ kind: 'gpx', id });
+    const at = mockAnnotations[pointId()].lngLat as [number, number];
+    const event = { nativeEvent: { lngLat: at } };
+    await act(async () => mockAnnotations[pointId()].onDragStart(event));
+    await later(400);
+    await act(async () => mockAnnotations[pointId()].onDragEnd(event));
+    expect(screen.getByTestId('trail-bubble')).toHaveTextContent(OUTSIDE);
+  });
 });

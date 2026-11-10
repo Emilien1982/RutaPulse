@@ -79,6 +79,8 @@ export function RouteTopBar({
         </Text>
         {onSave && (
           <Pressable
+            // Android does not redraw a changed `borderStyle`: a new key.
+            key={onSave.enabled ? 'on' : 'off'}
             testID="route-save"
             accessibilityRole="button"
             accessibilityLabel={onSave.enabled ? saveLabel : saveOffLabel}
@@ -455,6 +457,8 @@ const styles = StyleSheet.create({
   saveTextOff: { color: colors.brown2 },
   bubbleRow: { position: 'absolute', left: 0, right: 0, alignItems: 'center' },
   bubble: {
+    maxWidth: 344,
+    marginHorizontal: spacing.s4,
     backgroundColor: colors.brown,
     borderRadius: 20,
     paddingVertical: 10,
@@ -464,6 +468,7 @@ const styles = StyleSheet.create({
   bubbleText: {
     fontSize: 15,
     fontWeight: '600',
+    textAlign: 'center',
     color: colors.onBrown,
   },
   sheet: {

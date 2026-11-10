@@ -23,8 +23,9 @@ import {
   type TerrainInfo,
 } from '@/core/route-info/routeInfo';
 import type { TextKey } from '@/core/i18n/fr';
+import { uniqueDefaultName } from '@/core/routes/routeName';
 import { zoneLine } from '@/core/routes/routeText';
-import { useSavedRoute } from '@/shared-data/routes/useRoutes';
+import { useRoutes, useSavedRoute } from '@/shared-data/routes/useRoutes';
 import { Button } from '@/ui/Button';
 import { DashedStroke } from '@/ui/DashedStroke';
 import { ChevronIcon, HandModeIcon, MoreIcon } from '@/ui/icons';
@@ -398,10 +399,17 @@ export function RouteInfoView({
 // is saved, the title is its name (ADR 0019, section 4).
 export function RouteInfoScreen() {
   const router = useRouter();
-  const { zone, store, savedStore, kept } = useDraftSession();
+  const { zone, store, savedStore, kept, trail } = useDraftSession();
   const draft = useSelector(store, (s) => s.draft);
   const routeId = useSelector(savedStore, (s) => s.routeId);
   const route = useSavedRoute(routeId).data;
+  // A route not saved yet and made from a circuit has the title of the
+  // creation bar: the default name of the circuit.
+  const names = useRoutes().data;
+  const newTitle =
+    trail && routeId === null
+      ? uniqueDefaultName(trail.name, names?.map((r) => r.name) ?? [])
+      : t('route.new');
   const rawLegs = useLegResults(draft, zone, kept);
   // `useLegResults` gives a new array at each render: keep the old one while
   // nothing changed, so that the geometry below is not computed again.
@@ -429,7 +437,7 @@ export function RouteInfoScreen() {
 
   return (
     <RouteInfoView
-      title={route && route.readable ? route.name : t('route.new')}
+      title={route && route.readable ? route.name : newTitle}
       subtitle={route ? zoneLine(route, 'usable') : undefined}
       map={
         <RouteInfoMap

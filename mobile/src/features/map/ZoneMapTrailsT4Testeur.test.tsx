@@ -193,10 +193,10 @@ function layerOf(id: string) {
 }
 
 describe('C4: layers (style-carte.md, Circuits balisés)', () => {
-  it('line visible from zoom 10, 6 wide at zoom 15, 55 % blue; name from zoom 12', async () => {
+  it('line visible from zoom 8, 6 wide at zoom 15, 55 % blue; name from zoom 12', async () => {
     await renderMap();
     const line = layerOf('circuit');
-    expect(line.minzoom).toBe(10);
+    expect(line.minzoom).toBe(8);
     expect(line.paint['line-opacity']).toBe(0.55);
     expect(line.paint['line-width']).toEqual(expect.arrayContaining([15, 6]));
     expect(line.layout['line-cap']).toBe('round');

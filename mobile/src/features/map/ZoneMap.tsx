@@ -25,6 +25,7 @@ import {
   radius,
   shadow,
   spacing,
+  target,
   text,
 } from '@/ui/theme';
 
@@ -35,7 +36,7 @@ import {
   UserPositionLayers,
   useMapPosition,
 } from './MapPosition';
-import { fitView } from './fitView';
+import { FIT_MARGIN, fitView } from './fitView';
 import { setDraftTarget } from './draftTarget';
 import { TrailEnds } from './TrailEnds';
 import { TrailPanel } from './TrailSheet';
@@ -47,6 +48,11 @@ const NO_DOWNLOADS = new Store<Record<string, DownloadEntry>>({});
 
 // About the height of the sheet of a circuit: the circuit is framed above it.
 const SHEET_COVER = 340;
+
+// "Recentrer" sits 60 from the top. The circuit is framed 16 under it
+// (`fitView` adds its own margin to what is covered).
+const RECENTER_TOP = 60;
+const TOP_COVER = RECENTER_TOP + target.stop + 16 - FIT_MARGIN;
 
 // What the user touched: one circuit (its sheet), or several (the list).
 type Selection =
@@ -95,7 +101,7 @@ export function ZoneMap({
       saved.current ??= view.current;
       camera.current?.easeTo({
         ...fitView(trailBounds(chosen), screen, {
-          top: 0,
+          top: TOP_COVER,
           bottom: SHEET_COVER,
         }),
         duration: 300,
@@ -248,7 +254,7 @@ export function ZoneMap({
         />
       )}
 
-      <RecenterButton granted={granted} top={60} onPress={recenter} />
+      <RecenterButton granted={granted} top={RECENTER_TOP} onPress={recenter} />
 
       {outside && (
         <View accessibilityRole="alert" style={[styles.notice, { top: 60 }]}>

@@ -9,7 +9,7 @@ import type { Trail } from './trails';
 
 /** Spacing in meters, by zoom band: about 60 to 100 points on screen. */
 export const CHEVRON_BANDS = [
-  { minZoom: 0, maxZoom: 12.5, spacingM: 2500 },
+  { minZoom: 10, maxZoom: 12.5, spacingM: 2500 },
   { minZoom: 12.5, maxZoom: 14, spacingM: 1000 },
   { minZoom: 14, maxZoom: 15.5, spacingM: 400 },
   { minZoom: 15.5, maxZoom: 16.5, spacingM: 150 },

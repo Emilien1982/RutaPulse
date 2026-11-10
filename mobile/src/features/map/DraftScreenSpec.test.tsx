@@ -175,9 +175,13 @@ async function addPoints(...points: LonLat[]) {
 }
 
 function pointIds() {
-  return screen
-    .queryAllByTestId(/^annotation:/)
-    .map((node) => String(node.props.testID).slice('annotation:'.length));
+  return (
+    screen
+      .queryAllByTestId(/^annotation:/)
+      .map((node) => String(node.props.testID).slice('annotation:'.length))
+      // On iOS a loop draws its start last (above): back to the order of the points.
+      .sort((a, b) => Number(a.split('-').pop()) - Number(b.split('-').pop()))
+  );
 }
 // Positions of the points on screen, in order.
 function positions(): LonLat[] {

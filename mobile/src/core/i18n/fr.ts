@@ -335,8 +335,8 @@ export const fr = {
   'trails.updatingTitle': 'Mise à jour en cours.',
   'trails.updatingText':
     'Quand elle sera finie, vous pourrez faire de ce circuit un itinéraire.',
-  'trails.updateFailedTitle': "La mise à jour n'a pas abouti.",
-  'trails.updateFailedText': "Reprenez-la depuis l'onglet Zones.",
+  'trails.updateFailedTitle': 'La mise à jour a échoué.',
+  'trails.updateFailedText': "Réessayez depuis l'onglet Zones.",
   'trails.notYetTitle': 'Ce circuit ne peut pas encore devenir un itinéraire.',
   'trails.notYetText': 'Une prochaine version de la zone le permettra.',
   'trails.manyTitle': '{n} circuits passent ici',

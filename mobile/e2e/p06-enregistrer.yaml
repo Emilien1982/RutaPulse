@@ -38,7 +38,9 @@ onFlowComplete:
 - tapOn:
     text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
     optional: true
-- tapOn: 'Carte.*'
+# Pas de toucher sur « Carte.* » : il tombe sur la carte elle-même et ouvre la
+# feuille d'un circuit balisé (depuis la phase 7). Le lancement ouvre déjà la
+# carte.
 - extendedWaitUntil:
     visible:
       id: 'new-route-button'

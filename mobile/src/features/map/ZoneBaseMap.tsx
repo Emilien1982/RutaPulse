@@ -15,7 +15,11 @@ import { buildMapStyle, MAX_ZOOM, MIN_ZOOM } from './mapStyle';
 import { glyphsDirUri } from './useGlyphsReady';
 
 /** Where the camera opens: the whole zone, or a given center and zoom. */
-export type OpeningView = { center: [number, number]; zoom: number };
+export type OpeningView = {
+  center: [number, number];
+  zoom: number;
+  padding?: { top: number; right: number; bottom: number; left: number };
+};
 
 /** The map opens on this box: [west, south, east, north] and a padding. */
 export type OpeningBounds = {
