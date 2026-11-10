@@ -4,6 +4,7 @@
 import { cameraBearing, type Placement } from '@/core/tracking/placement';
 import {
   buildLine,
+  distanceM,
   pointAt,
   sliceLine,
   type FreePart,
@@ -161,3 +162,53 @@ export function gapLine(
   if (!rider || !target) return EMPTY;
   return { ...EMPTY, features: [feature('path', [rider, target])] };
 }
+
+/** Distance on the ground (m) of one point of the screen at this zoom and latitude. */
+export function metersPerPoint(zoom: number, latitude: number): number {
+  // MapLibre: tiles of 512 points.
+  return (78271.517 * Math.cos((latitude * Math.PI) / 180)) / 2 ** zoom;
+}
+
+/** Most dots of the gap line (a safety: a very long gap). */
+export const MAX_GAP_DOTS = 300;
+
+/**
+ * The dots of the gap line: one every `spacingM` meters from the rider to the
+ * target, round on both platforms (a dash of length zero draws an oval on
+ * iOS). The end points are left out: the rider and the target are drawn there.
+ */
+export function gapDots(
+  from: LonLat,
+  to: LonLat,
+  spacingM: number,
+): { type: 'FeatureCollection'; features: PointFeature[] } {
+  const total = distanceM(from, to);
+  const features: PointFeature[] = [];
+  if (spacingM > 0) {
+    for (
+      let d = spacingM;
+      d < total && features.length < MAX_GAP_DOTS;
+      d += spacingM
+    ) {
+      const f = d / total;
+      features.push({
+        type: 'Feature',
+        properties: {},
+        geometry: {
+          type: 'Point',
+          coordinates: [
+            from[0] + (to[0] - from[0]) * f,
+            from[1] + (to[1] - from[1]) * f,
+          ],
+        },
+      });
+    }
+  }
+  return { type: 'FeatureCollection', features };
+}
+
+type PointFeature = {
+  type: 'Feature';
+  properties: Record<string, never>;
+  geometry: { type: 'Point'; coordinates: LonLat };
+};

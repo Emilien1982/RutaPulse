@@ -87,7 +87,8 @@ Ajoutés le 10 novembre 2026 (phase 8a, T1). Écrans : `30-suivi-velo.html`,
 | Jeton | Valeur | Usage |
 |---|---|---|
 | `guidage.picto` | Carré de 124 (dessin dans un carré de 96, trait 13, bouts ronds), `couleur.texte` | Pictogramme du panneau : direction, arrivée, « Suivez le tracé », écart, départ, GPS. Planche en bas de l'écran 30 |
-| `guidage.precision` | 20, graisse 600, `couleur.texte`, une ligne | Ligne sous la consigne : raison (« Tronçon tracé à la main »), « Signal GPS perdu ». En `couleur.texte` et non `texte-2` : elle se lit aussi sur le jaune |
+| `guidage.precision` | 20, graisse 600, `couleur.texte`, une ligne | Ligne sous la consigne : raison (« Tronçon tracé à la main »), « Signal GPS perdu ». En `couleur.texte` et non `texte-2` : elle se lit aussi sur le jaune. Quand elle s'affiche, la consigne passe à une ligne, sans le type de voie |
+| `suivi.attribution` | Version courte de l'attribution (voir « Attribution ») : « © OpenStreetMap » + « i », en bas à gauche de la carte, fond blanc à 75 %, texte `couleur.texte-2` | Écran de suivi : la version complète passerait sous « Terminer ». Le « i » ouvre la boîte native de MapLibre |
 | `guidage.panneau` | Hauteur 262, bord du bas `bord.guidage` ; dans l'ordre : pictogramme et distance (ligne de 124), consigne (2 lignes au plus), précision | Même structure dans tous les états : l'écran ne saute pas |
 | `suivi.bas` | Du bas de la carte (724) au bas de l'écran, bord du haut `bord.guidage` ; deux colonnes égales, 16 entre elles ; étiquette `texte.guidage-etiquette` en `couleur.texte-2`, valeur `texte.guidage-restant` | « Reste » et « D+ restant » (décision 3) |
 | `suivi.terminer` | 140 × 64 (`cible.velo`), rayon 32 ; fond `couleur.fond`, bord 2 `couleur.danger`, texte 20 / 700 `couleur.danger` ; `ombre.flottant` | Bouton « Terminer », flottant à 16 du bord droit et 16 au-dessus de `suivi.bas` |

@@ -480,22 +480,26 @@ describe('panelOf (mock-up 30, order of priority)', () => {
     });
   });
 
-  it('shows the arrival with the reason when the stretch without direction goes to the end', () => {
+  it('keeps "Suivez le tracé" with the reason when the stretch without direction goes to the end, until the arrival is in sight', () => {
     const toEnd: Direction[] = [
       { kind: 'follow', fromM: 1500, toM: 2000, reason: 'outOfZone' },
       { kind: 'arrive', atM: 2000 },
     ];
     const panel = panelOf(at({ progressM: 1600 }, { directions: toEnd }));
     expect(panel).toMatchObject({
-      kind: 'arrive',
+      kind: 'follow',
       distanceM: 400,
       reason: 'outOfZone',
       imminent: false,
     });
-    expect(panel.direction).toEqual({ kind: 'arrive', atM: 2000 });
-    expect(
-      panelOf(at({ progressM: 1950 }, { directions: toEnd })).imminent,
-    ).toBe(true);
+    expect(panel.direction).toEqual(toEnd[0]);
+    const near = panelOf(at({ progressM: 1950 }, { directions: toEnd }));
+    expect(near).toMatchObject({
+      kind: 'arrive',
+      reason: 'outOfZone',
+      imminent: true,
+    });
+    expect(near.direction).toEqual({ kind: 'arrive', atM: 2000 });
   });
 
   it('says nothing about the reason of a stretch the engine did not match', () => {
@@ -504,7 +508,7 @@ describe('panelOf (mock-up 30, order of priority)', () => {
       { kind: 'arrive', atM: 2000 },
     ];
     expect(panelOf(at({ progressM: 100 }, { directions: lost }))).toMatchObject(
-      { kind: 'arrive', reason: null },
+      { kind: 'follow', reason: null },
     );
   });
 

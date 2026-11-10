@@ -4,6 +4,7 @@ import {
   Layer,
   Map,
   type CameraRef,
+  type MapRef,
 } from '@maplibre/maplibre-react-native';
 import { useSelector } from '@tanstack/react-store';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -20,12 +21,15 @@ import { mapColors, navColors, text } from '@/ui/theme';
 import { ZoneBaseMap } from '../ZoneBaseMap';
 import {
   drawnLine,
-  gapLine,
+  gapDots,
   GESTURE_PAUSE_MS,
+  metersPerPoint,
   planCamera,
   REDRAW_M,
   ridePieces,
   riderPoint,
+  targetPoint,
+  ZOOM_ROAD,
 } from './trackingGeometry';
 import type { TrackingStore } from './trackingStore';
 
@@ -68,6 +72,7 @@ export function TrackingMap({
   bottom: React.ReactNode;
 }) {
   const camera = useRef<CameraRef>(null);
+  const mapRef = useRef<MapRef>(null);
   const placement = useSelector(store, (s) => s.placement);
   const imminent = useSelector(store, (s) => panelOf(s).imminent);
   const gpsLost = useSelector(store, (s) => s.gpsLost);
@@ -103,10 +108,14 @@ export function TrackingMap({
     }),
     [rider, riderData],
   );
-  const gap = useMemo(
-    () => gapLine(source.line, placement),
-    [source, placement],
-  );
+  // The dotted gap line: a dot every 10 points of the screen, at the zoom of
+  // the map (read from its events).
+  const [zoom, setZoom] = useState(ZOOM_ROAD);
+  const dots = useMemo(() => {
+    const target = targetPoint(source.line, placement);
+    if (!rider || !target) return gapDots([0, 0], [0, 0], 0);
+    return gapDots(rider, target, 10 * metersPerPoint(zoom, rider[1]));
+  }, [source, placement, rider, zoom]);
   const ends = useMemo(() => {
     const first = source.line.points[0];
     const last = source.line.points[source.line.points.length - 1];
@@ -170,8 +179,15 @@ export function TrackingMap({
   const events = {
     onRegionWillChange: (e: { nativeEvent: { userInteraction: boolean } }) =>
       touched(e.nativeEvent.userInteraction),
-    onRegionDidChange: (e: { nativeEvent: { userInteraction: boolean } }) =>
-      touched(e.nativeEvent.userInteraction),
+    onRegionDidChange: (e: {
+      nativeEvent: { userInteraction: boolean; zoom?: number };
+    }) => {
+      touched(e.nativeEvent.userInteraction);
+      const next = e.nativeEvent.zoom;
+      if (next !== undefined) {
+        setZoom((before) => (Math.abs(before - next) > 0.05 ? next : before));
+      }
+    },
   };
 
   const layers = (
@@ -214,26 +230,16 @@ export function TrackingMap({
           }}
         />
       </GeoJSONSource>
-      <GeoJSONSource id="suivi-ecart" data={gap}>
+      <GeoJSONSource id="suivi-ecart" data={dots}>
         <Layer
           id="suivi-ecart-halo"
-          type="line"
-          layout={ROUND}
-          paint={{
-            'line-color': '#FFFFFF',
-            'line-width': 9,
-            'line-dasharray': [0.01, 1.1],
-          }}
+          type="circle"
+          paint={{ 'circle-radius': 4.5, 'circle-color': '#FFFFFF' }}
         />
         <Layer
           id="suivi-ecart-points"
-          type="line"
-          layout={ROUND}
-          paint={{
-            'line-color': navColors.text,
-            'line-width': 5,
-            'line-dasharray': [0.01, 2],
-          }}
+          type="circle"
+          paint={{ 'circle-radius': 2.5, 'circle-color': navColors.text }}
         />
       </GeoJSONSource>
       <GeoJSONSource id="suivi-bouts" data={ends}>
@@ -281,6 +287,7 @@ export function TrackingMap({
         <ZoneBaseMap
           zone={zone}
           cameraRef={camera}
+          mapRef={mapRef}
           free
           onDidFinishLoadingMap={() => setLoaded(true)}
           {...events}
@@ -289,6 +296,7 @@ export function TrackingMap({
         </ZoneBaseMap>
       ) : (
         <Map
+          ref={mapRef}
           style={styles.map}
           mapStyle={PLAIN_STYLE as never}
           attribution={false}
@@ -323,9 +331,24 @@ export function TrackingMap({
           rotation={northUp ? 0 : -(cameraBearing(placement) ?? 0)}
         />
       </Pressable>
-      <Text style={styles.attribution} maxFontSizeMultiplier={1}>
-        {t('map.attribution')}
-      </Text>
+      {/* Short attribution and the "i": the full one would go under "Terminer". */}
+      <View style={styles.attribution}>
+        <Text style={text.attribution} maxFontSizeMultiplier={1}>
+          {t('info.attributionShort')}
+        </Text>
+        <Pressable
+          testID="tracking-attribution-button"
+          accessibilityRole="button"
+          accessibilityLabel={t('info.attributionButton')}
+          hitSlop={16}
+          onPress={() => void mapRef.current?.showAttribution()}
+          style={styles.attributionButton}
+        >
+          <Text style={styles.attributionI} maxFontSizeMultiplier={1}>
+            i
+          </Text>
+        </Pressable>
+      </View>
       <View style={styles.bottom}>{bottom}</View>
     </View>
   );
@@ -368,13 +391,32 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   attribution: {
-    ...text.attribution,
     position: 'absolute',
     left: 8,
     bottom: 8,
-    paddingHorizontal: 4,
-    borderRadius: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingLeft: 5,
+    paddingRight: 2,
+    paddingVertical: 1,
+    borderRadius: 9,
     backgroundColor: mapColors.attributionBackground,
+  },
+  attributionButton: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    borderWidth: 1.5,
+    borderColor: navColors.text2,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  attributionI: {
+    fontSize: 11,
+    lineHeight: 13,
+    fontWeight: '700',
+    color: navColors.text2,
   },
   bottom: { position: 'absolute', right: 16, bottom: 16 },
 });

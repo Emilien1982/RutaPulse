@@ -74,7 +74,11 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 .marqueur.depart{background:var(--depart)}
 .marqueur.arrivee{background:var(--arrivee)}
 .boussole{position:absolute;right:16px;top:280px;width:64px;height:64px;border-radius:32px;background:var(--fond);border:1px solid var(--contour-flottant);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
-.attribution{position:absolute;left:8px;top:702px;font-size:11px;color:#4A4A4A;background:rgba(255,255,255,.75);padding:1px 4px;border-radius:4px}
+/* Attribution courte (B1, T7 de la phase 8a) : « © OpenStreetMap » + « i », zone de toucher de 48 autour du « i ».
+   Elle s'arrête vers x 125, loin de « Terminer » (x 234). */
+.attribution{position:absolute;left:8px;top:700px;display:flex;align-items:center;gap:4px;font-size:11px;color:#4A4A4A;background:rgba(255,255,255,.75);padding:1px 2px 1px 5px;border-radius:9px}
+.attribution i{position:relative;font-style:normal;width:16px;height:16px;border-radius:8px;border:1.5px solid #4A4A4A;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.attribution i::before{content:"";position:absolute;inset:-16px;border-radius:24px}
 
 /* suivi.terminer : bouton flottant, à droite, 16 au-dessus du bandeau du bas */
 .terminer{position:absolute;right:16px;top:644px;width:140px;height:64px;border-radius:32px;background:var(--fond);border:2px solid var(--danger);color:var(--danger);font-size:20px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:var(--ombre);z-index:11}
@@ -240,7 +244,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 
 <div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(101deg)"><use href="#i-boussole"/></svg></div>
 
-<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
 
 <div class="bas">
@@ -281,7 +285,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 
 <div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(110deg)"><use href="#i-boussole"/></svg></div>
 
-<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
 
 <div class="bas">
@@ -327,7 +331,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 
 <div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(157deg)"><use href="#i-boussole"/></svg></div>
 
-<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
 
 <div class="bas">
@@ -386,7 +390,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 
 <div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(110deg)"><use href="#i-boussole"/></svg></div>
 
-<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
 
 <div class="bas">
@@ -430,7 +434,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 
 <div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(180deg)"><use href="#i-boussole"/></svg></div>
 
-<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
 
 <div class="bas">
@@ -469,7 +473,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 <div class="halo" style="left:195px;top:569px"></div>
 <svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
 <div class="boussole" aria-hidden="true"><svg width="36" height="36" style="transform:rotate(101deg)"><use href="#i-boussole"/></svg></div>
-<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" aria-hidden="true">Terminer</div>
 <div class="bas" aria-hidden="true">
   <div class="col"><div class="etiquette">Reste</div><div class="valeur">18,0 km</div></div>
@@ -512,7 +516,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 
 <div class="boussole" role="button" aria-label="Nord en haut"><svg width="36" height="36"><use href="#i-boussole"/></svg></div>
 
-<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
 
 <div class="bas">
@@ -558,7 +562,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 
 <div class="boussole" role="button" aria-label="Nord en haut"><svg width="36" height="36"><use href="#i-boussole"/></svg></div>
 
-<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
 
 <div class="bas">
@@ -592,7 +596,8 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 
 <h3>Mise en page (valeurs : tokens.md, « États du suivi »)</h3>
 <ul>
-  <li><b>Panneau du haut</b> : 262 de haut, toujours la même structure : pictogramme de 124, grande distance (72, unité 40), consigne (28, deux lignes au plus), ligne du dessous (<code>guidage.precision</code>, 20, en <code>couleur.texte</code>, une ligne). Ainsi l'écran ne saute pas d'un état à l'autre.</li>
+  <li><b>Panneau du haut</b> : 262 de haut, toujours la même structure : pictogramme de 124, grande distance (72, unité 40), consigne (28, deux lignes au plus), ligne du dessous (<code>guidage.precision</code>, 20, en <code>couleur.texte</code>, une ligne). Ainsi l'écran ne saute pas d'un état à l'autre. <b>Quand une ligne du dessous s'affiche</b> (raison, « Signal GPS perdu »…), la consigne tient sur une ligne : on retire le type de voie (« Légèrement à droite » au lieu de « Légèrement à droite sur la piste »). Deux lignes de consigne et la ligne du dessous ne tiennent pas dans les 262 (décidé après la comparaison de T3, écart C4).</li>
+  <li><b>Attribution</b> : version courte en bas à gauche de la carte, <q>© OpenStreetMap</q> puis un bouton <q>i</q> (rond de 16, zone de toucher de 48). Le « i » ouvre l'attribution complète dans la boîte native de MapLibre (<code>showAttribution()</code>), comme sur l'écran Infos (v1/20). Le suivi continue derrière. « Terminer » ne bouge pas (décidé après la comparaison de T3, écart B1).</li>
   <li><b>Carte</b> : de 262 à 724. Position au tiers du bas (centre à 569), pour voir loin devant.</li>
   <li><b>Boussole</b> : 64, à 16 du bord droit, en haut de la carte. Toucher : nord en haut ; toucher encore : de nouveau dans le sens de la marche (comme Google Maps et Plans). <i>8b</i> : la roue dentée de 48 vient dessous.</li>
   <li><b>« Terminer »</b> : 140 × 64, à 16 du bord droit et 16 au-dessus du bandeau du bas. Loin de la boussole et de la future roue dentée.</li>
@@ -624,6 +629,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 <h3>Textes exacts (pour <code>fr.ts</code>)</h3>
 <ul>
   <li>Bas : <q>Reste</q>, <q>D+ restant</q>. Bouton : <q>Terminer</q>.</li>
+  <li>Attribution : <q>© OpenStreetMap</q> ; lecteur d'écran du « i » : <q>Afficher les attributions de la carte</q> (textes déjà dans <code>fr.ts</code>, écran Infos).</li>
   <li>Écran 3 : <q>Suivez le tracé</q> ; <q>Tronçon tracé à la main</q> ; <q>Hors de la zone téléchargée</q>.</li>
   <li>Écran 4 : <q>jusqu'au tracé</q> ; <q>Le guidage reprend sur le tracé.</q></li>
   <li>Écran 5 : <q>Arrivée</q>.</li>

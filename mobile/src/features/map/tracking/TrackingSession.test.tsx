@@ -132,13 +132,13 @@ describe('waiting for the GPS', () => {
 });
 
 describe('panel states', () => {
-  it('announces the arrival when no direction is left until the end of the line', async () => {
+  it('says "Suivez le tracé" with the distance when no direction is left until the end of the line', async () => {
     await open();
     await fix(100);
     // The engine gave nothing: the whole line is a stretch without direction,
-    // up to the arrival (panel rule 4 of the ADR: screen 5).
+    // up to the arrival: "Suivez le tracé", not "Arrivée" (decision of 10 November).
     expect(screen.getByTestId('tracking-instruction')).toHaveTextContent(
-      'Arrivée',
+      'Suivez le tracé',
     );
     expect(screen.getByTestId('tracking-distance')).toHaveTextContent('1,9 km');
     expect(screen.getByTestId('tracking-remaining')).toHaveTextContent(
@@ -170,7 +170,7 @@ describe('panel states', () => {
     await open();
     await fix(1000);
     expect(screen.getByTestId('tracking-instruction')).toHaveTextContent(
-      'Arrivée',
+      'Suivez le tracé',
     );
     expect(screen.getByTestId('tracking-panel')).toHaveStyle({
       backgroundColor: '#FFFFFF',
@@ -185,6 +185,9 @@ describe('panel states', () => {
     await fix(1800);
     await fix(1900);
     await fix(1920);
+    expect(screen.getByTestId('tracking-instruction')).toHaveTextContent(
+      'Arrivée',
+    );
     expect(screen.getByTestId('tracking-panel')).toHaveStyle({
       backgroundColor: '#FFD400',
     });
@@ -245,6 +248,34 @@ describe('panel states', () => {
     expect(screen.getByTestId('tracking-note')).toHaveTextContent(
       'Signal GPS perdu',
     );
+  });
+});
+
+describe('screen reader and short panel', () => {
+  it('reads the message shown after 30 s without a position', async () => {
+    jest.useFakeTimers({ doNotFake: ['Date'] });
+    await open();
+    expect(screen.getByTestId('tracking-panel')).toHaveProp(
+      'accessibilityLabel',
+      'Recherche du GPS… Restez à découvert quelques secondes.',
+    );
+    now += 31_000;
+    await act(async () => {
+      jest.advanceTimersByTime(1000);
+    });
+    expect(screen.getByTestId('tracking-panel')).toHaveProp(
+      'accessibilityLabel',
+      'Recherche du GPS… Le GPS ne répond pas. Vérifiez que la position est activée.',
+    );
+  });
+
+  it('shows the full attribution button, short text, away from "Terminer"', async () => {
+    await open();
+    expect(screen.getByText('© OpenStreetMap')).toBeOnTheScreen();
+    expect(screen.queryByText(/IGN/)).toBeNull();
+    expect(
+      screen.getByLabelText('Afficher les attributions de la carte'),
+    ).toBeOnTheScreen();
   });
 });
 

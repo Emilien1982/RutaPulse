@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { t } from '@/core/i18n/t';
-import { directionLabel } from '@/core/tracking/directionText';
+import { directionLabel, type Direction } from '@/core/tracking/directionText';
 import { panelDistance, type Panel } from '@/core/tracking/trackingState';
 import { navColors } from '@/ui/theme';
 
@@ -24,6 +24,16 @@ type Lines = {
   label: string;
 };
 
+// With a line below ("Signal GPS perdu"), the instruction has one line: the
+// kind of way is dropped (mockup 30, note).
+function withoutWay(direction: Direction): Direction {
+  if (direction.kind !== 'turn') return direction;
+  const { way: _way, then, ...rest } = direction;
+  if (!then) return rest;
+  const { way: _thenWay, ...thenRest } = then;
+  return { ...rest, then: thenRest };
+}
+
 function linesOf(panel: Panel): Lines {
   const distance =
     panel.distanceM === null ? null : panelDistance(panel.distanceM);
@@ -43,7 +53,9 @@ function linesOf(panel: Panel): Lines {
         note: panel.silent
           ? t('tracking.waitingSilent')
           : t('tracking.waitingHint'),
-        label: `${t('tracking.waiting')} ${t('tracking.waitingHint')}`,
+        label: `${t('tracking.waiting')} ${
+          panel.silent ? t('tracking.waitingSilent') : t('tracking.waitingHint')
+        }`,
       };
     case 'approach':
       return {
@@ -84,7 +96,11 @@ function linesOf(panel: Panel): Lines {
         }),
       };
     default: {
-      const text = panel.direction ? directionLabel(panel.direction) : '';
+      const text = panel.direction
+        ? directionLabel(
+            panel.gpsLost ? withoutWay(panel.direction) : panel.direction,
+          )
+        : '';
       return {
         picto: pictoOf(panel.direction),
         distance,
@@ -146,7 +162,7 @@ export const GuidancePanel = memo(function GuidancePanel({
         <Text
           testID="tracking-instruction"
           style={styles.instruction}
-          numberOfLines={2}
+          numberOfLines={note ? 1 : 2}
           maxFontSizeMultiplier={1.2}
         >
           {lines.instruction}

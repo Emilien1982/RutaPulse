@@ -1,7 +1,7 @@
-import Svg, { Circle, Path } from 'react-native-svg';
+import Svg, { Circle, G, Path, Rect } from 'react-native-svg';
 
 import type { Direction } from '@/core/tracking/directionText';
-import { navColors } from '@/ui/theme';
+import { mapColors, navColors } from '@/ui/theme';
 
 // The pictograms of the panel (mockup 30, "planche"): drawn in a square of
 // 96, stroke 13, round ends, shown in a square of 124. A right turn is the
@@ -49,14 +49,15 @@ function paths(kind: PictoKind): string[] {
       return ['M32 86V40Q32 20 52 20Q72 20 72 40V62', 'M58 50L72 64L86 50'];
     case 'roundabout':
       return ['M48 86V66', 'M64 38L80 22', 'M66 22H80V36'];
-    case 'arrive':
-      return ['M30 88V12', 'M30 14H74L62 32L74 50H30'];
     case 'follow':
-      return ['M32 86C32 58 64 58 64 30', 'M48 42L64 26L80 42'];
+      return [
+        'M56 90C56 70 32 66 32 48C32 32 50 30 50 18',
+        'M34 30L50 12L66 30',
+      ];
+    case 'arrive':
     case 'off':
-      return ['M48 66V34', 'M28 52L48 70L68 52'];
     case 'start':
-      return ['M48 74V40'];
+      return [];
     case 'gps':
       return ['M26 48A22 22 0 0 1 70 48', 'M12 48A36 36 0 0 1 84 48'];
   }
@@ -88,10 +89,73 @@ export function Picto({
       {paths(kind).map((d) => (
         <Path key={d} d={d} />
       ))}
-      {kind === 'off' && <Circle cx="48" cy="22" r="6" fill={color} />}
-      {kind === 'start' && <Circle cx="48" cy="22" r="12" fill={color} />}
-      {kind === 'start' && <Circle cx="48" cy="84" r="6" fill={color} />}
+      {kind === 'off' && <GapDrawing />}
+      {kind === 'start' && <StartDrawing />}
+      {kind === 'arrive' && <FinishDrawing />}
       {kind === 'gps' && <Circle cx="48" cy="66" r="8" fill={color} />}
     </Svg>
+  );
+}
+
+// The three drawings of the mockup 30 that are not strokes of one color.
+// p-ecart: the rider (blue), dots, the track (magenta with a white edge). No arrow.
+function GapDrawing() {
+  return (
+    <G>
+      <Path d="M76 8V88" stroke="#FFFFFF" strokeWidth={20} />
+      <Path d="M76 8V88" stroke={mapColors.route} strokeWidth={13} />
+      <Path
+        d="M40 48H64"
+        stroke={navColors.text}
+        strokeWidth={7}
+        strokeDasharray="0 12"
+      />
+      <Circle cx="22" cy="48" r="15" fill={mapColors.position} />
+      <Circle
+        cx="22"
+        cy="48"
+        r="15"
+        fill="none"
+        stroke={navColors.text}
+        strokeWidth={2}
+      />
+    </G>
+  );
+}
+
+// p-depart: a green disc with a white triangle.
+function StartDrawing() {
+  return (
+    <G stroke="none">
+      <Circle cx="48" cy="48" r="34" fill={mapColors.start} />
+      <Path d="M38 30L64 48L38 66Z" fill="#FFFFFF" />
+    </G>
+  );
+}
+
+// p-arrivee: a pole and a chequered flag.
+function FinishDrawing() {
+  const black = navColors.text;
+  return (
+    <G>
+      <Path d="M28 90V10" stroke={black} strokeWidth={10} />
+      <Rect
+        x="34"
+        y="12"
+        width="48"
+        height="36"
+        fill="#FFFFFF"
+        stroke={black}
+        strokeWidth={5}
+      />
+      <G fill={black} stroke="none">
+        <Rect x="34" y="12" width="12" height="12" />
+        <Rect x="58" y="12" width="12" height="12" />
+        <Rect x="46" y="24" width="12" height="12" />
+        <Rect x="70" y="24" width="12" height="12" />
+        <Rect x="34" y="36" width="12" height="12" />
+        <Rect x="58" y="36" width="12" height="12" />
+      </G>
+    </G>
   );
 }

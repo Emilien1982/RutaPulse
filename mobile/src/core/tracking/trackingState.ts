@@ -203,14 +203,16 @@ export function panelOf(state: TrackingState): Panel {
   );
   if (inside && inside.kind === 'follow') {
     const toM = inside.toM - at;
-    const toEnd = inside.toM >= line.lengthM - 1;
+    // A stretch that runs to the arrival stays "Suivez le tracé" (with the
+    // distance and the reason) until the arrival is in sight: 100 m or less.
+    const inSight = inside.toM >= line.lengthM - 1 && toM <= IMMINENT_M;
     return {
       ...base,
-      kind: toEnd ? 'arrive' : 'follow',
+      kind: inSight ? 'arrive' : 'follow',
       distanceM: toM,
-      direction: toEnd ? (directions[directions.length - 1] ?? null) : inside,
+      direction: inSight ? (directions[directions.length - 1] ?? null) : inside,
       reason: inside.reason === 'noMatch' ? null : inside.reason,
-      imminent: toEnd && toM <= IMMINENT_M,
+      imminent: inSight,
     };
   }
   // The next direction: a turn not passed yet, a stretch without direction

@@ -15,7 +15,7 @@ import {
 import { sampleCreated, sampleGpx } from '@/core/routes/testing/sampleRoutes';
 import type { Zone } from '@/core/zones/catalogue';
 
-import { TrackingScreen } from './tracking/TrackingScreen';
+import { TrackingScreen } from './TrackingScreen';
 
 const mockTraceRoute = jest.fn();
 const mockMatchedEdges = jest.fn();
@@ -90,7 +90,7 @@ jest.mock('@/shared-data/routing/computeInfos', () => ({
 jest.mock('@/shared-data/zones/createZoneOps', () => ({
   createZoneOps: () => ({ readText: mockReadText }),
 }));
-jest.mock('./useGlyphsReady', () => ({
+jest.mock('../useGlyphsReady', () => ({
   useGlyphsReady: () => true,
   glyphsDirUri: () => 'file:///doc/glyphs/1',
 }));
@@ -199,6 +199,27 @@ describe('tracking of a saved route', () => {
     expect(screen.getByTestId('tracking-note')).toHaveTextContent(
       'Hors de la zone téléchargée',
     );
+  });
+
+  it('keeps going when the Infos screen below reads the route again, even with an error', async () => {
+    await insertRoute(db, sampleCreated());
+    await open();
+    expect(mockTraceRoute).toHaveBeenCalledTimes(1);
+    const failing = Promise.reject(new Error('disk'));
+    failing.catch(() => undefined);
+    mockDb = failing;
+    await act(async () => {
+      await client.invalidateQueries();
+    });
+    for (let i = 0; i < 5; i++) {
+      await act(async () => {
+        await new Promise((resolve) => setTimeout(resolve, 5));
+      });
+    }
+    expect(mockBack).not.toHaveBeenCalled();
+    expect(screen.getByTestId('tracking-panel')).toBeOnTheScreen();
+    // The directions were not asked again.
+    expect(mockTraceRoute).toHaveBeenCalledTimes(1);
   });
 
   it('goes back when the route does not exist', async () => {

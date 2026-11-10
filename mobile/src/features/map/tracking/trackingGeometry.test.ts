@@ -4,7 +4,9 @@ import { buildLine } from '@/core/tracking/trackingLine';
 
 import {
   drawnLine,
+  gapDots,
   gapLine,
+  metersPerPoint,
   ridePieces,
   targetPoint,
 } from './trackingGeometry';
@@ -79,5 +81,26 @@ describe('gap line', () => {
       prev: line.points[3],
     };
     expect(gapLine(line, placement).features).toHaveLength(0);
+  });
+});
+
+describe('gap dots', () => {
+  it('puts a dot every spacing, round on both platforms, none at the ends', () => {
+    const from: [number, number] = [6, 48.7];
+    const to: [number, number] = [6, 48.7 + 95 / 111195];
+    const dots = gapDots(from, to, 10);
+    expect(dots.features).toHaveLength(9);
+    expect(dots.features[0]?.geometry.type).toBe('Point');
+  });
+
+  it('is empty without spacing, and bounded for a very long gap', () => {
+    const from: [number, number] = [6, 48.7];
+    expect(gapDots(from, [6, 49], 0).features).toHaveLength(0);
+    expect(gapDots(from, [6, 49], 1).features.length).toBeLessThanOrEqual(300);
+  });
+
+  it('measures the ground distance of a point of the screen', () => {
+    // 15.5: about 1.1 m per point at 48.7 N (tiles of 512 points).
+    expect(metersPerPoint(15.5, 48.7)).toBeCloseTo(1.1, 1);
   });
 });

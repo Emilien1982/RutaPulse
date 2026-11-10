@@ -4,7 +4,7 @@
 // under the same cache keys: no new call to the engine (section 4).
 
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { View } from 'react-native';
 
 import { summarizeInfo } from '@/core/route-info/routeInfo';
@@ -31,6 +31,12 @@ import { TrackingSession } from './TrackingSession';
 
 const BLANK = { flex: 1, backgroundColor: navColors.background } as const;
 
+type Ready = {
+  route: CreatedRoute | GpxRoute;
+  zone: Zone | null;
+  installed: Zone[];
+};
+
 export function TrackingScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const routeId = id !== undefined && /^\d+$/.test(id) ? Number(id) : null;
@@ -41,27 +47,42 @@ export function TrackingScreen() {
   const installed = useInstalledZones().data;
   const glyphsReady = useGlyphsReady();
   const route = query.data;
-  const missing = routeId === null || route === null || query.isError;
-  const unreadable = route !== undefined && route !== null && !route.readable;
+  // What the tracking starts from is kept as it was read at the start: the
+  // Infos screen below may read the route again (a new object, even an
+  // error), which must not restart the directions or leave the tracking.
+  const [ready, setReady] = useState<Ready | null>(null);
+  if (
+    !ready &&
+    route &&
+    route.readable &&
+    zone !== undefined &&
+    installed &&
+    glyphsReady
+  ) {
+    setReady({
+      route,
+      zone,
+      installed: installed.map((marker) => marker.zone),
+    });
+  }
+  const missing =
+    !ready &&
+    (routeId === null ||
+      route === null ||
+      query.isError ||
+      (route !== undefined && !route.readable));
 
   useEffect(() => {
-    if (missing || unreadable) router.back();
-  }, [missing, unreadable, router]);
+    if (missing) router.back();
+  }, [missing, router]);
 
-  if (
-    !route ||
-    !route.readable ||
-    zone === undefined ||
-    !installed ||
-    !glyphsReady
-  ) {
-    return <View style={BLANK} />;
-  }
+  if (!ready) return <View style={BLANK} />;
   return (
     <Loaded
-      route={route}
-      zone={zone}
-      installed={installed.map((marker) => marker.zone)}
+      key={ready.route.id}
+      route={ready.route}
+      zone={ready.zone}
+      installed={ready.installed}
     />
   );
 }
