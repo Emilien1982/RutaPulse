@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-10 — Nouvelle session de pilotage : `local_b89c76a2-43a1-4417-8c81-ac486e333c4d` (passation après la phase 7). C'est l'adresse à donner dans les briefs de phase.
 - 2026-11-10 — Phase 7 fusionnée dans main (679b66d) : couche des circuits balisés et leur feuille, « En faire un itinéraire » (tracé gardé, aucun calcul à l'ouverture), « Modifier » d'un GPX (remplace l'original), « Dupliquer », base en version 2, fabrique qui ordonne les circuits, zone Nancy v6. 15 critères sur 16 ; C12 en partie (iOS 1,25 s, cause : vol de la carte vers la position, à corriger en phase 10 ; glisser non mesuré, l'émulateur limite la mesure). 2 529 tests, 280 pytest, CI verte. ADR 0020 ; ADR 0003 complété.
 - 2026-11-10 — Phase 7, détails tranchés par le pilotage : glisser noté « non mesuré » (pas de banc) ; C12 iOS reporté à la phase 10 plutôt qu'un build de plus (disque à 12 Go). Choix du designer acceptés : circuits visibles dès le zoom 8 ; « Enregistrer » actif une fois les chiffres arrivés.
 - 2026-11-09 — Phase 7, T1 : ADR 0020 et maquette 12 validés par Émilien, avec les recommandations des 8 questions (ordre des voies par une règle tolérante qui garde le tronc et refuse au-delà de 15 % retirés ; D+ d'une trace non touchée calculé d'un seul tenant). Ajout : « Dupliquer » un itinéraire (copie modifiable, l'original reste), critère C16. Le D+ est un ordre de grandeur en v1 : pas de travail de précision en plus.
@@ -100,7 +101,7 @@
 
 ## Décisions en attente
 
-- Aucune.
+- Spec de la phase 8 ([p08-suivi-velo.md](docs/phases/p08-suivi-velo.md)), avec ses questions 1 à 4 (trait de liaison, cadrage hors zone, états de la maquette 90, une phase G ou 8a + 8b) : présentée à Émilien le 10 novembre.
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
