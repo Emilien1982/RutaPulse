@@ -1,0 +1,97 @@
+screen_off_timeout=15000 ms (valeur avant l'essai : 2147483647, a remettre)
+== temoin: ecran reveille, KeepAwake coupe, +0 s (13:59:54)
+  mWakefulness=Awake
+Wake Locks: size=0
+  mScreenBrightnessOverrideFromWindowManager=NaN
+  mUserActivityTimeoutOverrideFromWindowManager=-1
+  mUserInactiveOverrideFromWindowManager=false
+  mCurrentFocus=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+  mHoldScreenWindow=null
+== temoin: +25 s (> 15 s) (14:00:19)
+  mWakefulness=Asleep
+Wake Locks: size=0
+  mScreenBrightnessOverrideFromWindowManager=NaN
+  mUserActivityTimeoutOverrideFromWindowManager=-1
+  mUserInactiveOverrideFromWindowManager=false
+  mCurrentFocus=null
+  mHoldScreenWindow=null
+== KeepAwake ON, +1 s (14:00:29)
+  mWakefulness=Awake
+Wake Locks: size=2
+  mScreenBrightnessOverrideFromWindowManager=NaN
+  mUserActivityTimeoutOverrideFromWindowManager=-1
+  mUserInactiveOverrideFromWindowManager=false
+  SCREEN_BRIGHT_WAKE_LOCK        'WindowManager/displayId:0' ON_AFTER_RELEASE ACQ=-1s41ms (uid=1000 pid=536 ws=WorkSourc
+  11-10 14:00:28.487 - 1000 - ACQ WindowManager/displayId:0 (screen-bright,on-after-release)
+  mCurrentFocus=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+  mHoldScreenWindow=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+== KeepAwake ON, +26 s (> 15 s) (14:00:55)
+  mWakefulness=Awake
+Wake Locks: size=1
+  mScreenBrightnessOverrideFromWindowManager=NaN
+  mUserActivityTimeoutOverrideFromWindowManager=-1
+  mUserInactiveOverrideFromWindowManager=false
+  SCREEN_BRIGHT_WAKE_LOCK        'WindowManager/displayId:0' ON_AFTER_RELEASE ACQ=-26s400ms (uid=1000 pid=536 ws=WorkSou
+  11-10 14:00:28.487 - 1000 - ACQ WindowManager/displayId:0 (screen-bright,on-after-release)
+  mCurrentFocus=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+  mHoldScreenWindow=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+== HOME (arriere-plan) +3 s (14:00:58)
+  mWakefulness=Awake
+Wake Locks: size=0
+  mScreenBrightnessOverrideFromWindowManager=NaN
+  mUserActivityTimeoutOverrideFromWindowManager=-1
+  mUserInactiveOverrideFromWindowManager=false
+  11-10 14:00:28.487 - 1000 - ACQ WindowManager/displayId:0 (screen-bright,on-after-release)
+  11-10 14:00:56.288 - 1000 - REL WindowManager/displayId:0
+  mCurrentFocus=Window{66daddf u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLaunc
+  mHoldScreenWindow=null
+== arriere-plan +23 s (> 15 s) (14:01:18)
+  mWakefulness=Asleep
+Wake Locks: size=0
+  mScreenBrightnessOverrideFromWindowManager=NaN
+  mUserActivityTimeoutOverrideFromWindowManager=-1
+  mUserInactiveOverrideFromWindowManager=false
+  11-10 14:00:28.487 - 1000 - ACQ WindowManager/displayId:0 (screen-bright,on-after-release)
+  11-10 14:00:56.288 - 1000 - REL WindowManager/displayId:0
+  mCurrentFocus=null
+  mHoldScreenWindow=null
+== retour au premier plan +3 s (14:01:22)
+  mWakefulness=Asleep
+Wake Locks: size=0
+  mScreenBrightnessOverrideFromWindowManager=NaN
+  mUserActivityTimeoutOverrideFromWindowManager=-1
+  mUserInactiveOverrideFromWindowManager=false
+  11-10 14:00:28.487 - 1000 - ACQ WindowManager/displayId:0 (screen-bright,on-after-release)
+  11-10 14:00:56.288 - 1000 - REL WindowManager/displayId:0
+  mCurrentFocus=null
+  mHoldScreenWindow=null
+== retour +28 s (> 15 s) (14:01:47)
+  mWakefulness=Asleep
+Wake Locks: size=0
+  mScreenBrightnessOverrideFromWindowManager=NaN
+  mUserActivityTimeoutOverrideFromWindowManager=-1
+  mUserInactiveOverrideFromWindowManager=false
+  11-10 14:00:28.487 - 1000 - ACQ WindowManager/displayId:0 (screen-bright,on-after-release)
+  11-10 14:00:56.288 - 1000 - REL WindowManager/displayId:0
+  mCurrentFocus=null
+  mHoldScreenWindow=null
+== KeepAwake coupe (demontage) +1 s (14:01:51)
+  mWakefulness=Asleep
+Wake Locks: size=0
+  mScreenBrightnessOverrideFromWindowManager=NaN
+  mUserActivityTimeoutOverrideFromWindowManager=-1
+  mUserInactiveOverrideFromWindowManager=false
+  11-10 14:00:28.487 - 1000 - ACQ WindowManager/displayId:0 (screen-bright,on-after-release)
+  11-10 14:00:56.288 - 1000 - REL WindowManager/displayId:0
+  mCurrentFocus=null
+  mHoldScreenWindow=null
+== KeepAwake coupe +26 s (> 15 s) (14:02:17)
+  mWakefulness=Asleep
+Wake Locks: size=0
+  mScreenBrightnessOverrideFromWindowManager=NaN
+  mUserActivityTimeoutOverrideFromWindowManager=-1
+  mUserInactiveOverrideFromWindowManager=false
+  11-10 14:00:28.487 - 1000 - ACQ WindowManager/displayId:0 (screen-bright,on-after-release)
+  11-10 14:00:56.288 - 1000 - REL WindowManager/displayId:0
+  mCurrentFocus=null
+  mHoldScreenWindow=null

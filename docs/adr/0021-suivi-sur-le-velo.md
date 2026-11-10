@@ -677,9 +677,42 @@ Hors de la phase 8a : réglage, roue dentée et panneau 31b sont en phase 8b
 
 ## Contrôles avant de bâtir dessus
 
-**Partie B de l'essai T1, sur les deux simulateurs** (pas encore faite :
-la place disque manque ; effacer d'abord DerivedData, risque 4 de la spec).
-Elle doit prouver, avant T3 :
+**Partie B de l'essai T1, faite le 10 novembre 2026** en version finale
+sur les deux simulateurs (preuves : `essais/08-suivi-velo/partie-b/`).
+Résultats :
+
+- **B1 prouvé.** Une position par seconde ; `coords.heading` existe avec
+  `simctl location start` et `geo fix` en boucle. Maestro `travel` marche
+  mais **sans cap** (iOS −1, Android 0) : les parcours Maestro ne comptent
+  pas sur le cap du GPS (le cap du suivi vient du tracé, § 5).
+- **B2 prouvé**, sauf la fluidité (« sans saccade »), reportée au vrai
+  téléphone (phase 10). Le geste se lit par `userInteraction` sur
+  `onRegionWillChange` et `onRegionDidChange` ; les `easeTo` du code
+  donnent `false`. Un geste long prolonge la pause de 10 s. Ne pas lire
+  la position de la caméra dans `onRegionDidChange` d'un `easeTo` (un
+  cycle de retard).
+- **B3 prouvé.** iOS : `isActivated` (`isIdleTimerDisabled`). Android :
+  `dumpsys power` avec un délai de veille court. Le module relâche le
+  verrou en arrière-plan et le reprend seul au retour.
+- **B4 prouvé.** `traceRoute` ajouté au module natif ; réponses identiques
+  au Mac sur iOS et Android, sauf le champ parlé
+  `verbal_post_transition_instruction` (format du nombre selon la langue du
+  téléphone) : l'app ne s'en sert pas. 10 à 210 ms par appel, départ sous
+  0,25 s sur simulateur. Le Mac de référence doit utiliser les tuiles de
+  la zone installée (même empreinte).
+- **B5 partiel.** Aucun vrai GPX VTT disponible. Trace simulée (circuit de
+  la Petite Suisse, bruit lent de 3 à 5 m) : 2,1 % sans direction,
+  toujours la fin du circuit, non praticable à vélo pour Valhalla. Un vrai
+  GPX reste à essayer (phase 10).
+- **B6 prouvé.** Formes identiques pour 1 et 2 ; divergence pour 3 et 3d,
+  ce qui confirme l'écart accepté (type de voie seulement sur la partie
+  commune).
+- **Règle ajoutée** : `npx expo run:android` a installé l'APK d'essai sur
+  un téléphone réel branché, malgré `ANDROID_SERIAL` et `--no-install`.
+  Construire par `./gradlew app:assembleRelease` puis
+  `adb -s emulator-5584 install -r`.
+
+Texte d'origine des contrôles (avant l'essai) :
 
 - **B1. Trace rejouée** : une position avance chaque seconde, sur iOS
   (`xcrun simctl location … start`) et sur Android (`adb emu geo fix`

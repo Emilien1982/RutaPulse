@@ -1,0 +1,21 @@
+1 trace_route: 6 differences
+     /trip/legs[0]/maneuvers[4]/verbal_post_transition_instruction: Continuez pendant 1.5 kilomètres. / Continuez pendant 1,5 kilomètres.
+     /trip/legs[0]/maneuvers[19]/verbal_post_transition_instruction: Continuez pendant 1.5 kilomètres. / Continuez pendant 1,5 kilomètres.
+     /trip/legs[0]/maneuvers[23]/verbal_post_transition_instruction: Continuez pendant 1.5 kilomètres. / Continuez pendant 1,5 kilomètres.
+     /trip/legs[0]/maneuvers[46]/verbal_post_transition_instruction: Continuez pendant 1.5 kilomètres. / Continuez pendant 1,5 kilomètres.
+     /trip/legs[0]/maneuvers[53]/verbal_post_transition_instruction: Continuez pendant 1.5 kilomètres. / Continuez pendant 1,5 kilomètres.
+     /trip/legs[0]/maneuvers[62]/verbal_post_transition_instruction: Continuez pendant 1.5 kilomètres. / Continuez pendant 1,5 kilomètres.
+1 trace_attributes: IDENTICAL (parsed JSON)
+2 trace_route: 3 differences
+     /trip/legs[0]/maneuvers[5]/verbal_post_transition_instruction: Continuez pendant 1.5 kilomètres. / Continuez pendant 1,5 kilomètres.
+     /trip/legs[0]/maneuvers[25]/verbal_post_transition_instruction: Continuez pendant 1.5 kilomètres. / Continuez pendant 1,5 kilomètres.
+     /trip/legs[0]/maneuvers[33]/verbal_post_transition_instruction: Continuez pendant 1.5 kilomètres. / Continuez pendant 1,5 kilomètres.
+2 trace_attributes: IDENTICAL (parsed JSON)
+3 trace_route: 2 differences
+     /trip/legs[0]/maneuvers[11]/verbal_post_transition_instruction: Continuez pendant 2.5 kilomètres. / Continuez pendant 2,5 kilomètres.
+     /trip/legs[0]/maneuvers[31]/verbal_post_transition_instruction: Continuez pendant 2.5 kilomètres. / Continuez pendant 2,5 kilomètres.
+3 trace_attributes: IDENTICAL (parsed JSON)
+3d trace_route: 2 differences
+     /trip/legs[0]/maneuvers[11]/verbal_post_transition_instruction: Continuez pendant 2.5 kilomètres. / Continuez pendant 2,5 kilomètres.
+     /trip/legs[0]/maneuvers[30]/verbal_post_transition_instruction: Continuez pendant 2.5 kilomètres. / Continuez pendant 2,5 kilomètres.
+3d trace_attributes: IDENTICAL (parsed JSON)
