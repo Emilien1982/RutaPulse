@@ -11,6 +11,14 @@ export type Gesture =
 export type Side = 'left' | 'right';
 export type Way = 'trail' | 'track' | 'road';
 
+/** A turn without its place. */
+export type TurnStep = {
+  gesture: Gesture;
+  side?: Side;
+  exit?: number;
+  way?: Way;
+};
+
 export type Direction =
   | {
       kind: 'turn';
@@ -21,6 +29,8 @@ export type Direction =
       /** Roundabout: number of the exit. */
       exit?: number;
       way?: Way;
+      /** A second turn announced with this one (less than 25 m after it). */
+      then?: TurnStep;
     }
   | { kind: 'follow'; fromM: number; toM: number; reason: FreeReason }
   | { kind: 'arrive'; atM: number };
@@ -57,11 +67,9 @@ const WAY_KEYS: Record<Way, TextKey> = {
   road: 'tracking.way.road',
 };
 
-/** The key and the parameters of a direction. */
-export function directionText(direction: Direction): DirectionText {
-  if (direction.kind === 'arrive') return { key: 'tracking.arrive' };
-  if (direction.kind === 'follow') return { key: 'tracking.follow' };
-  const { gesture, side, exit, way } = direction;
+/** The text of a turn alone. */
+function stepText(step: TurnStep): DirectionText {
+  const { gesture, side, exit, way } = step;
   if (gesture === 'uturn') return { key: 'tracking.gesture.uturn' };
   if (gesture === 'roundabout') {
     if (exit === undefined) return { key: 'tracking.gesture.roundaboutAny' };
@@ -76,9 +84,39 @@ export function directionText(direction: Direction): DirectionText {
   return { key: SIDE_KEYS[gesture][side ?? 'right'], ...wayKey };
 }
 
+function stepLabel(step: TurnStep): string {
+  const { key, params, wayKey } = stepText(step);
+  const gesture = t(key, params);
+  return wayKey ? t('tracking.withWay', { gesture, way: t(wayKey) }) : gesture;
+}
+
+/** The second turn of a pair, in lower case, without "Tournez": "à droite sur la piste". */
+function secondLabel(step: TurnStep): string {
+  const text = stepLabel(step).replace(/^Tournez /, '');
+  return text.charAt(0).toLowerCase() + text.slice(1);
+}
+
+/** The key and the parameters of a direction. */
+export function directionText(direction: Direction): DirectionText {
+  if (direction.kind === 'arrive') return { key: 'tracking.arrive' };
+  if (direction.kind === 'follow') return { key: 'tracking.follow' };
+  if (direction.then) {
+    return {
+      key: 'tracking.then',
+      params: {
+        first: stepLabel(direction),
+        second: secondLabel(direction.then),
+      },
+    };
+  }
+  return stepText(direction);
+}
+
 /** The sentence of a direction ("Tournez à gauche sur la piste"). */
 export function directionLabel(direction: Direction): string {
   const { key, params, wayKey } = directionText(direction);
-  const gesture = t(key, params);
-  return wayKey ? t('tracking.withWay', { gesture, way: t(wayKey) }) : gesture;
+  const text = t(key, params);
+  return wayKey
+    ? t('tracking.withWay', { gesture: text, way: t(wayKey) })
+    : text;
 }

@@ -368,6 +368,7 @@ export const fr = {
   'tracking.way.trail': 'sur le sentier',
   'tracking.way.track': 'sur la piste',
   'tracking.way.road': 'sur la route',
+  'tracking.then': '{first}, puis {second}',
   'tracking.withWay': '{gesture} {way}',
   'tracking.follow': 'Suivez le tracé',
   'tracking.arrive': 'Arrivée',

@@ -37,6 +37,8 @@ export const MATCH_GAP_M = 20;
 export const MATCH_RUN_M = 100;
 /** A maneuver farther than this (m) from our line is dropped. */
 export const MANEUVER_GAP_M = 20;
+/** Two turns less than this far apart (m) are announced together. */
+export const CHAIN_M = 25;
 /** A U-turn is kept when the line turns back by more than this (degrees)... */
 export const UTURN_MIN_ANGLE = 150;
 /** ... measured this far (m) before and after it. */
@@ -265,8 +267,23 @@ export function buildGuidance(
     })),
   ];
   all.sort((a, b) => a.at - b.at);
-  return [
-    ...all.map((item) => item.direction),
-    { kind: 'arrive', atM: line.lengthM },
-  ];
+  const out: Direction[] = [];
+  for (let i = 0; i < all.length; i++) {
+    const first = (all[i] as { direction: Direction }).direction;
+    const second = all[i + 1]?.direction;
+    // Two turns close together are one direction; never a chain of three,
+    // never with a stretch to follow or the arrival.
+    if (
+      first.kind === 'turn' &&
+      second?.kind === 'turn' &&
+      second.atM - first.atM < CHAIN_M
+    ) {
+      const { atM: _at, kind: _kind, then: _then, ...step } = second;
+      out.push({ ...first, then: step });
+      i++;
+    } else {
+      out.push(first);
+    }
+  }
+  return [...out, { kind: 'arrive', atM: line.lengthM }];
 }

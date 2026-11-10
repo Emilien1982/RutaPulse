@@ -727,6 +727,13 @@ caméra) : phase 10.
   séparation des formes n'ont pas de type de voie.
 - 2026-11-10, T2, accepté par le pilotage : texte « Au rond-point, 1re
   sortie » (la maquette ne donnait que « {n}e sortie »).
+- 2026-11-10, T2, décision de la session de phase (relecture du
+  testeur) : deux virages à moins de 25 m (`CHAIN_M`) s'annoncent
+  ensemble, « Tournez à gauche sur la route, puis à droite sur la piste ».
+  Deux au plus ; jamais avec l'arrivée ni « Suivez le tracé ». Reste à
+  régler sur le terrain (phase 10) : virages du même côté sur la même
+  voie entre 25 et 50 m (doublons d'une même courbe), et zigzags de 25 à
+  55 m annoncés séparément.
 - 2026-11-10, T2 : trois précisions du texte (§ 1.1 forme des filtres,
   § 2.2 définition d'un passage, § 6 imports), sans changement de
   décision.

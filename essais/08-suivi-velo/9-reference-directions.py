@@ -145,10 +145,26 @@ for num in ("1", "2", "3", "3d"):
                 continue
         elif m["type"] != 26 and m["begin_shape_index"] in ways:
             text += " " + WAY[ways[m["begin_shape_index"]]]
-        directions.append({"atM": round(at), "text": text})
+        directions.append({"atM": at, "text": text, "turn": True})
     for f in free:
         directions.append({"atM": f["fromM"], "text": "Suivez le tracé"})
     directions.sort(key=lambda x: x["atM"])
+    # Rule of the pilot: when the next turn is less than 25 m after a turn, the panel says both
+    # in one line, "first, puis second" (second in lower case, without "Tournez"). Only two
+    # turns per line, and never with an arrival or a "Suivez le tracé".
+    merged = []
+    i = 0
+    while i < len(directions):
+        a = directions[i]
+        b = directions[i + 1] if i + 1 < len(directions) else None
+        if a.get("turn") and b is not None and b.get("turn") and b["atM"] - a["atM"] < 25:
+            second = b["text"].replace("Tournez ", "", 1)
+            merged.append({"atM": a["atM"], "text": f"{a['text']}, puis {second[0].lower()}{second[1:]}", "turn": True})
+            i += 2
+        else:
+            merged.append(a)
+            i += 1
+    directions = [{"atM": round(x["atM"]), "text": x["text"]} for x in merged]
     directions.append({"atM": round(cum[-1]), "text": "Arrivée"})
     json.dump({"free": free, "directions": directions}, open(f"{DEST}/reference-{num}.json", "w"),
               ensure_ascii=False, indent=1)

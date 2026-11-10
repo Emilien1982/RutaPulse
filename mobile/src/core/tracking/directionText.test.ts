@@ -46,6 +46,33 @@ describe('directionLabel (texts of the mock-up 30)', () => {
   });
 });
 
+describe('two turns together', () => {
+  it('writes "first, puis second"', () => {
+    const pair: Direction = {
+      kind: 'turn',
+      atM: 10,
+      gesture: 'turn',
+      side: 'left',
+      way: 'road',
+      then: { gesture: 'turn', side: 'right', way: 'track' },
+    };
+    expect(directionLabel(pair)).toBe(
+      'Tournez à gauche sur la route, puis à droite sur la piste',
+    );
+    expect(directionText(pair).key).toBe('tracking.then');
+    const round: Direction = {
+      kind: 'turn',
+      atM: 10,
+      gesture: 'slight',
+      side: 'left',
+      then: { gesture: 'roundabout', exit: 2 },
+    };
+    expect(directionLabel(round)).toBe(
+      'Légèrement à gauche, puis au rond-point, 2e sortie',
+    );
+  });
+});
+
 describe('directionText', () => {
   it('gives a key, its parameters and the key of the way', () => {
     expect(directionText(turn({ gesture: 'roundabout', exit: 4 }))).toEqual({

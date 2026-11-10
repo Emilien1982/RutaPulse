@@ -3,11 +3,7 @@
   "directions": [
     {
       "atM": 906,
-      "text": "Tournez à gauche sur la route"
-    },
-    {
-      "atM": 910,
-      "text": "Tournez à droite sur la piste"
+      "text": "Tournez à gauche sur la route, puis à droite sur la piste"
     },
     {
       "atM": 1809,
@@ -23,11 +19,7 @@
     },
     {
       "atM": 3733,
-      "text": "Tournez à droite sur la route"
-    },
-    {
-      "atM": 3752,
-      "text": "Tournez à gauche sur la piste"
+      "text": "Tournez à droite sur la route, puis à gauche sur la piste"
     },
     {
       "atM": 4217,
@@ -43,11 +35,7 @@
     },
     {
       "atM": 5885,
-      "text": "Légèrement à droite sur la piste"
-    },
-    {
-      "atM": 5896,
-      "text": "Tournez à gauche sur le sentier"
+      "text": "Légèrement à droite sur la piste, puis à gauche sur le sentier"
     },
     {
       "atM": 6217,

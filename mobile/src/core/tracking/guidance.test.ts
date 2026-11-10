@@ -166,6 +166,10 @@ describe('C2: directions written from the recorded answers of the engine', () =>
         return `| ${i + 1} | ${km(from)} | ${text} | ${gap} |`;
       });
       const turns = directions.filter((d) => d.kind === 'turn').length;
+      const pairs = directions.filter(
+        (d) => d.kind === 'turn' && d.then,
+      ).length;
+      const follows = directions.filter((d) => d.kind === 'follow').length;
       fs.writeFileSync(
         path.join(folder, `directions-${files[name]}.md`),
         [
@@ -173,7 +177,8 @@ describe('C2: directions written from the recorded answers of the engine', () =>
           '',
           'Liste produite par `buildGuidance` (ADR 0021) à partir de la réponse enregistrée du moteur',
           `(fixtures de \`mobile/src/core/tracking/fixtures/\`). Ligne de ${km(source.line.lengthM)} km, ` +
-            `${turns} directions, plus l'arrivée.`,
+            `${directions.length} lignes : ${turns} consignes de virage (dont ${pairs} annonces groupées de deux virages à moins de 25 m), ` +
+            `${follows} « Suivez le tracé », 1 arrivée.`,
           '',
           '| # | Position (km) | Consigne | Distance jusqu’à la suivante |',
           '|---|---|---|---|',
@@ -525,6 +530,88 @@ describe('free stretches (by hand, out of the zone)', () => {
     expect(
       directions.map((d) => (d.kind === 'follow' ? d.reason : d.kind)),
     ).toEqual(['outOfZone', 'arrive']);
+  });
+});
+
+describe('two turns less than 25 m apart', () => {
+  const straight = lineOf(
+    dense(
+      [
+        [0, 0],
+        [2000, 0],
+      ],
+      20,
+    ),
+  );
+  const source: TrackingSource = { line: buildLine(straight), free: [] };
+  const run = (turns: [number, number][]) =>
+    buildGuidance(source, [
+      answerOn(
+        straight,
+        turns.map(([type, beginShapeIndex]) => ({ type, beginShapeIndex })),
+      ),
+    ]).map(directionLabel);
+
+  it('announces them together, in one entry at the place of the first', () => {
+    // 20 m apart (one point): left then right
+    const directions = buildGuidance(source, [
+      answerOn(straight, [
+        { type: 15, beginShapeIndex: 30 },
+        { type: 10, beginShapeIndex: 31 },
+      ]),
+    ]);
+    expect(directions).toHaveLength(2);
+    expect(directionLabel(directions[0] as Direction)).toBe(
+      'Tournez à gauche, puis à droite',
+    );
+    expect(positionOf(directions[0] as Direction)).toBeCloseTo(600, -1);
+  });
+
+  it('keeps two turns 40 m apart separate', () => {
+    expect(
+      run([
+        [15, 30],
+        [10, 32],
+      ]),
+    ).toHaveLength(3);
+  });
+
+  it('never makes a chain of three: the third stays alone', () => {
+    expect(
+      run([
+        [15, 30],
+        [10, 31],
+        [15, 32],
+      ]),
+    ).toEqual([
+      'Tournez à gauche, puis à droite',
+      'Tournez à gauche',
+      'Arrivée',
+    ]);
+  });
+
+  it('writes the second turn without "Tournez" and in lower case', () => {
+    expect(
+      run([
+        [10, 30],
+        [16, 31],
+      ])[0],
+    ).toBe('Tournez à droite, puis légèrement à gauche');
+  });
+
+  it('never joins a turn to the arrival or to a stretch to follow', () => {
+    // a turn 10 m before the end of the line
+    const end = buildGuidance(source, [
+      answerOn(straight, [{ type: 10, beginShapeIndex: 99 }]),
+    ]);
+    expect(end.map(directionLabel)).toEqual(['Tournez à droite', 'Arrivée']);
+    // a turn just before the stretch the engine did not match
+    const half = straight.slice(0, 51);
+    const joined = buildGuidance(source, [
+      answerOn(half, [{ type: 10, beginShapeIndex: 49 }]),
+    ]);
+    expect(joined.map((d) => d.kind)).toEqual(['turn', 'follow', 'arrive']);
+    expect((joined[0] as { then?: unknown }).then).toBeUndefined();
   });
 });
 

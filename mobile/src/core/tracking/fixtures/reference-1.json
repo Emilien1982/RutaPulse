@@ -55,11 +55,7 @@
     },
     {
       "atM": 9321,
-      "text": "Tournez à gauche sur la route"
-    },
-    {
-      "atM": 9342,
-      "text": "Tournez à droite sur la route"
+      "text": "Tournez à gauche sur la route, puis à droite sur la route"
     },
     {
       "atM": 9804,
@@ -103,19 +99,11 @@
     },
     {
       "atM": 19524,
-      "text": "Tournez à droite sur la route"
-    },
-    {
-      "atM": 19543,
-      "text": "Tournez à gauche sur la route"
+      "text": "Tournez à droite sur la route, puis à gauche sur la route"
     },
     {
       "atM": 19736,
-      "text": "Légèrement à droite sur la route"
-    },
-    {
-      "atM": 19753,
-      "text": "Au rond-point, 2e sortie"
+      "text": "Légèrement à droite sur la route, puis au rond-point, 2e sortie"
     },
     {
       "atM": 19897,
@@ -195,11 +183,7 @@
     },
     {
       "atM": 26933,
-      "text": "Légèrement à droite sur la route"
-    },
-    {
-      "atM": 26950,
-      "text": "Tournez à gauche sur la route"
+      "text": "Légèrement à droite sur la route, puis à gauche sur la route"
     },
     {
       "atM": 28233,

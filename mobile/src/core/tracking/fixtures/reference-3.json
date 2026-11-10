@@ -9,11 +9,7 @@
   "directions": [
     {
       "atM": 1195,
-      "text": "Tournez à gauche sur la route"
-    },
-    {
-      "atM": 1205,
-      "text": "Tournez à droite sur la route"
+      "text": "Tournez à gauche sur la route, puis à droite sur la route"
     },
     {
       "atM": 1500,
@@ -117,11 +113,7 @@
     },
     {
       "atM": 25002,
-      "text": "Tournez à gauche"
-    },
-    {
-      "atM": 25012,
-      "text": "Légèrement à droite"
+      "text": "Tournez à gauche, puis légèrement à droite"
     },
     {
       "atM": 26992,
@@ -169,19 +161,11 @@
     },
     {
       "atM": 33417,
-      "text": "Légèrement à gauche"
-    },
-    {
-      "atM": 33435,
-      "text": "Tournez à droite"
+      "text": "Légèrement à gauche, puis à droite"
     },
     {
       "atM": 33559,
-      "text": "Légèrement à gauche"
-    },
-    {
-      "atM": 33580,
-      "text": "Tournez à gauche"
+      "text": "Légèrement à gauche, puis à gauche"
     },
     {
       "atM": 33816,
