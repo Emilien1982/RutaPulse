@@ -50,6 +50,11 @@
   ajouté au périmètre par le pilotage. Entrée du menu (écran 3, et mentions
   des écrans 7a, 7b et des « ⋮ » des écrans Infos), écran 9c, règles et
   clés sous l'écran 9.
+  MIS À JOUR EN T8 DE LA PHASE 7 (10 novembre 2026), l'app fait foi
+  (design/comparaisons/p07-t8-circuits-balises.md) : variante 3 bis
+  ajoutée (feuille du menu sur Android, acceptée au contrôle 6 de
+  l'ADR 0020, avec deux retouches) ; écran 6d et note : les phrases
+  routes.noticeOutsideEdit et routes.noticeOutsideNoEdit sont retirées.
 
   Inchangé depuis la v1 d'origine : bandeau (soleil rayé sur quatre bandes),
   bouton « Importer un GPX » en haut à droite, lignes en carte crème clair,
@@ -431,7 +436,7 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
 
 
 <!-- ========== ÉCRAN 3 : menu des actions ========== -->
-<div class="cartouche"><b>3. Les actions d'un itinéraire</b><br>Le bouton « ⋮ » de la ligne (cible de 48) ouvre le menu natif : Renommer, Dupliquer, Exporter en GPX, Supprimer. L'appui long sur la ligne ouvre le même menu. Pas de balayage. Même menu depuis le « ⋮ » de l'écran Infos. « Dupliquer » : ajouté en phase 7 (écran 9c).</div>
+<div class="cartouche"><b>3. Les actions d'un itinéraire</b><br>Le bouton « ⋮ » de la ligne (cible de 48) ouvre le menu natif : Renommer, Dupliquer, Exporter en GPX, Supprimer. L'appui long sur la ligne ouvre le même menu. Pas de balayage. Même menu depuis le « ⋮ » de l'écran Infos. « Dupliquer » : ajouté en phase 7 (écran 9c). Dessin : le menu ancré d'Android (phase 10). <i>Phase 7 :</i> iOS montre la feuille d'actions du système ; Android, une feuille de l'app (variante 3 bis, sous cet écran).</div>
 <div class="ecran">
 
 <svg class="decor" width="390" height="200" viewBox="0 0 390 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -511,6 +516,22 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
   <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
 </div>
 <div class="indicateur"></div>
+</div>
+
+<!-- ========== 3 bis (phase 7, T8) : la feuille du menu sur Android ========== -->
+<div class="cartouche"><b>3 bis. Android : la feuille du menu (phase 7)</b><br>Android n'accepte que 3 boutons dans une boîte native ; le menu en a 4 (ADR 0020, § 7 bis). C'est une feuille du bas de l'app, comme « Renommer ». Acceptée en T8 de la phase 7 (contrôle 6), avec un retour visuel à l'appui et des lignes de 56. <i>L'app fait foi.</i></div>
+<div class="variantes">
+  <div class="feuille statique" role="dialog" aria-label="Actions de Itinéraire du 3 nov." style="border-radius:28px 28px 0 0;padding:14px 16px 24px">
+    <h2 class="geo" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Itinéraire du 3 nov.</h2>
+    <div style="margin-top:8px">
+      <div class="geo" role="button" style="height:56px;display:flex;align-items:center;font-size:17px">Renommer</div>
+      <div class="geo" role="button" style="height:56px;display:flex;align-items:center;font-size:17px;margin:0 -16px;padding:0 16px;background:var(--sable)">Dupliquer <span style="font-family:-apple-system,Roboto,sans-serif;font-weight:500;font-size:13px;color:var(--brun-2);margin-left:10px">(appui en cours : fond sable)</span></div>
+      <div class="geo" role="button" style="height:56px;display:flex;align-items:center;font-size:17px">Exporter en GPX</div>
+      <div class="geo" role="button" style="height:56px;display:flex;align-items:center;font-size:17px;color:var(--danger)">Supprimer</div>
+    </div>
+    <div class="btn-sec geo" role="button" style="margin-top:12px">Annuler</div>
+  </div>
+  <div class="var-texte" style="margin-top:10px">Voile brun à 40 %, sous la feuille. Titre : le nom de l'itinéraire, Jost 22, coupé par « … ». Quatre lignes en Jost 17 brun, pleine largeur, 56 de haut chacune (48 dans l'app à la T7 : à passer à 56) ; « Supprimer » en <code>hn.danger</code>, en dernier. Pendant l'appui, la ligne prend un fond <code>hn.sable</code> (ou l'onde d'appui d'Android, bornée à la ligne) : à ajouter, absent à la T7. « Annuler », bouton secondaire de 56. Se ferme par « Annuler », un toucher sur le voile ou la touche Retour. Pas d'icônes en v1 (phase 10, avec le menu ancré si l'essai le permet).</div>
 </div>
 
 
@@ -894,7 +915,7 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
 
 
 <!-- ========== ÉCRAN 6d : Infos d'un GPX hors zone ========== -->
-<div class="cartouche"><b>6d. Infos d'un GPX hors de vos zones</b><br>Après « Plus tard » ou « Fermer » de la feuille (6c), et à chaque ouverture tant que la zone manque. Distance et durée seulement. À la place des altitudes et du profil : une carte « Hors de vos zones », qui dit ce qui manque et où trouver la zone.<br><i>Phase 7 :</i> pas de « Modifier » (la création a besoin d'une zone). La carte le dit, en une phrase de plus. Dès que la zone est prête, « Modifier » apparaît (6b).</div>
+<div class="cartouche"><b>6d. Infos d'un GPX hors de vos zones</b><br>Après « Plus tard » ou « Fermer » de la feuille (6c), et à chaque ouverture tant que la zone manque. Distance et durée seulement. À la place des altitudes et du profil : une carte « Hors de vos zones », qui dit ce qui manque et où trouver la zone.<br><i>Phase 7 :</i> pas de « Modifier » (la création a besoin d'une zone). Dès que la zone est prête, « Modifier » apparaît (6b). <i>Mis à jour en T8 de la phase 7, l'app fait foi :</i> pas de phrase de plus sur « Modifier » ; la carte dit ce qui manque et « Voir les zones » mène à la zone (ADR 0020, § 8).</div>
 <div class="ecran">
 
 <div class="barre-etat"><span>10:21</span>
@@ -931,7 +952,7 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
   <div class="manque" role="note">
     <div class="haut">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5" stroke-dasharray="3.2 2.6"/><path d="M12 7v6"/><circle cx="12" cy="16.8" r="1.3" fill="#3A1F0F" stroke="none"/></svg>
-      <div><b>Hors de vos zones&nbsp;:</b> D+, profil, terrain et difficulté indisponibles. Ce tracé est dans la zone Metz. Téléchargez-la pour modifier l'itinéraire.</div>
+      <div><b>Hors de vos zones&nbsp;:</b> D+, profil, terrain et difficulté indisponibles. Ce tracé est dans la zone Metz.</div>
     </div>
     <div class="btn geo" role="button"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Voir les zones</div>
   </div>
@@ -1369,7 +1390,7 @@ h1{position:absolute;top:110px;left:16px;font-size:26px;line-height:1.2;letter-s
 <ul>
   <li>Origines, dans <code>routes.meta</code> (<q>Zone {zone} · {origine}</q>) : <code>routes.originTrail</code> <q>circuit balisé, le {date}</q> ; <code>routes.originTrailModified</code> <q>circuit modifié le {date}</q> ; <code>routes.originGpxModified</code> <q>GPX modifié le {date}</q>. En minuscule après « · », comme <q>créé le</q>. Sur l'écran Infos, avec l'année.</li>
   <li>Écran Infos d'un GPX dans une zone : bouton <q>Modifier</q> (existant, libellé <q>Modifier l'itinéraire</q>).</li>
-  <li>Écran Infos d'un GPX hors de vos zones, à la suite de <code>routes.noticeOutsideFound</code> : <code>routes.noticeOutsideEdit</code> <q>Téléchargez-la pour modifier l'itinéraire.</q> Si le tracé n'est dans aucune zone du catalogue : <code>routes.noticeOutsideNoEdit</code> <q>Ce tracé n'est dans aucune zone de RutaPulse pour l'instant : il ne peut pas être modifié.</q></li>
+  <li>Écran Infos d'un GPX hors de vos zones : pas de texte nouveau. La carte garde <code>routes.noticeOutsideText</code>, puis <code>routes.noticeOutsideFound</code> <q>Ce tracé est dans la zone {zone}.</q> ou <code>routes.outsideNone</code> (existants). <i>Retiré en T8 de la phase 7, l'app fait foi</i> : <code>routes.noticeOutsideEdit</code> et <code>routes.noticeOutsideNoEdit</code>. Raison : l'absence de « Modifier » ne gêne pas ; la carte dit déjà ce qui manque et « Voir les zones » mène à la zone (ADR 0020, § 8).</li>
   <li>Bulle de la création ouverte par « Modifier » d'un GPX : <code>gpx.placedBubble</code> <q>Tracé du GPX posé. En enregistrant, vous remplacez l'original.</q></li>
   <li>Dupliquer (écrans 3 et 9c) : <code>routes.duplicate</code> <q>Dupliquer</q>, dans le menu juste après <q>Renommer</q> ; <code>routes.copySuffix</code> <q>(copie)</q> ; <code>routes.copySuffixN</code> <q>(copie {n})</q>, n à partir de 2. Annonce du lecteur d'écran, sans rien à l'écran : <code>routes.duplicatedAnnounce</code> <q>Copie créée : {nom}.</q> (comme <q>GPX importé : {nom}.</q>).</li>
 </ul>

@@ -15,6 +15,16 @@
   masquer les circuits en v1). Le bouton « Recentrer » reprend sa place (60),
   comme dans l'app.
 
+  MIS À JOUR EN T8 DE LA PHASE 7 (10 novembre 2026), comparaison
+  design/comparaisons/p07-t8-circuits-balises.md :
+   - couche des circuits visible dès le zoom 8 (toute la zone), pas 10 ;
+   - chevrons du sens : caractère « > », 5 tranches de zoom, rien sous le
+     zoom 10 (style-carte.md) ;
+   - « Enregistrer » d'une création ouverte depuis un circuit : actif dès
+     que les chiffres (D+ compris) sont là, pas avant (l'app fait foi) ;
+   - écran Infos ouvert depuis cette création : même titre que la barre ;
+   - variante E bis : la mise à jour a échoué (texte nouveau).
+
   CE FICHIER CONTIENT PLUSIEURS ÉCRANS, L'UN SOUS L'AUTRE (comme v1/40 et v1/41),
   PUIS DES VARIANTES ET UNE NOTE (en bas de page, à lire dans le navigateur).
    1. Onglet Carte, couche des circuits, rien de touché.
@@ -545,6 +555,9 @@ svg.carte{position:absolute;left:0;top:0;width:390px;height:844px}
   <div class="var-titre">E. Zone à mettre à jour, mise à jour déjà en cours</div>
   <div class="var-texte">Avis&nbsp;: <q><b>Mise à jour en cours.</b> Quand elle sera finie, vous pourrez faire de ce circuit un itinéraire.</q> Bouton secondaire <q>Voir les zones</q>. Quand la mise à jour finit pendant que la feuille est ouverte, la feuille se ferme : le circuit a changé de données.</div>
 
+  <div class="var-titre">E bis. Zone à mettre à jour, la mise à jour a échoué (ajouté en T8)</div>
+  <div class="var-texte">Avis&nbsp;: <q><b>La mise à jour a échoué.</b> Réessayez depuis l'onglet Zones.</q> Bouton secondaire <q>Voir les zones</q>. Mêmes mots que l'onglet Zones (<q>Échec de la mise à jour</q>, bouton <q>Réessayer</q>) : on y retrouve ce qu'on vient de lire.</div>
+
   <div class="var-titre">F. Zone ancienne, et pas de version plus récente au catalogue</div>
   <div class="var-texte">Cas rare (zone publiée avant la phase 7, pas encore refaite). Avis&nbsp;: <q><b>Ce circuit ne peut pas encore devenir un itinéraire.</b> Une prochaine version de la zone le permettra.</q> Pas de bouton.</div>
 
@@ -568,7 +581,7 @@ svg.carte{position:absolute;left:0;top:0;width:390px;height:844px}
 
 
 <!-- ========== ÉCRAN 6 : création ouverte, zoom d'ouverture ========== -->
-<div class="cartouche"><b>6. « En faire un itinéraire » : la création s'ouvre</b><br>Le circuit est posé, dans son sens, un point de passage par km (35 points). À ce zoom, les points se chevaucheraient (essai T1) : les points intermédiaires sont des <b>points discrets</b>, petits ronds sans numéro. Départ et arrivée gardent leur marqueur. Titre : le nom du circuit, qui sera le nom par défaut. « Enregistrer » est actif tout de suite. La bulle part au bout de 4 s ou au premier geste. Pas de bouton des couches.</div>
+<div class="cartouche"><b>6. « En faire un itinéraire » : la création s'ouvre</b><br>Le circuit est posé, dans son sens, un point de passage par km (35 points). À ce zoom, les points se chevaucheraient (essai T1) : les points intermédiaires sont des <b>points discrets</b>, petits ronds sans numéro. Départ et arrivée gardent leur marqueur. Titre : le nom du circuit, qui sera le nom par défaut. « Enregistrer » s'active dès que les chiffres sont là, D+ compris (environ 1 s pour 35 km), sans aucun changement à faire. La bulle part au bout de 4 s ou au premier geste. Pas de bouton des couches.</div>
 <div class="ecran">
 
 <svg class="carte" viewBox="0 0 390 844" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte : l'itinéraire suit le circuit, 35 points de passage">
@@ -832,6 +845,7 @@ svg.carte{position:absolute;left:0;top:0;width:390px;height:844px}
   <li>Bouton <code>trails.oldZoneUpdate</code> : <q>Mettre à jour · {taille}</q> ; libellé d'accessibilité <code>zones.updateLabel</code> (existant). Dessous : <code>zones.updateUsable</code> (existant) <q>La zone reste utilisable pendant la mise à jour.</q></li>
   <li>Sans réseau : <code>trails.oldZoneTextOffline</code> <q>Pour en faire un itinéraire, RutaPulse a besoin d'une version plus récente de la zone {zone}. Sans réseau, RutaPulse ne peut pas la chercher.</q> ; bouton <code>routes.seeZones</code> (existant) <q>Voir les zones</q>.</li>
   <li>En cours : <code>trails.updatingTitle</code> <q>Mise à jour en cours.</q> ; <code>trails.updatingText</code> <q>Quand elle sera finie, vous pourrez faire de ce circuit un itinéraire.</q> ; bouton <q>Voir les zones</q>.</li>
+  <li>Échec (variante E bis, T8) : <code>trails.updateFailedTitle</code> <q>La mise à jour a échoué.</q> ; <code>trails.updateFailedText</code> <q>Réessayez depuis l'onglet Zones.</q> ; bouton <q>Voir les zones</q>.</li>
   <li>Pas de version plus récente : <code>trails.notYetTitle</code> <q>Ce circuit ne peut pas encore devenir un itinéraire.</q> ; <code>trails.notYetText</code> <q>Une prochaine version de la zone le permettra.</q> Pas de bouton.</li>
 </ul>
 
@@ -848,6 +862,7 @@ svg.carte{position:absolute;left:0;top:0;width:390px;height:844px}
   <li>Durées : bulle d'ouverture 4 s ; bulles d'avertissement (hors zone, GPX remplacé) 6 s. Chacune part au premier geste sur la carte.</li>
   <li>Points discrets : même libellé d'accessibilité que les autres, <code>route.pointLabel</code> <q>Point {n}</q> (existant).</li>
   <li>Croix : sans changement, elle ferme sans question et revient à l'onglet Carte. Après un changement : <code>route.abandonTitle</code> et <code>route.abandonText</code> (existants), car rien n'est encore enregistré.</li>
+  <li>Écran Infos ouvert avant d'enregistrer (bouton « › » du panneau) : titre = le titre de la barre, donc le nom par défaut (<q>Petite Suisse Lorraine à VTT</q>), pas <q>Nouvel itinéraire</q>. Pas de ligne zone et origine : rien n'est encore enregistré.</li>
   <li>Après « Enregistrer » : l'écran Infos s'ouvre, comme pour un itinéraire créé (v1/40, 8a), avec <q>Zone Nancy · circuit balisé, le 9 nov. 2026</q>.</li>
 </ul>
 
@@ -855,7 +870,7 @@ svg.carte{position:absolute;left:0;top:0;width:390px;height:844px}
 <h3>La couche (écran 1)</h3>
 <ul>
   <li>Deux couches, détaillées dans <code>style-carte.md</code> (« Circuits balisés ») : le trait sous l'itinéraire et au-dessus des voies ; le nom au-dessus des noms de voies, sous les noms de lieux.</li>
-  <li>Trait <code>carte.circuit</code> (bleu à 55 %), <code>trace.circuit</code> : 6 au zoom 15. Visible dès le zoom 10. Noms dès le zoom 12, <code>texte.carte-circuit</code>.</li>
+  <li>Trait <code>carte.circuit</code> (bleu à 55 %), <code>trace.circuit</code> : 6 au zoom 15. Visible dès le zoom 8, où toute la zone tient à l'écran (mis à jour en T8). Noms dès le zoom 12, <code>texte.carte-circuit</code>.</li>
   <li>Même couche dans la création, non touchable (choix 3) : un toucher y pose un point.</li>
 </ul>
 <h3>Toucher un circuit (onglet Carte seulement)</h3>
@@ -863,7 +878,7 @@ svg.carte{position:absolute;left:0;top:0;width:390px;height:844px}
   <li>Zone de toucher : carré de 48 autour du doigt (<code>cible.circuit</code>). L'essai T1 a validé 44 sur les deux plateformes ; 48 est notre minimum à l'arrêt.</li>
   <li>Un glisser qui commence sur un trait déplace la carte, sans rien choisir (essai T1).</li>
   <li>Un seul circuit trouvé : sa feuille. Plusieurs : la feuille « {n} circuits passent ici » (variante G).</li>
-  <li>Circuit choisi : <code>carte.circuit-choisi</code>, 8 et liseré 2, chevrons <code>carte.sens-circuit</code> si son sens est connu ; les autres en <code>carte.circuit-efface</code>. La carte cadre le circuit au-dessus de la feuille.</li>
+  <li>Circuit choisi : <code>carte.circuit-choisi</code>, 8 et liseré 2, chevrons <code>carte.sens-circuit</code> si son sens est connu (caractère « > » blanc, dès le zoom 10 ; le triangle des dessins est une simplification, <code>style-carte.md</code> fait foi) ; les autres en <code>carte.circuit-efface</code>. La carte cadre le circuit au-dessus de la feuille, sans passer sous le bouton « Recentrer » (marge du haut : sous le bouton).</li>
   <li>Marqueurs posés à l'avance : départ prévu (boucle : point le plus proche ; aller simple : début) ; arrivée pour un aller simple. Aucun marqueur si l'ordre est inconnu (écrans 4 et 5).</li>
   <li>La feuille se ferme par la croix, un toucher sur la carte hors d'un circuit, le glissement vers le bas ou la touche Retour d'Android. Tout revient à l'écran 1.</li>
 </ul>
@@ -874,7 +889,7 @@ svg.carte{position:absolute;left:0;top:0;width:390px;height:844px}
   <li>Zone de toucher : 48 pour chaque point, discret ou non (<code>cible.marqueur</code>). Si plusieurs zones se recouvrent, le point le plus proche du doigt gagne. Toucher un point discret le choisit : il grossit et montre son numéro. On peut le glisser aussitôt.</li>
   <li>Boucle : départ et arrivée au même endroit ; le départ est dessiné au-dessus (l'essai montrait le drapeau par-dessus, ce qui cache où l'on part).</li>
   <li>Le circuit reste dessiné sous l'itinéraire, en bleu à 55 % : après une modification, on voit d'où l'on s'écarte (écran 7).</li>
-  <li>« Enregistrer » est actif dès l'ouverture : on peut garder le circuit tel quel.</li>
+  <li>« Enregistrer » n'attend aucun changement : on peut garder le circuit tel quel. Il est inactif (tirets) le temps que les chiffres arrivent, D+ compris (environ 1 s), puis actif. Raison : l'itinéraire gardé a toujours ses chiffres dans la liste (mis à jour en T8, l'app fait foi).</li>
   <li><b>Hors zone (C8)</b> : aucun point de passage hors de la zone ; la partie hors zone est un seul morceau gardé, sous le voile. Bulle de l'écran 8, 6 s, à l'ouverture seulement. Un point glissé ou posé hors de la zone : feuille existante « Point hors de votre zone » (v1/52).</li>
 </ul>
 
@@ -885,7 +900,7 @@ svg.carte{position:absolute;left:0;top:0;width:390px;height:844px}
   <li><b>Pas moins de points</b> : un point tous les 3 km rendrait la carte claire, mais chaque déplacement recalculerait 6 km ; c'est l'affichage qu'on allège, pas le découpage.</li>
   <li><b>Pas de point hors zone</b> : un point qu'on ne peut pas déplacer est un piège ; sans point, il n'y a rien à essayer.</li>
   <li><b>Titre de la création = nom du circuit</b> : on voit ce qui a été posé, et c'est le nom qui sera gardé (comme le mode « Modifier », v1/40, 8b C).</li>
-  <li><b>« Enregistrer » actif dès l'ouverture</b> : garder un circuit tel quel est un usage normal.</li>
+  <li><b>« Enregistrer » sans changement à faire</b> : garder un circuit tel quel est un usage normal. L'attente d'environ 1 s pour les chiffres garde une liste sans « D+ — ».</li>
   <li><b>Bulle courte, puis plus rien</b> : la carte doit rester libre ; le lecteur d'écran reçoit la même phrase.</li>
   <li><b>Circuit non transformable : un avis, une piste, pas de bouton</b> : la décision 7 l'exclut en v1 ; la phrase « créez un itinéraire par-dessus » donne une sortie sans promettre plus.</li>
   <li><b>Avis en moutarde pâle, texte brun</b> : même carte que « ce qui manque » (v1/40) et « Pas de Wi-Fi » (v1/41) ; aucune couleur nouvelle hors carte.</li>

@@ -134,7 +134,7 @@ doivent se distinguer de tout cela, par la couleur **et** par l'épaisseur.
 | `carte.circuit-choisi` | `#2F6BFF` à 100 % | — | Circuit touché, avant d'en faire un itinéraire |
 | `carte.circuit-efface` | `#2F6BFF` à 25 % | — | Les autres circuits, pendant qu'un circuit est choisi (12, écrans 2 à 5) |
 | `carte.circuit-texte` | `#173A8C` | 10,4:1 sur blanc, 8,7:1 sur `carte.fond`, 7,7:1 sur `carte.foret` | Nom du circuit le long du trait, halo `carte.etiquette-halo` de 2 |
-| `carte.sens-circuit` | chevrons `#FFFFFF` de 7 × 8, tous les 150 points environ | — | Sens du circuit choisi (décision 7), dessinés sur son tracé |
+| `carte.sens-circuit` | chevrons `#FFFFFF` : le caractère « > » en Noto Sans Bold de 16, sans halo ; 50 à 350 points entre deux chevrons, dès le zoom 10 (5 tranches de zoom, `style-carte.md`) | 4,9:1 sur `carte.circuit-choisi` | Sens du circuit choisi (décision 7), dessinés sur son tracé. Revu en T8 de la phase 7 |
 | `carte.position` | `#1A73E8`, bord blanc | — | Ma position. Bleu : convention des deux plateformes. |
 | `carte.depart` | `#146C2E` | — | Pastille du départ |
 | `carte.arrivee` | `#111111` | — | Pastille de l'arrivée (drapeau) |
@@ -345,7 +345,7 @@ au zoom 17 (`line-width` en `interpolate` sur le zoom).
 | `trace.a-la-main` | 7 | 10 | Même couleur, en tirets 2 × l'épaisseur / 1 × l'épaisseur : on voit que ce tronçon n'est pas calculé |
 | `trace.liaison` | 3 | — | Points ronds de 3, environ 4,5 de vide entre deux points. Droit, du centre du marqueur au bout du tracé. Dessiné sous le liseré de l'itinéraire. Pas dessiné à moins de 5 m. Le suivi : à décider |
 | `trace.parcouru` | — | 8 | Sans liseré |
-| `trace.circuit` | 6 | 6 | Sous l'itinéraire, au-dessus des voies. Dès le zoom 10 (2,5), puis 3,6 au zoom 12 et 7,8 au zoom 17 (`style-carte.md`, « Circuits balisés ») |
+| `trace.circuit` | 6 | 6 | Sous l'itinéraire, au-dessus des voies. Dès le zoom 8 (1,5), puis 2,5 au zoom 10, 3,6 au zoom 12 et 7,8 au zoom 17 (`style-carte.md`, « Circuits balisés ») |
 | `trace.circuit-choisi` | 8, liseré 2 | — | |
 | `trace.piste` | 2,5 | 2,5 | |
 | `trace.sentier` | 2, tirets 5 / 4 | 2,5, tirets 5 / 4 | Plus épais en suivi : c'est à une fourche qu'on en a besoin |

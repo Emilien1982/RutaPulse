@@ -416,25 +416,30 @@ qui est hors de la zone, comme sur l'écran 52.
 
 Pas de zoom minimal ni maximal : visibles du zoom 8 au zoom 18.
 
-## Circuits balisés (ajouté le 9 novembre 2026, phase 7)
+## Circuits balisés (ajouté le 9 novembre 2026, phase 7 ; revu en T8)
 
 Maquette `v1/12`. Source `circuits` : le fichier `trails.geojson` du paquet
-de zone (ADR 0003), ajoutée par l'app. Trois couches.
+de zone (ADR 0003), ajoutée par l'app. Couches, du dessous au-dessus :
 
 | Place | id | Type | Filtre | Couleur et taille |
 |---|---|---|---|---|
 | Dans « réservé », sous l'itinéraire | `circuit` | line | toutes les lignes | `carte.circuit` ; quand un circuit est choisi : `carte.circuit-efface` pour les autres. Bouts et angles ronds |
-| Juste au-dessus de `circuit` | `circuit-choisi` | line, deux fois (liseré puis trait) | l'identifiant du circuit choisi | liseré `#FFFFFF` de 12, trait `carte.circuit-choisi` de 8 ; chevrons `carte.sens-circuit` tous les 150 si le sens est connu |
+| Juste au-dessus de `circuit` | `circuit-choisi-lisere`, `circuit-choisi` | line, source `circuit-choisi` (le circuit choisi seul) | — | liseré `#FFFFFF` de 12, puis trait `carte.circuit-choisi` de 8. Pas de zoom minimal |
 | Entre 27 `nom-voie` et 28 `lieu-hameau` | `nom-circuit` | symbol | lignes avec un nom ou un `ref` | `carte.circuit-texte`, Noto Sans Bold, `texte.carte-circuit` ; halo `carte.etiquette-halo` de 2 |
+| Au même niveau que `nom-circuit` | `circuit-sens-0` à `circuit-sens-4` | symbol, source `circuit-sens-points` | `band` = numéro de la tranche | chevrons `carte.sens-circuit` (voir « Sens du circuit choisi ») |
 
-Épaisseur de `circuit` : 2,5 au zoom 10, 3,6 au 12, **6** au 15, 7,8 au 17,
-8,5 au 18. Visible dès le zoom 10 (toute la zone à l'écran).
+Épaisseur de `circuit` : 1,5 au zoom 8, 2,5 au 10, 3,6 au 12, **6** au 15,
+7,8 au 17, 8,5 au 18. **Visible dès le zoom 8** : c'est le zoom où toute
+la zone tient à l'écran (un carré de 50 km sur 400 points de large, environ
+125 m par point : zoom 8,7). On voit ainsi où sont les circuits avant de
+zoomer. (La première version disait « zoom 10 (toute la zone à l'écran) » :
+au zoom 10, l'écran ne montre qu'environ 20 km de large.)
 
 ```json
-{ "id": "circuit", "type": "line", "source": "circuits", "minzoom": 10,
+{ "id": "circuit", "type": "line", "source": "circuits", "minzoom": 8,
   "layout": { "line-cap": "round", "line-join": "round" },
   "paint": { "line-color": "carte.circuit", "line-opacity": 0.55,
-    "line-width": ["interpolate", ["linear"], ["zoom"], 10, 2.5, 12, 3.6, 15, 6, 17, 7.8, 18, 8.5] } },
+    "line-width": ["interpolate", ["linear"], ["zoom"], 8, 1.5, 10, 2.5, 12, 3.6, 15, 6, 17, 7.8, 18, 8.5] } },
 { "id": "nom-circuit", "type": "symbol", "source": "circuits", "minzoom": 12,
   "layout": { "symbol-placement": "line", "symbol-spacing": 300, "text-max-angle": 30,
     "text-field": ["coalesce", ["get", "name"], ["concat", "Circuit ", ["get", "ref"]]],
@@ -451,6 +456,62 @@ de zone (ADR 0003), ajoutée par l'app. Trois couches.
 - Dans la création, mêmes couches, sans `circuit-choisi` ; le circuit dont
   on fait un itinéraire reste dessiné sous lui.
 - Le voile et le bord de la zone restent au-dessus de tout, circuits compris.
+- Les points plus foncés aux jonctions des voies d'un même circuit (bouts
+  ronds à 55 % qui se recouvrent) ne sont pas voulus. Seul le tronçon
+  partagé par deux circuits doit être plus foncé (voir la comparaison
+  `comparaisons/p07-t8-circuits-balises.md`, L4).
+
+### Sens du circuit choisi (chevrons)
+
+Seulement pour le circuit choisi, et seulement si son sens est connu
+(ligne ordonnée). Jamais pour les autres circuits, ni dans la création.
+
+- **Ce qu'on dessine** : un chevron blanc, le caractère « > » en Noto Sans
+  Bold de 16, sans halo (`carte.sens-circuit`). Il est tourné dans le sens
+  du tronçon où il se pose, et reste attaché à la carte
+  (`text-rotation-alignment` et `text-pitch-alignment` : `map`). Il passe
+  toujours, même s'il touche un nom (`text-allow-overlap`,
+  `text-ignore-placement`). Blanc sur `carte.circuit-choisi` : 4,9:1.
+- **Pourquoi des points et pas `symbol-placement: line`** : sur iPhone, le
+  placement le long de la ligne laissait un seul chevron pour tout le
+  circuit (testeur, T4). Les points sont calculés par l'app, le long de la
+  ligne ordonnée ; ils ne dépendent pas des tuiles.
+- **Écart voulu à l'écran : entre 50 et 350 points environ** entre deux
+  chevrons. Assez pour lire le sens sur un bout de circuit, pas assez pour
+  faire un pointillé blanc.
+- **Cinq tranches de zoom**, une couche par tranche, chacune avec son
+  propre espacement sur le terrain :
+
+| Couche | Zooms | Espacement | Écart à l'écran (Nancy, latitude 48,7°) |
+|---|---|---|---|
+| `circuit-sens-0` | **10** à 12,5 | 2 500 m | 50 à 280 |
+| `circuit-sens-1` | 12,5 à 14 | 1 000 m | 110 à 320 |
+| `circuit-sens-2` | 14 à 15,5 | 400 m | 125 à 360 |
+| `circuit-sens-3` | 15,5 à 16,5 | 150 m | 135 à 270 |
+| `circuit-sens-4` | 16,5 à 18 | 60 m | 110 à 300 |
+
+- **Pas de chevrons sous le zoom 10** (`minzoom` 10 sur `circuit-sens-0`).
+  Avec 2 500 m d'espacement, ils seraient à 12 points l'un de l'autre au
+  zoom 8 et à 25 au zoom 9 : un amas blanc qui cache le trait. Sous le
+  zoom 10, le circuit choisi reste dessiné, sans sens.
+- Le premier chevron est posé à un demi-espacement du début de la ligne :
+  il ne tombe pas sur le marqueur de départ.
+
+```json
+{ "id": "circuit-sens-0", "type": "symbol", "source": "circuit-sens-points",
+  "minzoom": 10, "maxzoom": 12.5, "filter": ["==", ["get", "band"], 0],
+  "layout": { "symbol-placement": "point", "text-field": ">",
+    "text-font": ["NotoSans-Bold"], "text-size": 16,
+    "text-rotate": ["get", "rotate"],
+    "text-rotation-alignment": "map", "text-pitch-alignment": "map",
+    "text-allow-overlap": true, "text-ignore-placement": true },
+  "paint": { "text-color": "carte.sens-circuit" } }
+```
+
+Les quatre autres couches sont identiques, avec leur tranche (`band` 1 à
+4, `minzoom` et `maxzoom` du tableau). Les maquettes `v1/12` dessinent un
+petit triangle plein : c'est une simplification du dessin, le caractère
+« > » fait foi.
 
 ## Étiquettes
 
