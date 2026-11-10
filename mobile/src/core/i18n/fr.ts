@@ -406,6 +406,9 @@ export const fr = {
   'ride.arrived': 'ARRIVÉE\u202F!',
   'ride.finished': 'SORTIE TERMINÉE',
   'ride.close': 'Fermer',
+  'ride.distance': 'Distance parcourue',
+  'ride.stopped': 'Le suivi est arrêté.',
+  'ride.pending': '…',
 } as const;
 
 export type TextKey = keyof typeof fr;

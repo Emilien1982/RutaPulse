@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 
 import { t } from '@/core/i18n/t';
+import { rideDurationS } from '@/core/tracking/ride';
 import type { ClimbProfile } from '@/core/tracking/remaining';
 import { remainingClimbM } from '@/core/tracking/remaining';
 import type { Fix } from '@/core/tracking/placement';
@@ -29,12 +30,13 @@ import type { Zone } from '@/core/zones/catalogue';
 import { navColors } from '@/ui/theme';
 
 import { GuidancePanel } from './GuidancePanel';
-import { RideEnd } from './RideEnd';
+import { RideSummary } from './RideSummary';
 import { TrackingFooter } from './TrackingFooter';
 import { TrackingMap } from './TrackingMap';
 import { createTrackingStore, type TrackingStore } from './trackingStore';
 import { useDirections } from './useDirections';
 import { useGpsFixes } from './useGpsFixes';
+import { useRideAscent } from './useRideAscent';
 
 /** "Terminer" before this distance ridden (m): back to the Infos screen. */
 export const MIN_RIDE_M = 100;
@@ -43,12 +45,15 @@ export function TrackingSession({
   source,
   climb,
   zone,
+  name,
 }: {
   source: TrackingSource;
   /** The ascent along the route; null: unknown ("—"). */
   climb: ClimbProfile | null;
   /** The zone drawn as the map; null: a plain background. */
   zone: Zone | null;
+  /** The name of the route, shown on the end screen. */
+  name?: string;
 }) {
   const router = useRouter();
   const [{ store, dispatch }] = useState<TrackingStore>(() =>
@@ -115,7 +120,12 @@ export function TrackingSession({
     return end === 'finished' && store.state.ride.distanceM < MIN_RIDE_M ? (
       <View style={styles.screen} />
     ) : (
-      <RideEnd arrived={end === 'arrived'} onClose={() => router.back()} />
+      <EndedRide
+        store={store}
+        zone={zone}
+        name={name}
+        onClose={() => router.back()}
+      />
     );
   }
   return (
@@ -125,6 +135,32 @@ export function TrackingSession({
       climb={climb}
       zone={zone}
       onFinish={askFinish}
+    />
+  );
+}
+
+// The summary of the ride: one `height` request, made when it appears.
+function EndedRide({
+  store,
+  zone,
+  name,
+  onClose,
+}: {
+  store: TrackingStore['store'];
+  zone: Zone | null;
+  name?: string;
+  onClose: () => void;
+}) {
+  const { ride, end, endedAt } = store.state;
+  const ascentM = useRideAscent(ride, zone?.bbox ?? null);
+  return (
+    <RideSummary
+      arrived={end === 'arrived'}
+      name={name}
+      distanceM={ride.distanceM}
+      durationS={rideDurationS(ride, endedAt ?? ride.startedAt)}
+      ascentM={ascentM}
+      onClose={onClose}
     />
   );
 }

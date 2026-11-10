@@ -124,7 +124,14 @@ function Loaded({
       <CreatedTracking route={route} zone={mapZone} source={source} />
     );
   }
-  return <TrackingSession source={source} climb={null} zone={mapZone} />;
+  return (
+    <TrackingSession
+      source={source}
+      climb={null}
+      zone={mapZone}
+      name={route.name}
+    />
+  );
 }
 
 function CreatedTracking({
@@ -146,7 +153,14 @@ function CreatedTracking({
       altitudes.status === 'ready' ? climbProfile(altitudes.profile) : null,
     [altitudes],
   );
-  return <TrackingSession source={source} climb={climb} zone={zone} />;
+  return (
+    <TrackingSession
+      source={source}
+      climb={climb}
+      zone={zone}
+      name={route.name}
+    />
+  );
 }
 
 function GpxTracking({
@@ -164,5 +178,12 @@ function GpxTracking({
       altitudes.status === 'ready' ? climbProfile(altitudes.profile) : null,
     [altitudes],
   );
-  return <TrackingSession source={source} climb={climb} zone={zone} />;
+  return (
+    <TrackingSession
+      source={source}
+      climb={climb}
+      zone={zone}
+      name={route.name}
+    />
+  );
 }

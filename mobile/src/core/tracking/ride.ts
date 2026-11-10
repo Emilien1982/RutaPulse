@@ -54,19 +54,28 @@ export function rideDurationS(ride: Ride, endedAt: number): number {
 }
 
 /**
- * JSON text of the `height` request for the real ascent: the positions kept,
- * thinned to 14 000 points, one altitude every 30 m. Null when there is
- * nothing to measure, when the zone is not in service, or when a position is
- * outside the zone (no altitude: "—").
+ * The shape to give to `height` for the real ascent: the positions kept,
+ * thinned to 14 000 points. Null when there is nothing to measure, when the
+ * zone is not in service, or when a position is outside the zone (no
+ * altitude: "—").
  */
+export function rideHeightShape(
+  ride: Ride,
+  bbox: Bbox | null,
+): LonLat[] | null {
+  if (!bbox || ride.kept.length < 2 || !trackInside(bbox, ride.kept)) {
+    return null;
+  }
+  return thinTrack(ride.kept, MAX_ENGINE_POINTS);
+}
+
+/** JSON text of the `height` request for the shape above (one altitude every 30 m). */
 export function buildRideHeightRequest(
   ride: Ride,
   bbox: Bbox | null,
 ): string | null {
-  if (!bbox || ride.kept.length < 2 || !trackInside(bbox, ride.kept)) {
-    return null;
-  }
-  return buildHeightRequest(thinTrack(ride.kept, MAX_ENGINE_POINTS));
+  const shape = rideHeightShape(ride, bbox);
+  return shape ? buildHeightRequest(shape) : null;
 }
 
 /** Real ascent (m) from the answer of `height`; null on failure or a missing altitude. */
