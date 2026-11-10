@@ -5,16 +5,27 @@ import { isInsideBbox } from '../zones/activeZone';
 import type { Leg } from '../draft/legs';
 
 /**
- * A calculated leg: the shape of its route (null while unknown). A hand leg:
- * the straight line, or null when an end is outside the zone rectangle
- * (no call, altitudes missing).
+ * A calculated leg: the shape of its route (null while unknown). A leg kept
+ * from a trace (`trace`) is checked like a hand leg: null when a point is
+ * outside the zone rectangle (ADR 0020, section 5). A hand leg: the straight
+ * line, or null when an end is outside the zone rectangle (no call,
+ * altitudes missing).
  */
 export function infoShape(
   leg: Leg,
-  route: { shape: [number, number][] } | undefined,
+  route: { shape: [number, number][]; trace?: boolean } | undefined,
   bbox: Bbox,
 ): [number, number][] | null {
-  if (leg.mode === 'path') return route ? route.shape : null;
+  if (leg.mode === 'path') {
+    if (!route) return null;
+    if (
+      route.trace &&
+      route.shape.some(([lon, lat]) => !isInsideBbox(bbox, lon, lat))
+    ) {
+      return null;
+    }
+    return route.shape;
+  }
   const { from, to } = leg;
   if (!isInsideBbox(bbox, from.lon, from.lat)) return null;
   if (!isInsideBbox(bbox, to.lon, to.lat)) return null;

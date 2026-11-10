@@ -5,7 +5,13 @@
 import { useQueryClient } from '@tanstack/react-query';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  AccessibilityInfo,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import type { Draft } from '@/core/draft/draft';
@@ -24,6 +30,7 @@ import type {
   LonLat,
   SavedRoute,
 } from '@/core/routes/savedRoute';
+import { announcement } from '@/core/routes/routeName';
 import { formatRouteDate, zoneLine } from '@/core/routes/routeText';
 import { trackOfCreated } from '@/core/routes/track';
 import { canAttachZone, routeZoneStatus } from '@/core/routes/routeZone';
@@ -111,6 +118,15 @@ function useInfoMenu(
   const menu = useRouteMenu({
     rename: actions.rename,
     remove: actions.remove,
+    // Back to the list, which shows the copy at the top.
+    duplicate: async (id) => {
+      const copy = await actions.duplicate(id);
+      if (!copy) return;
+      router.dismissTo('/routes');
+      AccessibilityInfo.announceForAccessibility(
+        announcement(t('routes.duplicatedAnnounce', { name: copy.name })),
+      );
+    },
     export: (id) => void exportRoute(id),
     onRemoved: () => router.dismissTo('/routes'),
   });
@@ -213,7 +229,7 @@ function LoadedRoute({
   let infos: ReactNode;
   if (status === 'usable' && zone) {
     infos =
-      effective.origin === 'created' ? (
+      effective.origin !== 'gpx' ? (
         <CreatedInfos route={effective} zone={zone} menu={button} />
       ) : (
         <GpxInfos route={effective} zone={zone} menu={button} />
@@ -291,7 +307,13 @@ function useSyncFigures(route: Readable, altitudes: Block<AltitudeInfo>) {
   ]);
 }
 
-function ModifyButton({ routeId }: { routeId: number }) {
+function ModifyButton({
+  routeId,
+  kind = 'route',
+}: {
+  routeId: number;
+  kind?: 'route' | 'gpx';
+}) {
   const router = useRouter();
   return (
     <Button
@@ -301,7 +323,7 @@ function ModifyButton({ routeId }: { routeId: number }) {
       accessibilityLabel={t('info.modifyLabel')}
       icon={(color) => <HandModeIcon color={color} />}
       onPress={() => {
-        setDraftTarget(routeId);
+        setDraftTarget({ kind, id: routeId });
         router.push('/draft');
       }}
     />
@@ -424,6 +446,7 @@ function GpxInfos({
       altitudes={altitudes}
       terrain={terrain}
       difficulty={difficulty}
+      actions={<ModifyButton routeId={route.id} kind="gpx" />}
     />
   );
 }
@@ -444,7 +467,7 @@ function PlainInfos({
   const router = useRouter();
   const track = useMemo(
     () =>
-      route.origin === 'created'
+      route.origin !== 'gpx'
         ? trackOfCreated(route.draft, route.legs)
         : route.track,
     [route],
@@ -518,8 +541,10 @@ function PlainInfos({
         </Notice>
       }
       actions={
-        route.origin === 'created' && status === 'usable' ? (
+        route.origin !== 'gpx' && status === 'usable' ? (
           <ModifyButton routeId={route.id} />
+        ) : route.origin === 'gpx' && status === 'leaves' ? (
+          <ModifyButton routeId={route.id} kind="gpx" />
         ) : undefined
       }
     />
@@ -536,7 +561,7 @@ function noticeOf(
       return {
         head: t('routes.noticeDeleted', { zone }),
         body: t(
-          origin === 'created'
+          origin !== 'gpx'
             ? 'routes.noticeDeletedText'
             : 'routes.noticeDeletedGpxText',
         ),

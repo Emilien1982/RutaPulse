@@ -7,7 +7,7 @@ import { trackOfCreated } from './track';
 
 /** The track to write: a created route has no link line, a GPX is as read. */
 export function exportTrackOf(route: CreatedRoute | GpxRoute): LonLat[] {
-  return route.origin === 'created'
+  return route.origin !== 'gpx'
     ? trackOfCreated(route.draft, route.legs)
     : route.track;
 }

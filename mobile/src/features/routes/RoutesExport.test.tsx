@@ -11,6 +11,8 @@ import {
 } from '@/core/routes/testing/nodeSqlDb';
 import { sampleGpx } from '@/core/routes/testing/sampleRoutes';
 
+import { menuEntry } from '@/ui/testing/androidMenu';
+
 import { RoutesScreen } from './RoutesScreen';
 
 const mockShare = jest.fn();
@@ -57,7 +59,6 @@ jest.mock('@/shared-data/zones/useInstalledZones', () => ({
 }));
 
 let db: NodeSqlDb;
-let alert: jest.SpyInstance;
 const originalOs = Platform.OS;
 
 beforeEach(async () => {
@@ -71,7 +72,7 @@ beforeEach(async () => {
   db = createNodeSqlDb();
   await migrate(db, MIGRATIONS);
   mockDb = Promise.resolve(db);
-  alert = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+  jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
 });
 afterEach(() => {
   Object.defineProperty(Platform, 'OS', {
@@ -99,9 +100,8 @@ it('opens the share sheet with the GPX of the route of the line, whatever its zo
   );
   await settle();
   await fireEvent.press(screen.getByLabelText('Actions de Importé'));
-  const [, , buttons] = alert.mock.calls.at(-1)!;
-  expect(buttons[1].text).toBe('Exporter en GPX');
-  await act(async () => buttons[1].onPress());
+  expect(screen.getByText('Exporter en GPX')).toBeTruthy();
+  await act(async () => menuEntry('export').onPress());
   await settle();
   expect(mockWritten).toHaveLength(1);
   expect(mockWritten[0]).toContain('<name>Importé</name>');

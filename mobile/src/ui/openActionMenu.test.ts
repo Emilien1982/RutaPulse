@@ -12,7 +12,12 @@ afterEach(() => {
 });
 
 function actions() {
-  return { onRename: jest.fn(), onExport: jest.fn(), onDelete: jest.fn() };
+  return {
+    onRename: jest.fn(),
+    onDuplicate: jest.fn(),
+    onExport: jest.fn(),
+    onDelete: jest.fn(),
+  };
 }
 
 describe('openActionMenu on iOS', () => {
@@ -24,14 +29,20 @@ describe('openActionMenu on iOS', () => {
     const alert = jest
       .spyOn(Alert, 'alert')
       .mockImplementation(() => undefined);
-    openActionMenu('Boucle', actions());
+    openActionMenu('Boucle', actions(), jest.fn());
     expect(alert).not.toHaveBeenCalled();
     expect(sheet).toHaveBeenCalledTimes(1);
     expect(sheet.mock.calls[0]![0]).toMatchObject({
       title: 'Boucle',
-      options: ['Renommer', 'Exporter en GPX', 'Supprimer', 'Annuler'],
-      destructiveButtonIndex: 2,
-      cancelButtonIndex: 3,
+      options: [
+        'Renommer',
+        'Dupliquer',
+        'Exporter en GPX',
+        'Supprimer',
+        'Annuler',
+      ],
+      destructiveButtonIndex: 3,
+      cancelButtonIndex: 4,
     });
   });
 
@@ -44,42 +55,33 @@ describe('openActionMenu on iOS', () => {
         choose = callback;
       });
     const a = actions();
-    openActionMenu('Boucle', a);
-    choose(1);
+    openActionMenu('Boucle', a, jest.fn());
+    choose(2);
     expect(a.onExport).toHaveBeenCalledTimes(1);
     choose(0);
-    choose(2);
+    choose(1);
     choose(3);
+    choose(4);
     expect(a.onRename).toHaveBeenCalledTimes(1);
+    expect(a.onDuplicate).toHaveBeenCalledTimes(1);
     expect(a.onDelete).toHaveBeenCalledTimes(1);
     expect(a.onExport).toHaveBeenCalledTimes(1);
   });
 });
 
 describe('openActionMenu on Android', () => {
-  it('opens a cancelable dialog with exactly the three actions', () => {
+  it('opens the bottom sheet, with no Alert and no action sheet', () => {
     setOs('android');
     const alert = jest
       .spyOn(Alert, 'alert')
       .mockImplementation(() => undefined);
     const sheet = jest.spyOn(ActionSheetIOS, 'showActionSheetWithOptions');
+    const openSheet = jest.fn();
     const a = actions();
-    openActionMenu('Boucle', a);
+    openActionMenu('Boucle', a, openSheet);
+    expect(openSheet).toHaveBeenCalledTimes(1);
+    expect(alert).not.toHaveBeenCalled();
     expect(sheet).not.toHaveBeenCalled();
-    const [title, , buttons, options] = alert.mock.calls[0]!;
-    expect(title).toBe('Boucle');
-    expect(buttons!.map((b) => b.text)).toEqual([
-      'Supprimer',
-      'Exporter en GPX',
-      'Renommer',
-    ]);
-    expect(buttons![0]!.style).toBe('destructive');
-    expect(options).toEqual({ cancelable: true });
-    buttons![0]!.onPress!();
-    buttons![1]!.onPress!();
-    buttons![2]!.onPress!();
-    expect(a.onRename).toHaveBeenCalledTimes(1);
-    expect(a.onExport).toHaveBeenCalledTimes(1);
-    expect(a.onDelete).toHaveBeenCalledTimes(1);
+    expect(a.onRename).not.toHaveBeenCalled();
   });
 });

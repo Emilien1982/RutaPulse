@@ -20,6 +20,8 @@ const mockTerrain = jest.fn();
 const mockBack = jest.fn();
 const mockShowAttribution = jest.fn();
 
+// The circuits of the zone are read by their own tests (TrailsMapT4).
+jest.mock('./useTrails', () => ({ useTrails: () => [] }));
 jest.mock('@maplibre/maplibre-react-native', () => {
   const { View } = jest.requireActual('react-native');
   const { useImperativeHandle } = jest.requireActual('react');

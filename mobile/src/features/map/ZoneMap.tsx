@@ -1,10 +1,20 @@
 import type { CameraRef } from '@maplibre/maplibre-react-native';
 import { useRouter } from 'expo-router';
-import { useEffect, useRef } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import type { ComponentProps } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Store, useSelector } from '@tanstack/react-store';
 
 import { t } from '@/core/i18n/t';
+import {
+  plannedEnds,
+  sortByDistance,
+  trailBounds,
+  type Trail,
+} from '@/core/trails/trails';
+import { updatePhase } from '@/core/trails/updateOffer';
 import type { Zone } from '@/core/zones/catalogue';
+import type { DownloadEntry } from '@/core/zones/zoneRow';
 import { isInsideBbox } from '@/core/zones/activeZone';
 import { Button } from '@/ui/Button';
 import { PlusIcon } from '@/ui/icons';
@@ -15,6 +25,7 @@ import {
   radius,
   shadow,
   spacing,
+  target,
   text,
 } from '@/ui/theme';
 
@@ -25,21 +36,89 @@ import {
   UserPositionLayers,
   useMapPosition,
 } from './MapPosition';
+import { FIT_MARGIN, fitView } from './fitView';
+import { setDraftTarget } from './draftTarget';
+import { TrailEnds } from './TrailEnds';
+import { TrailPanel } from './TrailSheet';
+import { TrailsLayer } from './TrailsLayer';
+import { useTrails } from './useTrails';
 import { ZoneBaseMap } from './ZoneBaseMap';
+
+const NO_DOWNLOADS = new Store<Record<string, DownloadEntry>>({});
+
+// About the height of the sheet of a circuit: the circuit is framed above it.
+const SHEET_COVER = 340;
+
+// "Recentrer" sits 60 from the top. The circuit is framed 16 under it
+// (`fitView` adds its own margin to what is covered).
+const RECENTER_TOP = 60;
+const TOP_COVER = RECENTER_TOP + target.stop + 16 - FIT_MARGIN;
+
+// What the user touched: one circuit (its sheet), or several (the list).
+type Selection =
+  { kind: 'one'; trail: Trail } | { kind: 'many'; trails: Trail[] };
 
 // First position inside the zone: the map opens on it, at this zoom.
 const OPEN_ZOOM = 14;
 
 // The map of a ready zone (mockup 90). The glyphs must already be on the disk.
-export function ZoneMap({ zone }: { zone: Zone }) {
+// `downloadStore` and `onUpdateZone` come from the Zones tab (the downloader
+// is not ours): they serve the sheet of a circuit of an old zone. Only the
+// phase of the download of this zone is read, so the progress of a download
+// does not redraw the map.
+export function ZoneMap({
+  zone,
+  downloadStore = NO_DOWNLOADS,
+  onUpdateZone,
+}: {
+  zone: Zone;
+  downloadStore?: Store<Record<string, DownloadEntry>>;
+  onUpdateZone?: (zone: Zone) => void;
+}) {
   const camera = useRef<CameraRef>(null);
   const zoom = useRef(RECENTER_ZOOM);
   const touched = useRef(false);
   const opened = useRef(false);
   const { granted, lon, lat, recenter } = useMapPosition(zone, camera, zoom);
   const router = useRouter();
+  const trails = useTrails(zone);
+  const phase = useSelector(downloadStore, (all) =>
+    updatePhase(zone, all[zone.id]),
+  );
+  const screen = useWindowDimensions();
+  const [selection, setSelection] = useState<Selection | null>(null);
+  const trailsById = useMemo(
+    () => new Map((trails ?? []).map((trail) => [trail.osmId, trail])),
+    [trails],
+  );
   // Where the user left the map: the creation opens on the same view.
   const view = useRef<{ lon: number; lat: number; zoom: number } | null>(null);
+  const chosen = selection?.kind === 'one' ? selection.trail : null;
+  // The view before the circuit was framed: the map goes back to it.
+  const saved = useRef<{ lon: number; lat: number; zoom: number } | null>(null);
+  useEffect(() => {
+    if (chosen) {
+      saved.current ??= view.current;
+      camera.current?.easeTo({
+        ...fitView(trailBounds(chosen), screen, {
+          top: TOP_COVER,
+          bottom: SHEET_COVER,
+        }),
+        duration: 300,
+      });
+    } else if (saved.current) {
+      const back = saved.current;
+      saved.current = null;
+      camera.current?.easeTo({
+        center: [back.lon, back.lat],
+        zoom: back.zoom,
+        padding: NO_PADDING,
+        duration: 300,
+      });
+    }
+    // The screen size is read, not watched: a rotation must not reframe.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chosen]);
   const outside =
     lon !== undefined && lat !== undefined
       ? !isInsideBbox(zone.bbox, lon, lat)
@@ -59,6 +138,55 @@ export function ZoneMap({ zone }: { zone: Zone }) {
     });
   }, [lon, lat, zone.bbox]);
 
+  // A touch on a circuit: one sheet, or the list when several circuits pass
+  // under the finger. Not a touch on the map too (`stopPropagation`).
+  const onTrailPress = useCallback<
+    NonNullable<ComponentProps<typeof TrailsLayer>['onPress']>
+  >(
+    (e) => {
+      e.stopPropagation();
+      const found = new Set<Trail>();
+      for (const feature of e.nativeEvent.features) {
+        const trail = trailsById.get(Number(feature.properties?.osm_id));
+        if (trail) found.add(trail);
+      }
+      if (found.size === 0) return;
+      if (found.size === 1) {
+        setSelection({ kind: 'one', trail: [...found][0] });
+        return;
+      }
+      setSelection({
+        kind: 'many',
+        trails: sortByDistance([...found], e.nativeEvent.lngLat),
+      });
+    },
+    [trailsById],
+  );
+
+  // "En faire un itinéraire": the creation cuts the circuit once it opens
+  // (ADR 0020, section 9). It starts from the last known position.
+  function startDraftFromTrail() {
+    if (!chosen) return;
+    setDraftTarget({
+      kind: 'trail',
+      osmId: chosen.osmId,
+      position: lon !== undefined && lat !== undefined ? { lon, lat } : null,
+    });
+    setSelection(null);
+    router.push('/draft');
+  }
+
+  function seeZones() {
+    setSelection(null);
+    router.navigate('/zones');
+  }
+
+  function updateZone(newer: Zone) {
+    setSelection(null);
+    onUpdateZone?.(newer);
+    router.navigate('/zones');
+  }
+
   function openCreation() {
     const at = view.current;
     router.push({
@@ -77,6 +205,7 @@ export function ZoneMap({ zone }: { zone: Zone }) {
       <ZoneBaseMap
         zone={zone}
         cameraRef={camera}
+        onPress={() => setSelection(null)}
         onRegionDidChange={(e) => {
           const { center, zoom: z, userInteraction } = e.nativeEvent;
           zoom.current = z;
@@ -85,10 +214,47 @@ export function ZoneMap({ zone }: { zone: Zone }) {
           if (userInteraction) touched.current = true;
         }}
       >
+        <TrailsLayer trails={trails} onPress={onTrailPress} chosen={chosen} />
         <UserPositionLayers granted={granted} />
+        {chosen && (
+          <TrailEnds
+            ends={plannedEnds(
+              chosen,
+              lon !== undefined && lat !== undefined ? [lon, lat] : null,
+            )}
+          />
+        )}
       </ZoneBaseMap>
 
-      <RecenterButton granted={granted} top={60} onPress={recenter} />
+      {selection && (
+        <TrailPanel
+          many={
+            selection.kind === 'many'
+              ? {
+                  trails: selection.trails,
+                  onChoose: (trail) => setSelection({ kind: 'one', trail }),
+                  onClose: () => setSelection(null),
+                }
+              : undefined
+          }
+          one={
+            selection.kind === 'one'
+              ? {
+                  trail: selection.trail,
+                  zone,
+                  hasPosition: lon !== undefined && lat !== undefined,
+                  phase,
+                  onClose: () => setSelection(null),
+                  onMake: startDraftFromTrail,
+                  onUpdateZone: updateZone,
+                  onSeeZones: seeZones,
+                }
+              : undefined
+          }
+        />
+      )}
+
+      <RecenterButton granted={granted} top={RECENTER_TOP} onPress={recenter} />
 
       {outside && (
         <View accessibilityRole="alert" style={[styles.notice, { top: 60 }]}>

@@ -10,6 +10,8 @@ const mockNavigate = jest.fn();
 let mockInstalled: ReadyMarker[] = [];
 let mockCamera: Record<string, unknown> = {};
 
+// The circuits of the zone are read by their own tests (TrailsMapT4).
+jest.mock('./useTrails', () => ({ useTrails: () => [] }));
 jest.mock('@maplibre/maplibre-react-native', () => {
   const { View } = jest.requireActual('react-native');
   return {
@@ -19,6 +21,7 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       return null;
     },
     Layer: () => null,
+    GeoJSONSource: () => null,
     UserLocation: () => null,
     useCurrentPosition: () => undefined,
   };

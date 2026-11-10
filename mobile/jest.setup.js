@@ -13,3 +13,22 @@ jest.mock('@modules/valhalla-route', () => ({
     close: jest.fn(),
   },
 }));
+
+// TanStack Query keeps one timer per query (`gcTime`: 5 minutes, 30 for the
+// legs and the infos). A live timer keeps Jest alive long after the last test
+// ("A worker process has failed to exit gracefully"). Its timers are made
+// not to hold the process.
+jest.mock('@tanstack/react-query', () => {
+  const actual = jest.requireActual('@tanstack/react-query');
+  const unref = (timer) => {
+    if (timer && typeof timer.unref === 'function') timer.unref();
+    return timer;
+  };
+  actual.timeoutManager.setTimeoutProvider({
+    setTimeout: (callback, delay) => unref(setTimeout(callback, delay)),
+    clearTimeout: (id) => clearTimeout(id),
+    setInterval: (callback, delay) => unref(setInterval(callback, delay)),
+    clearInterval: (id) => clearInterval(id),
+  });
+  return actual;
+});

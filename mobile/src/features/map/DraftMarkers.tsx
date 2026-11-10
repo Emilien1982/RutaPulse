@@ -1,6 +1,6 @@
 import { Marker, ViewAnnotation } from '@maplibre/maplibre-react-native';
 import { memo, useEffect, useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 import type { DraftPoint } from '@/core/draft/draft';
@@ -14,7 +14,7 @@ import {
   markerShadowRaised,
 } from '@/ui/theme';
 
-type Role = 'start' | 'end' | 'middle';
+export type Role = 'start' | 'end' | 'middle';
 
 function roleOf(index: number, count: number): Role {
   if (index === 0) return 'start';
@@ -24,14 +24,19 @@ function roleOf(index: number, count: number): Role {
 // Every marker sits in a square of 48 (the size of a finger target). The
 // chosen point takes the look of `marqueur.point-deplace` (round of 40, halo
 // of 8, ADR 0017, section 10): a square of 56 holds it.
-function PointMarker({
+export function PointMarker({
   role,
   number,
   chosen,
+  discrete = false,
+  testID = `draft-marker-${number}`,
 }: {
   role: Role;
   number: number;
   chosen: boolean;
+  /** A middle point drawn as a small round without number. */
+  discrete?: boolean;
+  testID?: string;
 }) {
   const label =
     role === 'start'
@@ -43,12 +48,14 @@ function PointMarker({
           });
   return (
     <View
-      testID={`draft-marker-${number}`}
+      testID={testID}
       accessibilityLabel={label}
       style={[styles.cell, chosen && styles.cellChosen]}
     >
       {chosen && <View testID="draft-marker-halo" style={styles.halo} />}
-      {role === 'middle' ? (
+      {role === 'middle' && discrete && !chosen ? (
+        <View testID="draft-marker-discrete" style={styles.discrete} />
+      ) : role === 'middle' ? (
         <View style={[styles.number, chosen && styles.bigRound]}>
           <Text style={[styles.numberText, chosen && styles.bigNumberText]}>
             {number}
@@ -107,8 +114,9 @@ function annotationKey(
   role: Role,
   number: number,
   chosen: boolean,
+  discrete: boolean,
 ) {
-  return `${point.id}-${role}-${number}-${chosen}`;
+  return `${point.id}-${role}-${number}-${chosen}${discrete ? '-d' : ''}`;
 }
 
 // One annotation. Memoized, with a stable `lngLat`: when nothing of this
@@ -118,12 +126,14 @@ const PointAnnotation = memo(function PointAnnotation({
   role,
   number,
   chosen,
+  discrete,
   handlers,
 }: {
   point: DraftPoint;
   role: Role;
   number: number;
   chosen: boolean;
+  discrete: boolean;
   handlers: MarkerHandlers;
 }) {
   const { id, lon, lat } = point;
@@ -145,7 +155,12 @@ const PointAnnotation = memo(function PointAnnotation({
         handlers.onDragEnd(id, { lon: x, lat: y });
       }}
     >
-      <PointMarker role={role} number={number} chosen={chosen} />
+      <PointMarker
+        role={role}
+        number={number}
+        chosen={chosen}
+        discrete={discrete}
+      />
     </ViewAnnotation>
   );
 });
@@ -156,28 +171,44 @@ export const DraftMarkers = memo(function DraftMarkers({
   points,
   chosenId,
   refusedId,
+  discrete = false,
   handlers,
 }: {
   points: DraftPoint[];
   chosenId: number | null;
+  /** The middle points are small rounds without number (all or nothing). */
+  discrete?: boolean;
   /** The point shown as refused, drawn by `RefusedMarker` instead. */
   refusedId: number | null;
   handlers: MarkerHandlers;
 }) {
+  // A loop (start and arrival at the same place): the start is drawn above
+  // the arrival. The first annotation is the top one on Android, the last one
+  // on iOS.
+  const order = points.map((_, index) => index);
+  const first = points[0];
+  const last = points[points.length - 1];
+  const loop =
+    points.length > 1 &&
+    Math.abs(first.lon - last.lon) < 1e-5 &&
+    Math.abs(first.lat - last.lat) < 1e-5;
+  if (loop && Platform.OS === 'ios') order.push(order.shift()!);
   return (
     <>
-      {points.map((point, index) => {
+      {order.map((index) => {
+        const point = points[index];
         if (point.id === refusedId) return null;
         const role = roleOf(index, points.length);
         const number = index + 1;
         const chosen = point.id === chosenId;
         return (
           <PointAnnotation
-            key={annotationKey(point, role, number, chosen)}
+            key={annotationKey(point, role, number, chosen, discrete)}
             point={point}
             role={role}
             number={number}
             chosen={chosen}
+            discrete={discrete}
             handlers={handlers}
           />
         );
@@ -287,6 +318,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     ...markerShadow,
+  },
+  // Discrete point (mockup 12): a round of 14, same colours as the number.
+  discrete: {
+    width: 14,
+    height: 14,
+    borderRadius: 7,
+    borderWidth: 3,
+    borderColor: mapColors.route,
+    backgroundColor: '#fff',
   },
   numberText: { fontSize: 15, fontWeight: '800', color: '#111' },
   bigRound: {

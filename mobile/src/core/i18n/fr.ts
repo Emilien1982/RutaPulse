@@ -134,6 +134,7 @@ export const fr = {
   'zones.meta': '{size} · carte du {date}',
   'zones.date': '{day} {month}',
   'routes.defaultName': 'Itinéraire du {day} {month}',
+  'routes.defaultTrailName': 'Circuit du {day} {month}',
   'zones.month.1': 'janv.',
   'zones.month.2': 'févr.',
   'zones.month.3': 'mars',
@@ -213,6 +214,9 @@ export const fr = {
   'routes.originCreated': 'créé le {date}',
   'routes.originModified': 'modifié le {date}',
   'routes.originGpx': 'GPX importé le {date}',
+  'routes.originTrail': 'circuit balisé, le {date}',
+  'routes.originTrailModified': 'circuit modifié le {date}',
+  'routes.originGpxModified': 'GPX modifié le {date}',
   'routes.lastFigures': 'Chiffres du dernier calcul, le {date}',
   'routes.seeZones': 'Voir les zones',
   'routes.noticeDeleted': 'Zone {zone} supprimée\u00A0:',
@@ -243,6 +247,7 @@ export const fr = {
   'routes.menuLabel': 'Actions de {name}',
   'routes.menuRename': 'Renommer',
   'routes.menuExport': 'Exporter en GPX',
+  'routes.menuDuplicate': 'Dupliquer',
   'routes.menuDelete': 'Supprimer',
   'routes.menuCancel': 'Annuler',
   'routes.emptyTitle': "Pas encore d'itinéraire",
@@ -271,6 +276,9 @@ export const fr = {
   'routes.importTooBig':
     'Ce fichier pèse {size}. RutaPulse importe les GPX de 20 Mo au plus.',
   'routes.importOk': 'OK',
+  'routes.copySuffix': ' (copie)',
+  'routes.copySuffixN': ' (copie {n})',
+  'routes.duplicatedAnnounce': 'Copie créée\u00A0: {name}.',
   'routes.importedAnnounce': 'GPX importé\u00A0: {name}.',
   'routes.outsideTitle': 'GPX hors de vos zones',
   'routes.outsideText':
@@ -292,6 +300,58 @@ export const fr = {
     '{n} itinéraires utilisent cette zone. Ils resteront, sans carte ni terrain.',
   'zones.deleteRoutesOne':
     '1 itinéraire utilise cette zone. Il restera, sans carte ni terrain.',
+  'trails.kicker': 'Circuit VTT balisé',
+  'trails.kickerMany': 'Circuits VTT balisés',
+  'trails.noName': 'Circuit sans nom',
+  'trails.refLabel': 'Circuit {ref}',
+  'trails.loop': '{distance} · boucle',
+  'trails.oneWay': '{distance} · aller simple',
+  'trails.about': 'environ {n}\u202Fkm',
+  'trails.explain':
+    'RutaPulse en fait un itinéraire qui suit le circuit, dans son sens.',
+  'trails.startNearest':
+    'Départ\u00A0: le point du circuit le plus proche de vous.',
+  'trails.startUnknown':
+    'Départ\u00A0: le début du circuit, car votre position est inconnue.',
+  'trails.startOneWay': 'Départ\u00A0: le début du circuit.',
+  'trails.editLater': 'Vous pourrez ensuite le modifier.',
+  'trails.variantsDropped':
+    'Les petites variantes du circuit ne sont pas reprises.',
+  'trails.make': 'En faire un itinéraire',
+  'trails.makeLabel': 'Faire un itinéraire du circuit {name}',
+  'trails.source': 'Tracé du circuit\u00A0: OpenStreetMap',
+  'trails.close': 'Fermer',
+  'trails.cannotTitle': 'Ce circuit ne peut pas devenir un itinéraire.',
+  'trails.cannotText':
+    'Il est en plusieurs morceaux, ou il a des fourches. RutaPulse ne sait pas dans quel ordre le suivre.',
+  'trails.cannotHint':
+    'Pour le rouler, créez un itinéraire par-dessus. Le circuit reste visible pendant la création.',
+  'trails.oldZoneTitle': 'Zone à mettre à jour.',
+  'trails.oldZoneText':
+    'Pour en faire un itinéraire, RutaPulse a besoin de la nouvelle version de la zone {zone}.',
+  'trails.oldZoneTextOffline':
+    "Pour en faire un itinéraire, RutaPulse a besoin d'une version plus récente de la zone {zone}. Sans réseau, RutaPulse ne peut pas la chercher.",
+  'trails.oldZoneUpdate': 'Mettre à jour · {size}',
+  'trails.updatingTitle': 'Mise à jour en cours.',
+  'trails.updatingText':
+    'Quand elle sera finie, vous pourrez faire de ce circuit un itinéraire.',
+  'trails.updateFailedTitle': 'La mise à jour a échoué.',
+  'trails.updateFailedText': "Réessayez depuis l'onglet Zones.",
+  'trails.notYetTitle': 'Ce circuit ne peut pas encore devenir un itinéraire.',
+  'trails.notYetText': 'Une prochaine version de la zone le permettra.',
+  'trails.manyTitle': '{n} circuits passent ici',
+  'trails.manyLabel': '{name}, {summary}',
+  'trails.goneTitle': 'Circuit introuvable',
+  'trails.goneText':
+    "Ce circuit n'est plus dans la zone. Choisissez-le de nouveau sur la carte.",
+  'trails.placedBubble':
+    'Tracé du circuit posé. Déplacez un point pour le modifier.',
+  'trails.placedAnnounce':
+    'Itinéraire posé sur le circuit {name}\u00A0: {n} points de passage.',
+  'gpx.placedBubble':
+    "Tracé du GPX posé. En enregistrant, vous remplacez l'original.",
+  'trails.outsideBubble':
+    'Une partie du tracé sort de la zone. Elle reste telle quelle\u00A0: on ne peut pas la modifier.',
 } as const;
 
 export type TextKey = keyof typeof fr;

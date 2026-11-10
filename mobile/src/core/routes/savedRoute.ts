@@ -7,7 +7,7 @@ import { decodePolyline6, encodePolyline6 } from '@/core/routing/routeResponse';
 
 import type { SqlValue } from './sqlDb';
 
-export type RouteOrigin = 'created' | 'gpx';
+export type RouteOrigin = 'created' | 'gpx' | 'trail' | 'editedGpx';
 
 /** [lon, lat] */
 export type LonLat = [number, number];
@@ -23,6 +23,8 @@ export type SavedLeg =
       distanceKm: number;
       durationS: number;
       shape: LonLat[];
+      /** The shape comes from a trace, not from the engine (ADR 0020, 4). */
+      trace?: true;
     }
   | { mode: 'hand' };
 
@@ -46,7 +48,7 @@ type Common = {
 };
 
 export type CreatedRoute = Common & {
-  origin: 'created';
+  origin: 'created' | 'trail' | 'editedGpx';
   readable: true;
   zone: RouteZone;
   draft: Draft;
@@ -170,6 +172,7 @@ export function legsToJson(legs: SavedLeg[]): string {
             distanceKm: leg.distanceKm,
             durationS: leg.durationS,
             shape: encodePolyline6(leg.shape),
+            ...(leg.trace ? { trace: true } : {}),
           },
     ),
   );
@@ -177,7 +180,7 @@ export function legsToJson(legs: SavedLeg[]): string {
 
 /** The columns of a new row, without `id`. */
 export function routeToRow(route: NewRoute): Record<string, SqlValue> {
-  const created = route.origin === 'created';
+  const created = route.origin !== 'gpx';
   return {
     name: route.name,
     origin: route.origin,
@@ -274,12 +277,14 @@ function parseLegs(text: string | null, draft: Draft): SavedLeg[] {
     if (!isPositiveInt(zoneVersion)) return fail();
     if (!isFinite_(distanceKm) || distanceKm < 0) return fail();
     if (!isFinite_(durationS) || durationS < 0) return fail();
+    if (leg.trace !== undefined && leg.trace !== true) return fail();
     return {
       mode: 'path',
       zoneVersion,
       distanceKm,
       durationS,
       shape: decodeShape(leg.shape),
+      ...(leg.trace === true ? { trace: true as const } : {}),
     };
   });
 }
@@ -320,13 +325,17 @@ export function rowToRoute(row: RouteRow): SavedRoute {
   };
   try {
     const zone = parseZone(row);
-    if (row.origin === 'created') {
+    if (
+      row.origin === 'created' ||
+      row.origin === 'trail' ||
+      row.origin === 'editedGpx'
+    ) {
       if (zone === null) return fail();
       const draft = parseDraft(row.draft);
       const legs = parseLegs(row.legs, draft);
       return {
         ...common,
-        origin: 'created',
+        origin: row.origin,
         readable: true,
         zone,
         draft,

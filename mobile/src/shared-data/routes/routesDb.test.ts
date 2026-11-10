@@ -52,7 +52,7 @@ beforeEach(() => {
   });
 });
 
-it('opens the database once for two calls, named routes.db, at version 1', async () => {
+it('opens the database once for two calls, named routes.db, at version 2', async () => {
   const node = createNodeSqlDb();
   const connection = fakeConnection(node);
   mockOpen.mockResolvedValue(connection);
@@ -68,7 +68,7 @@ it('opens the database once for two calls, named routes.db, at version 1', async
   expect(
     (await node.first<{ user_version: number }>('PRAGMA user_version'))
       ?.user_version,
-  ).toBe(1);
+  ).toBe(2);
   await routesDb.getRoutesDb();
   expect(mockOpen).toHaveBeenCalledTimes(1);
 });

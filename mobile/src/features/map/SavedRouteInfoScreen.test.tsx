@@ -226,7 +226,7 @@ describe('C6: saved track, infos calculated again', () => {
     await insertRoute(db, sampleCreated());
     await open();
     fireEvent.press(screen.getByTestId('info-modify'));
-    expect(peekDraftTarget()).toBe(1);
+    expect(peekDraftTarget()).toEqual({ kind: 'route', id: 1 });
     expect(mockPush).toHaveBeenCalledWith('/draft');
   });
 
@@ -297,10 +297,10 @@ describe('imported GPX', () => {
     zone: { id: 'nancy', version: 5, name: 'Nancy' },
   };
 
-  it('has no "Modifier" and calculates on the thinned track', async () => {
+  it('shows "Modifier" and calculates on the thinned track', async () => {
     await insertRoute(db, sampleGpx(inZone));
     await open();
-    expect(screen.queryByTestId('info-modify')).toBeNull();
+    expect(screen.getByTestId('info-modify')).toBeTruthy();
     expect(screen.getByTestId('info-subtitle')).toHaveTextContent(
       /^Zone Nancy · GPX importé le/,
     );

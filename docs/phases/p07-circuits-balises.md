@@ -1,7 +1,8 @@
-# Phase 7 — Circuits VTT balisés, et trace modifiable (spec proposée)
+# Phase 7 — Circuits VTT balisés, et trace modifiable
 
-> 9 novembre 2026. Spec de la session de pilotage, **à valider par
-> Émilien**. Découpage : [docs/05](../05-decoupage-v1.md), ligne 7.
+> 9 novembre 2026. Spec de la session de pilotage, **validée par
+> Émilien**, avec l'ADR 0020 et la maquette v1/12 (même jour). Ajout du
+> 9 novembre : « Dupliquer » (C16). Découpage : [docs/05](../05-decoupage-v1.md), ligne 7.
 > Fonction du cadrage : 9 (circuits VTT balisés). S'appuie sur l'ADR 0003
 > (paquets de zone, fichier `trails.geojson`), l'ADR 0016 (itinéraire en
 > création), l'ADR 0018 (mise à jour d'une zone), l'ADR 0019 (itinéraires
@@ -82,6 +83,18 @@ Nancy (v6).
 | C13 | Parcours Maestro, en mode avion : toucher un circuit, en faire un itinéraire, déplacer un point, enregistrer, le retrouver dans la liste ; importer un GPX, le modifier, enregistrer | Réussi sur Android ; sur iOS, sans mode avion |
 | C14 | `npm run verify` passe, `pytest` passe, la CI est verte | Sorties et run GitHub |
 | C15 | Captures release sur les deux simulateurs, comparées par le designer aux maquettes 10, 12, 20 et 40 | Comparaison écrite dans `design/comparaisons/` |
+| C16 | **Dupliquer** : depuis le menu « ⋮ » ou l'appui long, juste après « Renommer », pour toute origine. La copie s'appelle « <nom> (copie) », puis « (copie 2) », 60 caractères au plus. Elle garde l'origine et le tracé de l'original, ses dates sont celles de la copie, elle arrive en haut de la liste. La modifier ne change pas l'original | Tests sur un vrai SQLite ; parcours Maestro |
+
+Précisions du 9 novembre (réponses d'Émilien, ADR 0020) :
+
+- C2 : la règle d'ordre est **tolérante** (ADR 0020, § 2). Elle retire
+  les petits culs-de-sac et petites boucles, garde une branche d'une
+  variante, et refuse un circuit dont elle retirerait plus de 15 %.
+- C8 : aucun point de passage hors de la zone. La partie hors zone reste
+  un seul tronçon gardé ; une bulle le dit à l'ouverture.
+- C11 : le D+ d'un circuit ou d'un GPX non touché est calculé d'une seule
+  requête par suite de tronçons non touchés (parade b, ADR 0020, § 6).
+  Après une retouche, le D+ est un ordre de grandeur (environ ±6 %).
 
 ## Hors périmètre
 
@@ -96,6 +109,8 @@ Nancy (v6).
 - Une 2e zone (Nancy reste la seule zone publiée).
 - Le trait de liaison d'un point posé hors chemin : à trancher avant la
   phase 8 (déjà noté).
+- Un D+ plus précis après une retouche (lissage des altitudes) : plus
+  tard, peut-être jamais.
 
 ## Tâches, dans l'ordre
 
@@ -106,7 +121,7 @@ Nancy (v6).
 | T3 | `developpeur` | **Logique pure** dans `core/` : trace → brouillon avec tronçons gardés (découpage, sens, départ le plus proche), avec ses tests |
 | T4 | `developpeur` | **Couche des circuits** et feuille du circuit (maquette 12), zone ancienne |
 | T5 | `developpeur` | **« En faire un itinéraire »**, création ouverte, Enregistrer avec l'origine « circuit balisé », base en version 2 |
-| T6 | `developpeur` | **« Modifier » d'un GPX importé**, avec la règle de la question 1 |
+| T6 | `developpeur` | **« Modifier » d'un GPX importé**, avec la règle de la question 1, puis **« Dupliquer »** (C16) |
 | T7 | `testeur` | Mise à jour v5 → v6 sur simulateur (C3), fidélité (C7, C11), mesures C12, parcours Maestro C13, captures release |
 | T8 | `designer` | Compare les captures aux maquettes 10, 12, 20 et 40, et liste les écarts |
 

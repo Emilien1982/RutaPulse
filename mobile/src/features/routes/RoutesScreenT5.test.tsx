@@ -18,6 +18,8 @@ import {
 } from '@/core/routes/testing/nodeSqlDb';
 import { sampleCreated, sampleGpx } from '@/core/routes/testing/sampleRoutes';
 
+import { menuEntry, menuTexts } from '@/ui/testing/androidMenu';
+
 import { RoutesScreen } from './RoutesScreen';
 
 const mockPush = jest.fn();
@@ -236,7 +238,7 @@ describe('the empty list', () => {
     await insertRoute(db, sampleCreated({ name: 'Seule' }));
     await open();
     await fireEvent.press(screen.getByTestId('route-menu-1'));
-    await press(lastAlert().buttons[0]);
+    await press(menuEntry('delete'));
     await press(lastAlert().buttons[1]);
     expect(screen.getByTestId('routes-empty')).toBeTruthy();
   });
@@ -279,18 +281,19 @@ describe('a zone that is absent (C8)', () => {
     );
     await open();
     await fireEvent.press(screen.getByTestId('route-menu-1'));
-    expect(lastAlert().buttons.map((b) => b.text)).toEqual([
-      'Supprimer',
-      'Exporter en GPX',
+    expect(menuTexts()).toEqual([
       'Renommer',
+      'Dupliquer',
+      'Exporter en GPX',
+      'Supprimer',
     ]);
-    await press(lastAlert().buttons[2]);
+    await press(menuEntry('rename'));
     await fireEvent.changeText(screen.getByTestId('rename-input'), 'Autre');
     await fireEvent.press(screen.getByTestId('rename-submit'));
     await settle();
     expect(screen.getByText('Autre')).toBeTruthy();
     await fireEvent.press(screen.getByTestId('route-menu-1'));
-    await press(lastAlert().buttons[0]);
+    await press(menuEntry('delete'));
     await press(lastAlert().buttons[1]);
     expect(await listRoutes(db)).toHaveLength(0);
   });
@@ -315,18 +318,21 @@ describe('the menu', () => {
     await insertRoute(db, sampleCreated({ name: 'Une', savedAt: 1_000 }));
   });
 
-  it('opens a dialog with three actions on Android, from "⋮" or a long press', async () => {
+  it('opens a sheet with four actions on Android, from "⋮" or a long press', async () => {
     await open();
     await fireEvent.press(screen.getByTestId('route-menu-1'));
-    expect(alert).toHaveBeenCalledTimes(1);
-    expect(lastAlert().title).toBe('Une');
-    expect(lastAlert().buttons).toHaveLength(3);
+    expect(alert).not.toHaveBeenCalled();
+    expect(screen.getAllByText('Une')).toHaveLength(2);
+    expect(menuTexts()).toHaveLength(4);
+    await fireEvent.press(screen.getByTestId('menu-cancel'));
+    expect(menuTexts()).toEqual([]);
     await fireEvent(screen.getByTestId('route-row-1'), 'longPress');
-    expect(alert).toHaveBeenCalledTimes(2);
-    expect(lastAlert().buttons.map((b) => b.text)).toEqual([
-      'Supprimer',
-      'Exporter en GPX',
+    expect(alert).not.toHaveBeenCalled();
+    expect(menuTexts()).toEqual([
       'Renommer',
+      'Dupliquer',
+      'Exporter en GPX',
+      'Supprimer',
     ]);
   });
 
@@ -340,6 +346,7 @@ describe('the menu', () => {
     expect(alert).not.toHaveBeenCalled();
     expect(sheet.mock.calls[0]![0].options).toEqual([
       'Renommer',
+      'Dupliquer',
       'Exporter en GPX',
       'Supprimer',
       'Annuler',
@@ -351,8 +358,8 @@ describe('the menu', () => {
   it('does nothing for "Exporter en GPX" yet (T6)', async () => {
     await open();
     await fireEvent.press(screen.getByTestId('route-menu-1'));
-    await press(lastAlert().buttons[1]);
-    expect(alert).toHaveBeenCalledTimes(1);
+    await press(menuEntry('export'));
+    expect(alert).not.toHaveBeenCalled();
     expect(screen.queryByTestId('rename-input')).toBeNull();
     expect(await listRoutes(db)).toHaveLength(1);
   });
@@ -368,7 +375,7 @@ describe('rename (mockup 40, state 4)', () => {
   async function openSheet(id: number) {
     await open();
     await fireEvent.press(screen.getByTestId(`route-menu-${id}`));
-    await press(lastAlert().buttons[2]);
+    await press(menuEntry('rename'));
   }
   const input = () => screen.getByTestId('rename-input');
   const submit = () => screen.getByTestId('rename-submit');
@@ -458,7 +465,7 @@ describe('delete (mockup 40, state 5)', () => {
   async function askDelete(id: number) {
     await open();
     await fireEvent.press(screen.getByTestId(`route-menu-${id}`));
-    await press(lastAlert().buttons[0]);
+    await press(menuEntry('delete'));
   }
 
   it('asks first, with the texts of the mockup', async () => {

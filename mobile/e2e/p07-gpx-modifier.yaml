@@ -1,0 +1,150 @@
+# C10 / C13 (phase 7) : importer un GPX, « Modifier », ajouter un point,
+# « Enregistrer », le retrouver dans la liste avec « GPX modifié le … ».
+# Prérequis : zone Nancy installée ; le fichier sortie-maestro.gpx (tracé de
+# 40 points près de 48.75, 5.96) posé dans /sdcard/Download/ par adb push.
+# Le glissement d'un repère n'existe pas sous Maestro : on ajoute un point
+# par un toucher. Le parcours supprime ce qu'il a créé (le plus récent est
+# toujours en haut de la liste).
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setLocation:
+          latitude: 48.751
+          longitude: 5.967
+      - extendedWaitUntil:
+          visible:
+            id: 'new-route-button'
+          timeout: 30000
+      - waitForAnimationToEnd:
+          timeout: 4000
+- tapOn:
+    text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
+    optional: true
+- tapOn: 'Itinéraires.*'
+- extendedWaitUntil:
+    visible:
+      id: 'routes-import'
+    timeout: 10000
+- tapOn:
+    id: 'routes-import'
+# Le sélecteur de fichiers Android s'ouvre sur « Récents », vide : on passe
+# par le dossier Téléchargements (menu en haut à gauche).
+- waitForAnimationToEnd:
+    timeout: 3000
+- runFlow:
+    when:
+      notVisible: 'sortie-maestro.gpx'
+    commands:
+      - tapOn:
+          point: '7%,8%'
+      - tapOn: 'Downloads|Téléchargements'
+- extendedWaitUntil:
+    visible: 'sortie-maestro.gpx'
+    timeout: 15000
+- tapOn: 'sortie-maestro.gpx'
+# L'écran Infos du GPX : « Modifier » y est, le sous-titre dit « GPX importé ».
+- extendedWaitUntil:
+    visible:
+      id: 'info-title'
+      text: 'Sortie Maestro'
+    timeout: 30000
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 20000
+- assertVisible:
+    id: 'info-subtitle'
+    text: '.*GPX importé le.*'
+- waitForAnimationToEnd:
+    timeout: 3000
+- copyTextFrom:
+    id: 'info-distance'
+- evalScript: '${output.distGpx = maestro.copiedText}'
+- takeScreenshot: captures/p07-gpx-01-infos-avant
+- tapOn:
+    id: 'info-modify'
+- extendedWaitUntil:
+    visible:
+      id: 'route-save'
+    timeout: 15000
+# La bulle dit que l'enregistrement remplace l'original ; rien n'a changé :
+# « Enregistrer » est inactif.
+- assertVisible: 'Tracé du GPX posé.*'
+- assertVisible:
+    id: 'route-save'
+    enabled: false
+- takeScreenshot: captures/p07-gpx-02-modifier-ouverture
+- waitForAnimationToEnd:
+    timeout: 3000
+# C11 : sans retouche, la création montre la même distance que l'écran Infos.
+# Les deux écrans écrivent la distance au 0,1 km (100 m) : on compare des
+# nombres en mètres, pas des textes, avec cette marge d'affichage.
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.distOpen = maestro.copiedText}'
+- evalScript: "${output.mGpx = (function (s) { var n = parseFloat(s.replace(',', '.')); return /km/.test(s) ? n * 1000 : n; })(output.distGpx)}"
+- evalScript: "${output.mOpen = (function (s) { var n = parseFloat(s.replace(',', '.')); return /km/.test(s) ? n * 1000 : n; })(output.distOpen)}"
+- assertTrue:
+    condition: ${output.mGpx > 0 && output.mOpen > 0 && Math.abs(output.mOpen - output.mGpx) <= 100}
+    label: 'C11 : la distance de la création égale celle de l écran Infos'
+# Un toucher sur la carte ajoute un point au-delà de l'arrivée.
+- tapOn:
+    point: '85%,35%'
+- waitForAnimationToEnd:
+    timeout: 3000
+- runFlow:
+    when:
+      visible: 'Aucun chemin trouvé'
+    commands:
+      - tapOn: 'Relier ce point à la main'
+- waitForAnimationToEnd:
+    timeout: 5000
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.distEdited = maestro.copiedText}'
+- evalScript: "${output.mEdited = (function (s) { var n = parseFloat(s.replace(',', '.')); return /km/.test(s) ? n * 1000 : n; })(output.distEdited)}"
+- assertTrue:
+    condition: ${output.mEdited > output.mOpen}
+    label: 'Le point ajouté au-delà de l arrivée allonge la distance'
+- takeScreenshot: captures/p07-gpx-03-modifier-apres
+- tapOn:
+    id: 'route-save'
+# Retour à l'écran Infos du même itinéraire, relu : « GPX modifié le … ».
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- assertVisible:
+    id: 'info-title'
+    text: 'Sortie Maestro'
+- assertVisible:
+    id: 'info-subtitle'
+    text: '.*GPX modifié le.*'
+- takeScreenshot: captures/p07-gpx-04-infos-apres
+- tapOn:
+    id: 'info-back'
+- extendedWaitUntil:
+    visible:
+      id: 'route-row-.*'
+    timeout: 10000
+- assertVisible: 'Sortie Maestro.*'
+- assertVisible: '.*GPX modifié le.*'
+- takeScreenshot: captures/p07-gpx-05-liste
+# Nettoyage : supprimer l'itinéraire en haut de la liste.
+- tapOn:
+    id: 'route-menu-.*'
+- tapOn:
+    text: 'Supprimer'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    text: 'Supprimer'
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertNotVisible: 'Sortie Maestro.*'

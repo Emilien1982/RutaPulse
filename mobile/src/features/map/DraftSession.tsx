@@ -1,7 +1,8 @@
 // What the creation screen and the Infos screen share while the full screen
 // is open: the active zone and the Store of the draft (ADR 0017, section 7).
 // The Store lives as long as the full screen, no longer (ADR 0016). With a
-// `routeId`, it starts from a saved route (ADR 0019, section 4).
+// `routeId`, it starts from a saved route (ADR 0019, section 4); with a
+// `trail`, from a waymarked circuit cut into legs (ADR 0020, section 10).
 
 import { useRouter } from 'expo-router';
 import {
@@ -15,19 +16,39 @@ import { Alert, StyleSheet, View } from 'react-native';
 
 import { t } from '@/core/i18n/t';
 import { reopenDraft, type KeptLegs } from '@/core/routes/reopen';
-import type { CreatedRoute } from '@/core/routes/savedRoute';
+import { trailRouteName } from '@/core/routes/routeName';
+import type { CreatedRoute, GpxRoute } from '@/core/routes/savedRoute';
+import { hasLegOutside, traceToDraft } from '@/core/routes/traceDraft';
+import { trailTitle } from '@/core/trails/trailSummary';
+import type { Trail, TrailLine } from '@/core/trails/trails';
 import type { Zone } from '@/core/zones/catalogue';
 import { useSavedRoute } from '@/shared-data/routes/useRoutes';
 import { useZoneHold } from '@/shared-data/zones/zoneInService';
 import { colors } from '@/ui/theme';
 
 import { createDraftStore } from './draftStore';
+import type { TrailTarget } from './draftTarget';
 import { useGlyphsReady } from './useGlyphsReady';
+import { useTrails } from './useTrails';
 
 export type DraftSessionValue = ReturnType<typeof createDraftStore> & {
   zone: Zone;
   /** Saved shapes of a reopened route. */
   kept?: KeptLegs;
+  /** Set when the creation starts from a circuit (not yet saved). */
+  trail?: {
+    /** Default name of the route, before "(2)". */
+    name: string;
+    /** Name of the circuit, for the announcement. */
+    title: string;
+    /** A part of the trace leaves the zone. */
+    outside: boolean;
+  };
+  /** Set when the creation starts from an imported GPX ("Modifier"). */
+  gpx?: {
+    /** A part of the trace leaves the zone. */
+    outside: boolean;
+  };
 };
 
 export const DraftSessionContext = createContext<DraftSessionValue | null>(
@@ -46,13 +67,39 @@ export function useDraftSession(): DraftSessionValue {
 export function DraftSession({
   children,
   routeId,
+  gpxId,
+  trail,
 }: {
   children: ReactNode;
   routeId?: number;
+  gpxId?: number;
+  trail?: TrailTarget;
 }) {
   const zone = useZoneHold();
   const glyphsReady = useGlyphsReady();
   if (!zone || !glyphsReady) return <View style={styles.blank} />;
+  if (trail) {
+    return (
+      <TrailSession
+        key={`trail-${trail.osmId}-${zone.id}-${zone.version}`}
+        zone={zone}
+        target={trail}
+      >
+        {children}
+      </TrailSession>
+    );
+  }
+  if (gpxId !== undefined) {
+    return (
+      <GpxSession
+        key={`gpx-${gpxId}-${zone.id}-${zone.version}`}
+        zone={zone}
+        gpxId={gpxId}
+      >
+        {children}
+      </GpxSession>
+    );
+  }
   if (routeId !== undefined) {
     return (
       <ReopenedSession
@@ -96,7 +143,7 @@ function ReopenedSession({
   const query = useSavedRoute(routeId);
   const route = query.data;
   const usable =
-    route && route.readable && route.origin === 'created' ? route : null;
+    route && route.readable && route.origin !== 'gpx' ? route : null;
   const refused =
     (route !== undefined || query.isError) &&
     (!usable || usable.zone.id !== zone.id);
@@ -113,6 +160,163 @@ function ReopenedSession({
     <OpenedSession zone={zone} route={usable}>
       {children}
     </OpenedSession>
+  );
+}
+
+// Reads the GPX, then checks that the zone held is its zone. Otherwise it
+// closes with a message (ADR 0020, section 8).
+function GpxSession({
+  zone,
+  gpxId,
+  children,
+}: {
+  zone: Zone;
+  gpxId: number;
+  children: ReactNode;
+}) {
+  const router = useRouter();
+  const query = useSavedRoute(gpxId);
+  const route = query.data;
+  const readable =
+    route && route.readable && route.origin === 'gpx' && route.zone
+      ? route
+      : null;
+  // The GPX is read once, at the opening. After "Enregistrer" the row is an
+  // edited GPX, and the creation, still open for a moment, must not take that
+  // for a missing GPX.
+  const [opened, setOpened] = useState<GpxRoute | null>(null);
+  const usable = readable && readable.zone?.id === zone.id ? readable : null;
+  if (usable && !opened) setOpened(usable);
+  const refused = !opened && (route !== undefined || query.isError) && !usable;
+  useEffect(() => {
+    if (!refused) return;
+    Alert.alert(
+      t('route.zoneAbsentTitle'),
+      t(readable || !route ? 'route.zoneAbsentText' : 'route.unreadableText'),
+    );
+    router.back();
+  }, [refused, readable, route, router]);
+  if (!opened) return <View style={styles.blank} />;
+  return (
+    <CutGpxSession zone={zone} route={opened}>
+      {children}
+    </CutGpxSession>
+  );
+}
+
+function CutGpxSession({
+  zone,
+  route,
+  children,
+}: {
+  zone: Zone;
+  route: GpxRoute;
+  children: ReactNode;
+}) {
+  const [session] = useState(() => {
+    const { state, kept } = traceToDraft(route.track, {
+      loop: false,
+      position: null,
+      zoneVersion: zone.version,
+      bbox: zone.bbox,
+    });
+    // The draft saved is the starting one: "Enregistrer" stays closed until a
+    // change, and closing without one asks nothing.
+    const draft = createDraftStore(state, {
+      routeId: route.id,
+      savedDraft: state.draft,
+    });
+    return {
+      ...draft,
+      zone,
+      kept,
+      gpx: { outside: hasLegOutside(kept, zone.bbox) },
+    };
+  });
+  return (
+    <DraftSessionContext.Provider value={session}>
+      {children}
+    </DraftSessionContext.Provider>
+  );
+}
+
+// Finds the circuit in the zone held, then cuts it once. A circuit that is
+// gone or has no ordered line (the zone changed meanwhile) closes the
+// creation with a message.
+function TrailSession({
+  zone,
+  target,
+  children,
+}: {
+  zone: Zone;
+  target: TrailTarget;
+  children: ReactNode;
+}) {
+  const router = useRouter();
+  const trails = useTrails(zone);
+  const trail = trails?.find((candidate) => candidate.osmId === target.osmId);
+  const line = trail?.line.kind === 'ordered' ? trail.line : null;
+  const gone = trails !== undefined && !line;
+  useEffect(() => {
+    if (!gone) return;
+    Alert.alert(t('trails.goneTitle'), t('trails.goneText'));
+    router.back();
+  }, [gone, router]);
+  if (!trail || !line) return <View style={styles.blank} />;
+  return (
+    <CutSession
+      zone={zone}
+      trail={trail}
+      line={line}
+      position={target.position}
+    >
+      {children}
+    </CutSession>
+  );
+}
+
+function CutSession({
+  zone,
+  trail,
+  line,
+  position,
+  children,
+}: {
+  zone: Zone;
+  trail: Trail;
+  line: Extract<TrailLine, { kind: 'ordered' }>;
+  position: TrailTarget['position'];
+  children: ReactNode;
+}) {
+  const [session] = useState(() => {
+    const { state, kept } = traceToDraft(line.ordered, {
+      loop: line.loop,
+      position: position && [position.lon, position.lat],
+      zoneVersion: zone.version,
+      bbox: zone.bbox,
+    });
+    // The draft saved is the starting one: closing without a change asks
+    // nothing, and "Enregistrer" is open at once.
+    const draft = createDraftStore(state, {
+      routeId: null,
+      savedDraft: state.draft,
+    });
+    const now = new Date();
+    return {
+      ...draft,
+      zone,
+      kept,
+      trail: {
+        name: trailRouteName(trail, now),
+        title: trailTitle(trail),
+        outside: hasLegOutside(kept, zone.bbox),
+      },
+    };
+  });
+  return (
+    <DraftSessionContext.Provider value={session}>
+      {children}
+    </DraftSessionContext.Provider>
   );
 }
 

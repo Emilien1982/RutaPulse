@@ -4,11 +4,18 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { StripedBanner } from './StripedBanner';
 import { colors, spacing, text } from './theme';
 
+/** What a screen may ask of the scrolling content. */
+export type FrameScroll = {
+  scrollTo: (options: { y: number; animated: boolean }) => void;
+};
+
 type ScreenFrameProps = {
   title: string;
   children: ReactNode;
   /** Top of the title (default 101). A screen with a button above it lowers it. */
   titleTop?: number;
+  /** To scroll the content, for example back to the top. */
+  scrollRef?: (node: FrameScroll | null) => void;
 };
 
 export const TITLE_TOP = 101;
@@ -20,9 +27,11 @@ export function ScreenFrame({
   title,
   children,
   titleTop = TITLE_TOP,
+  scrollRef,
 }: ScreenFrameProps) {
   return (
     <ScrollView
+      ref={scrollRef}
       style={styles.screen}
       contentContainerStyle={styles.content}
       contentInsetAdjustmentBehavior="never"

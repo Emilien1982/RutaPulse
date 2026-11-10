@@ -130,9 +130,11 @@ doivent se distinguer de tout cela, par la couleur **et** par l'épaisseur.
 | `carte.itineraire` | `#C2007A` (magenta) | 5,9:1 sur blanc, 5,1:1 sur le fond de carte | L'itinéraire. Seule couleur de la carte qui n'existe nulle part ailleurs. |
 | `carte.itineraire-lisere` | `#FFFFFF` | — | Liseré (« casing », bord clair) de l'itinéraire, pour le détacher des forêts et des pistes |
 | `carte.parcouru` | `#8C8C8C` à 70 % | — | Partie de l'itinéraire déjà roulée, pendant le suivi |
-| `carte.circuit` | `#2F6BFF` à 55 % | — | Circuits VTT balisés (couche) |
+| `carte.circuit` | `#2F6BFF` à 55 % | — | Circuits VTT balisés (couche), sur l'onglet Carte et dans la création |
 | `carte.circuit-choisi` | `#2F6BFF` à 100 % | — | Circuit touché, avant d'en faire un itinéraire |
-| `carte.sens-circuit` | chevrons `#FFFFFF` de 7 × 8, tous les 150 points environ | — | Sens du circuit choisi (décision 7), dessinés sur son tracé |
+| `carte.circuit-efface` | `#2F6BFF` à 25 % | — | Les autres circuits, pendant qu'un circuit est choisi (12, écrans 2 à 5) |
+| `carte.circuit-texte` | `#173A8C` | 10,4:1 sur blanc, 8,7:1 sur `carte.fond`, 7,7:1 sur `carte.foret` | Nom du circuit le long du trait, halo `carte.etiquette-halo` de 2 |
+| `carte.sens-circuit` | chevrons `#FFFFFF` : le caractère « > » en Noto Sans Bold de 16, sans halo ; 50 à 350 points entre deux chevrons, dès le zoom 10 (5 tranches de zoom, `style-carte.md`) | 4,9:1 sur `carte.circuit-choisi` | Sens du circuit choisi (décision 7), dessinés sur son tracé. Revu en T8 de la phase 7 |
 | `carte.position` | `#1A73E8`, bord blanc | — | Ma position. Bleu : convention des deux plateformes. |
 | `carte.depart` | `#146C2E` | — | Pastille du départ |
 | `carte.arrivee` | `#111111` | — | Pastille de l'arrivée (drapeau) |
@@ -253,6 +255,7 @@ système). Tailles au zoom 15 ; courbes complètes dans `style-carte.md`.
 | `texte.carte-voie` | 12 | Noto Sans Regular | Noms de rues et de chemins, dès le zoom 15 |
 | `texte.carte-cote` | 12,7 | Noto Sans Regular | Altitude des courbes maîtresses |
 | `texte.carte-eau` | 13 | Noto Sans Italic | Rivières et canaux |
+| `texte.carte-circuit` | 13 (11 au zoom 12, 15 au zoom 18) | Noto Sans Bold | Nom d'un circuit balisé, le long du trait, dès le zoom 12 (ajouté le 9 novembre 2026, phase 7) |
 
 - Interligne : 1,2 pour les chiffres et titres, 1,4 pour le corps.
   Exception dans l'app : tout style en **Jost** a une interligne d'au moins
@@ -313,7 +316,8 @@ ombre.
 | `cible.velo` | 64 | Minimum sur l'écran de suivi, et bouton « Fermer » de l'écran « Arrivée » (lu sur le guidon) |
 | `cible.bouton-principal` | hauteur 56 | « Démarrer le suivi », « En faire un itinéraire »… |
 | `cible.outil` | hauteur 56, largeur ⅓ de la feuille | Annuler, Boucler, Supprimer |
-| `cible.marqueur` | 48 | Zone de toucher d'un point de passage (dessin : 28) |
+| `cible.marqueur` | 48 | Zone de toucher d'un point de passage (dessin : 28, ou 14 pour un point discret). Zones qui se recouvrent : le point le plus proche du doigt gagne |
+| `cible.circuit` | carré de 48 autour du doigt | Toucher un circuit sur l'onglet Carte (trait de 6). L'essai T1 de la phase 7 a validé 44 sur les deux plateformes |
 | `cible.onglet` | ¼ de la largeur (97 sur 390), hauteur de la barre du système (49 sur iOS au-dessus de la zone du geste, 80 sur Android) | Un onglet de la barre du bas |
 
 ## Barre d'onglets (hors navigation)
@@ -341,7 +345,7 @@ au zoom 17 (`line-width` en `interpolate` sur le zoom).
 | `trace.a-la-main` | 7 | 10 | Même couleur, en tirets 2 × l'épaisseur / 1 × l'épaisseur : on voit que ce tronçon n'est pas calculé |
 | `trace.liaison` | 3 | — | Points ronds de 3, environ 4,5 de vide entre deux points. Droit, du centre du marqueur au bout du tracé. Dessiné sous le liseré de l'itinéraire. Pas dessiné à moins de 5 m. Le suivi : à décider |
 | `trace.parcouru` | — | 8 | Sans liseré |
-| `trace.circuit` | 6 | 6 | Sous l'itinéraire |
+| `trace.circuit` | 6 | 6 | Sous l'itinéraire, au-dessus des voies. Dès le zoom 8 (1,5), puis 2,5 au zoom 10, 3,6 au zoom 12 et 7,8 au zoom 17 (`style-carte.md`, « Circuits balisés ») |
 | `trace.circuit-choisi` | 8, liseré 2 | — | |
 | `trace.piste` | 2,5 | 2,5 | |
 | `trace.sentier` | 2, tirets 5 / 4 | 2,5, tirets 5 / 4 | Plus épais en suivi : c'est à une fourche qu'on en a besoin |
@@ -368,7 +372,8 @@ passent par ces valeurs au zoom 15.
 | `marqueur.position` | Flèche de cap de 32 à l'arrêt, 40 en suivi, bord blanc de 3 |
 | `marqueur.point` | Rond de 28, bord de 3, chiffre de 15 en gras |
 | `marqueur.point-deplace` | Rond de 40, chiffre de 18, halo de 8 (`carte.itineraire` à 22 %), ombre 0 6 12 noir à 35 %. Aspect du **point choisi** : il l'a pendant qu'on le glisse, et après, tant qu'il reste choisi (le point glissé devient le point choisi, phase 4). Précisé le 2 novembre 2026 (phase 5, passe iOS) |
-| `marqueur.depart-arrivee` | Rond de 32 |
+| `marqueur.point-discret` | Rond de 14 sans chiffre : fond `#FFFFFF`, bord de 3 `carte.itineraire` (MapLibre : `circle-radius` 4, `circle-stroke-width` 3). Remplace **tous** les `marqueur.point` quand la distance médiane à l'écran entre deux points voisins est sous 44 (28 + 16). Le départ, l'arrivée et le point choisi gardent leur marqueur. Ajouté le 9 novembre 2026 (phase 7 : 35 points sur un circuit de 35 km se chevauchaient, essai T1) |
+| `marqueur.depart-arrivee` | Rond de 32. Boucle (départ et arrivée au même endroit) : le départ est dessiné au-dessus |
 | `marqueur.depart-arrivee-vignette` | Rond de 16 (MapLibre : `circle-radius` 8), bord `#FFFFFF` de 2 (`circle-stroke-width` 2), fond `carte.depart` ou `carte.arrivee`, **sans pictogramme**. Petites cartes seulement (arche de l'écran 20) : un rond de 32 y cacherait un tracé de quelques km. Ajouté le 2 novembre 2026 (phase 5, T8) |
 
 ## Ombres

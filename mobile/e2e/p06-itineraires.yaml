@@ -1,7 +1,9 @@
 # C14 (phase 6) : créer, enregistrer, retrouver dans la liste, renommer,
 # ouvrir les infos, modifier, supprimer, hors ligne. Android : mode avion
 # réel (coupé à la fin, même en cas d'échec). iOS : sans mode avion.
-# Prérequis : zone Nancy installée, liste d'itinéraires vide.
+# Prérequis : zone Nancy installée. La liste peut contenir d'autres
+# itinéraires (et d'autres dates) : le parcours ne s'appuie que sur la ligne du
+# haut (la plus récente) et sur les noms qu'il donne lui-même.
 # iOS : position du simulateur avant : xcrun simctl location booted set 48.751,5.967
 # Pensé pour une version release.
 appId: fr.rutapulse.app
@@ -39,15 +41,8 @@ onFlowComplete:
 - tapOn:
     text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
     optional: true
-# Liste vide au départ.
-- tapOn: 'Itinéraires.*'
-- extendedWaitUntil:
-    visible:
-      id: 'routes-empty'
-    timeout: 10000
-- takeScreenshot: 01-liste-vide
-# Création : départ, arrivée.
-- tapOn: 'Carte.*'
+# Création : départ, arrivée. Pas de toucher sur « Carte.* » : il tombe sur la
+# carte elle-même et ouvre la feuille d'un circuit (le lancement ouvre la carte).
 - extendedWaitUntil:
     visible:
       id: 'new-route-button'
@@ -88,8 +83,14 @@ onFlowComplete:
     text: 'Itinéraire du .*'
 - assertNotVisible:
     id: 'route-save'
+# Le nom donné à l'itinéraire (avec sa date, quelle qu'elle soit), échappé
+# pour servir de motif.
+- copyTextFrom:
+    id: 'info-title'
+- evalScript: '${output.created = maestro.copiedText}'
+- evalScript: "${output.createdRe = output.created.replace(/[().]/g, function (c) { return '\\\\' + c; })}"
 - takeScreenshot: 04-infos-apres-enregistrer
-# « Retour » mène à la liste : un seul itinéraire.
+# « Retour » mène à la liste : l'itinéraire créé y est.
 - tapOn:
     id: 'info-back'
 - extendedWaitUntil:
@@ -97,7 +98,7 @@ onFlowComplete:
       id: 'route-row-.*'
     timeout: 10000
 - assertVisible: 'Mes itinéraires'
-- assertVisible: 'Itinéraire du 4 nov.*'
+- assertVisible: '${output.createdRe}.*'
 - takeScreenshot: 05-liste-un-itineraire
 # Le bouton retour d'Android depuis les infos revient à la liste, sans
 # second jeu d'onglets.
@@ -157,7 +158,7 @@ onFlowComplete:
 - waitForAnimationToEnd:
     timeout: 2000
 - assertVisible: 'Boucle de Haye.*'
-- assertNotVisible: 'Itinéraire du 4 nov.*'
+- assertNotVisible: '${output.createdRe}.*'
 - takeScreenshot: 10-liste-renomme
 # Ouvrir les infos : le titre est le nouveau nom.
 - tapOn:
@@ -173,7 +174,8 @@ onFlowComplete:
     id: 'info-ascent'
     text: '.*[1-9].*'
 - takeScreenshot: 11-infos-titre-nom
-# Modifier : déplacer l'arrivée (appui long puis glissement), enregistrer.
+# Modifier : ajouter un point par un toucher, enregistrer. (Un glissement par
+# Maestro déplace la carte et non le repère : on ajoute un point à la place.)
 - tapOn:
     id: 'info-modify'
 - extendedWaitUntil:
@@ -185,18 +187,18 @@ onFlowComplete:
 - assertVisible:
     id: 'route-distance'
     text: '.*[1-9].*'
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.distBefore = maestro.copiedText}'
 - takeScreenshot: 12-modifier-avant
-# Appui long puis glissement : un swipe lent de 3 s est pris pour un glisser.
-# L'arrivée est reprise par la carte d'ensemble : le point de départ se
-# déplace de quelques km.
-- swipe:
-    start: '19%,44%'
-    end: '31%,42%'
-    duration: 3000
+# La carte s'ouvre sur le tracé : le toucher à 60%,32% tombe sur un chemin
+# au-delà de l'arrivée (même geste que p07-dupliquer).
+- tapOn:
+    point: '60%,32%'
 - waitForAnimationToEnd:
     timeout: 3000
-# Si le point tombe à plus de 200 m d'un chemin (cas vu sur iOS), on le relie
-# à la main : le tronçon touché change quand même.
+# Si le point tombe à plus de 200 m d'un chemin, on le relie à la main : le
+# tronçon ajouté change quand même la distance.
 - runFlow:
     when:
       visible: 'Aucun chemin trouvé'
@@ -205,11 +207,21 @@ onFlowComplete:
 - extendedWaitUntil:
     visible:
       id: 'route-distance'
-      text: '.*km.*'
+      text: '.*(km|m).*'
     timeout: 60000
-- waitForAnimationToEnd:
-    timeout: 4000
-- takeScreenshot: 13-modifier-apres-glissement
+# Attendre que la distance change (le calcul du tronçon ajouté).
+- extendedWaitUntil:
+    notVisible:
+      id: 'route-distance'
+      text: '${output.distBefore}'
+    timeout: 60000
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.distAfter = maestro.copiedText}'
+- assertTrue:
+    condition: ${output.distAfter != output.distBefore}
+    label: 'Le point ajouté change la distance'
+- takeScreenshot: 13-modifier-apres-ajout
 - tapOn:
     id: 'route-save'
 # On revient au même écran, relu : même nom, nouvelle distance.
@@ -224,7 +236,7 @@ onFlowComplete:
     text: 'Boucle de Haye'
 - assertVisible:
     id: 'info-distance'
-    text: '.*km.*'
+    text: '.*(km|m).*'
 - assertNotVisible:
     id: 'route-save'
 - takeScreenshot: 14-infos-apres-modification
@@ -234,10 +246,10 @@ onFlowComplete:
     visible:
       id: 'route-row-.*'
     timeout: 10000
-# Un seul itinéraire dans la liste : l'ancienne version est remplacée.
-- assertVisible: 'Boucle de Haye.*'
-- assertVisible: '.*km.*'
-- assertNotVisible: '338 m.*'
+# L'itinéraire modifié remplace l'ancienne version : même nom, nouvelle
+# distance, et plus l'ancienne.
+- assertVisible: 'Boucle de Haye, ${output.distAfter}.*'
+- assertNotVisible: 'Boucle de Haye, ${output.distBefore}.*'
 - takeScreenshot: 15-liste-apres-modification
 # Importer un GPX posé dans Download (sélecteur du système).
 - tapOn:
@@ -264,7 +276,7 @@ onFlowComplete:
     commands:
       - tapOn:
           point: '18%,29%'
-# Après un import réussi, l'écran Infos du GPX s'ouvre (pas de « Modifier »).
+# Après un import réussi, l'écran Infos du GPX s'ouvre.
 - extendedWaitUntil:
     visible:
       id: 'info-title'
@@ -272,8 +284,8 @@ onFlowComplete:
 - assertVisible:
     id: 'info-title'
     text: 'Trace du testeur'
-- assertNotVisible:
-    id: 'info-modify'
+# (« Modifier » y est ou non selon que la trace est dans la zone : pas testé ici,
+# voir p07-gpx-modifier.)
 - waitForAnimationToEnd:
     timeout: 3000
 - takeScreenshot: 17-infos-gpx-importe
@@ -311,8 +323,7 @@ onFlowComplete:
 - takeScreenshot: 20-confirmation-suppression-2
 - tapOn:
     text: 'Supprimer'
-- extendedWaitUntil:
-    visible:
-      id: 'routes-empty'
-    timeout: 10000
-- takeScreenshot: 21-liste-vide-apres-suppression
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertNotVisible: 'Boucle de Haye.*'
+- takeScreenshot: 21-liste-apres-suppression

@@ -32,9 +32,43 @@ const CREATE_ROUTES = `CREATE TABLE routes (
      AND (zone_id IS NULL) = (zone_name IS NULL))
 ) STRICT`;
 
+// Version 2 (ADR 0020, section 7): two more origins. SQLite cannot change a
+// CHECK, so the table is rebuilt (method of the SQLite documentation).
+const CREATE_ROUTES_V2 = CREATE_ROUTES.replace(
+  'CREATE TABLE routes (',
+  'CREATE TABLE routes_new (',
+)
+  .replace(
+    "origin IN ('created', 'gpx')",
+    "origin IN ('created', 'gpx', 'trail', 'editedGpx')",
+  )
+  .replace(
+    "(origin = 'created' AND draft",
+    "(origin IN ('created', 'trail', 'editedGpx') AND draft",
+  );
+
+const COLUMNS =
+  'id, name, origin, created_at, saved_at, zone_id, zone_version, zone_name, draft, legs, track, elevations, preview, distance_km, duration_s, ascent_m, descent_m, figures_at';
+
+async function addTrailOrigins(tx: SqlRunner): Promise<void> {
+  await tx.exec(CREATE_ROUTES_V2);
+  await tx.exec(
+    `INSERT INTO routes_new (${COLUMNS}) SELECT ${COLUMNS} FROM routes`,
+  );
+  // The AUTOINCREMENT counter does not follow by itself (checked on
+  // node:sqlite, ADR 0020 check 2): copy it before the DROP.
+  await tx.exec("DELETE FROM sqlite_sequence WHERE name = 'routes_new'");
+  await tx.exec(
+    "INSERT INTO sqlite_sequence (name, seq) SELECT 'routes_new', seq FROM sqlite_sequence WHERE name = 'routes'",
+  );
+  await tx.exec('DROP TABLE routes');
+  await tx.exec('ALTER TABLE routes_new RENAME TO routes');
+}
+
 /** Never change a delivered migration: add a new one at the end. */
 export const MIGRATIONS: readonly Migration[] = [
   (tx) => tx.exec(CREATE_ROUTES),
+  addTrailOrigins,
 ];
 
 /** The database was written by a newer app: nothing may be written. */

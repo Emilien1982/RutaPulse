@@ -92,6 +92,11 @@ export const mapColors = {
   // hn.creme-clair at 88 %, behind the attributions.
   attributionBackground: 'rgba(251, 241, 218, 0.88)',
   // carte.itineraire, carte.itineraire-lisere, carte.depart, carte.arrivee
+  // carte.circuit (drawn at 55 % opacity by the layer) and carte.circuit-texte
+  circuit: '#2F6BFF',
+  circuitText: '#173A8C',
+  // carte.sens-circuit, and the edge of the chosen circuit
+  circuitArrow: '#FFFFFF',
   route: '#C2007A',
   routeCasing: '#FFFFFF',
   // carte.liaison: same magenta, no casing.

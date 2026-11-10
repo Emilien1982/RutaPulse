@@ -12,11 +12,13 @@ import {
   attachZone,
   countRoutesByZone,
   deleteRoute,
+  duplicateRoute,
   getRoute,
   insertRoute,
   listRoutes,
   newDefaultName,
   renameRoute,
+  replaceGpx,
   replaceRoute,
   updateFigures,
   type ReplaceInput,
@@ -77,17 +79,22 @@ type DistributiveOmit<T, K extends PropertyKey> = T extends unknown
 export type CreateRouteInput = DistributiveOmit<
   NewRoute,
   'name' | 'createdAt' | 'savedAt'
-> & { name?: string; now?: number };
+> & {
+  name?: string;
+  /** Default name before "(2)", instead of "Itinéraire du 9 nov.". */
+  baseName?: string;
+  now?: number;
+};
 
 export function createRouteActions(queryClient: QueryClient) {
   return {
     /** Returns the id of the new route. */
-    create: async ({ name, now, ...rest }: CreateRouteInput) => {
+    create: async ({ name, baseName, now, ...rest }: CreateRouteInput) => {
       const db = await getRoutesDb();
       const date = new Date(now ?? Date.now());
       const route = {
         ...rest,
-        name: name ?? (await newDefaultName(db, date)),
+        name: name ?? (await newDefaultName(db, date, baseName)),
         createdAt: date.getTime(),
         savedAt: date.getTime(),
       };
@@ -100,6 +107,12 @@ export function createRouteActions(queryClient: QueryClient) {
       await queryClient.invalidateQueries({ queryKey: routesKey });
       return changed;
     },
+    /** Replaces an imported GPX by the route made from it. */
+    replaceGpx: async (id: number, input: ReplaceInput) => {
+      const changed = await replaceGpx(await getRoutesDb(), id, input);
+      await queryClient.invalidateQueries({ queryKey: routesKey });
+      return changed;
+    },
     rename: async (id: number, name: string) => {
       const changed = await renameRoute(await getRoutesDb(), id, name);
       await Promise.all([
@@ -107,6 +120,15 @@ export function createRouteActions(queryClient: QueryClient) {
         queryClient.invalidateQueries({ queryKey: routeDetailKey(id) }),
       ]);
       return changed;
+    },
+    /** Returns the id and the name of the copy, or null if the route is gone. */
+    duplicate: async (id: number, now: number = Date.now()) => {
+      const db = await getRoutesDb();
+      const copyId = await duplicateRoute(db, id, now);
+      await queryClient.invalidateQueries({ queryKey: routesKey });
+      if (copyId === null) return null;
+      const copy = await getRoute(db, copyId);
+      return { id: copyId, name: copy?.name ?? '' };
     },
     remove: async (id: number) => {
       const changed = await deleteRoute(await getRoutesDb(), id);

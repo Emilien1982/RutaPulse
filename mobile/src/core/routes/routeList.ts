@@ -8,7 +8,7 @@ import {
   formatDuration,
 } from '@/core/routing/formatRoute';
 
-import { originText } from './routeText';
+import { originDate, originText } from './routeText';
 import type { RouteZoneStatus } from './routeZone';
 import type { RouteSummary } from './savedRoute';
 
@@ -39,9 +39,7 @@ export type RouteLine = {
 
 /** The year is shown when the date is not in the current year. */
 function originOf(route: RouteSummary, nowYear: number): string {
-  const modified =
-    route.origin === 'created' && route.savedAt !== route.createdAt;
-  const ms = modified ? route.savedAt : route.createdAt;
+  const ms = originDate(route);
   return originText(route, new Date(ms).getFullYear() !== nowYear);
 }
 

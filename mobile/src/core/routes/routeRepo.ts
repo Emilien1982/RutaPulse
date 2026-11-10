@@ -4,6 +4,7 @@
 import {
   checkName,
   defaultRouteName,
+  copyName,
   RouteNameError,
   uniqueDefaultName,
 } from './routeName';
@@ -47,11 +48,18 @@ export async function getRoute(
   return row ? rowToRoute(row) : null;
 }
 
-/** Default name of a route saved now: unique among the existing names. */
-export async function newDefaultName(db: SqlDb, now: Date): Promise<string> {
+/**
+ * Default name of a route saved now: unique among the existing names. `base`
+ * replaces "Itinéraire du 9 nov." (the name of a circuit).
+ */
+export async function newDefaultName(
+  db: SqlDb,
+  now: Date,
+  base?: string,
+): Promise<string> {
   const rows = await db.all<{ name: string }>('SELECT name FROM routes');
   return uniqueDefaultName(
-    defaultRouteName(now),
+    base ?? defaultRouteName(now),
     rows.map((r) => r.name),
   );
 }
@@ -84,7 +92,7 @@ export type ReplaceInput = Pick<
   | 'savedAt'
 >;
 
-/** Replaces a created route. False if there is no such created route. */
+/** Replaces a created, trail or edited-GPX route. False if there is none. */
 export async function replaceRoute(
   db: SqlDb,
   id: number,
@@ -94,7 +102,7 @@ export async function replaceRoute(
     `UPDATE routes SET draft = ?, legs = ?, zone_id = ?, zone_version = ?, zone_name = ?,
        preview = ?, distance_km = ?, duration_s = ?, ascent_m = ?, descent_m = ?,
        figures_at = ?, saved_at = ?
-     WHERE id = ? AND origin = 'created'`,
+     WHERE id = ? AND origin IN ('created', 'trail', 'editedGpx')`,
     [
       draftToJson(input.draft),
       legsToJson(input.legs),
@@ -172,4 +180,81 @@ export async function attachZone(
     [zone.id, zone.version, zone.name, id],
   );
   return result.changes > 0;
+}
+
+/**
+ * Replaces an imported GPX by the route made from it (ADR 0020, section 7).
+ * One `UPDATE`: the track now lives in the legs, so `track` and `elevations`
+ * go. Name and creation date stay. False if there is no such GPX.
+ */
+export async function replaceGpx(
+  db: SqlDb,
+  id: number,
+  input: ReplaceInput,
+): Promise<boolean> {
+  const result = await db.run(
+    `UPDATE routes SET origin = 'editedGpx', draft = ?, legs = ?, track = NULL,
+       elevations = NULL, zone_id = ?, zone_version = ?, zone_name = ?,
+       preview = ?, distance_km = ?, duration_s = ?, ascent_m = ?, descent_m = ?,
+       figures_at = ?, saved_at = ?
+     WHERE id = ? AND origin = 'gpx'`,
+    [
+      draftToJson(input.draft),
+      legsToJson(input.legs),
+      input.zone.id,
+      input.zone.version,
+      input.zone.name,
+      input.preview,
+      input.distanceKm,
+      input.durationS,
+      roundOrNull(input.ascentM),
+      roundOrNull(input.descentM),
+      input.figuresAt,
+      input.savedAt,
+      id,
+    ],
+  );
+  return result.changes > 0;
+}
+
+/**
+ * Copies a route under a new name (ADR 0020, section 7 bis): every column but
+ * the name and the two dates, which are `now`. One exclusive transaction, so
+ * that two quick copies do not take the same name. Returns the new id, or
+ * null if the route does not exist (nothing written).
+ */
+export async function duplicateRoute(
+  db: SqlDb,
+  id: number,
+  now: number,
+): Promise<number | null> {
+  let newId: number | null = null;
+  await db.transaction(async (tx) => {
+    const original = await tx.first<{ name: string }>(
+      'SELECT name FROM routes WHERE id = ?',
+      [id],
+    );
+    if (!original) return;
+    const names = await tx.all<{ name: string }>('SELECT name FROM routes');
+    const result = await tx.run(
+      `INSERT INTO routes (name, origin, created_at, saved_at, zone_id, zone_version, zone_name,
+                           draft, legs, track, elevations, preview, distance_km, duration_s,
+                           ascent_m, descent_m, figures_at)
+       SELECT ?, origin, ?, ?, zone_id, zone_version, zone_name,
+              draft, legs, track, elevations, preview, distance_km, duration_s,
+              ascent_m, descent_m, figures_at
+       FROM routes WHERE id = ?`,
+      [
+        copyName(
+          original.name,
+          names.map((r) => r.name),
+        ),
+        now,
+        now,
+        id,
+      ],
+    );
+    newId = result.lastInsertRowId;
+  });
+  return newId;
 }

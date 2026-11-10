@@ -1,0 +1,188 @@
+# C16 (phase 7) : dupliquer depuis la liste, ouvrir la copie, « Modifier »,
+# déplacer un point, « Enregistrer » ; l'original garde sa distance.
+# Prérequis : zone Nancy installée. La liste peut contenir d'autres
+# itinéraires : le parcours ne touche que les deux du haut (le plus récent
+# est toujours en haut) et les supprime à la fin.
+# Android : feuille du menu « ⋮ » (Modal) ; iOS : feuille d'actions système.
+# Les deux se touchent par leur texte (« Dupliquer »).
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setLocation:
+          latitude: 48.751
+          longitude: 5.967
+      - extendedWaitUntil:
+          visible:
+            id: 'new-route-button'
+          timeout: 30000
+      - setLocation:
+          latitude: 48.751
+          longitude: 5.967
+      - waitForAnimationToEnd:
+          timeout: 4000
+- tapOn:
+    text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
+    optional: true
+# Un itinéraire créé, nommé « Original ».
+# Le lancement ouvre la carte : pas de toucher sur « Carte.* », il tomberait
+# sur la carte elle-même (et ouvrirait la feuille d'un circuit).
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- tapOn:
+    id: 'new-route-button'
+- extendedWaitUntil:
+    visible: 'Touchez le départ sur la carte'
+    timeout: 10000
+- tapOn:
+    point: '50%,50%'
+- extendedWaitUntil:
+    visible: "Touchez l'arrivée sur la carte"
+    timeout: 10000
+- tapOn:
+    point: '50%,38%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 4000
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.distOriginal = maestro.copiedText}'
+- tapOn:
+    id: 'route-save'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- tapOn:
+    id: 'info-back'
+- extendedWaitUntil:
+    visible:
+      id: 'route-menu-.*'
+    timeout: 10000
+- tapOn:
+    id: 'route-menu-.*'
+- tapOn:
+    text: 'Renommer'
+- extendedWaitUntil:
+    visible:
+      id: 'rename-input'
+    timeout: 5000
+# Variante iOS : attendre la fin de l'animation du clavier avant de toucher
+# la croix (sinon le toucher peut tomber sur une touche du clavier).
+- waitForAnimationToEnd:
+    timeout: 3000
+- tapOn:
+    id: 'rename-clear'
+- inputText: 'Original'
+- tapOn:
+    id: 'rename-submit'
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertVisible: 'Original.*'
+- assertVisible: 'Original, ${output.distOriginal}.*'
+- takeScreenshot: captures/p07-dupliquer-01-liste-avant
+# Dupliquer depuis la liste : la copie arrive en haut.
+- tapOn:
+    id: 'route-menu-.*'
+- waitForAnimationToEnd:
+    timeout: 2000
+- takeScreenshot: captures/p07-dupliquer-02-menu
+- tapOn:
+    text: 'Dupliquer'
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertVisible: 'Original \(copie\).*'
+- takeScreenshot: captures/p07-dupliquer-03-liste-copie-en-haut
+# La première ligne est la copie : on l'ouvre.
+- tapOn:
+    id: 'route-row-.*'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 10000
+- assertVisible:
+    id: 'info-title'
+    text: 'Original \(copie\)'
+- tapOn:
+    id: 'info-modify'
+- extendedWaitUntil:
+    visible:
+      id: 'route-save'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- takeScreenshot: captures/p07-dupliquer-04-modifier-copie-avant
+# Ajouter un point par un toucher (à la place de « déplacer un point » : le
+# glissement d'un repère par Maestro n'a pas marché sur l'émulateur, il
+# déplace la carte). La carte est ouverte sur le tracé de la copie ; le
+# toucher à 60%,32% tombe sur un chemin au-delà de l'arrivée.
+- tapOn:
+    point: '60%,32%'
+- waitForAnimationToEnd:
+    timeout: 3000
+- runFlow:
+    when:
+      visible: 'Aucun chemin trouvé'
+    commands:
+      - tapOn: 'Relier ce point à la main'
+# La distance est lue une fois le tronçon calculé : on attend qu'elle change
+# (pendant le calcul, l'ancienne reste affichée, pâlie).
+- extendedWaitUntil:
+    notVisible:
+      id: 'route-distance'
+      text: '${output.distOriginal}'
+    timeout: 60000
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.distCopy = maestro.copiedText}'
+- assertTrue:
+    condition: ${output.distCopy != output.distOriginal}
+    label: 'Le point ajouté change la distance de la copie'
+- takeScreenshot: captures/p07-dupliquer-05-modifier-copie-apres
+- tapOn:
+    id: 'route-save'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- assertVisible:
+    id: 'info-title'
+    text: 'Original \(copie\)'
+- tapOn:
+    id: 'info-back'
+- extendedWaitUntil:
+    visible:
+      id: 'route-row-.*'
+    timeout: 10000
+# L'original garde sa distance et la copie montre la sienne, différente (deux
+# assertions positives : une absence ne prouverait rien si le texte de la
+# ligne n'avait pas la forme attendue).
+- assertVisible: 'Original, .*${output.distOriginal}.*'
+- assertVisible: 'Original \(copie\), .*${output.distCopy}.*'
+- takeScreenshot: captures/p07-dupliquer-06-liste-apres
+# Nettoyage : supprimer les deux itinéraires.
+- repeat:
+    times: 2
+    commands:
+      - tapOn:
+          id: 'route-menu-.*'
+      - tapOn:
+          text: 'Supprimer'
+      - waitForAnimationToEnd:
+          timeout: 2000
+      - tapOn:
+          text: 'Supprimer'
+      - waitForAnimationToEnd:
+          timeout: 2000
+- assertNotVisible: 'Original.*'

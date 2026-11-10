@@ -21,6 +21,9 @@ import type { CreatedRoute, GpxRoute, LonLat } from '../savedRoute';
 import { createNodeSqlDb } from '../testing/nodeSqlDb';
 import { sampleCreated, sampleGpx } from '../testing/sampleRoutes';
 
+// Version 1 of the schema: these tests describe the first migration.
+const V1 = MIGRATIONS.slice(0, 1);
+
 declare const process: { env: Record<string, string | undefined> };
 declare function require(name: string): unknown;
 type Fs = {
@@ -34,7 +37,7 @@ const DIR = process.env.PREUVES_DIR ?? `${os.tmpdir()}/rutapulse-t3-testeur-db`;
 
 const fresh = async () => {
   const db = createNodeSqlDb();
-  await migrate(db, MIGRATIONS);
+  await migrate(db, V1);
   return db;
 };
 const version = async (db: { first: <T>(s: string) => Promise<T | null> }) =>
@@ -57,7 +60,7 @@ describe('C2 - version of the schema', () => {
   it('empty base: 0 to 1, table created', async () => {
     const db = createNodeSqlDb();
     expect(await version(db)).toBe(0);
-    const r = await migrate(db, MIGRATIONS);
+    const r = await migrate(db, V1);
     expect(r).toEqual({ status: 'ready', version: 1 });
     expect(await version(db)).toBe(1);
     expect((await columns(db)).length).toBeGreaterThan(10);
@@ -66,7 +69,7 @@ describe('C2 - version of the schema', () => {
   it('second opening changes nothing', async () => {
     const db = await fresh();
     const id = await insertRoute(db, sampleCreated());
-    expect(await migrate(db, MIGRATIONS)).toEqual({
+    expect(await migrate(db, V1)).toEqual({
       status: 'ready',
       version: 1,
     });
@@ -80,7 +83,7 @@ describe('C2 - version of the schema', () => {
     await db.exec(
       "CREATE TABLE routes (id INTEGER PRIMARY KEY, name TEXT NOT NULL); INSERT INTO routes VALUES (1, 'avant')",
     );
-    await expect(migrate(db, MIGRATIONS)).rejects.toThrow();
+    await expect(migrate(db, V1)).rejects.toThrow();
     expect(await version(db)).toBe(0);
     const rows = await db.all<{ id: number; name: string }>(
       'SELECT * FROM routes',
@@ -95,7 +98,7 @@ describe('C2 - version of the schema', () => {
     const before = await getRoute(db, id);
     const m2: Migration = (tx) =>
       tx.exec('ALTER TABLE routes ADD COLUMN note TEXT');
-    const r = await migrate(db, [...MIGRATIONS, m2]);
+    const r = await migrate(db, [...V1, m2]);
     expect(r).toEqual({ status: 'ready', version: 2 });
     expect(await columns(db)).toContain('note');
     expect(await getRoute(db, id)).toEqual(before);
@@ -111,7 +114,7 @@ describe('C2 - version of the schema', () => {
       await tx.exec("UPDATE routes SET name = 'casse'");
       throw new Error('boom');
     };
-    await expect(migrate(db, [...MIGRATIONS, bad])).rejects.toThrow('boom');
+    await expect(migrate(db, [...V1, bad])).rejects.toThrow('boom');
     expect(await version(db)).toBe(1);
     expect(await columns(db)).toEqual(cols);
     expect(await getRoute(db, id)).toEqual(before);
@@ -126,7 +129,7 @@ describe('C2 - version of the schema', () => {
       await tx.exec('ALTER TABLE routes ADD COLUMN ok TEXT');
       await tx.exec('ALTER TABLE nope ADD COLUMN x TEXT');
     };
-    await expect(migrate(db, [...MIGRATIONS, bad])).rejects.toThrow();
+    await expect(migrate(db, [...V1, bad])).rejects.toThrow();
     expect(await version(db)).toBe(1);
     expect(await columns(db)).not.toContain('ok');
   });
@@ -137,13 +140,13 @@ describe('C2 - version of the schema', () => {
     await db.exec('PRAGMA user_version = 99');
     const schema = await db.all('SELECT * FROM sqlite_master');
     const rows = await db.all('SELECT * FROM routes');
-    const r = await migrate(db, MIGRATIONS);
+    const r = await migrate(db, V1);
     expect(r.status).toBe('tooNew');
     expect(r.version).toBe(99);
     // even with more migrations than the app knows, 99 stays
     const extra: Migration = (tx) =>
       tx.exec('ALTER TABLE routes ADD COLUMN z TEXT');
-    expect((await migrate(db, [...MIGRATIONS, extra])).status).toBe('tooNew');
+    expect((await migrate(db, [...V1, extra])).status).toBe('tooNew');
     expect(await version(db)).toBe(99);
     expect(await db.all('SELECT * FROM sqlite_master')).toEqual(schema);
     expect(await db.all('SELECT * FROM routes')).toEqual(rows);
@@ -198,12 +201,12 @@ describe('C3 - kept after closing and reopening the file', () => {
       ],
     });
     const a = open('created.db');
-    await migrate(a, MIGRATIONS);
+    await migrate(a, V1);
     const id = await insertRoute(a, input);
     a.close();
 
     const b = open('created.db');
-    expect(await migrate(b, MIGRATIONS)).toEqual({
+    expect(await migrate(b, V1)).toEqual({
       status: 'ready',
       version: 1,
     });
@@ -253,11 +256,11 @@ describe('C3 - kept after closing and reopening the file', () => {
       figuresAt: null,
     });
     const a = open('gpx.db');
-    await migrate(a, MIGRATIONS);
+    await migrate(a, V1);
     const id = await insertRoute(a, input);
     a.close();
     const b = open('gpx.db');
-    await migrate(b, MIGRATIONS);
+    await migrate(b, V1);
     const r = (await getRoute(b, id)) as GpxRoute;
     expect(r.origin).toBe('gpx');
     expect(r.readable).toBe(true);

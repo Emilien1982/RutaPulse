@@ -16,6 +16,8 @@ import {
 import { sampleCreated } from '@/core/routes/testing/sampleRoutes';
 import type { Zone } from '@/core/zones/catalogue';
 
+import { menuEntry, menuTexts } from '@/ui/testing/androidMenu';
+
 import { SavedRouteInfoScreen } from './SavedRouteInfoScreen';
 
 const mockPush = jest.fn();
@@ -173,15 +175,16 @@ afterEach(() => {
 });
 
 describe('the "⋮" menu of the Infos screen', () => {
-  it('has the same three actions as the list', async () => {
+  it('has the same four actions as the list', async () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    expect(lastAlert().title).toBe('Boucle');
-    expect(lastAlert().buttons.map((b) => b.text)).toEqual([
-      'Supprimer',
-      'Exporter en GPX',
+    expect(alert).not.toHaveBeenCalled();
+    expect(menuTexts()).toEqual([
       'Renommer',
+      'Dupliquer',
+      'Exporter en GPX',
+      'Supprimer',
     ]);
   });
 
@@ -189,7 +192,7 @@ describe('the "⋮" menu of the Infos screen', () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[2]);
+    await press(menuEntry('rename'));
     await fireEvent.changeText(screen.getByTestId('rename-input'), 'Autre nom');
     await fireEvent.press(screen.getByTestId('rename-submit'));
     await act(async () => {
@@ -203,7 +206,7 @@ describe('the "⋮" menu of the Infos screen', () => {
     await insertRoute(db, sampleCreated({ name: 'Boucle' }));
     await open();
     await fireEvent.press(screen.getByTestId('info-menu'));
-    await press(lastAlert().buttons[0]);
+    await press(menuEntry('delete'));
     expect(lastAlert().buttons.map((b) => b.text)).toEqual([
       'Garder',
       'Supprimer',

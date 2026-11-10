@@ -78,18 +78,18 @@ export function RoutePreview({
         />
       ))}
       <Circle
-        cx={startX}
-        cy={startY}
-        r={dotRadius}
-        fill={mapColors.start}
-        stroke={colors.creamLight}
-        strokeWidth={2}
-      />
-      <Circle
         cx={endX}
         cy={endY}
         r={dotRadius}
         fill={mapColors.end}
+        stroke={colors.creamLight}
+        strokeWidth={2}
+      />
+      <Circle
+        cx={startX}
+        cy={startY}
+        r={dotRadius}
+        fill={mapColors.start}
         stroke={colors.creamLight}
         strokeWidth={2}
       />

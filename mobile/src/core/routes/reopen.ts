@@ -5,8 +5,11 @@ import type { RouteSuccess } from '@/core/routing/routeResponse';
 
 import type { CreatedRoute } from './savedRoute';
 
-/** A computed leg kept as it was saved. */
-export type KeptLeg = RouteSuccess & { zoneVersion: number };
+/**
+ * A computed leg kept as it was saved. `trace`: the shape comes from a trace,
+ * not from the engine (ADR 0020, section 4).
+ */
+export type KeptLeg = RouteSuccess & { zoneVersion: number; trace?: true };
 /** Keyed by `legKey(from, to)`. */
 export type KeptLegs = ReadonlyMap<string, KeptLeg>;
 
@@ -34,6 +37,7 @@ export function reopenDraft(route: CreatedRoute): {
       distanceKm: leg.distanceKm,
       durationS: leg.durationS,
       zoneVersion: leg.zoneVersion,
+      ...(leg.trace ? { trace: true as const } : {}),
     });
   });
   const nextId = Math.max(0, ...draft.points.map((p) => p.id)) + 1;

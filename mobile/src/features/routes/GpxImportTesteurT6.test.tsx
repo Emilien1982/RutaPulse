@@ -22,6 +22,8 @@ import { sampleCreated, sampleGpx } from '@/core/routes/testing/sampleRoutes';
 import type { Zone } from '@/core/zones/catalogue';
 import { catalogueKey } from '@/shared-data/zones/useCatalogue';
 
+import { menuEntry } from '@/ui/testing/androidMenu';
+
 import { RoutesScreen } from './RoutesScreen';
 
 declare const __dirname: string;
@@ -713,9 +715,8 @@ describe('C12: a GPX outside every zone', () => {
 describe('C9: export through the menu of the list, the share sheet', () => {
   async function exportFromList(name: string) {
     await fireEvent.press(screen.getByLabelText(`Actions de ${name}`));
-    const { buttons } = lastAlert();
-    expect(buttons[1].text).toBe('Exporter en GPX');
-    await act(async () => buttons[1].onPress?.());
+    expect(screen.getByText('Exporter en GPX')).toBeTruthy();
+    await act(async () => menuEntry('export').onPress());
     await settle();
   }
   const exported = () => {
@@ -800,7 +801,7 @@ describe('C9: export through the menu of the list, the share sheet', () => {
       await c.make();
       await open();
       await exportFromList(c.name);
-      expect(alert.mock.calls.at(-1)![0]).not.toBe('Export impossible');
+      expect(alert.mock.calls.at(-1)?.[0]).not.toBe('Export impossible');
       expect(mockShare).toHaveBeenCalledTimes(1);
       const { uri, options, text } = exported();
       expect(options).toEqual({
@@ -916,7 +917,7 @@ describe('C9: export through the menu of the list, the share sheet', () => {
 describe('C11: export then import again, by the real paths', () => {
   async function exportFromList(name: string) {
     await fireEvent.press(screen.getByLabelText(`Actions de ${name}`));
-    await act(async () => lastAlert().buttons[1].onPress?.());
+    await act(async () => menuEntry('export').onPress());
     await settle();
   }
   async function reimport(): Promise<{ id: number; text: string }> {

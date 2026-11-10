@@ -1,0 +1,164 @@
+# C13 (phase 7) : toucher un circuit balisé, « En faire un itinéraire »,
+# modifier (ajouter un point par un toucher : glisser un repère n'est pas
+# possible sous Maestro), « Enregistrer », le retrouver dans la liste.
+# Variante iOS (iPhone 17) : le titre peut porter un « (n) » si la liste contient déjà
+# des circuits du même nom. Android : mode avion réel (coupé à la fin, même en cas d'échec).
+# Prérequis : zone Nancy en version 6 installée. Pensé pour une version
+# release. La position simulée (près du circuit Petite Suisse Lorraine, à
+# 48,830921 N, 5,984049 E) cadre la carte, et le recentrage la montre.
+# Le parcours supprime ce qu'il crée (le plus récent est en haut de la liste).
+appId: fr.rutapulse.app
+onFlowComplete:
+  - runFlow:
+      when:
+        platform: Android
+      commands:
+        - setAirplaneMode: disabled
+---
+- runFlow:
+    when:
+      platform: Android
+    commands:
+      - setAirplaneMode: enabled
+- launchApp:
+    clearState: false
+    stopApp: true
+- setLocation:
+    latitude: 48.830921
+    longitude: 5.984049
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- tapOn:
+    text: 'Pendant l.utilisation.*|While Using.*|Allow While.*|Lors de l.utilisation.*'
+    optional: true
+- setLocation:
+    latitude: 48.830921
+    longitude: 5.984049
+- waitForAnimationToEnd:
+    timeout: 3000
+# Recentrage sur la position : le circuit passe sous le point.
+- tapOn:
+    point: '90%,9%'
+- waitForAnimationToEnd:
+    timeout: 6000
+- takeScreenshot: captures/p07-circuit-01-carte-z-proche
+- tapOn:
+    point: '37%,46%'
+- extendedWaitUntil:
+    visible:
+      id: 'trail-make'
+    timeout: 10000
+- assertVisible: 'Petite Suisse Lorraine à VTT'
+- assertVisible: '.*34,9.*boucle.*'
+- assertVisible: 'Tracé du circuit.*OpenStreetMap'
+- takeScreenshot: captures/p07-circuit-02-feuille
+# Le geste : la création s'ouvre avec le tracé du circuit.
+- tapOn:
+    id: 'trail-make'
+- extendedWaitUntil:
+    visible:
+      id: 'route-save'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 3000
+- assertVisible: 'Tracé du circuit posé.*'
+- assertVisible:
+    id: 'route-distance'
+    text: '.*34,[89].*'
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.distOpen = maestro.copiedText}'
+- takeScreenshot: captures/p07-circuit-03-creation-ouverte
+# Enregistrer sans toucher : origine « circuit balisé ».
+- tapOn:
+    id: 'route-save'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 20000
+- assertVisible:
+    id: 'info-title'
+    text: 'Petite Suisse Lorraine à VTT( \(\d+\))?'
+- assertVisible:
+    id: 'info-subtitle'
+    text: '.*circuit balisé.*'
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: captures/p07-circuit-04-infos
+- tapOn:
+    id: 'info-back'
+- extendedWaitUntil:
+    visible:
+      id: 'route-row-.*'
+    timeout: 10000
+- assertVisible: 'Petite Suisse Lorraine à VTT.*'
+- assertVisible: '.*circuit balisé.*'
+- takeScreenshot: captures/p07-circuit-05-liste-circuit-balise
+# Modifier : ajouter un point par un toucher, puis Enregistrer.
+- tapOn:
+    id: 'route-row-.*'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 10000
+- tapOn:
+    id: 'info-modify'
+- extendedWaitUntil:
+    visible:
+      id: 'route-save'
+    timeout: 15000
+- waitForAnimationToEnd:
+    timeout: 4000
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.distReopen = maestro.copiedText}'
+- tapOn:
+    point: '46%,40%'
+- waitForAnimationToEnd:
+    timeout: 3000
+- runFlow:
+    when:
+      visible: 'Aucun chemin trouvé'
+    commands:
+      - tapOn: 'Relier ce point à la main'
+- waitForAnimationToEnd:
+    timeout: 6000
+- copyTextFrom:
+    id: 'route-distance'
+- evalScript: '${output.distEdited = maestro.copiedText}'
+- assertTrue:
+    condition: ${output.distEdited != output.distReopen}
+    label: 'Le point ajouté change la distance'
+- takeScreenshot: captures/p07-circuit-06-modifie
+- tapOn:
+    id: 'route-save'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 20000
+- assertVisible:
+    id: 'info-subtitle'
+    text: '.*circuit modifié.*'
+- tapOn:
+    id: 'info-back'
+- extendedWaitUntil:
+    visible:
+      id: 'route-row-.*'
+    timeout: 10000
+- assertVisible: 'Petite Suisse Lorraine à VTT.*'
+- assertVisible: '.*circuit modifié.*'
+- takeScreenshot: captures/p07-circuit-07-liste-circuit-modifie
+# Nettoyage : supprimer l'itinéraire en haut de la liste.
+- tapOn:
+    id: 'route-menu-.*'
+- tapOn:
+    text: 'Supprimer'
+- waitForAnimationToEnd:
+    timeout: 2000
+- tapOn:
+    text: 'Supprimer'
+- waitForAnimationToEnd:
+    timeout: 2000
+- assertNotVisible: '.*circuit modifié.*'

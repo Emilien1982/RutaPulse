@@ -19,6 +19,8 @@ import {
 } from '@/core/routes/testing/nodeSqlDb';
 import { sampleCreated, sampleGpx } from '@/core/routes/testing/sampleRoutes';
 
+import { menuEntry, menuTexts } from '@/ui/testing/androidMenu';
+
 import { RoutesScreen } from './RoutesScreen';
 
 const mockPush = jest.fn();
@@ -259,7 +261,7 @@ describe('liste vide (maquette 40, état 2)', () => {
     await insertRoute(db, sampleCreated({ name: 'Seul' }));
     await open();
     await fireEvent.press(screen.getByLabelText('Actions de Seul'));
-    await press(lastAlert().buttons[0]);
+    await press(menuEntry('delete'));
     await press(lastAlert().buttons[1]);
     expect(screen.getByText("Pas encore d'itinéraire")).toBeTruthy();
     expect(screen.queryByTestId(/^route-row-/)).toBeNull();
@@ -272,22 +274,15 @@ describe('menu (maquette 40, état 3 ; réponse 4)', () => {
     await insertRoute(db, sampleCreated({ name: 'Une' }));
   });
 
-  it('Android : « ⋮ » et appui long ouvrent le même Alert à 3 boutons', async () => {
+  it('Android : « ⋮ » et appui long ouvrent la même feuille à 4 actions', async () => {
     await open();
+    const expected = ['Renommer', 'Dupliquer', 'Exporter en GPX', 'Supprimer'];
     await fireEvent.press(screen.getByLabelText('Actions de Une'));
-    const first = lastAlert();
+    expect(menuTexts()).toEqual(expected);
+    await fireEvent.press(screen.getByTestId('menu-cancel'));
     await fireEvent(screen.getByTestId('route-row-1'), 'longPress');
-    const second = lastAlert();
-    expect(alert).toHaveBeenCalledTimes(2);
-    for (const a of [first, second]) {
-      expect(a.title).toBe('Une');
-      expect(a.buttons.map((b) => b.text)).toEqual([
-        'Supprimer',
-        'Exporter en GPX',
-        'Renommer',
-      ]);
-      expect(a.buttons[0]!.style).toBe('destructive');
-    }
+    expect(menuTexts()).toEqual(expected);
+    expect(alert).not.toHaveBeenCalled();
   });
 
   it('iOS : « ⋮ » et appui long ouvrent le même ActionSheetIOS, Supprimer en rouge', async () => {
@@ -302,12 +297,13 @@ describe('menu (maquette 40, état 3 ; réponse 4)', () => {
     expect(sheet).toHaveBeenCalledTimes(2);
     const [a, b] = sheet.mock.calls.map((c) => c[0]);
     expect(a).toEqual(b);
-    expect(a!.options.slice(0, 3)).toEqual([
+    expect(a!.options.slice(0, 4)).toEqual([
       'Renommer',
+      'Dupliquer',
       'Exporter en GPX',
       'Supprimer',
     ]);
-    expect(a!.destructiveButtonIndex).toBe(2);
+    expect(a!.destructiveButtonIndex).toBe(3);
     expect(a!.cancelButtonIndex).toBe(a!.options.length - 1);
   });
 
@@ -318,7 +314,7 @@ describe('menu (maquette 40, état 3 ; réponse 4)', () => {
       .mockImplementation(() => undefined);
     await open();
     await fireEvent.press(screen.getByLabelText('Actions de Une'));
-    await act(async () => sheet.mock.calls[0]![1](2));
+    await act(async () => sheet.mock.calls[0]![1](3));
     expect(lastAlert().title).toContain('Supprimer');
   });
 
@@ -339,7 +335,7 @@ describe('renommer (maquette 40, état 4)', () => {
   async function openSheet(label: string) {
     await open();
     await fireEvent.press(screen.getByLabelText(`Actions de ${label}`));
-    await press(lastAlert().buttons[2]);
+    await press(menuEntry('rename'));
   }
   const input = () => screen.getByLabelText("Nom de l'itinéraire");
 
@@ -425,7 +421,7 @@ describe('supprimer (maquette 40, état 5)', () => {
   async function ask(label: string) {
     await open();
     await fireEvent.press(screen.getByLabelText(`Actions de ${label}`));
-    await press(lastAlert().buttons[0]);
+    await press(menuEntry('delete'));
   }
 
   it("demande d'abord, avec les textes de la maquette", async () => {
@@ -517,8 +513,8 @@ describe('C8 : zone absente dans la liste (maquette 40, état 7a)', () => {
     );
     await open();
     await fireEvent.press(screen.getByLabelText('Actions de Longemer'));
-    expect(lastAlert().buttons).toHaveLength(3);
-    await press(lastAlert().buttons[2]);
+    expect(menuTexts()).toHaveLength(4);
+    await press(menuEntry('rename'));
     await fireEvent.changeText(
       screen.getByLabelText("Nom de l'itinéraire"),
       'Lac',
@@ -528,7 +524,7 @@ describe('C8 : zone absente dans la liste (maquette 40, état 7a)', () => {
     expect(screen.getByText('Lac')).toBeTruthy();
     expect(screen.getByText('Zone Gérardmer supprimée')).toBeTruthy();
     await fireEvent.press(screen.getByLabelText('Actions de Lac'));
-    await press(lastAlert().buttons[0]);
+    await press(menuEntry('delete'));
     await press(lastAlert().buttons[1]);
     expect(await listRoutes(db)).toHaveLength(0);
     expect(screen.getByText("Pas encore d'itinéraire")).toBeTruthy();

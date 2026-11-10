@@ -48,7 +48,11 @@ export function RouteInfoMap({
 }) {
   const mapRef = useRef<MapRef>(null);
   const bounds = useMemo(() => routeBounds(draft, lines), [draft, lines]);
-  const ends = useMemo(() => endPoints(draft), [draft]);
+  // The arrival first, the start last: on a loop the start stays visible.
+  const ends = useMemo(() => {
+    const points = endPoints(draft);
+    return { ...points, features: [...points.features].reverse() };
+  }, [draft]);
   const fit = useMemo(
     () => (bounds ? { bounds, padding: FIT_PADDING } : undefined),
     [bounds],

@@ -263,7 +263,7 @@ describe('C6: saved track, infos calculated again (fake zone)', () => {
     await insertRoute(db, pathRoute());
     await open();
     await fireEvent.press(screen.getByTestId('info-modify'));
-    expect(peekDraftTarget()).toBe(1);
+    expect(peekDraftTarget()).toEqual({ kind: 'route', id: 1 });
     expect(mockPush).toHaveBeenCalledWith('/draft');
   });
 
@@ -360,13 +360,13 @@ describe('C8 and mockup 7b: zone deleted', () => {
 });
 
 describe('Question 1 and answer 6: imported GPX', () => {
-  it('has no "Modifier", in the zone', async () => {
+  it('shows "Modifier", in the zone', async () => {
     await insertRoute(
       db,
       sampleGpx({ zone: { id: 'nancy', version: 5, name: 'Nancy' } }),
     );
     await open();
-    expect(screen.queryByTestId('info-modify')).toBeNull();
+    expect(screen.getByTestId('info-modify')).toBeTruthy();
     expect(screen.getByTestId('info-subtitle')).toHaveTextContent(
       /^Zone Nancy · GPX importé le/,
     );
