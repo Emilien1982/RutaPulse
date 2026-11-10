@@ -1,6 +1,8 @@
 # ADR 0021 — Suivi sur le vélo : directions, placement sur le tracé, seuils, chiffres réels
 
-- Statut : proposé
+- Statut : accepté (validé par Émilien le 10 novembre 2026, avec les
+  recommandations des 3 questions ci-dessous et des 8 questions de la
+  maquette 30)
 - Date : 2026-11-10 (phase 8a, tâche T1 de [p08-suivi-velo](../phases/p08-suivi-velo.md))
 - Précise l'[ADR 0006](0006-suivi-arriere-plan-notification.md) (GPS et
   écran allumé, pour le suivi au premier plan),
@@ -711,7 +713,13 @@ par seconde), méthode des phases 4 et 6.
 **Non prouvé** : un vrai téléphone en forêt (GPS, batterie, confort de la
 caméra) : phase 10.
 
-## Questions ouvertes pour Émilien
+## Questions tranchées par Émilien (10 novembre 2026)
+
+Les trois recommandations sont retenues. La question 7 du designer est
+tranchée aussi : **oui**, « Démarrer le suivi » marche pour un GPX hors de
+vos zones ou une zone supprimée, tout en « Suivez le tracé », fond uni,
+D+ « — ».
+
 
 1. **Parade sur un passage mal recalé d'un GPX.** Recommandation :
    **« Suivez le tracé »** sur ce passage, comme sur un tronçon à la main.
