@@ -118,7 +118,15 @@ describe('reduceTracking: fixes', () => {
     expect(next.hasFix).toBe(true);
     expect(next.placement).toBe(state.placement);
     expect(next.ride.kept).toHaveLength(0);
-    expect(panelOf(next).kind).toBe('approach');
+    expect(panelOf(next)).toMatchObject({ kind: 'waiting', silent: false });
+    // then a precise position: the approach, with a distance
+    const placed = reduceTracking(next, {
+      type: 'fix',
+      fix: fixAt([100, 400], T0 + 2000, 10),
+    });
+    const panel = panelOf(placed);
+    expect(panel.kind).toBe('approach');
+    expect(panel.distanceM).toBeGreaterThan(400);
   });
 });
 
@@ -308,7 +316,7 @@ describe('C6: arrival', () => {
     expect(index).toBeGreaterThan(fixes.length - 12);
   });
 
-  it('does not finish at the end of the line when the rider skipped most of it', () => {
+  it('finishes when the rider reaches the end after 90 %, but not when under 90 % of the line is done', () => {
     const path: XY[] = [
       [0, 0],
       [2000, 0],
@@ -391,7 +399,12 @@ describe('panelOf (mock-up 30, order of priority)', () => {
     ...base,
     directions,
     hasFix: true,
-    placement: { ...initialPlacement(), phase: 'onTrack', ...patch },
+    placement: {
+      ...initialPlacement(),
+      phase: 'onTrack',
+      prev: [6, 48.7],
+      ...patch,
+    },
     ...extra,
   });
 
@@ -518,6 +531,9 @@ describe('formats of the numbers (mock-up 30)', () => {
     [4, '10', 'm'],
     [0, '10', 'm'],
     [999, '1,0', 'km'],
+    [9949, '9,9', 'km'],
+    [9950, '10', 'km'],
+    [9999, '10', 'km'],
   ])('the big distance of %i m is %s %s', (meters, value, unit) => {
     expect(panelDistance(meters)).toEqual({ value, unit });
   });

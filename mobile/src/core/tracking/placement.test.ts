@@ -124,7 +124,7 @@ describe('C3: distance left, within 20 m, on fabricated traces at 5 m/s', () => 
   it('switchbacks 20 m apart (two passages within 30 m)', () => {
     const path = switchbacks(300, 20, 8);
     const line = lineOfPath(path);
-    const placements = place(line, rideAlong(path, { noiseM: 6, seed: 7 }));
+    const placements = place(line, rideAlong(path, { noiseM: 8, seed: 7 }));
     expect(placements.every((p) => p.phase === 'onTrack')).toBe(true);
     expect(worstRemainingError(line, placements, 0, 5)).toBeLessThan(20);
     expect(steps(placements).back).toBeGreaterThan(-25);

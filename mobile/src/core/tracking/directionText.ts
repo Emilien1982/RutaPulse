@@ -64,9 +64,10 @@ export function directionText(direction: Direction): DirectionText {
   const { gesture, side, exit, way } = direction;
   if (gesture === 'uturn') return { key: 'tracking.gesture.uturn' };
   if (gesture === 'roundabout') {
+    if (exit === undefined) return { key: 'tracking.gesture.roundaboutAny' };
     return exit === 1
       ? { key: 'tracking.gesture.roundaboutFirst' }
-      : { key: 'tracking.gesture.roundabout', params: { n: exit ?? 1 } };
+      : { key: 'tracking.gesture.roundabout', params: { n: exit } };
   }
   const wayKey = way ? { wayKey: WAY_KEYS[way] } : {};
   if (gesture === 'straight') {

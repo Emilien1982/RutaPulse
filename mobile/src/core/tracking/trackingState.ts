@@ -188,7 +188,9 @@ export function panelOf(state: TrackingState): Panel {
     gpsLost: state.gpsLost,
     silent: state.gpsSilent,
   };
-  if (!state.hasFix) return { ...base, kind: 'waiting' };
+  // Waiting until a position has really been placed (one of 50 m or worse
+  // only says that the GPS answers).
+  if (state.placement.prev === null) return { ...base, kind: 'waiting' };
   if (placement.phase === 'approach') {
     return { ...base, kind: 'approach', distanceM: placement.gapM };
   }
@@ -239,28 +241,35 @@ export function remainingOf(state: TrackingState): number {
  */
 export function panelDistance(meters: number): { value: string; unit: string } {
   const m = Math.max(0, meters);
+  const km = (n: string) => ({ value: n, unit: t('tracking.unit.km') });
   if (m >= 1000) {
-    const km = m / 1000;
-    const value =
-      km >= 10 ? String(Math.round(km)) : km.toFixed(1).replace('.', ',');
-    return { value, unit: t('tracking.unit.km') };
+    // Round first, then choose the format: 9 960 m is "10 km", not "10,0 km".
+    const tenths = Math.round(m / 100) / 10;
+    return km(
+      tenths >= 10
+        ? String(Math.round(m / 1000))
+        : tenths.toFixed(1).replace('.', ','),
+    );
   }
   const rounded =
     m >= 300 ? Math.round(m / 50) * 50 : Math.max(10, Math.round(m / 10) * 10);
-  if (rounded >= 1000) return { value: '1,0', unit: t('tracking.unit.km') };
+  if (rounded >= 1000) return km('1,0');
   return { value: String(rounded), unit: t('tracking.unit.m') };
 }
 
 /**
  * "Reste" at the bottom: from 1 km one decimal (none from 100 km), under
- * 1 km rounded to 10 m.
+ * 1 km rounded to 10 m. Rounded first, then formatted.
  */
 export function formatRemaining(meters: number): string {
   const m = Math.max(0, meters);
   if (m >= 1000) {
-    const km = m / 1000;
+    const tenths = Math.round(m / 100) / 10;
     return t('format.km', {
-      n: km >= 100 ? String(Math.round(km)) : km.toFixed(1).replace('.', ','),
+      n:
+        tenths >= 100
+          ? String(Math.round(m / 1000))
+          : tenths.toFixed(1).replace('.', ','),
     });
   }
   const rounded = Math.round(m / 10) * 10;

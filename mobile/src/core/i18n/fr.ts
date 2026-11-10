@@ -363,6 +363,7 @@ export const fr = {
   'tracking.gesture.straight': 'Continuez tout droit',
   'tracking.gesture.uturn': 'Faites demi-tour',
   'tracking.gesture.roundaboutFirst': 'Au rond-point, 1re sortie',
+  'tracking.gesture.roundaboutAny': 'Au rond-point',
   'tracking.gesture.roundabout': 'Au rond-point, {n}e sortie',
   'tracking.way.trail': 'sur le sentier',
   'tracking.way.track': 'sur la piste',

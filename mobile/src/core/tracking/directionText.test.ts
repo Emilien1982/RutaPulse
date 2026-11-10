@@ -18,6 +18,7 @@ describe('directionLabel (texts of the mock-up 30)', () => {
     [{ gesture: 'roundabout', exit: 2 }, 'Au rond-point, 2e sortie'],
     [{ gesture: 'roundabout', exit: 3 }, 'Au rond-point, 3e sortie'],
     [{ gesture: 'roundabout', exit: 1 }, 'Au rond-point, 1re sortie'],
+    [{ gesture: 'roundabout' }, 'Au rond-point'],
   ])('writes %j', (patch, text) => {
     expect(directionLabel(turn(patch))).toBe(text);
   });

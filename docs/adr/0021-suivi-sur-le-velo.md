@@ -125,7 +125,8 @@ requête pour tout l'itinéraire.
 
 **Requête du type de voie**, juste après, sur la même forme allégée :
 `traceAttributes` (déjà dans le module) avec `shape_match: map_snap` et
-`filters: ["edge.use", "edge.density", "edge.begin_shape_index", "shape"]`.
+`filters: {attributes: ["edge.use", "edge.density", "edge.begin_shape_index", "shape"], action: "include"}`
+(forme exigée par Valhalla, comme `buildTraceRequest` ; corrigé en T2).
 Elle donne le type de chaque voie recalée (§ 1.4). Nouvelle fonction de
 requête `buildMatchedEdgesRequest`, à côté de `buildTraceRequest`, qui ne
 change pas.
@@ -261,7 +262,9 @@ les distances `fromM` et `toM`. Rend la distance le long de la ligne
 trois fois : position GPS (ici), manœuvres et contrôle de la réponse
 (§ 1.3).
 
-Un **passage** est une suite de segments voisins à moins de 20 m du point.
+Un **passage** est un minimum local de la distance du point à la ligne,
+à moins de 20 m (corrigé en T2 : avec « une suite de segments voisins »,
+les deux bras d'un lacet reliés par un virage proche ne feraient qu'un).
 `passagesNear(line, point, 20)` cherche sur toute la ligne et rend le
 meilleur point de chaque passage.
 
@@ -525,7 +528,9 @@ démonté au résumé. L'écran n'est donc gardé allumé que pendant le suivi
   déplacement sans second utilisateur. Même raison qu'aux ADR 0016, 0017
   et 0019. ESLint permet `../` depuis le sous-dossier.
 - **Qui importe quoi** : `core/tracking/` importe `core/routes/`,
-  `core/routing/`, `core/route-info/` et `core/i18n/`, rien d'autre.
+  `core/routing/`, `core/route-info/` et `core/i18n/`, plus `core/draft/`,
+  `core/gpx/` et `core/zones/` pour leurs types, `trackLengthM` et le
+  rectangle de la zone (complété en T2 ; permis par l'ADR 0011 § 3).
   `features/map/tracking/` importe `core/`, `shared-data/`, `ui/`,
   `../` (le reste de `features/map/`), `expo-location`, `expo-keep-awake`
   et MapLibre. Seul `shared-data/routing/` touche le module natif.
@@ -712,6 +717,19 @@ par seconde), méthode des phases 4 et 6.
 
 **Non prouvé** : un vrai téléphone en forêt (GPS, batterie, confort de la
 caméra) : phase 10.
+
+## Écarts acceptés pendant la phase 8a
+
+- 2026-11-10, T2, accepté par le pilotage : le type de voie n'est donné
+  qu'aux manœuvres situées dans la partie où les formes recalées de
+  `trace_route` et de `trace_attributes` sont identiques depuis le départ
+  (plutôt que tout ou rien). Sur un GPX bruité, les consignes après la
+  séparation des formes n'ont pas de type de voie.
+- 2026-11-10, T2, accepté par le pilotage : texte « Au rond-point, 1re
+  sortie » (la maquette ne donnait que « {n}e sortie »).
+- 2026-11-10, T2 : trois précisions du texte (§ 1.1 forme des filtres,
+  § 2.2 définition d'un passage, § 6 imports), sans changement de
+  décision.
 
 ## Questions tranchées par Émilien (10 novembre 2026)
 
