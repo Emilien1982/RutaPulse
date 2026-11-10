@@ -24,10 +24,12 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 ✅ ([résultats](docs/phases/p06-mes-itineraires-gpx-resultats.md)) ; phase 7 🔧 lancée ([spec](docs/phases/p07-circuits-balises.md)) |
+| 4+ | Développement en 11 phases → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 ✅ ([résultats](docs/phases/p06-mes-itineraires-gpx-resultats.md)) ; phase 7 ✅ ([résultats](docs/phases/p07-circuits-balises-resultats.md)) ; phase 8 à spécifier (suivi sur le vélo) |
 
 ## Décisions prises
 
+- 2026-11-10 — Phase 7 fusionnée dans main (679b66d) : couche des circuits balisés et leur feuille, « En faire un itinéraire » (tracé gardé, aucun calcul à l'ouverture), « Modifier » d'un GPX (remplace l'original), « Dupliquer », base en version 2, fabrique qui ordonne les circuits, zone Nancy v6. 15 critères sur 16 ; C12 en partie (iOS 1,25 s, cause : vol de la carte vers la position, à corriger en phase 10 ; glisser non mesuré, l'émulateur limite la mesure). 2 529 tests, 280 pytest, CI verte. ADR 0020 ; ADR 0003 complété.
+- 2026-11-10 — Phase 7, détails tranchés par le pilotage : glisser noté « non mesuré » (pas de banc) ; C12 iOS reporté à la phase 10 plutôt qu'un build de plus (disque à 12 Go). Choix du designer acceptés : circuits visibles dès le zoom 8 ; « Enregistrer » actif une fois les chiffres arrivés.
 - 2026-11-09 — Phase 7, T1 : ADR 0020 et maquette 12 validés par Émilien, avec les recommandations des 8 questions (ordre des voies par une règle tolérante qui garde le tronc et refuse au-delà de 15 % retirés ; D+ d'une trace non touchée calculé d'un seul tenant). Ajout : « Dupliquer » un itinéraire (copie modifiable, l'original reste), critère C16. Le D+ est un ordre de grandeur en v1 : pas de travail de précision en plus.
 - 2026-11-09 — Spec de la phase 7 (circuits VTT balisés et trace modifiable, taille G) validée par Émilien, avec les choix du pilotage. Un GPX modifié remplace l'original (origine « GPX modifié le … »). Ordre des voies des circuits fait dans la fabrique : zone Nancy v6 à publier.
 - 2026-11-09 — Nouvelle session de pilotage : `local_1ea128ca-dd2d-45af-b97e-66ec21c85b89` (passation après la phase 6). CI de 9799484 verte.
@@ -112,9 +114,39 @@
 
 ## Prochaine étape
 
-Phase 7 en cours dans sa session de phase (worktree). T1 validé ; prochain point : Émilien lance le workflow de la zone Nancy v6 (T2).
+Écrire la spec de la phase 8 (suivi sur le vélo, docs/05 ligne 8), la faire valider par Émilien, puis la lancer. Avant : trancher le trait de liaison (distance et GPX), le cadrage hors zone et les états de la maquette 90 (voir « Points connus »).
 
-## Passation du pilotage (9 novembre 2026)
+## Passation du pilotage (10 novembre 2026)
+
+La session de pilotage du 9 au 10 novembre (`local_1ea128ca-dd2d-45af-b97e-66ec21c85b89`)
+passe la main après la fusion de la phase 7, comme le veut la règle d'Émilien.
+
+**État exact**
+- `main` à jour et poussé : phases 0 à 7 fusionnées. Rien en cours.
+- Worktree de la phase 7 (`.claude/worktrees/phase-7-circuits-balises-715f16`) gardé comme trace ;
+  tout est poussé. À retirer si la place manque. Branche jetable locale `claude/p07-essai`, jamais
+  poussée, à ne pas fusionner.
+- **Place libre : 12 Go**, le seuil d'arrêt. Émilien doit effacer DerivedData (17 Go) avant la
+  prochaine phase qui construit l'app. Trois `find` orphelins des testeurs (PID 77757, 84719,
+  18205) : le garde-fou refuse de les arrêter, c'est Émilien qui le fait.
+- Simulateurs : release de T9 de la phase 7, zone Nancy v6. **Émulateur Android : `emulator-5584`**
+  (pas 5554) ; « Wi-Fi seulement » désactivé dans l'app.
+- Quota de la semaine : environ 52 % utilisés le 10 novembre au matin (renouvellement le lundi
+  16 à 7 h). La phase 7 en a pris environ 45 points en une journée.
+- Émilien peut effacer les releases de zone Nancy v4 et plus anciennes (règle des 2 dernières versions).
+
+**Leçons de la phase 7**
+- Une phase G se fait en 3 sessions de phase, avec une passation après 3 tâches : ça a bien
+  marché. Une session lancée « à la main » ne peut l'être que sur un message d'Émilien : lui
+  demander de dire « oui » plutôt que lui laisser une carte.
+- Lancer une session de suite dans le worktree existant : `start_session` avec `cwd` = le
+  worktree et `use_worktree: false` (seulement sur un message d'Émilien).
+- Le garde-fou refuse au relecteur `git -C`, `grep`, `tail`, `git ls-files` et les commandes
+  enchaînées : lui donner les diffs et les preuves par chemin exact.
+- Les testeurs laissent des `find /` tourner pendant des heures : leur interdire de chercher
+  depuis `/` dans les consignes.
+
+## Passation du pilotage (9 novembre 2026, archive)
 
 La session de pilotage du 3 au 9 novembre passe la main après la fusion de
 la phase 6, comme le veut la règle d'Émilien.
@@ -255,6 +287,8 @@ avant le résumé ; notification sur son téléphone à chaque question ; il
 valide spec, design, architecture et fusion ; tests sur simulateurs.
 
 ## Points connus, hors périmètre pour l'instant
+
+- Phase 7, pour plus tard : C12 iOS (supprimer le vol de la carte avant la création, phase 10) ; écarts de design L1 à L5 et anneau rose iOS (phase 10) ; parcours Maestro à reprendre (p07-gpx-modifier-ios, p06-enregistrer) ; une trace qui sort puis revient dans la zone perd sa partie hors zone si on déplace un point voisin (accepté en v1) ; lissage des altitudes du D+ (peut-être jamais).
 
 - Icônes des onglets provisoires (à faire avec le style années 70, phase 2).
 - À vérifier en phase 3 : ce que calcule le téléphone (ARM) avec les tuiles publiées.
