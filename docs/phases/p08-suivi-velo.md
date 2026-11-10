@@ -1,7 +1,8 @@
 # Phase 8 — Suivi sur le vélo
 
 > 10 novembre 2026. Spec de la session de pilotage, **à valider par
-> Émilien**. Découpage : [docs/05](../05-decoupage-v1.md), ligne 8.
+> Émilien**. Tient compte de sa décision du même jour : la phase 9
+> (suivi téléphone verrouillé) passe en V2, la phase 8 reste complète. Découpage : [docs/05](../05-decoupage-v1.md), ligne 8.
 > Fonction du cadrage : 7 (suivi sur le vélo). S'appuie sur l'ADR 0006
 > (suivi, GPS, écran allumé), l'ADR 0016 (itinéraire en création, trait de
 > liaison), l'ADR 0017 (calcul des infos), l'ADR 0019 (itinéraires gardés),
@@ -68,8 +69,9 @@ sur le tracé, combien il reste, et la prochaine direction écrite
    moteur, comme pour l'écran Infos), pas de l'altitude du GPS, trop
    bruitée.
 
-Le suivi téléphone verrouillé (notification, Live Activity) est la
-**phase 9**. En phase 8, si l'app passe en arrière-plan, le suivi se met
+Le suivi téléphone verrouillé (notification, Live Activity) passe en
+**V2** (décision d'Émilien du 10 novembre : la phase 9 est retirée de la
+v1). En phase 8, si l'app passe en arrière-plan, le suivi se met
 en pause et reprend au retour, sans perdre l'avancement.
 
 ## Critères d'acceptation
@@ -94,7 +96,8 @@ en pause et reprend au retour, sans perdre l'avancement.
 
 ## Hors périmètre
 
-- Suivi téléphone verrouillé, notification et Live Activity : **phase 9**.
+- Suivi téléphone verrouillé, notification et Live Activity : **V2**
+  (ancienne phase 9, retirée de la v1 le 10 novembre).
 - Sons, voix, alerte d'écart, économiseur d'écran : V2 ou plus tard.
 - Enregistrer la sortie (trace réelle, statistiques) : plus tard. Le
   résumé de l'arrivée n'est pas gardé.
@@ -153,6 +156,11 @@ bloquants.
 - **Risque 4** : la place sur le Mac (12 Go libres). La phase construit
   l'app en release sur les deux simulateurs : il faut d'abord effacer
   DerivedData.
+- **Essai réel au plus tôt** : la phase 9 passe en V2, donc la phase 10
+  (finition et test interne) suit directement. Le pilotage propose de
+  commencer la phase 10 par l'APK Android installable et l'app iOS
+  installée par Xcode, pour que tu roules avec l'app dès que possible ;
+  la finition viendra après ce premier essai.
 - **Ce que tu devras faire** : valider cette spec et répondre aux
   questions 1 à 4 ; valider la maquette 30 complétée et l'ADR 0021 (T1) ;
   valider la fusion.
@@ -225,7 +233,8 @@ repasse au repos dès que tu déplaces la carte).
 3. Le D+ réel de l'arrivée vient de l'altitude du relief aux positions
    reçues, pas du GPS (note du designer, LISEZMOI).
 4. En phase 8, le suivi se met en pause quand l'app passe en arrière-plan.
-   Le suivi verrouillé vient en phase 9, sur la même logique.
+   Le suivi verrouillé viendra en V2, sur la même logique. Pour un essai
+   réel, garde l'écran allumé : c'est le cas normal de la phase 8.
 5. Les tests utilisent des traces GPS rejouées sur les simulateurs, tirées
    des itinéraires de référence, avec un écart et un retour fabriqués.
 6. Le résumé de l'arrivée n'est pas enregistré (« enregistrement des

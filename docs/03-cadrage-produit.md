@@ -28,10 +28,13 @@ de direction.
 | 5 | GPX | Importer et exporter un itinéraire au format GPX (format standard d'échange de traces GPS). |
 | 6 | Hors ligne | Télécharger à l'avance la carte et les données de calcul d'une zone. Sans réseau, tout marche : carte, création d'itinéraire, suivi. |
 | 7 | Suivi sur le vélo | L'itinéraire, la position dessus, la distance restante et des indications de direction écrites (exemple : « À droite dans 200 m »). L'écran reste allumé. |
-| 8 | Téléphone verrouillé | Le suivi continue. La prochaine indication s'affiche dans **une seule** notification, mise à jour : la plus récente remplace la précédente. |
+| 8 | Téléphone verrouillé | **Passée en V2 le 10 novembre 2026** (décision d'Émilien). Le suivi continue. La prochaine indication s'affiche dans **une seule** notification, mise à jour : la plus récente remplace la précédente. |
 | 9 | Circuits VTT balisés | Les circuits VTT balisés connus d'OpenStreetMap s'affichent sur la carte. Un geste transforme un circuit en itinéraire, qu'on peut ensuite modifier. |
 
 ## V2 (prévue)
+- Suivi téléphone verrouillé (fonction 8 ; ancienne phase 9 de la v1,
+  retirée le 10 novembre 2026). L'essai 2 et l'ADR 0006 en gardent les
+  résultats.
 - Sons : alertes, approche d'une direction, arrivée, écart avec le parcours,
   etc.
 - Demander une zone manquante depuis l'app, avec une fabrication

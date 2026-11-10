@@ -32,7 +32,7 @@
 | 6 | **Mes itinéraires et GPX** | Enregistrer, lister, renommer, supprimer (SQLite + TanStack Query). Importer et exporter en GPX. | 4, 5 | M | Oui |
 | 7 | **Circuits VTT balisés** | Couche des circuits sur la carte ; un geste transforme un circuit en itinéraire modifiable. | 9 | P | Oui |
 | 8 | **Suivi sur le vélo** | Position sur l'itinéraire, distance restante, indications écrites, écran allumé. Testé avec une trace GPS rejouée. | 7 | M | Oui |
-| 9 | **Suivi téléphone verrouillé** | Service Android avec une seule notification mise à jour ; Live Activity iOS. Reprend les résultats de l'essai 2. | 8 | M | Oui |
+| 9 | ~~**Suivi téléphone verrouillé**~~ **Passée en V2 le 10 novembre 2026** (décision d'Émilien). | Service Android avec une seule notification mise à jour ; Live Activity iOS. Reprend les résultats de l'essai 2. | 8 | M | Oui |
 | 10 | **Finition et test interne** | Écran « Licences », textes en français, icône, écran de démarrage, APK Android installable, app iOS installée par Xcode. Vérifications sur un vrai téléphone (liste de PILOTAGE.md). | — | M | Oui |
 
 Total estimé : environ 20 sessions de travail.
@@ -50,6 +50,8 @@ Total estimé : environ 20 sessions de travail.
 - **5, 6 et 7 sont assez indépendantes.** Elles pourraient être faites en
   parallèle, mais le quota d'utilisation incite à les enchaîner.
 - **8 puis 9** : le suivi d'abord à l'écran, puis téléphone verrouillé.
+  *10 novembre 2026 : la phase 9 passe en V2 ; la phase 10 suit la 8,
+  pour un essai réel au plus tôt.*
 - **10 en dernier**, avec les vérifications qui demandent un vrai téléphone.
 
 ## Points d'attention
