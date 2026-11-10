@@ -385,6 +385,27 @@ export const fr = {
   'tracking.gpsLost': 'Signal GPS perdu',
   'tracking.unit.m': 'm',
   'tracking.unit.km': 'km',
+  'tracking.start': 'Démarrer le suivi',
+  'tracking.startLabel': "Démarrer le suivi de l'itinéraire",
+  'tracking.permissionText':
+    "Autorisez la position dans les réglages pour suivre l'itinéraire.",
+  'tracking.remaining': 'Reste',
+  'tracking.climbLeft': 'D+ restant',
+  'tracking.finish': 'Terminer',
+  'tracking.finishTitle': 'Terminer la sortie\u202F?',
+  'tracking.finishText':
+    "Le suivi s'arrête et le résumé de la sortie s'affiche.",
+  'tracking.continue': 'Continuer',
+  'tracking.panelLabel': 'Dans {distance}, {direction}',
+  'tracking.offTrackLabel': 'Vous êtes à {distance} du tracé',
+  'tracking.toStartLabel': 'Le départ est à {distance}',
+  'tracking.compassHeading':
+    'Carte orientée dans le sens de la marche\u00A0; toucher pour mettre le nord en haut',
+  'tracking.compassNorth':
+    'Nord en haut\u00A0; toucher pour orienter la carte dans le sens de la marche',
+  'ride.arrived': 'ARRIVÉE\u202F!',
+  'ride.finished': 'SORTIE TERMINÉE',
+  'ride.close': 'Fermer',
 } as const;
 
 export type TextKey = keyof typeof fr;

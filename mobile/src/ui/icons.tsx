@@ -120,6 +120,14 @@ export function ChevronIcon({ size = 24, ...props }: IconProps) {
   );
 }
 
+export function PlayIcon({ size = 16, color }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
+      <Path d="M7 4.5v15l12-7.5z" />
+    </Svg>
+  );
+}
+
 export function PauseIcon({ size = 16, color }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>

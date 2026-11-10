@@ -17,6 +17,16 @@ import {
   type HeightResult,
   type TraceResult,
 } from './infoResponse';
+import {
+  buildMatchedEdgesRequest,
+  buildTraceRouteRequest,
+} from './guidanceRequest';
+import {
+  parseMatchedEdges,
+  parseTraceRouteResponse,
+  type MatchedEdgesResult,
+  type TraceRouteResult,
+} from './guidanceResponse';
 import { buildRouteRequest, type RoutePoint } from './routeRequest';
 import {
   failure,
@@ -33,6 +43,7 @@ export type NativeRouting = {
   // Optional so that older fakes still fit; a missing one is a 'failed' result.
   height?(requestJson: string): Promise<string>;
   traceAttributes?(requestJson: string): Promise<string>;
+  traceRoute?(requestJson: string): Promise<string>;
 };
 
 export type EnginePaths = { tarPath: string; elevationDir: string };
@@ -66,6 +77,16 @@ export type RoutingEngine = {
     shape: [number, number][],
     signal?: AbortSignal,
   ): Promise<TraceResult>;
+  /** Directions along a [lon, lat] shape, matched on the ways (ADR 0021). Same queue and rules. */
+  traceRoute(
+    shape: [number, number][],
+    signal?: AbortSignal,
+  ): Promise<TraceRouteResult>;
+  /** Kind of way under a [lon, lat] shape, matched on the ways. Same queue and rules. */
+  matchedEdges(
+    shape: [number, number][],
+    signal?: AbortSignal,
+  ): Promise<MatchedEdgesResult>;
   getState(): EngineState;
 };
 
@@ -207,6 +228,26 @@ export function createRoutingEngine(
         native.traceAttributes?.bind(native),
         buildTraceRequest,
         parseTraceResponse,
+      );
+    },
+
+    traceRoute(shape, signal) {
+      return infoCall(
+        shape,
+        signal,
+        native.traceRoute?.bind(native),
+        buildTraceRouteRequest,
+        parseTraceRouteResponse,
+      );
+    },
+
+    matchedEdges(shape, signal) {
+      return infoCall(
+        shape,
+        signal,
+        native.traceAttributes?.bind(native),
+        buildMatchedEdgesRequest,
+        parseMatchedEdges,
       );
     },
   };

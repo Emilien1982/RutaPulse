@@ -21,6 +21,20 @@ export const RECENTER_ZOOM = 15;
 export const NO_PADDING = { top: 0, bottom: 0, left: 0, right: 0 };
 
 /**
+ * The box "Position désactivée": the way to the settings of the phone. Shared
+ * with the start of the tracking, which gives its own message.
+ */
+export function alertLocationOff(message: string = t('map.locationOffText')) {
+  Alert.alert(t('map.locationOffTitle'), message, [
+    { text: t('map.locationOffCancel'), style: 'cancel' },
+    {
+      text: t('map.locationOffSettings'),
+      onPress: () => void Linking.openSettings(),
+    },
+  ]);
+}
+
+/**
  * The position of the user on a zone map: permission "while using the app",
  * the GPS position, and the recentering. Shared by the map tab and the
  * creation screen (mockups 90 and 10). `zoom` holds the zoom of the map.
@@ -65,13 +79,7 @@ export function useMapPosition(
 
   function askForPermission() {
     if (!canAskAgain.current) {
-      Alert.alert(t('map.locationOffTitle'), t('map.locationOffText'), [
-        { text: t('map.locationOffCancel'), style: 'cancel' },
-        {
-          text: t('map.locationOffSettings'),
-          onPress: () => void Linking.openSettings(),
-        },
-      ]);
+      alertLocationOff();
       return;
     }
     void Location.requestForegroundPermissionsAsync().then((result) => {

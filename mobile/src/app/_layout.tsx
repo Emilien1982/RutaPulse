@@ -26,6 +26,15 @@ export default function RootLayout() {
           />
           {/* Infos of a saved route (ADR 0019, section 3). */}
           <Stack.Screen name="route/[id]" options={{ headerShown: false }} />
+          {/* Tracking of a route: full screen, no way back without the box "Terminer" (ADR 0021, section 5.5). */}
+          <Stack.Screen
+            name="tracking/[id]"
+            options={{
+              presentation: 'fullScreenModal',
+              headerShown: false,
+              gestureEnabled: false,
+            }}
+          />
         </Stack>
       </FontGate>
     </QueryProvider>

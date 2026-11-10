@@ -3,6 +3,7 @@
 // service when the zone is usable, and the figures of the list are updated.
 
 import { useQueryClient } from '@tanstack/react-query';
+import * as Location from 'expo-location';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import {
@@ -47,13 +48,14 @@ import { catalogueKey } from '@/shared-data/zones/useCatalogue';
 import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
 import { useZoneHold } from '@/shared-data/zones/zoneInService';
 import { Button } from '@/ui/Button';
-import { HandModeIcon, MoreIcon } from '@/ui/icons';
+import { HandModeIcon, MoreIcon, PlayIcon } from '@/ui/icons';
 import { RoutePreview } from '@/ui/RoutePreview';
 import { SignalMark } from '@/ui/SignalMark';
 import { border, colors, radius, spacing, text } from '@/ui/theme';
 import { useRouteMenu } from '@/ui/useRouteMenu';
 
 import { setDraftTarget } from './draftTarget';
+import { alertLocationOff } from './MapPosition';
 import { mainGeometry, type LineCollection } from './draftGeometry';
 import { RouteInfoView, type Figure } from './RouteInfoScreen';
 import { ArchFrame, RouteInfoMap } from './RouteInfoMap';
@@ -330,6 +332,50 @@ function ModifyButton({
   );
 }
 
+// "Démarrer le suivi" (mockup 20, phase 8a): the position is asked first; when
+// it is refused, the box of the map tab, and we stay here (ADR 0021, 5.2).
+function StartButton({ routeId }: { routeId: number }) {
+  const router = useRouter();
+  return (
+    <Button
+      testID="info-start"
+      label={t('tracking.start')}
+      accessibilityLabel={t('tracking.startLabel')}
+      icon={(color) => <PlayIcon color={color} />}
+      onPress={() => {
+        void Location.requestForegroundPermissionsAsync()
+          .then((result) => {
+            if (result.granted) router.push(`/tracking/${routeId}`);
+            else alertLocationOff(t('tracking.permissionText'));
+          })
+          .catch(() => alertLocationOff(t('tracking.permissionText')));
+      }}
+    />
+  );
+}
+
+// "Modifier" (when there is one) and "Démarrer le suivi", side by side.
+function RouteActions({
+  routeId,
+  modify,
+}: {
+  routeId: number;
+  modify?: 'route' | 'gpx';
+}) {
+  return (
+    <View style={styles.actionsRow}>
+      {modify && (
+        <View style={styles.actionCell}>
+          <ModifyButton routeId={routeId} kind={modify} />
+        </View>
+      )}
+      <View style={styles.startCell}>
+        <StartButton routeId={routeId} />
+      </View>
+    </View>
+  );
+}
+
 // --- A created route on a usable zone ---
 
 function CreatedInfos({
@@ -374,7 +420,7 @@ function CreatedInfos({
       altitudes={altitudes}
       terrain={terrain}
       difficulty={difficulty}
-      actions={<ModifyButton routeId={route.id} />}
+      actions={<RouteActions routeId={route.id} modify="route" />}
     />
   );
 }
@@ -446,7 +492,7 @@ function GpxInfos({
       altitudes={altitudes}
       terrain={terrain}
       difficulty={difficulty}
-      actions={<ModifyButton routeId={route.id} kind="gpx" />}
+      actions={<RouteActions routeId={route.id} modify="gpx" />}
     />
   );
 }
@@ -541,11 +587,16 @@ function PlainInfos({
         </Notice>
       }
       actions={
-        route.origin !== 'gpx' && status === 'usable' ? (
-          <ModifyButton routeId={route.id} />
-        ) : route.origin === 'gpx' && status === 'leaves' ? (
-          <ModifyButton routeId={route.id} kind="gpx" />
-        ) : undefined
+        <RouteActions
+          routeId={route.id}
+          modify={
+            route.origin !== 'gpx' && status === 'usable'
+              ? 'route'
+              : route.origin === 'gpx' && status === 'leaves'
+                ? 'gpx'
+                : undefined
+          }
+        />
       }
     />
   );
@@ -617,6 +668,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.cream,
   },
   gap: { marginTop: spacing.s3 },
+  actionsRow: { flexDirection: 'row', gap: 10 },
+  actionCell: { flex: 1 },
+  // The longer label needs more room than "Modifier" (mockup 20).
+  startCell: { flex: 1.4 },
   menuButton: {
     position: 'absolute',
     right: spacing.s3,

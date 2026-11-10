@@ -10,6 +10,7 @@ jest.mock('@modules/valhalla-route', () => ({
     route: jest.fn(),
     height: jest.fn(),
     traceAttributes: jest.fn(),
+    traceRoute: jest.fn(),
     close: jest.fn(),
   },
 }));

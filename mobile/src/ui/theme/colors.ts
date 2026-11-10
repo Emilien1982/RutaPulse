@@ -25,6 +25,22 @@ export const characterColors = {
   jerseyShadow: '#8E3520',
 } as const;
 
+// Colors of the navigation screens, direction B ("couleur.*", "carte.parcouru"
+// and "trace.ecart" of design/tokens.md): the tracking.
+export const navColors = {
+  background: '#FFFFFF',
+  text: '#111111',
+  text2: '#4A4A4A',
+  imminent: '#FFD400',
+  danger: '#8A1C12',
+  floatingBorder: 'rgba(17, 17, 17, 0.35)',
+  // carte.parcouru: #8C8C8C at 70 %, and marqueur.position-perdue (opaque).
+  done: '#8C8C8C',
+  lostPosition: '#8C8C8C',
+  // The needle of the compass: the north (a drawing, not a text).
+  north: '#B3261E',
+} as const;
+
 // "hn.ombre": 0 2 8, brown at 30 %. Always used with a brown border.
 export const shadow = {
   shadowColor: colors.brown,

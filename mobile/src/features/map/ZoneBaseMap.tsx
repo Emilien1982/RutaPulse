@@ -41,7 +41,9 @@ export function ZoneBaseMap({
   labels,
   onPress,
   onRegionDidChange,
+  onRegionWillChange,
   onDidFinishLoadingMap,
+  free,
   children,
 }: {
   zone: Zone;
@@ -54,6 +56,9 @@ export function ZoneBaseMap({
   labels?: boolean;
   onPress?: MapProps['onPress'];
   onRegionDidChange?: MapProps['onRegionDidChange'];
+  onRegionWillChange?: MapProps['onRegionWillChange'];
+  /** The camera may leave the zone (the tracking follows the rider). */
+  free?: boolean;
   onDidFinishLoadingMap?: MapProps['onDidFinishLoadingMap'];
   children?: ReactNode;
 }) {
@@ -88,14 +93,15 @@ export function ZoneBaseMap({
       doubleTapHoldZoom={!fit}
       onPress={onPress}
       onRegionDidChange={onRegionDidChange}
+      onRegionWillChange={onRegionWillChange}
       onDidFinishLoadingMap={onDidFinishLoadingMap}
     >
       <Camera
         ref={cameraRef}
         // A map opened on a box must be free to zoom out to the whole route.
-        minZoom={fit ? 0 : MIN_ZOOM}
+        minZoom={fit || free ? 0 : MIN_ZOOM}
         maxZoom={MAX_ZOOM}
-        maxBounds={fit ? undefined : [lonMin, latMin, lonMax, latMax]}
+        maxBounds={fit || free ? undefined : [lonMin, latMin, lonMax, latMax]}
         initialViewState={
           fit ??
           opening ?? {
