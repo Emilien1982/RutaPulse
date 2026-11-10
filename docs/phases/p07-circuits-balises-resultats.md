@@ -82,7 +82,7 @@ corrections sur le code de `30a5280`.
 | C9 | Enregistrer, base v2 | Nom du circuit, puis « (2) », « (3) » ; origine « circuit balisé ». Montée de version depuis la v1 testée sur un vrai SQLite et sur les deux simulateurs | `preuves/t5a-*`, `preuves/t5b-testeur/` | **oui** |
 | C10 | « Modifier » d'un GPX | Bouton présent si la zone est `usable` ou `leaves`, absent sinon. Enregistrer sans changement : rien n'est écrit (bouton inactif). Abandon : GPX intact. Parcours Maestro sur les deux | `preuves/t6b-*`, `preuves/t7/` | **oui** |
 | C11 | Infos inchangées (distance à 10 m, D+ à 5 m) | Circuit : D+ 459 m dans la création et dans l'Infos, sur les deux plateformes. GPX de 10 000 points : 9,5 km et D+ 16 m des deux côtés. GPX de 53,6 km : D+ 835 m des deux côtés | `preuves/t7/`, `preuves/t6b-testeur/` | **oui** |
-| C12 | Rapidité en release | « Modifier » d'un GPX de 10 000 points : 747 ms sur Android ; 1,00 s sur iOS, animation comprise, contenu affiché à 0,4 s. **« En faire un itinéraire » (35 km)** : sur Android, contenu à 0,45 s ; **sur iOS, 1 236 à 1 257 ms**. **Glisser : non mesuré** (voir réserves) | `preuves/t7/`, `preuves/t9-verif/` | **en partie** |
+| C12 | Rapidité en release | « Modifier » d'un GPX de 10 000 points : 747 ms sur Android ; 1,00 s sur iOS, animation comprise, contenu affiché à 0,4 s. **« En faire un itinéraire » (35 km)** : sur Android, contenu à 0,45 s ; **sur iOS, non tenu, 1,25 s** (1 236 à 1 257 ms), cause identifiée : le vol de la carte vers la position avant d'ouvrir la création ; correction reportée à la phase 10. **Glisser : non mesuré** (voir réserves) | `preuves/t7/`, `preuves/t9-verif/` | **en partie** |
 | C13 | Parcours Maestro | Android en mode avion : circuit, GPX, Dupliquer, non-régression (p04, p06). iOS sans mode avion : variantes `-ios`. `p07-gpx-modifier-ios` est à reprendre après T9 (voir réserves) | `preuves/t7/*/maestro/`, `preuves/t9-verif/*/maestro/` | **oui**, réserve iOS |
 | C14 | `verify`, `pytest`, CI | 2 529 tests, 280 `pytest`, CI verte | runs plus bas | **oui** |
 | C15 | Captures comparées par le designer | 2 bloquants et 8 mineurs, corrigés en T9 et revérifiés en release. 6 mineurs laissés pour la phase 10 | [p07-t8-circuits-balises.md](../../design/comparaisons/p07-t8-circuits-balises.md), `preuves/t9-verif/` | **oui** |
@@ -110,7 +110,8 @@ corrections sur le code de `30a5280`.
   T9). Mais avant, la carte de l'onglet Carte vole environ 0,5 s vers la
   position de l'utilisateur. T9 n'a gagné que 50 ms (avant : 1,29 à
   1,31 s). Corriger ce vol demande une nouvelle construction iOS, que la
-  place disque ne permettait pas (décision du pilotage).
+  place disque ne permettait pas. Décision du pilotage : la correction est
+  reportée à la phase 10.
 - **C12 glisser d'un point : non mesuré** (décision du pilotage). Sur
   l'émulateur, la vidéo donne un écart maximal de 134 à 235 ms (36 points)
   et de 161 à 177 ms (52 points). Mais le témoin, un simple balayage de la
