@@ -101,7 +101,9 @@ corrections sur le code de `30a5280`.
 | `7faff23` | « Modifier » d'un GPX T6b | 42710487041 | succès |
 | `e71ca53` | parcours Maestro T7 | 42723837620 | succès |
 | `eec05bb` | comparaison T8 | 42725207838 | succès |
-| `30a5280` | corrections T9 | 42742545812 | voir le message de fin |
+| `30a5280` | corrections T9 | 42742545812 | annulé (remplacé par le run suivant) |
+| `6376459` | résultats | 42742696117 | annulé (remplacé par le run suivant) |
+| `902854c` | résultats précisés, tout le code de la phase dont T9 | 42742734621 | **succès** |
 
 ## Écarts et réserves
 
