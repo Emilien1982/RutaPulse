@@ -40,3 +40,24 @@ Seuls le début, le milieu et la fin de l'écart sont capturés.
 ## Pas encore fait
 
 Mesures C12, Maestro C13, iOS, arrière-plan (C8) sur appareil.
+
+## 3. Pas 2 (14 novembre) : même scénario avec la correction 33f64e9 — défaut toujours visible sur l'émulateur
+
+Règle de 33f64e9 : une position prise avant le départ du suivi
+(`location.timestamp < startedAt`) est ignorée. APK release reconstruit
+et installé sur `emulator-5584`. Même scénario que § 1.
+
+| Capture | Vu |
+|---|---|
+| `android-p2-01-apres-demarrer-avant-depart-reel.png` | juste après « Démarrer le suivi » |
+| `android-p2-02-depart-reel.png` | 6 s après le début du rejeu : « 1,7 km jusqu'au tracé », Reste 14,3 km, D+ restant 79 m |
+| `android-p2-03-depart-reel-14s.png` | « 60 m jusqu'au tracé », Reste 15,8 km (attendu 34,8 km) |
+| `android-p2-04-terminer.png` | Reste 15,2 km |
+| `android-p2-05-sortie-terminee.png` | 2,8 km, D+ 64 m pour environ 350 m rejoués |
+
+Hypothèse non vérifiée : l'émulateur donne à la position du `geo fix` une
+heure récente, au moment où il la livre à l'app ; la règle ne la voit donc
+pas comme ancienne. La règle protège sans doute une position en cache sur
+un vrai téléphone, pas ce scénario. Le « Reste » faux montre aussi que
+l'avancement reste calé sur la première position acceptée, même quand
+toutes les suivantes la contredisent. Suite : voir les résultats de la phase.
