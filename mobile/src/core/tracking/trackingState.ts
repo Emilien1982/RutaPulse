@@ -17,7 +17,12 @@ import {
 } from './placement';
 import { remainingM } from './remaining';
 import { addRideFix, startRide, type Ride } from './ride';
-import type { FreeReason, TrackingLine, TrackingSource } from './trackingLine';
+import {
+  distanceM,
+  type FreeReason,
+  type TrackingLine,
+  type TrackingSource,
+} from './trackingLine';
 
 /** Without a position for this long (ms), the GPS is lost. */
 export const GPS_LOST_MS = 10_000;
@@ -27,6 +32,10 @@ export const GPS_SILENT_MS = 30_000;
 export const MIN_FIX_GAP_MS = 900;
 /** The panel turns yellow at this distance (m) or less. */
 export const IMMINENT_M = 100;
+/** At the start, a first position needs a next one at less than this speed (m/s). */
+export const MAX_START_SPEED_MS = 25;
+/** With no time between two positions, they must be this close (m). */
+const SAME_SPOT_M = 5;
 
 export type TrackingStatus = 'tracking' | 'paused' | 'ended';
 
@@ -50,6 +59,11 @@ export type TrackingState = {
   gpsLost: boolean;
   /** No position for 30 s since the start. */
   gpsSilent: boolean;
+  /**
+   * Start rule: the only position kept since the start, until a second one
+   * confirms it; 'done' once two coherent positions have been kept.
+   */
+  startCheck: Fix | 'done' | null;
 };
 
 export type TrackingEvent =
@@ -82,6 +96,7 @@ export function createTracking(
     lastFixAt: null,
     gpsLost: false,
     gpsSilent: false,
+    startCheck: null,
   };
 }
 
@@ -96,6 +111,36 @@ function ended(
   at: number,
 ): TrackingState {
   return { ...state, status: 'ended', end, endedAt: at };
+}
+
+function timeOf(fix: Fix): number {
+  return fix.takenAt ?? fix.at;
+}
+
+/** Can `next` follow `first` at a speed under `MAX_START_SPEED_MS`? */
+function plausible(first: Fix, next: Fix): boolean {
+  const meters = distanceM([first.lon, first.lat], [next.lon, next.lat]);
+  const seconds = (timeOf(next) - timeOf(first)) / 1000;
+  if (seconds <= 0) return meters <= SAME_SPOT_M;
+  return meters / seconds < MAX_START_SPEED_MS;
+}
+
+/** Places a position (already filtered as recent and precise enough). */
+function accept(state: TrackingState, fix: Fix): TrackingState {
+  if (state.lastFixAt !== null && fix.at - state.lastFixAt < MIN_FIX_GAP_MS) {
+    return state;
+  }
+  const placement = placeFix(state.line, state.placement, fix);
+  const next: TrackingState = {
+    ...state,
+    startCheck: state.startCheck === null ? fix : 'done',
+    placement,
+    ride: addRideFix(state.ride, fix),
+    lastFixAt: fix.at,
+  };
+  return hasArrived(state.line, placement, fix)
+    ? ended(next, 'arrived', fix.at)
+    : next;
 }
 
 export function reduceTracking(
@@ -128,16 +173,21 @@ export function reduceTracking(
       ) {
         return heard;
       }
-      const placement = placeFix(state.line, state.placement, fix);
-      const next: TrackingState = {
-        ...heard,
-        placement,
-        ride: addRideFix(state.ride, fix),
-        lastFixAt: fix.at,
-      };
-      return hasArrived(state.line, placement, fix)
-        ? ended(next, 'arrived', fix.at)
-        : next;
+      const first = state.startCheck;
+      if (first !== null && first !== 'done' && !plausible(first, fix)) {
+        // The first position was an old one: start again from the new one.
+        return accept(
+          {
+            ...heard,
+            placement: initialPlacement(),
+            ride: startRide(state.startedAt),
+            lastFixAt: null,
+            startCheck: null,
+          },
+          fix,
+        );
+      }
+      return accept(heard, fix);
     }
     case 'pause':
       return state.status === 'tracking'

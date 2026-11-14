@@ -775,6 +775,17 @@ caméra) : phase 10.
   l'époque) est antérieure à l'heure du départ du suivi est ignorée
   (ni avancement, ni distance, ni D+). Une position à l'heure exacte du
   départ est gardée.
+- 2026-11-14, T6, décision du pilotage (défaut vu par le testeur) : une
+  position ancienne mais à l'heure récente passe le filtre ci-dessus. La
+  première position est gardée tout de suite (une position ancienne seule
+  reste donc affichée environ 1 s : accepté). Si la suivante est à 25 m/s
+  ou plus d'elle (distance divisée par l'écart des heures de prise,
+  `takenAt` sinon `at` ; écart nul ou négatif : plausible seulement à 5 m
+  ou moins), on jette la première : le suivi repart de l'état initial
+  (même départ, même ligne, mêmes consignes ; placement, distance et
+  positions gardées remis à zéro) et la nouvelle position devient la
+  première, vérifiée à son tour. Dès que deux positions cohérentes sont
+  gardées, la règle ne joue plus, pause comprise.
 
 ## Questions tranchées par Émilien (10 novembre 2026)
 

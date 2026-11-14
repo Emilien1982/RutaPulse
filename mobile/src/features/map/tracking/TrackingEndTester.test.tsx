@@ -24,6 +24,9 @@ let mockPrevent: { enabled: boolean; cb: () => void } | null = null;
 let mockOnFix: ((location: unknown) => void) | null = null;
 const mockHeights = jest.fn();
 let now = 1_700_000_000_000;
+// Positions kept so far, and the last x: the start rule wants the 2nd position at a plausible speed.
+let fixCount = 0;
+let lastX = 0;
 
 jest.mock('@maplibre/maplibre-react-native', () => {
   const { View } = jest.requireActual('react-native');
@@ -71,6 +74,8 @@ beforeEach(() => {
   mockPrevent = null;
   mockOnFix = null;
   now = 1_700_000_000_000;
+  fixCount = 0;
+  lastX = 0;
   jest.spyOn(Date, 'now').mockImplementation(() => now);
 });
 afterEach(() => jest.restoreAllMocks());
@@ -123,7 +128,9 @@ describe('C6/C7 the end screen from a session', () => {
     await act(async () => {});
   }
   async function fix(x: number) {
-    now += 1000;
+    now += Math.max(1000, fixCount === 1 ? Math.abs(x - lastX) * 100 : 0);
+    fixCount += 1;
+    lastX = x;
     const [lon, lat] = toLonLat([x, 0]);
     await act(async () => {
       mockOnFix?.({ coords: { longitude: lon, latitude: lat, accuracy: 5 } });

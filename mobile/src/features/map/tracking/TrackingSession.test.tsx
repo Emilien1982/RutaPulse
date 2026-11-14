@@ -19,6 +19,10 @@ const mockKeepOff = jest.fn();
 let mockPrevent: { enabled: boolean; callback: () => void } | null = null;
 let mockOnFix: ((location: unknown) => void) | null = null;
 let now = 1_700_000_000_000;
+// Positions kept so far, and the last x: the start rule wants the 2nd position at a plausible speed.
+let fixCount = 0;
+let lastX = 0;
+let lastY = 0;
 
 jest.mock('@maplibre/maplibre-react-native', () => {
   const { View } = jest.requireActual('react-native');
@@ -71,6 +75,9 @@ beforeEach(() => {
   mockOnFix = null;
   appListener = null;
   now = 1_700_000_000_000;
+  fixCount = 0;
+  lastX = 0;
+  lastY = 0;
   jest.spyOn(Date, 'now').mockImplementation(() => now);
   mockWatch.mockImplementation((_options, onFix) => {
     mockOnFix = onFix;
@@ -96,7 +103,13 @@ async function open(tracking: TrackingSource = source()) {
 
 // A position at (x, y) meters from the start of the line, `gap` ms after the last.
 async function fix(x: number, y = 0, gap = 1000) {
-  now += gap;
+  now += Math.max(
+    gap,
+    fixCount === 1 ? Math.hypot(x - lastX, y - lastY) * 100 : 0,
+  );
+  fixCount += 1;
+  lastX = x;
+  lastY = y;
   const [lon, lat] = toLonLat([x, y]);
   await act(async () => {
     mockOnFix?.({ coords: { longitude: lon, latitude: lat, accuracy: 5 } });
