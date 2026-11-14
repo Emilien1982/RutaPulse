@@ -25,6 +25,7 @@ export function useGpsFixes(enabled: boolean, onFix: (fix: Fix) => void) {
           lat: location.coords.latitude,
           accuracy: location.coords.accuracy,
           at: Date.now(),
+          takenAt: location.timestamp,
         });
       },
     )

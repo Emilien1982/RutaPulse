@@ -770,6 +770,11 @@ caméra) : phase 10.
 - 2026-11-10, T2 : trois précisions du texte (§ 1.1 forme des filtres,
   § 2.2 définition d'un passage, § 6 imports), sans changement de
   décision.
+- 2026-11-14, T6, décision du pilotage (défaut vu par le testeur) : une
+  position dont l'heure de prise (`location.timestamp`, ms depuis
+  l'époque) est antérieure à l'heure du départ du suivi est ignorée
+  (ni avancement, ni distance, ni D+). Une position à l'heure exacte du
+  départ est gardée.
 
 ## Questions tranchées par Émilien (10 novembre 2026)
 

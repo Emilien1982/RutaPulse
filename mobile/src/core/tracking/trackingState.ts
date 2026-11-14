@@ -110,6 +110,10 @@ export function reduceTracking(
     case 'fix': {
       if (state.status !== 'tracking') return state;
       const { fix } = event;
+      // A stale position (taken before the start) is ignored altogether.
+      if (fix.takenAt !== undefined && fix.takenAt < state.startedAt) {
+        return state;
+      }
       const heard: TrackingState = {
         ...state,
         hasFix: true,

@@ -130,6 +130,45 @@ describe('reduceTracking: fixes', () => {
   });
 });
 
+describe('reduceTracking: stale positions', () => {
+  const source = sourceOf([
+    [0, 0],
+    [2000, 0],
+  ]);
+  const taken = (xy: XY, at: number, takenAt: number): Fix => ({
+    ...fixAt(xy, at),
+    takenAt,
+  });
+
+  it('ignores a position taken before the start', () => {
+    const state = createTracking(source, T0);
+    const next = reduceTracking(state, {
+      type: 'fix',
+      fix: taken([1500, 0], T0 + 100, T0 - 1),
+    });
+    expect(next).toBe(state);
+    expect(next.hasFix).toBe(false);
+    expect(next.ride.distanceM).toBe(0);
+  });
+
+  it('keeps a position taken after the start', () => {
+    const next = reduceTracking(createTracking(source, T0), {
+      type: 'fix',
+      fix: taken([500, 0], T0 + 1000, T0 + 1),
+    });
+    expect(next.hasFix).toBe(true);
+    expect(next.placement.progressM).toBeCloseTo(500, -1);
+  });
+
+  it('keeps a position taken exactly at the start', () => {
+    const next = reduceTracking(createTracking(source, T0), {
+      type: 'fix',
+      fix: taken([500, 0], T0 + 1000, T0),
+    });
+    expect(next.hasFix).toBe(true);
+  });
+});
+
 describe('reduceTracking: lost GPS and waiting message', () => {
   const source = sourceOf([
     [0, 0],

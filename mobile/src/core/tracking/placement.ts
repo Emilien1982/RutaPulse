@@ -48,6 +48,8 @@ export type Fix = {
   lat: number;
   accuracy: number | null;
   at: number;
+  /** Time the system took the position (ms since epoch), when known. */
+  takenAt?: number;
 };
 
 export type PlacementPhase = 'approach' | 'onTrack' | 'offTrack';
