@@ -113,7 +113,7 @@ trouve des écarts bloquants.
 - **Risque 2 : le cap sur simulateur.** Le cap vient du mouvement d'une
   trace rejouée, pas d'une boussole. Le confort réel se juge en phase 10.
 - **Risque 3 : la place sur le Mac.** La phase construit l'app en release
-  sur les deux simulateurs. Environ 88 Go libres aujourd'hui ; les copies
+  sur les deux simulateurs. Environ 69 Go libres le 16 novembre au soir ; les copies
   Time Machine en mangent environ 1 Go par heure. Je te demanderai tôt ton
   accord pour les effacer si la place passe sous 20 Go.
 - **Ce que tu devras faire** : valider cette spec ; valider la maquette 90
