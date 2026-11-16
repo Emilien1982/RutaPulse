@@ -1,0 +1,68 @@
+# C13 (phase 8a), parcours 2, variante iOS (iPhone 17, version release) :
+# « Terminer » avant l'arrivée. Itinéraire « Itinéraire du 4 nov. » (622 m).
+# Le simulateur n'a pas de mode avion : la spec le permet (C13). Les
+# sélecteurs de texte exacts ne marchent pas sur iOS : expressions « .* ».
+# Prérequis, dans cet ordre (le parcours ne lance pas l'app : launchApp de
+# Maestro peut échouer sur iOS) :
+#  1. placer le simulateur au premier point, quelques secondes avant
+#     « Démarrer le suivi » :
+#     xcrun simctl location <udid> set 48.751513,5.966751
+#  2. xcrun simctl terminate <udid> fr.rutapulse.app ; xcrun simctl launch <udid> fr.rutapulse.app
+#  3. lancer le parcours, puis le rejeu à côté, une trentaine de secondes
+#     plus tard (le parcours attend de voir « Reste » baisser) :
+#     python3 -I essais/08-suivi-velo/t3-outils/ios_replay.py <trace.json> 0 126
+#     avec trace.json tirée de la route par trace_from_saved_route.py
+#     (pas de 5 m ; ios_replay garde un point sur cinq, 10 m/s).
+# Pas de boucle ni de « repeat » : seulement des attentes (extendedWaitUntil).
+appId: fr.rutapulse.app
+---
+- tapOn: 'Itinéraires.*'
+- scrollUntilVisible:
+    element: 'Itinéraire du 4 nov.*'
+    timeout: 30000
+- tapOn: 'Itinéraire du 4 nov.*'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- tapOn:
+    id: 'info-start'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-panel'
+    timeout: 20000
+- assertVisible: 'Reste.*'
+- assertVisible:
+    id: 'tracking-remaining'
+    text: '.*6[0-9][0-9].*'
+# Plus de 100 m roulés : il reste moins de 520 m, donc un résumé.
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-remaining'
+      text: '.*[2-4][0-9][0-9].*'
+    timeout: 120000
+- takeScreenshot: ios-p5-c13b-01-avant-terminer
+- tapOn:
+    id: 'tracking-finish'
+- extendedWaitUntil:
+    visible: 'Terminer la sortie.*'
+    timeout: 10000
+- takeScreenshot: ios-p5-c13b-02-boite
+# Bouton « Terminer » de la boîte : le texte n'est pas trouvé sur iOS.
+- tapOn:
+    point: '68%,57%'
+- extendedWaitUntil:
+    visible:
+      id: 'ride-end'
+    timeout: 10000
+- assertVisible: 'SORTIE TERMINÉE'
+- assertVisible:
+    id: 'ride-distance'
+- takeScreenshot: ios-p5-c13b-03-sortie-terminee
+- tapOn:
+    id: 'ride-close'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- takeScreenshot: ios-p5-c13b-04-apres-fermer

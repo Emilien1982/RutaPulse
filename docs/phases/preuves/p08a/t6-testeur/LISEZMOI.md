@@ -153,3 +153,63 @@ suivi ; `04` à `07` arrière-plan ; `09` sortie terminée ; `c13a-01` à
 
 Maximum de temps par position ; « Suivez le tracé » sur appareil ; retour
 système d'Android dans un parcours Maestro (vu une fois à la main) ; iOS.
+
+## 6. Pas 5 (16 novembre) : iOS, banc C12
+
+**App testée : release du commit d00f67d** sur « iPhone 17 » (pas de
+construction : 18 Go libres, sous le seuil de 20 Go). Depuis, seules les
+règles de départ ont changé (`trackingState.ts`, `placement.ts`,
+`useGpsFixes.ts`) ; l'interface est identique. Les règles de départ
+(33f64e9, 051c657) ne sont donc pas dans cette app. Itinéraire « Itinéraire
+du 4 nov. » (622 m), simulateur placé au premier point avant le départ.
+
+### C13 iOS (sans mode avion, permis par la spec) : réussi
+
+- `mobile/e2e/p08a-suivi-terminer-ios.yaml` : 21 étapes réussies
+  (`ios-p5-c13b-maestro-sortie.txt`), à la 3e tentative (regex de l'espace
+  fine, puis bouton de la boîte tapé par position).
+- `mobile/e2e/p08a-suivi-arrivee-ios.yaml` : réussi du premier coup
+  (`ios-p5-c13a-maestro-sortie.txt`) : direction qui change, écart de 60 m
+  puis retour, « ARRIVÉE ! » 720 m (le détour allonge), « Fermer ».
+- Le rejeu `ios_replay.py` se lance à côté (commandes en tête des YAML).
+  Traces : `ios-p5-trace-4nov-5m.json`, `ios-p5-trace-4nov-5m-ecart60m.json`.
+
+### Captures `ios-p5-`
+
+`c13a-01` à `c13a-07` (arrivée, dont `c13a-04` écart « 40 m jusqu'au
+tracé ») ; `c13b-01` à `c13b-04` (« Terminer ») ;
+`direction-panneau-blanc-270m` ; `panneau-jaune-50m-retour-6s` ;
+`suivez-le-trace-troncon-main` (itinéraire « Test tronçon main au
+milieu ») ; `c8-01` à `c8-03`. Pas obtenue : l'attente du GPS (le
+simulateur garde toujours une position).
+
+### C8 iOS : conforme
+
+Réglages ouvert 17 s pendant le rejeu, puis retour : Reste 400 m → 250 m,
+direction intacte, puis 190 m et panneau jaune. L'avancement continue. Non
+vérifié sur iOS : le verrou d'écran allumé.
+
+### C12, maximum par position (Node, pas Hermes)
+
+`mobile/src/core/tracking/perf.bench.test.ts` : circuit de 34,9 km, une
+position tous les 10 m (3 491 positions), directions enregistrées du moteur.
+
+```
+BENCH C12 reduceTracking, with directions: 3491 positions, max 2.000 ms (position no 12), p99 1.000 ms, mean 0.019 ms
+BENCH C12 reduceTracking, without directions: 3491 positions, max 1.000 ms (position no 6), p99 1.000 ms, mean 0.017 ms
+BENCH C12 reduceTracking + panelOf + remainingOf: 3491 positions, max 1.000 ms (position no 0), p99 1.000 ms, mean 0.018 ms
+```
+
+`performance.now()` est arrondi à 1 ms sous Jest. Max < 50 ms tenu avec
+une grande marge en Node ; pas de mesure Hermes sur téléphone. Avec la
+moyenne de 12 ms par position mesurée sur l'émulateur (§ 5, rendus
+compris), C12 est tenu sauf pour le maximum sur appareil, non mesuré.
+
+### Défaut trouvé : « ARRIVÉE ! » immédiate à 0 m
+
+Itinéraire non bouclé de 622 m. Simulateur placé sur le point d'arrivée,
+puis « Démarrer le suivi » : « ARRIVÉE ! » tout de suite, 0 m, D+ « — »
+(`ios-p5-defaut-arrivee-immediate-0m.png`). Vu deux fois. C6 demande 90 %
+du tracé **parcouru**. Traité dans la tâche de corrections.
+
+`cd mobile && npm run verify` : 247 suites, 2 890 tests, vert.
