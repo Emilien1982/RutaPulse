@@ -92,3 +92,64 @@ filtre de 33f64e9 la rejette, et un saut brutal est rattrapé par 051c657.
 **À regarder en phase 10** : « Reste 14,3 km » au lieu d'environ 33 km
 laisse penser que la position éloignée a été placée sur un passage plus
 tardif de la boucle. Non analysé ici.
+
+## 5. Pas 4 (16 novembre) : Android, C8, C12, C13, captures
+
+APK release de 051c657 sur `emulator-5584`. Circuit « Petite Suisse
+Lorraine à VTT », 34,9 km, D+ 459 m, rejoué tous les 50 m, une position par
+seconde. Avant chaque « Démarrer le suivi » : `geo fix` du vrai départ.
+
+### C12 — rapidité (release), mesures externes
+
+La méthode des phases 4 et 6 (banc compilé dans l'app) demande de modifier
+l'app : non reprise ici.
+
+| Seuil | Mesure | Verdict |
+|---|---|---|
+| Départ < 2 s (35 km) | `screencap` en boucle après le tap : écran de suivi avec « Reste 34,9 km » visible à 363–488 ms ; écran stable (fin du cadrage) à 1 748, 1 634 et 1 491 ms | tenu |
+| Position < 50 ms | temps CPU du fil JavaScript (`/proc/<pid>/task/*/stat`) : 370 ms pour 30 positions, soit 12 ms par position **en moyenne**, rendus et minuteur compris | moyenne tenue ; maximum non mesuré |
+| Écran ≤ 1 mise à jour/s | 4 positions/s envoyées, captures toutes les 0,4 s pendant 24 s : 22 changements (0,92/s), écarts de 0,35 à 2,67 s | cadence tenue en moyenne ; deux écarts courts non expliqués (échantillonnage probable) ; garanti par le code (`timeInterval: 1000`, règle des 900 ms) |
+
+### C8 — écran allumé et arrière-plan : conforme
+
+- `dumpsys power` : `SCREEN_BRIGHT_WAKE_LOCK` de `fr.rutapulse.app`
+  pendant le suivi ; aucun en arrière-plan (HOME) ; de retour au retour ;
+  aucun sur « Sortie terminée » ni après « Fermer ».
+- Arrière-plan 15 s pendant le rejeu : `android-p4-04` (Reste 32,8 km)
+  → `android-p4-05` (accueil) → `android-p4-06` (32,8 km, intact) →
+  `android-p4-07` (31,4 km, le suivi reprend). Les positions reçues en
+  arrière-plan sont ignorées. `android-p4-09` : « Sortie terminée » 2,5 km
+  après une pause, la perte correspond à la pause.
+- **Anomalie vue une fois** : « Terminer » a ramené à Infos sans résumé
+  après environ 4 km. **Explication de la session** (lecture de
+  `trackingState.ts`) : ce rejeu partait sans positions immobiles, à 50 m/s.
+  Chaque deuxième position est alors jugée non plausible (≥ 25 m/s) par la
+  règle de cohérence de 051c657, qui repart de zéro à chaque position : la
+  distance roulée reste nulle, d'où le retour direct à Infos (moins de 100 m).
+  C'est un effet du rejeu à 180 km/h, pas d'un vrai vélo. Les rejeux qui
+  partent de positions immobiles (C13) passent.
+
+### C13 — Maestro en mode avion : réussi sur Android
+
+Mode avion par `adb shell cmd connectivity airplane-mode enable` (remis à la
+fin). `maestro --device emulator-5584 test mobile/e2e/<parcours>.yaml`.
+
+- `mobile/e2e/p08a-suivi-terminer.yaml` : 21 étapes réussies
+  (`android-p4-c13b-maestro-sortie.txt`) : démarrer, « Tournez à gauche »,
+  « Terminer », boîte, « SORTIE TERMINÉE » (780 m, D+ 27 m), « Fermer », Infos.
+- `mobile/e2e/p08a-suivi-arrivee.yaml` : réussi, `exit 0`
+  (`android-p4-c13a-maestro-sortie.txt`, environ 13 min) : Reste 34,9 km,
+  direction qui change, écart « 60 m jusqu'au tracé » puis retour,
+  « ARRIVÉE ! » 33,9 km (la trace s'arrête un peu avant la fin), « Fermer ».
+
+### Captures `android-p4-`
+
+`01` panneau jaune 100 m et boîte « Terminer la sortie ? » ; `02`, `03`
+suivi ; `04` à `07` arrière-plan ; `09` sortie terminée ; `c13a-01` à
+`c13a-07` parcours de l'arrivée ; `c13b-01` à `c13b-04` parcours
+« Terminer ».
+
+### Non vérifié à ce pas
+
+Maximum de temps par position ; « Suivez le tracé » sur appareil ; retour
+système d'Android dans un parcours Maestro (vu une fois à la main) ; iOS.
