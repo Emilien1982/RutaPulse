@@ -1,19 +1,22 @@
 import {
-  Layer,
-  UserLocation,
   useCurrentPosition,
   type CameraRef,
 } from '@maplibre/maplibre-react-native';
 import * as Location from 'expo-location';
-import { useEffect, useRef, useState, type RefObject } from 'react';
+import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { Alert, AppState, Linking, StyleSheet, View } from 'react-native';
 
 import { t } from '@/core/i18n/t';
+import {
+  nextHeading,
+  puckFeature,
+  type HeadingState,
+} from '@/core/position/userPuck';
 import { clampToBbox } from '@/core/zones/activeZone';
 import type { Zone } from '@/core/zones/catalogue';
 import { FloatingButton } from '@/ui/FloatingButton';
 import { LocateIcon, LocateOffIcon } from '@/ui/icons';
-import { mapColors, spacing } from '@/ui/theme';
+import { spacing } from '@/ui/theme';
 
 export const RECENTER_ZOOM = 15;
 // The camera keeps its padding: every move says it, so that the margin of the
@@ -43,9 +46,19 @@ export function useMapPosition(
   zone: Zone,
   camera: RefObject<CameraRef | null>,
   zoom: RefObject<number>,
+  // Called when the user allows the position (answer of the request, or back
+  // from the settings of the phone), not when it was already allowed.
+  onAllowed?: () => void,
 ) {
   const [granted, setGranted] = useState(false);
+  // False until the first answer to the permission: the button is not crossed
+  // out before the phone has answered.
+  const [answered, setAnswered] = useState(false);
   const canAskAgain = useRef(true);
+  const allowed = useRef(onAllowed);
+  useEffect(() => {
+    allowed.current = onAllowed;
+  });
   const position = useCurrentPosition({ enabled: granted });
 
   // Permission "while using the app" only.
@@ -55,27 +68,63 @@ export function useMapPosition(
       if (!active) return;
       canAskAgain.current = result.canAskAgain;
       setGranted(result.granted);
+      setAnswered(true);
     });
     return () => {
       active = false;
     };
   }, []);
 
-  // Back from the settings of the phone: read the permission again.
+  // Back from the settings of the phone: read the permission again. Only once
+  // the first request is answered: the box of that request also brings the
+  // app back to "active", and its answer is not a "follow" (ADR 0021, 9.4).
   useEffect(() => {
-    if (granted) return;
+    if (granted || !answered) return;
     const subscription = AppState.addEventListener('change', (state) => {
       if (state !== 'active') return;
       void Location.getForegroundPermissionsAsync().then((result) => {
         canAskAgain.current = result.canAskAgain;
         setGranted(result.granted);
+        if (result.granted) allowed.current?.();
       });
     });
     return () => subscription.remove();
-  }, [granted]);
+  }, [granted, answered]);
 
   const lon = position?.coords.longitude;
   const lat = position?.coords.latitude;
+  const accuracy = position?.coords.accuracy;
+  const course = position?.coords.heading;
+  const speed = position?.coords.speed;
+  const fixAt = position?.timestamp;
+
+  // The heading of the arrow, one step per position (not per redraw).
+  const [arrow, setArrow] = useState<HeadingState>({
+    heading: null,
+    slowSince: null,
+  });
+  const [lastFix, setLastFix] = useState('');
+  const fixKey = `${lon}/${lat}/${course}/${speed}/${fixAt}`;
+  if (lon !== undefined && fixKey !== lastFix) {
+    setLastFix(fixKey);
+    setArrow(
+      nextHeading(
+        arrow,
+        { heading: course ?? null, speed: speed ?? null },
+        fixAt ?? 0,
+      ),
+    );
+  }
+  const feature = useMemo(
+    () =>
+      lon !== undefined && lat !== undefined
+        ? puckFeature(
+            { longitude: lon, latitude: lat, accuracy },
+            arrow.heading,
+          )
+        : null,
+    [lon, lat, accuracy, arrow.heading],
+  );
 
   function askForPermission() {
     if (!canAskAgain.current) {
@@ -85,6 +134,7 @@ export function useMapPosition(
     void Location.requestForegroundPermissionsAsync().then((result) => {
       canAskAgain.current = result.canAskAgain;
       setGranted(result.granted);
+      if (result.granted) allowed.current?.();
     });
   }
 
@@ -103,53 +153,42 @@ export function useMapPosition(
     });
   }
 
-  return { granted, lon, lat, recenter };
+  return { granted, answered, lon, lat, feature, askForPermission, recenter };
 }
 
-// The blue dot, inside the map. Drawn above the layers declared before it.
-export function UserPositionLayers({ granted }: { granted: boolean }) {
-  if (!granted) return null;
-  return (
-    <UserLocation animated={false}>
-      <Layer
-        type="circle"
-        id="position-bord"
-        source="mlrn-user-location"
-        paint={{
-          'circle-radius': 16,
-          'circle-color': mapColors.positionBorder,
-        }}
-      />
-      <Layer
-        type="circle"
-        id="position"
-        source="mlrn-user-location"
-        paint={{ 'circle-radius': 13, 'circle-color': mapColors.position }}
-      />
-    </UserLocation>
-  );
-}
+// The three states of the button (mockup 90): the position is refused, at
+// rest, or the map follows the position (the creation has no "follow").
+export type RecenterState = 'refused' | 'rest' | 'follow';
 
 // "Ma position" (mockup 10: 64 under the top bar; mockup 90: 60 from the top).
 export function RecenterButton({
-  granted,
+  state,
   top,
   onPress,
 }: {
-  granted: boolean;
+  state: RecenterState;
   top: number;
   onPress: () => void;
 }) {
+  const refused = state === 'refused';
   return (
     <View style={[styles.button, { top }]}>
       <FloatingButton
-        accessibilityLabel={t('map.recenter')}
+        accessibilityLabel={t(
+          refused
+            ? 'map.recenterRefused'
+            : state === 'follow'
+              ? 'map.recenterFollowing'
+              : 'map.recenter',
+        )}
+        accessibilityHint={refused ? t('map.recenterRefusedHint') : undefined}
+        active={state === 'follow'}
         onPress={onPress}
         icon={(color) =>
-          granted ? (
-            <LocateIcon color={color} />
-          ) : (
+          refused ? (
             <LocateOffIcon color={color} />
+          ) : (
+            <LocateIcon color={color} />
           )
         }
       />

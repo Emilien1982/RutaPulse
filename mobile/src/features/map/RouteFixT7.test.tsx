@@ -30,6 +30,7 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       if (props.ref) props.ref.current = { easeTo: mockEaseTo };
       return null;
     },
+    Images: () => null,
     Layer: (props: {
       id: string;
       beforeId?: string;

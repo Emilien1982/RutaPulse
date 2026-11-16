@@ -1,0 +1,8 @@
+avant toucher:
+ETAT: Recentrer sur ma position
+apres toucher sans position:
+ETAT: La carte suit ma position
+apres glissement:
+ETAT: Recentrer sur ma position
+apres 1re position:
+ETAT: Recentrer sur ma position

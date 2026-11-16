@@ -1,0 +1,104 @@
+
+> rutapulse@1.0.0 verify
+> npm run typecheck && npm run lint && npm run test
+
+
+> rutapulse@1.0.0 typecheck
+> tsc --noEmit
+
+
+> rutapulse@1.0.0 lint
+> eslint --max-warnings 0 && prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> rutapulse@1.0.0 test
+> jest
+
+watchman warning: Recrawled this watch 121 times, most recently because:
+MustScanSubDirs UserDroppedTo resolve, please review the information on
+https://facebook.github.io/watchman/docs/troubleshooting.html#recrawl
+To clear this warning, run:
+`watchman watch-del '/Users/utilisateur/dev_ai/vtt-nav' ; watchman watch-project '/Users/utilisateur/dev_ai/vtt-nav'`
+
+FAIL src/features/map/UserPuckLayersT3Testeur.test.tsx
+  ● UserPuckLayers, lost = true › donne des filtres que MapLibre accepte
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 3
+
+      Object {
+    -   "errors": Array [],
+    +   "errors": Array [
+    +     "layers[0].filter[1]: string expected, number found",
+    +   ],
+        "id": "position-fleche",
+      }
+
+      44 |         id,
+      45 |         errors: errorsOf(id).filter((m) => /filter/.test(m)),
+    > 46 |       }).toEqual({ id, errors: [] });
+         |          ^
+      47 |     }
+      48 |   });
+      49 | });
+
+      at Object.toEqual (src/features/map/UserPuckLayersT3Testeur.test.tsx:46:10)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+  ▲ fireEvent: "layout" does not bubble in React Native. fireEvent will stop bubbling it in the next major version. Fire it on:
+
+      [36m<View />[39m
+
+
+Summary of all failing tests
+FAIL src/features/map/UserPuckLayersT3Testeur.test.tsx
+  ● UserPuckLayers, lost = true › donne des filtres que MapLibre accepte
+
+    expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 3
+
+      Object {
+    -   "errors": Array [],
+    +   "errors": Array [
+    +     "layers[0].filter[1]: string expected, number found",
+    +   ],
+        "id": "position-fleche",
+      }
+
+      44 |         id,
+      45 |         errors: errorsOf(id).filter((m) => /filter/.test(m)),
+    > 46 |       }).toEqual({ id, errors: [] });
+         |          ^
+      47 |     }
+      48 |   });
+      49 | });
+
+      at Object.toEqual (src/features/map/UserPuckLayersT3Testeur.test.tsx:46:10)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+
+Test Suites: 1 failed, 264 passed, 265 total
+Tests:       1 failed, 3035 passed, 3036 total
+Snapshots:   0 total
+Time:        23.534 s
+Ran all test suites.

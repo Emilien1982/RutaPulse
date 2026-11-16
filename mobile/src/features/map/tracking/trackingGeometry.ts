@@ -163,11 +163,8 @@ export function gapLine(
   return { ...EMPTY, features: [feature('path', [rider, target])] };
 }
 
-/** Distance on the ground (m) of one point of the screen at this zoom and latitude. */
-export function metersPerPoint(zoom: number, latitude: number): number {
-  // MapLibre: tiles of 512 points.
-  return (78271.517 * Math.cos((latitude * Math.PI) / 180)) / 2 ** zoom;
-}
+// Moved to core/position (shared with the dot of the map tab).
+export { metersPerPoint } from '@/core/position/userPuck';
 
 /**
  * The zoom `fitBounds` ends on: the box [west, south, east, north], turned

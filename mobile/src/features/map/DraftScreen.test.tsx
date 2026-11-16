@@ -39,6 +39,7 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       <View testID="user-location">{props.children}</View>
     ),
     useCurrentPosition: () => mockPosition,
+    Images: () => null,
     Layer: () => null,
     GeoJSONSource: (props: { id: string; data: unknown }) => {
       mockSources[props.id] = props.data;
@@ -205,22 +206,25 @@ describe('opening', () => {
 describe('position', () => {
   it('shows "Ma position" under the bubble, at 64 under the top bar', async () => {
     await renderScreen();
+    // Refused permission: the button is crossed out and says so.
     const button = screen.getByRole('button', {
-      name: 'Recentrer sur ma position',
+      name: 'Position désactivée',
     });
     // The bar height is 112 until it is measured; the button sits at +64.
     expect(button.parent?.props.style).toEqual(
       expect.arrayContaining([expect.objectContaining({ top: 112 + 64 })]),
     );
     // Without permission: no blue dot.
-    expect(screen.queryByTestId('user-location')).toBeNull();
+    expect((mockSources.position as { type: string }).type).toBe(
+      'FeatureCollection',
+    );
   });
 
   it('draws the blue dot once the position is allowed', async () => {
     mockGranted = true;
     mockPosition = { coords: { longitude: 6.13, latitude: 48.66 } };
     await renderScreen();
-    expect(screen.getByTestId('user-location')).toBeTruthy();
+    expect((mockSources.position as { type: string }).type).toBe('Feature');
   });
 
   it('recenters the map on the position, at least at zoom 15', async () => {

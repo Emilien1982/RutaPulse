@@ -7,6 +7,9 @@ export const fr = {
     'Téléchargez une zone pour voir les sentiers, même sans réseau.',
   'map.chooseZone': 'Choisir une zone',
   'map.recenter': 'Recentrer sur ma position',
+  'map.recenterFollowing': 'La carte suit ma position',
+  'map.recenterRefused': 'Position désactivée',
+  'map.recenterRefusedHint': "Touchez pour l'autoriser dans les réglages",
   'map.outsideZone': 'Vous êtes hors de la zone téléchargée',
   'map.locationOffTitle': 'Position désactivée',
   'map.locationOffText':

@@ -35,10 +35,15 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       if (ref) ref.current = { easeTo: mockEaseTo };
       return null;
     },
+    Images: () => null,
     Layer: () => null,
-    GeoJSONSource: () => null,
-    UserLocation: () => <Text>blue dot</Text>,
-    useCurrentPosition: () => mockPosition,
+    // The dot of the user is the source "position", with a point.
+    GeoJSONSource: (props: { id: string; data: { type: string } }) =>
+      props.id === 'position' && props.data.type === 'Feature' ? (
+        <Text>blue dot</Text>
+      ) : null,
+    useCurrentPosition: (options?: { enabled?: boolean }) =>
+      options?.enabled ? mockPosition : undefined,
   };
 });
 jest.mock('expo-location', () => ({
@@ -94,8 +99,11 @@ async function renderScreen() {
 const message = 'Vous êtes hors de la zone téléchargée';
 const nancyCentre = { coords: { longitude: 6.1844, latitude: 48.6921 } };
 const metz = { coords: { longitude: 6.1757, latitude: 49.1193 } };
+// The name of the button follows its state: refused, it says so (ADR 0021, 9.4).
 const recenter = () =>
-  screen.getByRole('button', { name: 'Recentrer sur ma position' });
+  screen.getByRole('button', {
+    name: /Recentrer sur ma position|Position désactivée/,
+  });
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -219,6 +227,7 @@ describe('B7: refused permission', () => {
       listener = fn;
       return { remove: () => {} };
     }) as never);
+    mockPosition = nancyCentre;
     await renderScreen();
     expect(screen.queryByText('blue dot')).toBeNull();
     mockPermission = { granted: true, canAskAgain: true };

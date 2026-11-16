@@ -1,0 +1,8 @@
+etat avant double toucher (doit etre suit):
+Assert that "La carte suit ma position" is visible... COMPLETED
+Double tap on point (50%, 45%)... COMPLETED
+apres double toucher, suit ?
+Assert that "La carte suit ma position" is visible... COMPLETED
+repos ?
+Assert that "Recentrer sur ma position" is visible... FAILED
+Assertion is false: "Recentrer sur ma position" is visible

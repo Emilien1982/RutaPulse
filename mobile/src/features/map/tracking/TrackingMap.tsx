@@ -12,6 +12,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 import { t } from '@/core/i18n/t';
+import { puckFeature } from '@/core/position/userPuck';
 import { cameraBearing } from '@/core/tracking/placement';
 import { panelOf } from '@/core/tracking/trackingState';
 import type { TrackingSource } from '@/core/tracking/trackingLine';
@@ -19,6 +20,7 @@ import type { Zone } from '@/core/zones/catalogue';
 import { mapColors, navColors, text } from '@/ui/theme';
 
 import { MAX_ZOOM } from '../mapStyle';
+import { UserPuckLayers } from '../UserPuckLayers';
 import { ZoneBaseMap } from '../ZoneBaseMap';
 import {
   boundsZoom,
@@ -104,20 +106,19 @@ export function TrackingMap({
   const pieces = useMemo(() => ridePieces(drawn, shownM), [drawn, shownM]);
 
   const rider = riderPoint(placement);
-  const riderData = useMemo(
-    () => ({
-      type: 'Feature' as const,
-      properties: {},
-      geometry: { type: 'Point' as const, coordinates: rider ?? [0, 0] },
-    }),
-    [rider],
-  );
-  const riderCollection = useMemo(
-    () => ({
-      type: 'FeatureCollection' as const,
-      features: rider ? [riderData] : [],
-    }),
-    [rider, riderData],
+  // The dot: on the track, with the heading of the tracking (the track's, or
+  // the movement's) and the accuracy of the last position kept.
+  const accuracyM = useSelector(store, (s) => s.accuracyM);
+  const heading = cameraBearing(placement);
+  const puck = useMemo(
+    () =>
+      rider
+        ? puckFeature(
+            { longitude: rider[0], latitude: rider[1], accuracy: accuracyM },
+            heading,
+          )
+        : null,
+    [rider, accuracyM, heading],
   );
   // The dotted gap line: a dot every 10 points of the screen, at the zoom of
   // the map: the zoom our camera aims at, or the one of a gesture.
@@ -295,20 +296,7 @@ export function TrackingMap({
           }}
         />
       </GeoJSONSource>
-      <GeoJSONSource id="suivi-position" data={riderCollection}>
-        <Layer
-          id="suivi-position-rond"
-          type="circle"
-          paint={{
-            'circle-radius': 14,
-            'circle-color': gpsLost
-              ? navColors.lostPosition
-              : mapColors.position,
-            'circle-stroke-width': 3,
-            'circle-stroke-color': mapColors.positionBorder,
-          }}
-        />
-      </GeoJSONSource>
+      <UserPuckLayers feature={puck} size="tracking" lost={gpsLost} />
     </>
   );
 

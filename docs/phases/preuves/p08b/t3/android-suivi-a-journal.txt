@@ -1,0 +1,11 @@
+1 position fixe:
+ETAT: La carte suit ma position
+2 trace:
+ETAT: La carte suit ma position
+3 apres glissement:
+ETAT: Recentrer sur ma position
+3b (trace continue, carte ne doit pas suivre)
+ETAT: Recentrer sur ma position
+4 apres bouton:
+ETAT: La carte suit ma position
+5 apres double toucher:

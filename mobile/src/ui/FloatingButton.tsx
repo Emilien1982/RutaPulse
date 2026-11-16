@@ -5,6 +5,9 @@ import { border, colors, radius, shadow, target } from './theme';
 
 type FloatingButtonProps = {
   accessibilityLabel: string;
+  accessibilityHint?: string;
+  // Brown background, cream pictogram: the state "on" (the map follows).
+  active?: boolean;
   onPress: () => void;
   // Pictogram; receives the color to draw with.
   icon: (color: string) => ReactNode;
@@ -13,6 +16,8 @@ type FloatingButtonProps = {
 // Round button laid over the map: light cream, brown border, shadow.
 export function FloatingButton({
   accessibilityLabel,
+  accessibilityHint,
+  active = false,
   onPress,
   icon,
 }: FloatingButtonProps) {
@@ -20,10 +25,11 @@ export function FloatingButton({
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
+      accessibilityHint={accessibilityHint}
       onPress={onPress}
-      style={styles.button}
+      style={[styles.button, active && styles.active]}
     >
-      {icon(colors.brown)}
+      {icon(active ? colors.cream : colors.brown)}
     </Pressable>
   );
 }
@@ -40,4 +46,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     ...shadow,
   },
+  active: { backgroundColor: colors.brown },
 });

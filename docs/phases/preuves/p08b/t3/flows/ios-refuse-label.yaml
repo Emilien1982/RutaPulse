@@ -1,0 +1,4 @@
+appId: fr.rutapulse.app
+---
+- assertVisible: "Position désactivée"
+- tapOn: "Position désactivée"

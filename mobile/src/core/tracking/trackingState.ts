@@ -56,6 +56,8 @@ export type TrackingState = {
   signalAt: number;
   /** Time of the last position processed (ms). */
   lastFixAt: number | null;
+  /** Accuracy (m) of the last position kept, for the halo of the dot. */
+  accuracyM: number | null;
   gpsLost: boolean;
   /** No position for 30 s since the start. */
   gpsSilent: boolean;
@@ -94,6 +96,7 @@ export function createTracking(
     hasFix: false,
     signalAt: startedAt,
     lastFixAt: null,
+    accuracyM: null,
     gpsLost: false,
     gpsSilent: false,
     startCheck: null,
@@ -137,6 +140,7 @@ function accept(state: TrackingState, fix: Fix): TrackingState {
     placement,
     ride: addRideFix(state.ride, fix),
     lastFixAt: fix.at,
+    accuracyM: fix.accuracy,
   };
   // Starting on the end point is not arriving: 100 m must really be ridden.
   return next.ride.distanceM >= MIN_RIDE_M &&
@@ -184,6 +188,7 @@ export function reduceTracking(
             placement: initialPlacement(),
             ride: startRide(state.startedAt),
             lastFixAt: null,
+            accuracyM: null,
             startCheck: null,
           },
           fix,

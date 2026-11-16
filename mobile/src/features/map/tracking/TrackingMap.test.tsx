@@ -47,6 +47,7 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       }));
       return null;
     }),
+    Images: () => null,
     Layer: () => null,
     GeoJSONSource: (props: { id: string; data: never }) => {
       mockSources[props.id] = props.data;

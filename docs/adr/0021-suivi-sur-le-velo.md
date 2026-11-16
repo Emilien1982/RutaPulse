@@ -1517,6 +1517,21 @@ la tâche qui en a besoin, sur les deux simulateurs, en release :
   marge du haut sur la partie de carte visible au-dessus du panneau, pour
   garder le point au-dessus du panneau, même sur un petit écran.
 
+- 2026-11-16, T3, décision de la session de phase (relecture) : une
+  permission accordée par la première demande se comporte comme une
+  permission déjà accordée au lancement. Pas de « suit » avant la
+  première position ; la règle d'ouverture (§ 9.5) s'applique à la
+  première position. Seuls un toucher du bouton et le retour des
+  réglages du téléphone après un refus mettent « suit » tout de suite.
+  Cela précise le § 9.4 et garde le cas « plus loin » de la spec.
+- 2026-11-16, T3, décision de la session de phase : sur l'écran de
+  création, le point de position reste sous les marqueurs (comme avant
+  la 8b), et non au-dessus de toutes les couches (§ 9.1).
+- 2026-11-16, T3 : un toucher du bouton avant la première position,
+  puis une première position loin de la zone : point de la zone le plus
+  proche, zoom 15 (§ 9.4, règle du toucher). Le toucher dit qu'on veut
+  voir sa position.
+
 ## Questions tranchées par Émilien (10 novembre 2026)
 
 Les trois recommandations sont retenues. La question 7 du designer est
