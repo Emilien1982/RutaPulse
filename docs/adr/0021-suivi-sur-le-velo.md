@@ -786,6 +786,11 @@ caméra) : phase 10.
   positions gardées remis à zéro) et la nouvelle position devient la
   première, vérifiée à son tour. Dès que deux positions cohérentes sont
   gardées, la règle ne joue plus, pause comprise.
+- 2026-11-16, T6, décision du pilotage (défaut vu par le testeur, capture
+  `ios-p5-defaut-arrivee-immediate-0m.png`) : l'arrivée exige aussi au
+  moins 100 m réellement roulés (`MIN_RIDE_M`, distance réelle de la
+  sortie), en plus des 30 m de la fin et des 90 % du tracé parcourus.
+  Démarrer sur le point d'arrivée ne termine plus le suivi.
 
 ## Questions tranchées par Émilien (10 novembre 2026)
 

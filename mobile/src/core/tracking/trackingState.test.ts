@@ -363,7 +363,7 @@ describe('C6: arrival', () => {
     // the rider starts at the end: the line is reached there, 100 % in, but approach first
     const fixes = rideAlong(
       [
-        [1990, 0],
+        [1800, 0],
         [2000, 0],
       ],
       { startAt: T0, speed: 2 },

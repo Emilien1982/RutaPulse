@@ -16,7 +16,7 @@ import {
   type Placement,
 } from './placement';
 import { remainingM } from './remaining';
-import { addRideFix, startRide, type Ride } from './ride';
+import { addRideFix, MIN_RIDE_M, startRide, type Ride } from './ride';
 import {
   distanceM,
   type FreeReason,
@@ -138,7 +138,9 @@ function accept(state: TrackingState, fix: Fix): TrackingState {
     ride: addRideFix(state.ride, fix),
     lastFixAt: fix.at,
   };
-  return hasArrived(state.line, placement, fix)
+  // Starting on the end point is not arriving: 100 m must really be ridden.
+  return next.ride.distanceM >= MIN_RIDE_M &&
+    hasArrived(state.line, placement, fix)
     ? ended(next, 'arrived', fix.at)
     : next;
 }

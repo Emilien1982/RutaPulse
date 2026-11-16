@@ -15,6 +15,9 @@ import { distanceM } from './trackingLine';
 /** A position is kept when it is at least this far (m) from the last one kept. */
 export const KEEP_STEP_M = 10;
 
+/** Under this distance ridden (m): no arrival, and "Terminer" gives up. */
+export const MIN_RIDE_M = 100;
+
 export type Ride = {
   /** Positions kept. */
   kept: LonLat[];

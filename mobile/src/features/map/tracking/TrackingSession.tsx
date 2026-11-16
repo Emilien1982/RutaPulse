@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 
 import { t } from '@/core/i18n/t';
-import { rideDurationS } from '@/core/tracking/ride';
+import { MIN_RIDE_M, rideDurationS } from '@/core/tracking/ride';
 import type { ClimbProfile } from '@/core/tracking/remaining';
 import { remainingClimbM } from '@/core/tracking/remaining';
 import type { Fix } from '@/core/tracking/placement';
@@ -37,9 +37,6 @@ import { createTrackingStore, type TrackingStore } from './trackingStore';
 import { useDirections } from './useDirections';
 import { useGpsFixes } from './useGpsFixes';
 import { useRideAscent } from './useRideAscent';
-
-/** "Terminer" before this distance ridden (m): back to the Infos screen. */
-export const MIN_RIDE_M = 100;
 
 export function TrackingSession({
   source,
