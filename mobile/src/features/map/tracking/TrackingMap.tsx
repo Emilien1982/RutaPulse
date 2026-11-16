@@ -20,6 +20,7 @@ import { mapColors, navColors, text } from '@/ui/theme';
 
 import { ZoneBaseMap } from '../ZoneBaseMap';
 import {
+  boundsZoom,
   drawnLine,
   gapDots,
   GESTURE_PAUSE_MS,
@@ -78,6 +79,7 @@ export function TrackingMap({
   const gpsLost = useSelector(store, (s) => s.gpsLost);
   const [northUp, setNorthUp] = useState(false);
   const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(0);
   const [resume, setResume] = useState(0);
   // A move of the camera before the map has loaded is lost (seen on iOS).
   const [loaded, setLoaded] = useState(false);
@@ -109,7 +111,7 @@ export function TrackingMap({
     [rider, riderData],
   );
   // The dotted gap line: a dot every 10 points of the screen, at the zoom of
-  // the map (read from its events).
+  // the map: the zoom our camera aims at, or the one of a gesture.
   const [zoom, setZoom] = useState(ZOOM_ROAD);
   const dots = useMemo(() => {
     const target = targetPoint(source.line, placement);
@@ -142,7 +144,10 @@ export function TrackingMap({
       left: 0,
       right: 0,
     };
+    const setAimedZoom = (next: number) =>
+      setZoom((before) => (Math.abs(before - next) > 0.05 ? next : before));
     if (plan.kind === 'follow') {
+      setAimedZoom(plan.zoom);
       camera.current?.easeTo({
         center: plan.center,
         bearing: plan.bearing,
@@ -151,13 +156,20 @@ export function TrackingMap({
         duration: 1000,
       });
     } else {
+      const bearing = plan.kind === 'bounds' ? plan.bearing : 0;
+      const fitPadding = { top: 80, bottom: 80, left: 60, right: 60 };
+      if (width > 0) {
+        setAimedZoom(
+          boundsZoom(plan.bounds, bearing, { width, height }, fitPadding),
+        );
+      }
       camera.current?.fitBounds(plan.bounds, {
-        bearing: plan.kind === 'bounds' ? plan.bearing : 0,
-        padding: { top: 80, bottom: 80, left: 60, right: 60 },
+        bearing,
+        padding: fitPadding,
         duration: 1000,
       });
     }
-  }, [source, placement, imminent, northUp, height, resume, loaded]);
+  }, [source, placement, imminent, northUp, height, width, resume, loaded]);
 
   useEffect(
     () => () => {
@@ -183,8 +195,10 @@ export function TrackingMap({
       nativeEvent: { userInteraction: boolean; zoom?: number };
     }) => {
       touched(e.nativeEvent.userInteraction);
+      // The events of our own camera come late (during the move): only the
+      // zoom of a gesture is read from them.
       const next = e.nativeEvent.zoom;
-      if (next !== undefined) {
+      if (next !== undefined && e.nativeEvent.userInteraction) {
         setZoom((before) => (Math.abs(before - next) > 0.05 ? next : before));
       }
     },
@@ -281,7 +295,10 @@ export function TrackingMap({
     <View
       testID="tracking-map"
       style={styles.map}
-      onLayout={(e) => setHeight(e.nativeEvent.layout.height)}
+      onLayout={(e) => {
+        setHeight(e.nativeEvent.layout.height);
+        setWidth(e.nativeEvent.layout.width);
+      }}
     >
       {zone ? (
         <ZoneBaseMap
@@ -401,7 +418,7 @@ const styles = StyleSheet.create({
     paddingRight: 2,
     paddingVertical: 1,
     borderRadius: 9,
-    backgroundColor: mapColors.attributionBackground,
+    backgroundColor: mapColors.trackingAttributionBackground,
   },
   attributionButton: {
     width: 16,

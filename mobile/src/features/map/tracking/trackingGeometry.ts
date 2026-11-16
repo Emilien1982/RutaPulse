@@ -169,6 +169,52 @@ export function metersPerPoint(zoom: number, latitude: number): number {
   return (78271.517 * Math.cos((latitude * Math.PI) / 180)) / 2 ** zoom;
 }
 
+/**
+ * The zoom `fitBounds` ends on: the box [west, south, east, north], turned
+ * by the bearing, fits in the screen minus the padding. Known before the
+ * camera finishes, unlike the zoom read from the map events.
+ */
+export function boundsZoom(
+  bounds: [number, number, number, number],
+  bearing: number,
+  size: { width: number; height: number },
+  padding: { top: number; bottom: number; left: number; right: number },
+): number {
+  // Web Mercator at zoom 0 (a world of 512 points).
+  const x = (lon: number) => ((lon + 180) / 360) * 512;
+  const y = (lat: number) => {
+    const r = (lat * Math.PI) / 180;
+    return (
+      (0.5 - Math.log(Math.tan(Math.PI / 4 + r / 2)) / (2 * Math.PI)) * 512
+    );
+  };
+  const [west, south, east, north] = bounds;
+  const a = (-bearing * Math.PI) / 180;
+  const turned = [
+    [west, south],
+    [west, north],
+    [east, south],
+    [east, north],
+  ].map(([lon, lat]) => {
+    const px = x(lon as number);
+    const py = y(lat as number);
+    return [
+      px * Math.cos(a) - py * Math.sin(a),
+      px * Math.sin(a) + py * Math.cos(a),
+    ] as const;
+  });
+  const xs = turned.map((c) => c[0]);
+  const ys = turned.map((c) => c[1]);
+  const w = Math.max(...xs) - Math.min(...xs);
+  const h = Math.max(...ys) - Math.min(...ys);
+  const room = {
+    w: size.width - padding.left - padding.right,
+    h: size.height - padding.top - padding.bottom,
+  };
+  const zoom = Math.min(Math.log2(room.w / w), Math.log2(room.h / h));
+  return Number.isFinite(zoom) ? Math.min(Math.max(zoom, 0), 22) : 22;
+}
+
 /** Most dots of the gap line (a safety: a very long gap). */
 export const MAX_GAP_DOTS = 300;
 

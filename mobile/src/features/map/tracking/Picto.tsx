@@ -32,6 +32,7 @@ export function pictoOf(direction: Direction | null): {
 }
 
 const STROKE = 13;
+const GPS_STROKE = 9;
 
 function paths(kind: PictoKind): string[] {
   switch (kind) {
@@ -59,7 +60,7 @@ function paths(kind: PictoKind): string[] {
     case 'start':
       return [];
     case 'gps':
-      return ['M26 48A22 22 0 0 1 70 48', 'M12 48A36 36 0 0 1 84 48'];
+      return ['M48 8V20', 'M48 76V88', 'M8 48H20', 'M76 48H88'];
   }
 }
 
@@ -87,12 +88,16 @@ export function Picto({
       style={flip ? { transform: [{ scaleX: -1 }] } : undefined}
     >
       {paths(kind).map((d) => (
-        <Path key={d} d={d} />
+        <Path
+          key={d}
+          d={d}
+          strokeWidth={kind === 'gps' ? GPS_STROKE : STROKE}
+        />
       ))}
       {kind === 'off' && <GapDrawing />}
       {kind === 'start' && <StartDrawing />}
       {kind === 'arrive' && <FinishDrawing />}
-      {kind === 'gps' && <Circle cx="48" cy="66" r="8" fill={color} />}
+      {kind === 'gps' && <GpsDrawing />}
     </Svg>
   );
 }
@@ -104,13 +109,17 @@ function GapDrawing() {
     <G>
       <Path d="M76 8V88" stroke="#FFFFFF" strokeWidth={20} />
       <Path d="M76 8V88" stroke={mapColors.route} strokeWidth={13} />
-      <Path
-        d="M40 48H64"
-        stroke={navColors.text}
-        strokeWidth={7}
-        strokeDasharray="0 12"
-      />
-      <Circle cx="22" cy="48" r="15" fill={mapColors.position} />
+      {[40, 52, 64].map((cx) => (
+        <Circle
+          key={cx}
+          cx={cx}
+          cy="48"
+          r="3.5"
+          fill={navColors.text}
+          stroke="none"
+        />
+      ))}
+      <Circle cx="22" cy="48" r="15" fill={mapColors.position} stroke="none" />
       <Circle
         cx="22"
         cy="48"
@@ -119,6 +128,16 @@ function GapDrawing() {
         stroke={navColors.text}
         strokeWidth={2}
       />
+    </G>
+  );
+}
+
+// p-gps: a sighting mark (the "my position" sign).
+function GpsDrawing() {
+  return (
+    <G>
+      <Circle cx="48" cy="48" r="24" strokeWidth={GPS_STROKE} />
+      <Circle cx="48" cy="48" r="8" fill={navColors.text} stroke="none" />
     </G>
   );
 }

@@ -3,6 +3,7 @@ import { lineOf, straight } from '@/core/tracking/testing/fabricate';
 import { buildLine } from '@/core/tracking/trackingLine';
 
 import {
+  boundsZoom,
   drawnLine,
   gapDots,
   gapLine,
@@ -102,5 +103,37 @@ describe('gap dots', () => {
   it('measures the ground distance of a point of the screen', () => {
     // 15.5: about 1.1 m per point at 48.7 N (tiles of 512 points).
     expect(metersPerPoint(15.5, 48.7)).toBeCloseTo(1.1, 1);
+  });
+});
+
+describe('boundsZoom', () => {
+  const pad = { top: 80, bottom: 80, left: 60, right: 60 };
+  const size = { width: 400, height: 800 };
+
+  it('gives the zoom where the box fills the room left by the padding', () => {
+    // 0.01 degree of longitude is 512 * 0.01 / 360 points at zoom 0.
+    const zoom = boundsZoom([6.1, 48.7, 6.11, 48.7001], 0, size, pad);
+    expect(zoom).toBeCloseTo(Math.log2(280 / ((512 * 0.01) / 360)), 3);
+  });
+
+  it('spaces the dots by 10 points at that zoom, not at a stale one', () => {
+    const bounds: [number, number, number, number] = [6.1, 48.7, 6.103, 48.701];
+    const zoom = boundsZoom(bounds, 0, size, pad);
+    const aimed = 10 * metersPerPoint(zoom, 48.7);
+    const stale = 10 * metersPerPoint(zoom - 3, 48.7);
+    expect(stale / aimed).toBeCloseTo(8, 5);
+    // About 25 dots for 250 points of gap; a stale zoom leaves only a few.
+    const from: [number, number] = [6.1, 48.7];
+    const to: [number, number] = [6.103, 48.701];
+    expect(gapDots(from, to, aimed).features.length).toBeGreaterThan(
+      gapDots(from, to, stale).features.length,
+    );
+  });
+
+  it('zooms out for a box turned by the bearing', () => {
+    const bounds: [number, number, number, number] = [6.1, 48.7, 6.12, 48.71];
+    expect(boundsZoom(bounds, 45, size, pad)).toBeLessThan(
+      boundsZoom(bounds, 0, size, pad),
+    );
   });
 });

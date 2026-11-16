@@ -107,6 +107,8 @@ export const mapColors = {
   positionBorder: '#FFFFFF',
   // hn.creme-clair at 88 %, behind the attributions.
   attributionBackground: 'rgba(251, 241, 218, 0.88)',
+  // suivi.attribution: white at 75 % (tracking screen, direction B).
+  trackingAttributionBackground: 'rgba(255, 255, 255, 0.75)',
   // carte.itineraire, carte.itineraire-lisere, carte.depart, carte.arrivee
   // carte.circuit (drawn at 55 % opacity by the layer) and carte.circuit-texte
   circuit: '#2F6BFF',
