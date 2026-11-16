@@ -1,0 +1,6 @@
+22:35:29 recherche=0 panneau=1 dist=text="100 m"
+22:35:33 recherche=0 panneau=1 dist=text="100 m"
+22:35:37 recherche=0 panneau=1 dist=text="100 m"
+22:35:41 recherche=0 panneau=1 dist=text="100 m"
+22:35:46 recherche=0 panneau=1 dist=text="100 m"
+22:35:50 recherche=0 panneau=1 dist=text="100 m"

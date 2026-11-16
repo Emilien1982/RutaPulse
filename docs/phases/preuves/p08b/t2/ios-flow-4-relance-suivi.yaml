@@ -1,0 +1,15 @@
+# iOS : fermer le résumé, relancer le suivi (le choix Maximum est gardé).
+appId: fr.rutapulse.app
+---
+- tapOn:
+    id: 'ride-close'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- tapOn:
+    id: 'info-start'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-panel'
+    timeout: 20000

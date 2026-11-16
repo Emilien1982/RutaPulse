@@ -1,0 +1,4 @@
+apres fermeture boite: panneau=0 boite=0
+  Display Brightness=1.0
+gear tape, deja jaune (100 m): panneau=1 boite=0
+8 s plus tard: panneau=1 boite=0

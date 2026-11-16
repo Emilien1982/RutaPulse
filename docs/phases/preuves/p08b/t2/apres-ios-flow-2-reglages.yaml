@@ -1,0 +1,7 @@
+appId: fr.rutapulse.app
+---
+- tapOn: 'Réglages.*'
+- extendedWaitUntil:
+    visible: 'Luminosité.*'
+    timeout: 10000
+- takeScreenshot: apres-ios-05-reglages-segments

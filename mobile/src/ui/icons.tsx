@@ -224,3 +224,13 @@ export function HandModeIcon({ size = 20, ...props }: IconProps) {
     </Icon>
   );
 }
+
+// The sun of the "Maximum" brightness (mockups 31b and v1/80).
+export function SunIcon({ size = 24, color }: IconProps) {
+  return (
+    <Icon color={color} size={size} strokeWidth={2.4}>
+      <Circle cx="12" cy="12" r="4.5" fill={color} stroke="none" />
+      <Path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8" />
+    </Icon>
+  );
+}

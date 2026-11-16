@@ -1494,6 +1494,29 @@ la tâche qui en a besoin, sur les deux simulateurs, en release :
   sortie), en plus des 30 m de la fin et des 90 % du tracé parcourus.
   Démarrer sur le point d'arrivée ne termine plus le suivi.
 
+## Écarts acceptés pendant la phase 8b
+
+- 2026-11-16, T2, décision de la session de phase (relecture) :
+  `updateSettings` est dans `shared-data/settings/updateSettings.ts`, pas
+  dans `settingsFile.ts` (§ 12). Deux tests existants imitent tout
+  `settingsFile` sans cette fonction. Le comportement ne change pas.
+- 2026-11-16, T2, décision de la session de phase (relecture) : le
+  réglage de luminosité est lu par `TrackingScreen` (`useSettings()`) et
+  passé à `TrackingSession` par une prop. La session reste testable sans
+  fournisseur de requêtes ; c'est toujours une seule lecture du réglage.
+- 2026-11-16, T2 : le sélecteur à deux choix (`ui/Segmented.tsx`) est
+  nouveau et sert à 31b et à v1/80 ; l'écran 10 garde le sien.
+
+- 2026-11-16, T2, décision de la session de phase (testeur et
+  designer) : le passage de « Recherche du GPS » à la première position
+  ne compte pas comme un passage au jaune. Un panneau 31b ouvert pendant
+  la recherche reste ouvert, même si la première position est déjà à
+  100 m ou moins d'une direction. Seul un passage de « non jaune », avec
+  une position, à « jaune » le ferme.
+- 2026-11-16, T2 (designer) : panneau 31b ouvert, la caméra calcule sa
+  marge du haut sur la partie de carte visible au-dessus du panneau, pour
+  garder le point au-dessus du panneau, même sur un petit écran.
+
 ## Questions tranchées par Émilien (10 novembre 2026)
 
 Les trois recommandations sont retenues. La question 7 du designer est

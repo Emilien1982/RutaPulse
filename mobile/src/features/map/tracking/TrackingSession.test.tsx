@@ -138,9 +138,9 @@ describe('waiting for the GPS', () => {
     expect(mockPrevent?.enabled).toBe(true);
   });
 
-  it('has no gear wheel (phase 8b)', async () => {
+  it('shows the gear wheel of the settings (phase 8b, C9)', async () => {
     await open();
-    expect(screen.queryByTestId('tracking-settings')).toBeNull();
+    expect(screen.getByTestId('tracking-gear')).toBeOnTheScreen();
   });
 });
 

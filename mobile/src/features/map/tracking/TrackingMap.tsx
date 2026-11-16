@@ -23,6 +23,8 @@ import { ZoneBaseMap } from '../ZoneBaseMap';
 import {
   boundsZoom,
   drawnLine,
+  fitPadding,
+  followPadding,
   gapDots,
   GESTURE_PAUSE_MS,
   metersPerPoint,
@@ -66,12 +68,18 @@ export function TrackingMap({
   store,
   source,
   bottom,
+  side,
+  bottomInset = 0,
 }: {
   zone: Zone | null;
   store: TrackingStore['store'];
   source: TrackingSource;
   /** Laid over the map, bottom right (the "Terminer" button). */
   bottom: React.ReactNode;
+  /** Laid over the map, under the compass (the gear of the settings). */
+  side?: React.ReactNode;
+  /** Height of a panel laid over the bottom: the position stays above it. */
+  bottomInset?: number;
 }) {
   const camera = useRef<CameraRef>(null);
   const mapRef = useRef<MapRef>(null);
@@ -139,12 +147,7 @@ export function TrackingMap({
     if (!loaded || Date.now() < pausedUntil.current || height === 0) return;
     const plan = planCamera(source.line, placement, imminent, northUp);
     // The rider sits in the lower third: the top of the map is padded.
-    const padding = {
-      top: Math.round(height * 0.33),
-      bottom: 0,
-      left: 0,
-      right: 0,
-    };
+    const padding = followPadding(height, bottomInset);
     const setAimedZoom = (next: number) =>
       setZoom((before) => (Math.abs(before - next) > 0.05 ? next : before));
     if (plan.kind === 'follow') {
@@ -158,21 +161,21 @@ export function TrackingMap({
       });
     } else {
       const bearing = plan.kind === 'bounds' ? plan.bearing : 0;
-      const fitPadding = { top: 80, bottom: 80, left: 60, right: 60 };
+      const fitPad = fitPadding(height, bottomInset);
       if (width > 0) {
         setAimedZoom(
           boundsZoom(
             plan.bounds,
             bearing,
             { width, height },
-            fitPadding,
+            fitPad,
             zone ? MAX_ZOOM : undefined,
           ),
         );
       }
       camera.current?.fitBounds(plan.bounds, {
         bearing,
-        padding: fitPadding,
+        padding: fitPad,
         duration: 1000,
       });
     }
@@ -186,6 +189,7 @@ export function TrackingMap({
     resume,
     loaded,
     zone,
+    bottomInset,
   ]);
 
   useEffect(
@@ -365,8 +369,12 @@ export function TrackingMap({
           rotation={northUp ? 0 : -(cameraBearing(placement) ?? 0)}
         />
       </Pressable>
+      {side}
       {/* Short attribution and the "i": the full one would go under "Terminer". */}
-      <View style={styles.attribution}>
+      <View
+        testID="tracking-attribution"
+        style={[styles.attribution, { bottom: 8 + bottomInset }]}
+      >
         <Text style={text.attribution} maxFontSizeMultiplier={1}>
           {t('info.attributionShort')}
         </Text>

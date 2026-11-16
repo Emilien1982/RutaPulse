@@ -1,0 +1,10 @@
+# iOS iPhone 17 release : onglet Réglages, rubrique « Pendant le suivi ».
+appId: fr.rutapulse.app
+---
+- tapOn: 'Réglages.*'
+- extendedWaitUntil:
+    visible: 'Luminosité.*'
+    timeout: 10000
+- takeScreenshot: ios-02-reglages-auto
+- tapOn: '.*Maximum.*'
+- takeScreenshot: ios-03-reglages-max

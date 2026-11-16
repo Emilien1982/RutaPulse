@@ -18,6 +18,10 @@ import {
   type TrackingSource,
 } from '@/core/tracking/trackingLine';
 import type { Zone } from '@/core/zones/catalogue';
+import {
+  useSetBrightness,
+  useSettings,
+} from '@/shared-data/settings/useSettings';
 import { useSavedRoute } from '@/shared-data/routes/useRoutes';
 import { useInstalledZones } from '@/shared-data/zones/useInstalledZones';
 import { useZoneHold } from '@/shared-data/zones/zoneInService';
@@ -27,7 +31,7 @@ import { useGlyphsReady } from '../useGlyphsReady';
 import { useLegInfos } from '../useLegInfos';
 import { useLegResults } from '../useLegResults';
 import { useTrackInfos } from '../useTrackInfos';
-import { TrackingSession } from './TrackingSession';
+import { TrackingSession, type BrightnessSetting } from './TrackingSession';
 
 const BLANK = { flex: 1, backgroundColor: navColors.background } as const;
 
@@ -96,6 +100,16 @@ function Loaded({
   zone: Zone | null;
   installed: Zone[];
 }) {
+  const settings = useSettings();
+  // The brightness setting: the same one as the Settings tab.
+  const { mutate: setBrightness } = useSetBrightness();
+  const brightness = useMemo<BrightnessSetting>(
+    () => ({
+      choice: settings.data?.brightness ?? 'auto',
+      onChoose: (choice) => setBrightness(choice),
+    }),
+    [settings.data?.brightness, setBrightness],
+  );
   // Same reading of the zone as the Infos screen.
   const attach = canAttachZone(route, zone);
   const effective =
@@ -119,9 +133,19 @@ function Loaded({
   );
   if (status === 'usable' && mapZone) {
     return route.origin === 'gpx' ? (
-      <GpxTracking route={route} zone={mapZone} source={source} />
+      <GpxTracking
+        route={route}
+        zone={mapZone}
+        source={source}
+        brightness={brightness}
+      />
     ) : (
-      <CreatedTracking route={route} zone={mapZone} source={source} />
+      <CreatedTracking
+        route={route}
+        zone={mapZone}
+        source={source}
+        brightness={brightness}
+      />
     );
   }
   return (
@@ -130,6 +154,7 @@ function Loaded({
       climb={null}
       zone={mapZone}
       name={route.name}
+      brightness={brightness}
     />
   );
 }
@@ -138,10 +163,12 @@ function CreatedTracking({
   route,
   zone,
   source,
+  brightness,
 }: {
   route: CreatedRoute;
   zone: Zone;
   source: TrackingSource;
+  brightness: BrightnessSetting;
 }) {
   const kept = useMemo(() => reopenDraft(route).kept, [route]);
   const legs = useLegResults(route.draft, zone, kept);
@@ -159,6 +186,7 @@ function CreatedTracking({
       climb={climb}
       zone={zone}
       name={route.name}
+      brightness={brightness}
     />
   );
 }
@@ -167,10 +195,12 @@ function GpxTracking({
   route,
   zone,
   source,
+  brightness,
 }: {
   route: GpxRoute;
   zone: Zone;
   source: TrackingSource;
+  brightness: BrightnessSetting;
 }) {
   const { altitudes } = summarizeInfo(useTrackInfos(route, zone, true));
   const climb = useMemo(
@@ -184,6 +214,7 @@ function GpxTracking({
       climb={climb}
       zone={zone}
       name={route.name}
+      brightness={brightness}
     />
   );
 }

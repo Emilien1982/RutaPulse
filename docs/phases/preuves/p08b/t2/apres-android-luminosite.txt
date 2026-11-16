@@ -1,0 +1,3 @@
+apres corrections, panneau -> Maximum:   Display Brightness=1.0
+en route:   Display Brightness=1.0
+apres Terminer:   Display Brightness=0.3976378

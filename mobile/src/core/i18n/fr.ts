@@ -125,6 +125,13 @@ export const fr = {
   'settings.wifiOnly': 'Télécharger en Wi-Fi seulement',
   'settings.wifiOnlyHelp':
     'Sans Wi-Fi, les zones attendent. Une zone pèse environ 100 Mo.',
+  'settings.tracking': 'Pendant le suivi',
+  'settings.brightness': "Luminosité de l'écran",
+  'settings.brightnessAuto': 'Automatique',
+  'settings.brightnessMax': 'Maximum',
+  'settings.brightnessHelp':
+    '\u202F: plus lisible au soleil, mais la batterie baisse plus vite.',
+  'settings.brightnessAlso': 'Se change aussi pendant le suivi.',
   'zones.title': 'Zones hors ligne',
   'zones.sectionInstalled': 'Sur le téléphone',
   'zones.sectionAvailable': 'Disponibles',
@@ -392,6 +399,8 @@ export const fr = {
   'tracking.remaining': 'Reste',
   'tracking.climbLeft': 'D+ restant',
   'tracking.finish': 'Terminer',
+  'tracking.settings': 'Réglages du suivi',
+  'tracking.close': 'Fermer',
   'tracking.finishTitle': 'Terminer la sortie\u202F?',
   'tracking.finishText':
     "Le suivi s'arrête et le résumé de la sortie s'affiche.",
