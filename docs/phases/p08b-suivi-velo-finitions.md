@@ -1,7 +1,7 @@
 # Phase 8b — Finitions du suivi
 
-> 16 novembre 2026. Spec de la session de pilotage, **à valider par
-> Émilien**. Suite de la phase 8a (fusionnée le 16 novembre). Périmètre
+> 16 novembre 2026. Spec de la session de pilotage, **validée par
+> Émilien le 16 novembre**, avec les choix du pilotage. Suite de la phase 8a (fusionnée le 16 novembre). Périmètre
 > fixé par sa décision du 10 novembre : voir
 > [p08-suivi-velo.md](p08-suivi-velo.md), « Découpage en 8a et 8b ».
 > Les questions 1 à 3 de la phase 8 sont déjà tranchées (recommandations
