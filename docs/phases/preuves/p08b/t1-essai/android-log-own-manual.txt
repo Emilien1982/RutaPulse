@@ -1,0 +1,145 @@
+ 8680  8704 I ReactNativeJS: 'E8B', '+3ms', 'MOUNT platform', 'android'
+ 8680  8704 I ReactNativeJS: 'E8B', '+29ms', 'APPSTATE', 'active'
+ 8680  8704 I ReactNativeJS: 'E8B', '+31ms', 'APPSTATE', 'background'
+ 8680  8704 I ReactNativeJS: 'E8B', '+101ms', 'APPSTATE', 'active'
+ 8680  8704 I ReactNativeJS: 'E8B', '+151ms', 'REGION did user=', false, 'center=', [ 6.180000000000035, 48.695 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+151ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+158ms', 'REGION did user=', false, 'center=', [ 6.180000000000035, 48.695 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+408ms', 'MAP loaded'
+ 8680  8704 I ReactNativeJS: 'E8B', '+414ms', 'PERM', 'granted'
+ 8680  8704 I ReactNativeJS: 'E8B', '+416ms', 'BRIGHT', 'appstate-active', 'get=', 0.3976377844810486, 'system=', 0.3976377844810486, 'usingSystem=', true
+ 8680  8704 I ReactNativeJS: 'E8B', '+416ms', 'BRIGHT', 'appstate-background', 'get=', 0.3976377844810486, 'system=', 0.3976377844810486, 'usingSystem=', true
+ 8680  8704 I ReactNativeJS: 'E8B', '+416ms', 'BRIGHT', 'appstate-active', 'get=', 0.3976377844810486, 'system=', 0.3976377844810486, 'usingSystem=', true
+ 8680  8704 I ReactNativeJS: 'E8B', '+4405ms', 'POS', '5.97809', '48.72721', 'hdg=', 3.874716281890869, 'acc=', 5, 'speed=', 24.26119613647461, 'used=', 3.874716281890869, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+4405ms', 'FIRSTFIX'
+ 8680  8704 I ReactNativeJS: 'E8B', '+4412ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+5325ms', 'REGION did user=', false, 'center=', [ 5.978088399999991, 48.72721109999999 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+5402ms', 'POS', '5.97811', '48.72738', 'hdg=', 3.874671697616577, 'acc=', 5, 'speed=', 22.720945358276367, 'used=', 3.874671697616577, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+5409ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+6308ms', 'REGION did user=', false, 'center=', [ 5.978105800000038, 48.727381200000025 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+6408ms', 'POS', '5.97810', '48.72735', 'hdg=', 0.000004532815637503518, 'acc=', 5, 'speed=', 1.0576039552688599, 'used=', 0.000004532815637503518, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+6426ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+7325ms', 'REGION did user=', false, 'center=', [ 5.978102000000007, 48.72734999999998 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+7410ms', 'POS', '5.97810', '48.72736', 'hdg=', 8.193108518017578e-12, 'acc=', 5, 'speed=', 0.20686614513397217, 'used=', 8.193108518017578e-12, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+7426ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+8326ms', 'REGION did user=', false, 'center=', [ 5.9781026, 48.72735669999999 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+8419ms', 'POS', '5.97810', '48.72736', 'hdg=', 1.9140354368119006e-7, 'acc=', 5, 'speed=', 0.20440155267715454, 'used=', 1.9140354368119006e-7, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+8426ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+9342ms', 'REGION did user=', false, 'center=', [ 5.978102900000039, 48.72735770000002 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+9424ms', 'POS', '5.97810', '48.72734', 'hdg=', 0, 'acc=', 5, 'speed=', 0.028911828994750977, 'used=', 0, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+9442ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+10342ms', 'REGION did user=', false, 'center=', [ 5.978099200000003, 48.72734110000002 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+11051ms', 'POS', '5.97811', '48.72729', 'hdg=', 0, 'acc=', 5, 'speed=', 0.09976612031459808, 'used=', 0, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+11060ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+11991ms', 'REGION did user=', false, 'center=', [ 5.978114599999998, 48.72729079999998 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+12444ms', 'POS', '5.97813', '48.72725', 'hdg=', 179.99998474121094, 'acc=', 5, 'speed=', 0.2369825392961502, 'used=', 179.99998474121094, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+12464ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+13359ms', 'REGION did user=', false, 'center=', [ 5.978133799999995, 48.72725319999999 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+14047ms', 'POS', '5.97817', '48.72719', 'hdg=', 166.028564453125, 'acc=', 5, 'speed=', 1.1694740056991577, 'used=', 166.028564453125, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+14062ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+14959ms', 'REGION did user=', false, 'center=', [ 5.978166200000004, 48.727193100000015 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+15461ms', 'POS', '5.97819', '48.72714', 'hdg=', 164.77822875976562, 'acc=', 5, 'speed=', 2.1305291652679443, 'used=', 164.77822875976562, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+15478ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+16375ms', 'REGION did user=', false, 'center=', [ 5.978189500000013, 48.72714099999999 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+17048ms', 'POS', '5.97820', '48.72707', 'hdg=', 170.54042053222656, 'acc=', 5, 'speed=', 3.2856194972991943, 'used=', 170.54042053222656, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+17062ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+17975ms', 'REGION did user=', false, 'center=', [ 5.9782005000000416, 48.7270673 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+18478ms', 'POS', '5.97820', '48.72702', 'hdg=', 174.5524139404297, 'acc=', 5, 'speed=', 3.5272560119628906, 'used=', 174.5524139404297, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+18493ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+19391ms', 'REGION did user=', false, 'center=', [ 5.978199899999992, 48.727015899999984 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+20035ms', 'POS', '5.97819', '48.72695', 'hdg=', 179.62342834472656, 'acc=', 5, 'speed=', 4.005335330963135, 'used=', 179.62342834472656, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+20044ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+20958ms', 'REGION did user=', false, 'center=', [ 5.978190100000005, 48.726948799999995 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+21496ms', 'POS', '5.97818', '48.72690', 'hdg=', 181.99679565429688, 'acc=', 5, 'speed=', 3.831796884536743, 'used=', 181.99679565429688, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+21511ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+22192ms', 'REGION did user=', false, 'center=', [ 5.978182115976722, 48.72690362211264 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+22209ms', 'REGION will user=', true
+ 8680  8704 I ReactNativeJS: 'E8B', '+22242ms', 'REGION will user=', true
+ 8680  8704 I ReactNativeJS: 'E8B', '+22492ms', 'REGION did user=', true, 'center=', [ 5.978182090960871, 48.72617957246547 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+22492ms', 'FOLLOW off (manual, gesture)'
+ 8680  8704 I ReactNativeJS: 'E8B', '+22503ms', 'POS', '5.97817', '48.72687', 'hdg=', 183.5874481201172, 'acc=', 5, 'speed=', 3.823535919189453, 'used=', 183.5874481201172, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+23511ms', 'POS', '5.97817', '48.72683', 'hdg=', 184.48976135253906, 'acc=', 5, 'speed=', 3.833359479904175, 'used=', 184.48976135253906, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+24521ms', 'POS', '5.97816', '48.72680', 'hdg=', 184.36819458007812, 'acc=', 5, 'speed=', 3.844489336013794, 'used=', 184.36819458007812, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+25522ms', 'POS', '5.97816', '48.72676', 'hdg=', 183.2299346923828, 'acc=', 5, 'speed=', 3.880156993865967, 'used=', 183.2299346923828, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+26532ms', 'POS', '5.97817', '48.72673', 'hdg=', 181.6517333984375, 'acc=', 5, 'speed=', 3.88863205909729, 'used=', 181.6517333984375, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+27533ms', 'POS', '5.97817', '48.72669', 'hdg=', 180.16871643066406, 'acc=', 5, 'speed=', 3.9199063777923584, 'used=', 180.16871643066406, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+28540ms', 'POS', '5.97817', '48.72666', 'hdg=', 178.9646453857422, 'acc=', 5, 'speed=', 3.925649881362915, 'used=', 178.9646453857422, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+29544ms', 'POS', '5.97818', '48.72662', 'hdg=', 178.093505859375, 'acc=', 5, 'speed=', 3.950559139251709, 'used=', 178.093505859375, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+30550ms', 'POS', '5.97818', '48.72660', 'hdg=', 180, 'acc=', 5, 'speed=', 0.3156658411026001, 'used=', 180, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+31565ms', 'POS', '5.97818', '48.72657', 'hdg=', 180, 'acc=', 5, 'speed=', 0.42183613777160645, 'used=', 180, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+32558ms', 'POS', '5.97819', '48.72654', 'hdg=', 178.99838256835938, 'acc=', 5, 'speed=', 0.7908206582069397, 'used=', 178.99838256835938, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+32610ms', 'BUTTON follow'
+ 8680  8704 I ReactNativeJS: 'E8B', '+33575ms', 'POS', '5.97819', '48.72650', 'hdg=', 178.85169982910156, 'acc=', 5, 'speed=', 1.4602200984954834, 'used=', 178.85169982910156, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+33594ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+34491ms', 'REGION did user=', false, 'center=', [ 5.978187100000014, 48.726502700000026 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+34572ms', 'POS', '5.97819', '48.72646', 'hdg=', 179.06639099121094, 'acc=', 5, 'speed=', 2.22924542427063, 'used=', 179.06639099121094, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+34575ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+35491ms', 'REGION did user=', false, 'center=', [ 5.97818799999999, 48.72646040000001 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+35573ms', 'POS', '5.97819', '48.72642', 'hdg=', 179.30868530273438, 'acc=', 5, 'speed=', 2.8620574474334717, 'used=', 179.30868530273438, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+35575ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+36492ms', 'REGION did user=', false, 'center=', [ 5.978188399999993, 48.72641839999999 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+36574ms', 'POS', '5.97819', '48.72638', 'hdg=', 179.51535034179688, 'acc=', 5, 'speed=', 3.33050537109375, 'used=', 179.51535034179688, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+36576ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+37491ms', 'REGION did user=', false, 'center=', [ 5.978188500000016, 48.72637699999999 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+37585ms', 'POS', '5.97819', '48.72634', 'hdg=', 179.66885375976562, 'acc=', 5, 'speed=', 3.607877492904663, 'used=', 179.66885375976562, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+37592ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+38491ms', 'REGION did user=', false, 'center=', [ 5.978188500000016, 48.7263376 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+38594ms', 'POS', '5.97819', '48.72630', 'hdg=', 180.07786560058594, 'acc=', 5, 'speed=', 3.78918194770813, 'used=', 180.07786560058594, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+38609ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+39508ms', 'REGION did user=', false, 'center=', [ 5.97818749999999, 48.72629879999997 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+39603ms', 'POS', '5.97818', '48.72626', 'hdg=', 180.83087158203125, 'acc=', 5, 'speed=', 3.8711326122283936, 'used=', 180.83087158203125, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+39609ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+40508ms', 'REGION did user=', false, 'center=', [ 5.97818490000003, 48.7262617 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+40609ms', 'POS', '5.97818', '48.72622', 'hdg=', 181.557373046875, 'acc=', 5, 'speed=', 3.93491268157959, 'used=', 181.557373046875, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+40626ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+41525ms', 'REGION did user=', false, 'center=', [ 5.978181599999999, 48.72622459999999 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+41619ms', 'POS', '5.97818', '48.72619', 'hdg=', 183.0562286376953, 'acc=', 5, 'speed=', 3.9493815898895264, 'used=', 183.0562286376953, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+41626ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+42542ms', 'REGION did user=', false, 'center=', [ 5.978174999999993, 48.726188500000006 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+42629ms', 'POS', '5.97817', '48.72617', 'hdg=', 180, 'acc=', 5, 'speed=', 0.3146238327026367, 'used=', 180, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+42644ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+43542ms', 'REGION did user=', false, 'center=', [ 5.9781686000000045, 48.7261729 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+43637ms', 'POS', '5.97816', '48.72614', 'hdg=', 180.00001525878906, 'acc=', 5, 'speed=', 0.42044615745544434, 'used=', 180.00001525878906, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+43642ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+44559ms', 'REGION did user=', false, 'center=', [ 5.97816069999999, 48.72614429999998 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+44638ms', 'POS', '5.97815', '48.72611', 'hdg=', 183.8748779296875, 'acc=', 5, 'speed=', 0.7898923754692078, 'used=', 183.8748779296875, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+44642ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+45575ms', 'REGION did user=', false, 'center=', [ 5.978151700000041, 48.72611150000002 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+45648ms', 'POS', '5.97814', '48.72607', 'hdg=', 187.47665405273438, 'acc=', 5, 'speed=', 1.4500577449798584, 'used=', 187.47665405273438, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+45660ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+46559ms', 'REGION did user=', false, 'center=', [ 5.97814009999999, 48.72607359999998 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+46658ms', 'POS', '5.97813', '48.72604', 'hdg=', 180.00001525878906, 'acc=', 5, 'speed=', 0.18791432678699493, 'used=', 180.00001525878906, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+46675ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+47576ms', 'REGION did user=', false, 'center=', [ 5.978127099999996, 48.72604280000002 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+47662ms', 'POS', '5.97811', '48.72601', 'hdg=', 180.00001525878906, 'acc=', 5, 'speed=', 0.3070009648799896, 'used=', 180.00001525878906, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+47675ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+48575ms', 'REGION did user=', false, 'center=', [ 5.978114599999998, 48.726011199999995 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+48663ms', 'POS', '5.97810', '48.72598', 'hdg=', 187.02809143066406, 'acc=', 5, 'speed=', 0.7162399888038635, 'used=', 187.02809143066406, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+48676ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+49575ms', 'REGION did user=', false, 'center=', [ 5.978099800000023, 48.72597640000001 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+49666ms', 'POS', '5.97808', '48.72594', 'hdg=', 180.00001525878906, 'acc=', 5, 'speed=', 0.13764050602912903, 'used=', 180.00001525878906, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+49676ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+50575ms', 'REGION did user=', false, 'center=', [ 5.978083999999995, 48.72594279999999 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+50675ms', 'POS', '5.97807', '48.72591', 'hdg=', 180.00001525878906, 'acc=', 5, 'speed=', 0.25719282031059265, 'used=', 180.00001525878906, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+50691ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+51591ms', 'REGION did user=', false, 'center=', [ 5.978067600000003, 48.72591010000001 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+51684ms', 'POS', '5.97805', '48.72588', 'hdg=', 188.68722534179688, 'acc=', 5, 'speed=', 0.6749379634857178, 'used=', 188.68722534179688, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+51692ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+52625ms', 'REGION did user=', false, 'center=', [ 5.978050599999989, 48.72587529999997 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+52692ms', 'POS', '5.97803', '48.72584', 'hdg=', 193.27635192871094, 'acc=', 5, 'speed=', 1.4105706214904785, 'used=', 193.27635192871094, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+52709ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+53608ms', 'REGION did user=', false, 'center=', [ 5.978031600000008, 48.725835999999994 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+53700ms', 'POS', '5.97801', '48.72580', 'hdg=', 180.00001525878906, 'acc=', 5, 'speed=', 0.18408343195915222, 'used=', 180.00001525878906, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+53710ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+54608ms', 'REGION did user=', false, 'center=', [ 5.978014700000016, 48.72580480000003 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+54702ms', 'POS', '5.97800', '48.72577', 'hdg=', 180.00001525878906, 'acc=', 5, 'speed=', 0.3038542866706848, 'used=', 180.00001525878906, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+54708ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+55625ms', 'REGION did user=', false, 'center=', [ 5.977997899999991, 48.7257731 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+55709ms', 'POS', '5.97798', '48.72574', 'hdg=', 188.1534423828125, 'acc=', 5, 'speed=', 0.7174917459487915, 'used=', 188.1534423828125, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+55727ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+56625ms', 'REGION did user=', false, 'center=', [ 5.977980699999988, 48.72573810000001 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+56713ms', 'POS', '5.97796', '48.72571', 'hdg=', 180.00001525878906, 'acc=', 5, 'speed=', 0.13572777807712555, 'used=', 180.00001525878906, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+56727ms', 'REGION will user=', false
+ 8680  8704 I ReactNativeJS: 'E8B', '+57625ms', 'REGION did user=', false, 'center=', [ 5.97796360000001, 48.7257053 ], 'zoom=', 17
+ 8680  8704 I ReactNativeJS: 'E8B', '+57723ms', 'POS', '5.97795', '48.72567', 'hdg=', 0, 'acc=', 5, 'speed=', 0.05055250599980354, 'used=', 0, 'gps'
+ 8680  8704 I ReactNativeJS: 'E8B', '+57726ms', 'REGION will user=', false

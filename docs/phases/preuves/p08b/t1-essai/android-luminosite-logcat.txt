@@ -1,0 +1,18 @@
+ 8054  8081 I ReactNativeJS: 'E8B', '+21ms', 'APPSTATE', 'active'
+ 8054  8081 I ReactNativeJS: 'E8B', '+47ms', 'BRIGHT', '1-start', 'get=', 0.3976377844810486, 'system=', 0.3976377844810486, 'usingSystem=', true
+ 8054  8081 I ReactNativeJS: 'E8B', '+82ms', 'APPSTATE', 'background'
+ 8054  8081 I ReactNativeJS: 'E8B', '+102ms', 'BRIGHT', 'appstate-active', 'get=', 0.3976377844810486, 'system=', 0.3976377844810486, 'usingSystem=', true
+ 8054  8081 I ReactNativeJS: 'E8B', '+110ms', 'BRIGHT set 1 done'
+ 8054  8081 I ReactNativeJS: 'E8B', '+734ms', 'APPSTATE', 'active'
+ 8054  8081 I ReactNativeJS: 'E8B', '+899ms', 'BRIGHT', 'appstate-background', 'get=', 0.3976377844810486, 'system=', 0.3976377844810486, 'usingSystem=', false
+ 8054  8081 I ReactNativeJS: 'E8B', '+899ms', 'BRIGHT', '2-after-set-1', 'get=', 1, 'system=', 0.3976377844810486, 'usingSystem=', false
+ 8054  8081 I ReactNativeJS: 'E8B', '+899ms', 'BRIGHT', 'appstate-active', 'get=', 1, 'system=', 0.3976377844810486, 'usingSystem=', false
+ 8054  8081 I ReactNativeJS: 'E8B', '+4922ms', 'BRIGHT', '3-before-restore', 'get=', 1, 'system=', 0.3976377844810486, 'usingSystem=', false
+ 8054  8081 I ReactNativeJS: 'E8B', '+4923ms', 'BRIGHT', '4-after-restore', 'get=', 0.3976377844810486, 'system=', 0.3976377844810486, 'usingSystem=', true
+ 8054  8081 I ReactNativeJS: 'E8B', '+23764ms', 'BRIGHT', 'btn-max', 'get=', 1, 'system=', 0.3976377844810486, 'usingSystem=', false
+ 8054  8081 I ReactNativeJS: 'E8B', '+25878ms', 'APPSTATE', 'background'
+ 8054  8081 I ReactNativeJS: 'E8B', '+25879ms', 'BRIGHT', 'appstate-background', 'get=', 1, 'system=', 0.3976377844810486, 'usingSystem=', false
+ 8054  8081 I ReactNativeJS: 'E8B', '+28996ms', 'APPSTATE', 'active'
+ 8054  8081 I ReactNativeJS: 'E8B', '+29034ms', 'BRIGHT', 'appstate-active', 'get=', 1, 'system=', 0.3976377844810486, 'usingSystem=', false
+ 8054  8081 I ReactNativeJS: 'E8B', '+32094ms', 'BRIGHT', 'btn-restore', 'get=', 0.3976377844810486, 'system=', 0.3976377844810486, 'usingSystem=', true
+ 8054  8081 I ReactNativeJS: 'E8B', '+34261ms', 'BRIGHT', 'btn-max', 'get=', 1, 'system=', 0.3976377844810486, 'usingSystem=', false

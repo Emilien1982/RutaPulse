@@ -1,0 +1,8 @@
+== 0 depart (fenetre de l'app sans reglage):   Display Brightness=0.3976378 | réglage système: 102
+== 1 apres MAX (setBrightnessAsync(1)):   Display Brightness=1.0 | réglage système: 102
+== 2 app en arriere-plan (HOME):   Display Brightness=0.3976378 | réglage système: 102
+Warning: Activity not started, its current task has been brought to the front
+== 3 retour au premier plan:   Display Brightness=1.0 | réglage système: 102
+== 4 apres RENDRE (restoreSystemBrightnessAsync):   Display Brightness=0.3976378 | réglage système: 102
+== 5 MAX de nouveau:   Display Brightness=1.0 | réglage système: 102
+== 6 app fermee de force:   Display Brightness=0.3976378 | réglage système: 102
