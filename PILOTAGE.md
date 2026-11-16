@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-16 — Nouvelle session de pilotage : `local_d494a558-d4db-4909-a30e-ca4e7c02a077` (passation après la phase 8a). C'est l'adresse à donner dans les briefs de phase.
 - 2026-11-16 — Phase 8a fusionnée dans main (5eeefbd) : « Démarrer le suivi », écran de suivi (directions par `trace_route`, panneau jaune sous 100 m, carte orientée, partie roulée en gris, écart au tracé sans alerte), écran allumé, pause en arrière-plan, « Terminer », arrivée (30 m, 90 % du tracé, au moins 100 m roulés) et « Sortie terminée » aux chiffres réels. 12 critères tenus, 2 avec réserve (C2 : listes relues par le pilotage, sans direction absurde ; C12 : maximum par position mesuré en Node seulement). 2 902 tests, 280 pytest, CI verte (run 43911979218). ADR 0021.
 - 2026-11-16 — README du dépôt écrit à la demande d'Émilien (vitrine pour sa recherche d'emploi) : app, points techniques, méthode agentique avec Claude, état d'avancement, 4 captures iOS dans `docs/readme/`. À tenir à jour à chaque fusion (tableau d'avancement et chiffres).
 - 2026-11-16 — Place du Mac : les copies locales Time Machine (une par heure, disque de sauvegarde non branché) gardent les fichiers effacés et font tomber la place d'environ 1 Go par heure pendant une phase. Le garde-fou refuse de les effacer sans un accord d'Émilien donné pour cette fois ; il a accepté deux fois (« sauf la plus récente », puis « toutes »). Passer de 11 à 88 Go a demandé de les effacer toutes.
