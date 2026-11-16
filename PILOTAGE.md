@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-16 — Phase 8b, T1 : complément de l'ADR 0021 (§ 8 à 12) et maquettes 90, 30 et 31b validés par Émilien, avec les recommandations : flèche de cap et halo aussi sur le point de l'écran de suivi ; hors zone à 10 km ou moins, « Recentrer » refait le cadrage position + bord. Écart iOS accepté : app fermée de force sur « Maximum », l'écran reste au maximum jusqu'au verrouillage.
 - 2026-11-16 — Spec de la phase 8b ([p08b-suivi-velo-finitions.md](docs/phases/p08b-suivi-velo-finitions.md), taille P) validée par Émilien, avec les choix du pilotage. Phase lancée le même jour.
 - 2026-11-16 — Nouvelle session de pilotage : `local_d494a558-d4db-4909-a30e-ca4e7c02a077` (passation après la phase 8a). C'est l'adresse à donner dans les briefs de phase.
 - 2026-11-16 — Phase 8a fusionnée dans main (5eeefbd) : « Démarrer le suivi », écran de suivi (directions par `trace_route`, panneau jaune sous 100 m, carte orientée, partie roulée en gris, écart au tracé sans alerte), écran allumé, pause en arrière-plan, « Terminer », arrivée (30 m, 90 % du tracé, au moins 100 m roulés) et « Sortie terminée » aux chiffres réels. 12 critères tenus, 2 avec réserve (C2 : listes relues par le pilotage, sans direction absurde ; C12 : maximum par position mesuré en Node seulement). 2 902 tests, 280 pytest, CI verte (run 43911979218). ADR 0021.
