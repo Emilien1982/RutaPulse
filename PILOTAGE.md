@@ -24,10 +24,14 @@
 | 1 | Bonnes pratiques agentiques → [docs/01](docs/01-bonnes-pratiques-agentiques.md) | ✅ validé |
 | 2 | Configuration agentique → [docs/02](docs/02-configuration-agentique.md) | ✅ fait, épreuve réussie |
 | 3 | Cadrage produit → [docs/03](docs/03-cadrage-produit.md), puis architecture, design, découpage | 🔧 cadrage et architecture validés → [docs/04](docs/04-architecture.md) ; essai 1 ✅ ([résultats](docs/essais/01-calcul-hors-ligne.md)), essais 1, 2 et 3 ✅ ([résultats](docs/essais/)) ; maquettes et découpage proposés |
-| 4+ | Développement en 10 phases (la 9 passe en V2) → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 ✅ ([résultats](docs/phases/p06-mes-itineraires-gpx-resultats.md)) ; phase 7 ✅ ([résultats](docs/phases/p07-circuits-balises-resultats.md)) ; phase 8a en cours (suivi sur le vélo), puis 8b ; phase 9 passée en V2 ; puis phase 10 |
+| 4+ | Développement en 10 phases (la 9 passe en V2) → [docs/05](docs/05-decoupage-v1.md) | phase 0 ✅ ([résultats](docs/phases/p00-socle-resultats.md)) ; phase 1 ✅ ([résultats](docs/phases/p01-fabrique-zones-resultats.md)) ; phase 2 ✅ ([résultats](docs/phases/p02-carte-hors-ligne-resultats.md)) ; phase 3 ✅ ([résultats](docs/phases/p03-module-calcul-resultats.md)) ; phase 4 ✅ ([résultats](docs/phases/p04-creer-modifier-itineraire-resultats.md)) ; phase 5 ✅ ([résultats](docs/phases/p05-infos-itineraire-resultats.md)) ; phase 5b ✅ ([résultats](docs/phases/p05b-difficulte-maj-zones-resultats.md)) ; phase 6 ✅ ([résultats](docs/phases/p06-mes-itineraires-gpx-resultats.md)) ; phase 7 ✅ ([résultats](docs/phases/p07-circuits-balises-resultats.md)) ; phase 8a ✅ ([résultats](docs/phases/p08a-suivi-velo-resultats.md)) ; phase 8b à spécifier ; phase 9 passée en V2 ; puis phase 10 |
 
 ## Décisions prises
 
+- 2026-11-16 — Phase 8a fusionnée dans main (5eeefbd) : « Démarrer le suivi », écran de suivi (directions par `trace_route`, panneau jaune sous 100 m, carte orientée, partie roulée en gris, écart au tracé sans alerte), écran allumé, pause en arrière-plan, « Terminer », arrivée (30 m, 90 % du tracé, au moins 100 m roulés) et « Sortie terminée » aux chiffres réels. 12 critères tenus, 2 avec réserve (C2 : listes relues par le pilotage, sans direction absurde ; C12 : maximum par position mesuré en Node seulement). 2 902 tests, 280 pytest, CI verte (run 43911979218). ADR 0021.
+- 2026-11-16 — README du dépôt écrit à la demande d'Émilien (vitrine pour sa recherche d'emploi) : app, points techniques, méthode agentique avec Claude, état d'avancement, 4 captures iOS dans `docs/readme/`. À tenir à jour à chaque fusion (tableau d'avancement et chiffres).
+- 2026-11-16 — Place du Mac : les copies locales Time Machine (une par heure, disque de sauvegarde non branché) gardent les fichiers effacés et font tomber la place d'environ 1 Go par heure pendant une phase. Le garde-fou refuse de les effacer sans un accord d'Émilien donné pour cette fois ; il a accepté deux fois (« sauf la plus récente », puis « toutes »). Passer de 11 à 88 Go a demandé de les effacer toutes.
+- 2026-11-14 — Émilien lève la réserve de quota un samedi après-midi (pas de veille avant le renouvellement) : la phase peut aller jusqu'au bout du quota.
 - 2026-11-10 — Incident phase 8a : `npx expo run:android` a ignoré `ANDROID_SERIAL=emulator-5584` et installé l'APK de l'essai (écran /essai) sur le téléphone réel d'Émilien (R5CR21B1KDW, 10 nov. 13 h 43). Règle : tant qu'un téléphone est branché, jamais `expo run:android` ; construire par `./gradlew app:assembleRelease` puis `adb -s emulator-5584 install -r`. Émilien doit réinstaller ou désinstaller l'app sur son téléphone.
 - 2026-11-10 — Place du Mac : `df` montrait 11 Go libres, le Finder 89 Go. L'écart venait de 18 copies locales Time Machine (une par heure), qui gardaient DerivedData effacé. Sur l'idée d'Émilien, les 17 plus vieilles ont été effacées une par une (`tmutil deletelocalsnapshots <date>`) : 61 Go libres. À refaire de la même façon si `df` et le Finder divergent.
 - 2026-11-10 — Phase 8a, T1 : ADR 0021 (suivi sur le vélo) et maquette 30 complétée validés par Émilien, avec les 11 recommandations : directions par `trace_route` (map_snap), morceau mal recalé = « Suivez le tracé » ; suivi perdu si le système ferme l'app (sauvegarde en V2) ; GPX hors zones suivable (fond uni, D+ « — ») ; « Terminer » avant 100 m = pas de résumé ; départ loin du tracé = guidage à vol d'oiseau. Partie B de l'essai (simulateurs) en attente de place (13 Go libres).
@@ -114,15 +118,49 @@
 - Android : arrêt d'environ 0,2 s du fil JavaScript au démarrage (dû au démarrage de l'app sur l'émulateur ; petit effet du moteur non exclu). Mémoire du moteur.
 - Consommation de batterie (écran allumé et verrouillé).
 - Précision du GPS en forêt.
+- Suivi (phase 8a) : temps maximal de traitement d'une position sur l'appareil ; un vrai GPX VTT (part sans direction sous 10 %) ; position ancienne au départ du suivi.
 - Glisser un point : confort de l'appui long ; fluidité sur Android (jusqu'à 71 ms d'arrêt sur l'émulateur, pour 100 ms permis) ; double appui pour zoomer.
 - Live Activity iOS avec un compte Apple gratuit (signature : 2 identifiants + App Group, sans push).
 - Suivi verrouillé sur batterie : mode Doze et économies d'énergie des fabricants ; notification visible sur l'écran verrouillé (canal de faible importance).
 
 ## Prochaine étape
 
-Écrire la spec de la phase 8 (suivi sur le vélo, docs/05 ligne 8), la faire valider par Émilien, puis la lancer. Avant : trancher le trait de liaison (distance et GPX), le cadrage hors zone et les états de la maquette 90 (voir « Points connus »).
+Écrire la spec de la phase 8b (luminosité C9, onglet Carte C10 : flèche de cap, halo, états du recentrage, cadrage hors zone ; trait de liaison C11 ; voir `docs/phases/p08-suivi-velo.md`, « Découpage en 8a et 8b »), la faire valider par Émilien, puis la lancer. Y ajouter les deux remarques du testeur de la 8a (« Arrivée 10 m » contre « Reste 0 m » ; pointillés de l'écart qui se serrent pendant un recadrage). Puis la phase 10, à commencer par l'APK Android et l'installation iOS pour un premier essai réel.
 
-## Passation du pilotage (10 novembre 2026)
+## Passation du pilotage (16 novembre 2026)
+
+La session de pilotage du 10 au 16 novembre (`local_b89c76a2-43a1-4417-8c81-ac486e333c4d`)
+passe la main après la fusion de la phase 8a, comme le veut la règle d'Émilien.
+
+**État exact**
+- `main` à jour et poussé : phases 0 à 8a fusionnées, README écrit. Rien en cours.
+- Worktree de la phase 8a (`.claude/worktrees/phase-8a-suivi-velo-7c0055`, environ 8 Go) gardé comme
+  trace ; tout est poussé. À retirer si la place manque. Branche jetable locale `claude/p08a-essai`,
+  jamais poussée, à ne pas fusionner.
+- Place libre : environ 88 Go le 16 novembre au soir, mais elle fond pendant une phase (copies
+  Time Machine horaires) : surveiller `df -h /` à chaque réveil et demander l'accord d'Émilien tôt.
+- Quota de la semaine : environ 20 % le lundi 16 au soir (renouvellement le lundi 23 à 7 h).
+  La phase 8a a pris environ 45 points sur la semaine du 10 (avec une longue pause de quota),
+  puis environ 15 points le 16.
+- Simulateurs : release finale de la 8a (b5c9ee0), zone Nancy v6. **Émulateur Android :
+  `emulator-5584`**. Le téléphone Android réel d'Émilien (R5CR21B1KDW) est souvent branché.
+
+**Leçons de la phase 8a**
+- **Jamais `npx expo run:android` quand un téléphone est branché** : il a ignoré
+  `ANDROID_SERIAL` et installé l'app d'essai sur le téléphone d'Émilien. Construire par
+  `./gradlew app:assembleRelease`, puis `adb -s emulator-5584 install -r`.
+- Les sessions de phase s'arrêtent souvent en fin de tour en attendant le pilotage, même sans
+  question : leur dire « continue sans attendre de réponse ; ne m'écris qu'à la fin, à un arrêt
+  ou pour une question ».
+- Le garde-fou a refusé une fois un simple message de relance après un effacement ; Émilien a dû
+  écrire « relance la phase 8a ». Un refus s'arrête là : lui demander.
+- Les réveils (`CronCreate`) survivent au redémarrage de Claude Desktop, mais pas à la fermeture
+  de la session. Le réveil horaire expire après 7 jours : le recréer avant.
+- Sur l'émulateur Android, une position ancienne répétée et datée « maintenant » fausse la
+  distance : propre à l'émulateur, à revérifier sur un vrai téléphone (phase 10). Avant
+  « Démarrer le suivi » dans un test, placer l'émulateur au départ (`geo fix`).
+
+## Passation du pilotage (10 novembre 2026, archive)
 
 La session de pilotage du 9 au 10 novembre (`local_1ea128ca-dd2d-45af-b97e-66ec21c85b89`)
 passe la main après la fusion de la phase 7, comme le veut la règle d'Émilien.
