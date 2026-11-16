@@ -2,8 +2,9 @@
 
 - Statut : accepté pour la phase 8a (validé par Émilien le 10 novembre
   2026, avec les recommandations des 3 questions ci-dessous et des 8
-  questions de la maquette 30). **Complément 8b (§ 8 à § 12) proposé, à
-  valider par Émilien.**
+  questions de la maquette 30). **Complément 8b (§ 8 à § 12) accepté** (validé par Émilien le 16
+  novembre 2026, avec l'écart iOS de la luminosité et la réponse « oui »
+  aux deux questions du complément).
 - Date : 2026-11-10 (phase 8a, tâche T1 de [p08-suivi-velo](../phases/p08-suivi-velo.md)) ;
   complément le 2026-11-16 (phase 8b, tâche T1 de
   [p08b-suivi-velo-finitions](../phases/p08b-suivi-velo-finitions.md))
@@ -1115,6 +1116,10 @@ flèche, le halo, « suit ma position » puis repos au geste, le cadrage
 l'onglet Carte, méthode de `ouverture-zoom.txt`).
 
 ### Questions pour Émilien (complément 8b)
+
+**Tranchées le 16 novembre 2026 : (a) oui, (b) oui.** Le point de
+l'écran de suivi prend la flèche et le halo en 8b (T3). Hors de la zone
+à 10 km ou moins, « Recentrer » refait le cadrage commun.
 
 Deux questions du designer (maquette 90, « Questions »), portées par le
 pilotage. L'architecture permet les deux réponses ; voici ce que chacune
