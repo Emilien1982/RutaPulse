@@ -6,7 +6,7 @@ export const ERR_ZONE_UNREADABLE = 'ERR_ZONE_UNREADABLE';
 export const ERR_ENGINE = 'ERR_ENGINE';
 
 // Valhalla JSON passes through as plain strings, in both directions. When
-// Valhalla refuses a request, route(), height() and traceAttributes() still
+// Valhalla refuses a request, route(), height(), traceAttributes() and traceRoute() still
 // resolve, with {"code","message"}. height() and traceAttributes() are the raw
 // versions (ADR 0017, section 1): the typed height() cannot return null.
 type ValhallaRouteModule = {
@@ -15,6 +15,7 @@ type ValhallaRouteModule = {
   route(requestJson: string): Promise<string>;
   height(requestJson: string): Promise<string>;
   traceAttributes(requestJson: string): Promise<string>;
+  traceRoute(requestJson: string): Promise<string>;
 };
 
 export default requireNativeModule<ValhallaRouteModule>('ValhallaRoute');

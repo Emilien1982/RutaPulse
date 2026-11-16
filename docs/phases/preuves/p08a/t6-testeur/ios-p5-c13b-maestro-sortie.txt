@@ -1,0 +1,26 @@
+fr.rutapulse.app: 33882
+replay pid 33903
+Parsed 27 waypoints
+Running on iPhone 17 - iOS 26.5 - DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D
+ > Flow p08a-suivi-terminer-ios
+Tap on "Itinéraires.*"... COMPLETED
+Scrolling DOWN until "Itinéraire du 4 nov.*" is visible with speed 40, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Tap on "Itinéraire du 4 nov.*"... COMPLETED
+Assert that id: info-start is visible... COMPLETED
+Tap on id: info-start... COMPLETED
+Assert that id: tracking-panel is visible... COMPLETED
+Assert that "Reste.*" is visible... COMPLETED
+Assert that ".*6[0-9][0-9].*", id: tracking-remaining is visible... COMPLETED
+Assert that ".*[2-4][0-9][0-9].*", id: tracking-remaining is visible... COMPLETED
+Take screenshot ios-p5-c13b-01-avant-terminer... COMPLETED
+Tap on id: tracking-finish... COMPLETED
+Assert that "Terminer la sortie.*" is visible... COMPLETED
+Take screenshot ios-p5-c13b-02-boite... COMPLETED
+Tap on point (68%,57%)... COMPLETED
+Assert that id: ride-end is visible... COMPLETED
+Assert that "SORTIE TERMINÉE" is visible... COMPLETED
+Assert that id: ride-distance is visible... COMPLETED
+Take screenshot ios-p5-c13b-03-sortie-terminee... COMPLETED
+Tap on id: ride-close... COMPLETED
+Assert that id: info-start is visible... COMPLETED
+Take screenshot ios-p5-c13b-04-apres-fermer... COMPLETED

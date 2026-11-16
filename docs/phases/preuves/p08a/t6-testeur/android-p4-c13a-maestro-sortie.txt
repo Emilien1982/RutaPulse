@@ -1,0 +1,29 @@
+Running on Pixel_6_API_34_arm64_e3
+ > Flow p08a-suivi-arrivee
+Launch app "fr.rutapulse.app"... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Tap on "Itinéraires"... COMPLETED
+Assert that "Petite Suisse Lorraine à VTT \(3\)" is visible... COMPLETED
+Tap on "Petite Suisse Lorraine à VTT \(3\)"... COMPLETED
+Assert that id: info-start is visible... COMPLETED
+Take screenshot android-p4-c13a-01-infos... COMPLETED
+Tap on id: info-start... COMPLETED
+Assert that id: tracking-panel is visible... COMPLETED
+Assert that "Reste" is visible... COMPLETED
+Assert that ".*34,9.*", id: tracking-remaining is visible... COMPLETED
+Take screenshot android-p4-c13a-02-depart... COMPLETED
+Assert that ".*Tournez à gauche.*", id: tracking-instruction is visible... COMPLETED
+Take screenshot android-p4-c13a-03-direction-changee... COMPLETED
+Assert that ".*jusqu.au tracé.*" is visible... COMPLETED
+Assert that "Le guidage reprend sur le tracé.*" is visible... COMPLETED
+Take screenshot android-p4-c13a-04-ecart... COMPLETED
+Assert that ".*jusqu.au tracé.*" is not visible... COMPLETED
+Assert that id: tracking-instruction is visible... COMPLETED
+Take screenshot android-p4-c13a-05-retour-sur-le-trace... COMPLETED
+Assert that id: ride-end is visible... COMPLETED
+Assert that "ARRIVÉE.*" is visible... COMPLETED
+Take screenshot android-p4-c13a-06-arrivee... COMPLETED
+Tap on id: ride-close... COMPLETED
+Assert that id: info-start is visible... COMPLETED
+Take screenshot android-p4-c13a-07-apres-fermer... COMPLETED
+exit 0

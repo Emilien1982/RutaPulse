@@ -1,0 +1,3 @@
+1 stretches of the GPX more than 20 m from the matched path
+  from km 34.56, length 741 m, max gap 284 m, at (48.901848, 6.049505)
+u-turn #20 at km 16.31 (48.83756, 5.959508): before: Tournez tout de suite à droite. (493 m); this: Faites demi-tour à droite. (5 m); after: Tournez à gauche.

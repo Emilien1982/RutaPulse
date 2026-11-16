@@ -1,0 +1,68 @@
+# C13 (phase 8a), parcours 2 : « Terminer » avant l'arrivée.
+# Ouvrir « Petite Suisse Lorraine à VTT (3) », démarrer le suivi, voir la
+# direction changer, « Terminer » (boîte de confirmation), « Sortie
+# terminée », « Fermer ».
+# Prérequis : les mêmes que p08a-suivi-arrivee.yaml (mode avion, geo fix du
+# départ, rejeu à côté). Une trace de 60 positions immobiles puis 80 positions
+# du circuit suffit.
+# Pas de boucle ni de « repeat » : seulement des attentes (extendedWaitUntil).
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- tapOn: 'Itinéraires'
+- extendedWaitUntil:
+    visible: 'Petite Suisse Lorraine à VTT \(3\)'
+    timeout: 15000
+- tapOn: 'Petite Suisse Lorraine à VTT \(3\)'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- tapOn:
+    id: 'info-start'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-panel'
+    timeout: 20000
+- assertVisible: 'Reste'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-instruction'
+      text: '.*Tournez à gauche.*'
+    timeout: 240000
+# Quelques secondes de plus : plus de 100 m roulés, donc un résumé.
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-remaining'
+      text: '.*34,[0-4].*'
+    timeout: 120000
+- takeScreenshot: android-p4-c13b-01-avant-terminer
+- tapOn:
+    id: 'tracking-finish'
+- extendedWaitUntil:
+    visible: 'Terminer la sortie.*'
+    timeout: 10000
+- takeScreenshot: android-p4-c13b-02-boite
+- tapOn:
+    id: 'android:id/button1'
+- extendedWaitUntil:
+    visible:
+      id: 'ride-end'
+    timeout: 10000
+- assertVisible: 'SORTIE TERMINÉE'
+- assertVisible:
+    id: 'ride-distance'
+- takeScreenshot: android-p4-c13b-03-sortie-terminee
+- tapOn:
+    id: 'ride-close'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- takeScreenshot: android-p4-c13b-04-apres-fermer

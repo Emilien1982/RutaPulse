@@ -1,0 +1,1034 @@
+1794314528395 permission {"status":"granted","canAskAgain":true,"ios":{"scope":"whenInUse","accuracy":"full"},"expires":"never","granted":true}
+1794314528410 REGION will user= false animated= false
+1794314528410 REGION did user= false animated= false bearing 0.0 zoom 8.00 center 0.00000,0.00000
+1794314528410 REGION will user= false animated= false
+1794314528410 REGION did user= false animated= false bearing 0.0 zoom 8.70 center 6.18000,48.69550
+1794314528412 POS 1 48.727358 5.978104 heading -1 speed -1 acc 5 ts 1794314527943.234 mocked true
+1794314539622 follow -> true
+1794314540538 CAM easeTo 1 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314540539 REGION will user= false animated= true
+1794314541539 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314541555 CAM easeTo 2 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314541557 REGION will user= false animated= true
+1794314542557 CAM easeTo 3 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314542557 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314542557 REGION will user= false animated= true
+1794314543572 CAM easeTo 4 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314543573 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314543573 REGION will user= false animated= true
+1794314544574 CAM easeTo 5 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314544578 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314544579 REGION will user= false animated= true
+1794314545590 CAM easeTo 6 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314545594 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314545594 REGION will user= false animated= true
+1794314546590 CAM easeTo 7 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314546594 REGION will user= false animated= true
+1794314547607 CAM easeTo 8 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314547612 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314547612 REGION will user= false animated= true
+1794314548623 CAM easeTo 9 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314548628 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314548628 REGION will user= false animated= true
+1794314549624 CAM easeTo 10 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314549628 REGION will user= false animated= true
+1794314550640 CAM easeTo 11 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314550645 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314550645 REGION will user= false animated= true
+1794314551657 CAM easeTo 12 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314551660 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314551660 REGION will user= false animated= true
+1794314552661 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314552673 CAM easeTo 13 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314552677 REGION will user= false animated= true
+1794314553688 CAM easeTo 14 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314553693 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314553693 REGION will user= false animated= true
+1794314554688 CAM easeTo 15 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314554693 REGION will user= false animated= true
+1794314555690 CAM easeTo 16 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314555694 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314555694 REGION will user= false animated= true
+1794314556705 CAM easeTo 17 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314556710 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314556710 REGION will user= false animated= true
+1794314557707 CAM easeTo 18 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314557711 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314557711 REGION will user= false animated= true
+1794314558724 CAM easeTo 19 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314558728 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314558728 REGION will user= false animated= true
+1794314559740 CAM easeTo 20 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314559744 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314559744 REGION will user= false animated= true
+1794314560757 CAM easeTo 21 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314560761 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314560761 REGION will user= false animated= true
+1794314561773 CAM easeTo 22 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314561775 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314561775 REGION will user= false animated= true
+1794314562774 CAM easeTo 23 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314562778 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314562778 REGION will user= false animated= true
+1794314563790 CAM easeTo 24 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314563793 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314563793 REGION will user= false animated= true
+1794314564795 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314564807 CAM easeTo 25 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314564811 REGION will user= false animated= true
+1794314565824 CAM easeTo 26 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314565828 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314565828 REGION will user= false animated= true
+1794314566840 CAM easeTo 27 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314566845 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314566845 REGION will user= false animated= true
+1794314567857 CAM easeTo 28 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314567862 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314567862 REGION will user= false animated= true
+1794314568874 CAM easeTo 29 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314568878 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314568878 REGION will user= false animated= true
+1794314569890 CAM easeTo 30 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314569895 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314569895 REGION will user= false animated= true
+1794314570907 CAM easeTo 31 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314570911 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314570911 REGION will user= false animated= true
+1794314571923 CAM easeTo 32 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314571925 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314571925 REGION will user= false animated= true
+1794314572924 CAM easeTo 33 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314572927 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314572928 REGION will user= false animated= true
+1794314573940 CAM easeTo 34 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314573943 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314573943 REGION will user= false animated= true
+1794314574955 CAM easeTo 35 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314574959 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314574960 REGION will user= false animated= true
+1794314575957 CAM easeTo 36 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314575962 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314575962 REGION will user= false animated= true
+1794314576974 CAM easeTo 37 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314576978 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314576978 REGION will user= false animated= true
+1794314577990 CAM easeTo 38 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314577995 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314577995 REGION will user= false animated= true
+1794314578605 POS 2 48.727358 5.978104 heading 157.67134362227705 speed 4 acc 5 ts 1794314578599.037 mocked true
+1794314579005 CAM easeTo 39 {"center":[5.978104,48.727358],"bearing":0,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314579009 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314579009 REGION will user= false animated= true
+1794314579616 POS 3 48.727324 5.978125 heading 157.67134362227705 speed 4 acc 5 ts 1794314579608.378 mocked true
+1794314580022 CAM easeTo 40 {"center":[5.978124837900911,48.72732443437329],"bearing":157.73023101031208,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314580028 REGION did user= false animated= true bearing 0.0 zoom 16.00 center 5.97810,48.72736
+1794314580028 REGION will user= false animated= true
+1794314580616 POS 4 48.727291 5.978143 heading 160.2895649288137 speed 4 acc 5 ts 1794314580610.698 mocked true
+1794314581039 CAM easeTo 41 {"center":[5.97814318506931,48.727290553502165],"bearing":160.3427504752717,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314581043 REGION did user= false animated= true bearing 157.7 zoom 16.00 center 5.97812,48.72732
+1794314581043 REGION will user= false animated= true
+1794314581620 POS 5 48.727256 5.978159 heading 163.48448173604584 speed 4 acc 5 ts 1794314581613.2322 mocked true
+1794314582055 CAM easeTo 42 {"center":[5.978158677147306,48.727255987140246],"bearing":163.53012102578805,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314582057 REGION did user= false animated= true bearing 160.3 zoom 16.00 center 5.97814,48.72729
+1794314582057 REGION will user= false animated= true
+1794314582626 POS 6 48.727220 5.978170 heading 167.75361526170303 speed 4 acc 5 ts 1794314582623.6338 mocked true
+1794314583055 CAM easeTo 43 {"center":[5.9781703261331876,48.72722048140571],"bearing":167.78831487554874,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314583060 REGION did user= false animated= true bearing 163.5 zoom 16.00 center 5.97816,48.72726
+1794314583060 REGION will user= false animated= true
+1794314583635 POS 7 48.727190 5.978173 heading 172.59627114735096 speed 4 acc 5 ts 1794314583633.781 mocked true
+1794314584072 CAM easeTo 44 {"center":[5.978173,48.72719],"bearing":176.6882791902741,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314584074 REGION did user= false animated= true bearing 167.8 zoom 16.00 center 5.97817,48.72722
+1794314584074 REGION will user= false animated= true
+1794314584645 POS 8 48.727154 5.978180 heading 172.59627114735096 speed 4 acc 5 ts 1794314584641.9011 mocked true
+1794314585072 CAM easeTo 45 {"center":[5.9781800617902645,48.72715404652718],"bearing":172.61765070424167,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314585076 REGION did user= false animated= true bearing 176.7 zoom 16.00 center 5.97817,48.72719
+1794314585076 REGION will user= false animated= true
+1794314585646 POS 9 48.727118 5.978186 heading 173.5529441841305 speed 4 acc 5 ts 1794314585643.42 mocked true
+1794314586089 CAM easeTo 46 {"center":[5.978186174800379,48.727118256784564],"bearing":173.57160678764933,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314586093 REGION did user= false animated= true bearing 172.6 zoom 16.00 center 5.97818,48.72715
+1794314586093 REGION will user= false animated= true
+1794314586659 POS 10 48.727082 5.978191 heading 174.66717570723998 speed 4 acc 5 ts 1794314586653.774 mocked true
+1794314587105 CAM easeTo 47 {"center":[5.9781912791068095,48.72708208032552],"bearing":174.68265022969695,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314587110 REGION did user= false animated= true bearing 173.6 zoom 16.00 center 5.97819,48.72712
+1794314587110 REGION will user= false animated= true
+1794314587663 POS 11 48.727046 5.978195 heading 176.09053158382605 speed 4 acc 5 ts 1794314587660.0662 mocked true
+1794314588122 CAM easeTo 48 {"center":[5.978195008708377,48.72704597483577],"bearing":176.10190336287053,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314588126 REGION did user= false animated= true bearing 174.7 zoom 16.00 center 5.97819,48.72708
+1794314588127 REGION will user= false animated= true
+1794314588674 POS 12 48.727013 5.978196 heading 188.89042325706157 speed 4 acc 5 ts 1794314588670.37 mocked true
+1794314589139 CAM easeTo 49 {"center":[5.978196,48.727013],"bearing":178.86395283098966,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314589143 REGION did user= false animated= true bearing 176.1 zoom 16.00 center 5.97820,48.72705
+1794314589143 REGION will user= false animated= true
+1794314589684 POS 13 48.726977 5.978188 heading 188.89042325706157 speed 4 acc 5 ts 1794314589680.5479 mocked true
+1794314590155 CAM easeTo 50 {"center":[5.9781875129952775,48.726977105323435],"bearing":188.8649074384881,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314590160 REGION did user= false animated= true bearing 178.9 zoom 16.00 center 5.97820,48.72701
+1794314590160 REGION will user= false animated= true
+1794314590693 POS 14 48.726941 5.978180 heading 187.7646286929445 speed 4 acc 5 ts 1794314590690.786 mocked true
+1794314591172 CAM easeTo 51 {"center":[5.978180093468804,48.726941106472395],"bearing":187.74226428326372,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314591176 REGION did user= false animated= true bearing 188.9 zoom 16.00 center 5.97819,48.72698
+1794314591176 REGION will user= false animated= true
+1794314591703 POS 15 48.726905 5.978174 heading 186.44202402143821 speed 4 acc 5 ts 1794314591701.1099 mocked true
+1794314592188 CAM easeTo 52 {"center":[5.978173931790533,48.72690500337639],"bearing":186.42340274888318,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314592190 REGION did user= false animated= true bearing 187.7 zoom 16.00 center 5.97818,48.72694
+1794314592190 REGION will user= false animated= true
+1794314592714 POS 16 48.726869 5.978169 heading 184.77553595705132 speed 4 acc 5 ts 1794314592709.316 mocked true
+1794314593189 CAM easeTo 53 {"center":[5.97816936899428,48.726868870305616],"bearing":184.76168281474733,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314593193 REGION did user= false animated= true bearing 186.4 zoom 16.00 center 5.97817,48.72691
+1794314593193 REGION will user= false animated= true
+1794314593722 POS 17 48.726834 5.978168 heading 176.8024422261935 speed 4 acc 5 ts 1794314593719.63 mocked true
+1794314594205 CAM easeTo 54 {"center":[5.978168,48.726834],"bearing":181.48349077198552,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314594207 REGION did user= false animated= true bearing 184.8 zoom 16.00 center 5.97817,48.72687
+1794314594207 REGION will user= false animated= true
+1794314594726 POS 18 48.726798 5.978171 heading 176.8024422261935 speed 4 acc 5 ts 1794314594722.363 mocked true
+1794314595205 CAM easeTo 55 {"center":[5.978171040261911,48.72679799650757],"bearing":176.81173705420065,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314595210 REGION did user= false animated= true bearing 181.5 zoom 16.00 center 5.97817,48.72683
+1794314595210 REGION will user= false animated= true
+1794314595735 POS 19 48.726762 5.978174 heading 177.21357392527688 speed 4 acc 5 ts 1794314595732.6711 mocked true
+1794314596222 CAM easeTo 56 {"center":[5.978173710072512,48.72676170595439],"bearing":177.22167568468262,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314596226 REGION did user= false animated= true bearing 176.8 zoom 16.00 center 5.97817,48.72680
+1794314596226 REGION will user= false animated= true
+1794314596743 POS 20 48.726725 5.978176 heading 177.69776257604323 speed 4 acc 5 ts 1794314596741.0068 mocked true
+1794314597238 CAM easeTo 57 {"center":[5.978175912036541,48.726725470849395],"bearing":177.70445820331918,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314597240 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314597240 REGION will user= false animated= true
+1794314597753 POS 21 48.726689 5.978178 heading 178.30289393778116 speed 4 acc 5 ts 1794314597751.2388 mocked true
+1794314598239 CAM easeTo 58 {"center":[5.9781775384972,48.72668915378164],"bearing":178.30783084906193,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314598242 REGION did user= false animated= true bearing 177.7 zoom 16.00 center 5.97818,48.72673
+1794314598242 REGION will user= false animated= true
+1794314598764 POS 22 48.726655 5.978178 heading 176.48345250351264 speed 4 acc 5 ts 1794314598761.52 mocked true
+1794314599255 CAM easeTo 59 {"center":[5.978178,48.726655],"bearing":179.48930498374864,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314599260 REGION did user= false animated= true bearing 178.3 zoom 16.00 center 5.97818,48.72669
+1794314599260 REGION will user= false animated= true
+1794314599776 POS 23 48.726619 5.978181 heading 176.48345250351264 speed 4 acc 5 ts 1794314599771.893 mocked true
+1794314600272 CAM easeTo 60 {"center":[5.978181368614863,48.726618734613744],"bearing":176.4936576913284,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314600276 REGION did user= false animated= true bearing 179.5 zoom 16.00 center 5.97818,48.72665
+1794314600276 REGION will user= false animated= true
+1794314600782 POS 24 48.726583 5.978184 heading 176.93956336442554 speed 4 acc 5 ts 1794314600778.473 mocked true
+1794314601289 CAM easeTo 61 {"center":[5.978184289873251,48.7265825872603],"bearing":176.94844809987774,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314601293 REGION did user= false animated= true bearing 176.5 zoom 16.00 center 5.97818,48.72662
+1794314601293 REGION will user= false animated= true
+1794314601792 POS 25 48.726546 5.978187 heading 177.46972647467342 speed 4 acc 5 ts 1794314601788.7812 mocked true
+1794314602305 CAM easeTo 62 {"center":[5.978186714421558,48.726546289139],"bearing":177.47707468478438,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314602306 REGION did user= false animated= true bearing 176.9 zoom 16.00 center 5.97818,48.72658
+1794314602306 REGION will user= false animated= true
+1794314602803 POS 26 48.726510 5.978188 heading 178.1375803549724 speed 4 acc 5 ts 1794314602799.0579 mocked true
+1794314603305 CAM easeTo 63 {"center":[5.978188499255705,48.726509975434176],"bearing":178.14299090868724,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314603310 REGION did user= false animated= true bearing 177.5 zoom 16.00 center 5.97819,48.72655
+1794314603310 REGION will user= false animated= true
+1794314603812 POS 27 48.726476 5.978189 heading 180.63659357605144 speed 4 acc 5 ts 1794314603809.376 mocked true
+1794314604322 CAM easeTo 64 {"center":[5.978189,48.726476],"bearing":179.4429727558944,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314604323 REGION did user= false animated= true bearing 178.1 zoom 16.00 center 5.97819,48.72651
+1794314604323 REGION will user= false animated= true
+1794314604822 POS 28 48.726440 5.978188 heading 180.63659357605144 speed 4 acc 5 ts 1794314604816.7551 mocked true
+1794314605322 CAM easeTo 65 {"center":[5.978188391556264,48.72643977206873],"bearing":180.63474393414643,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314605327 REGION did user= false animated= true bearing 179.4 zoom 16.00 center 5.97819,48.72648
+1794314605327 REGION will user= false animated= true
+1794314605822 POS 29 48.726404 5.978188 heading 180.55454311801546 speed 4 acc 5 ts 1794314605817.1038 mocked true
+1794314606339 CAM easeTo 66 {"center":[5.978187865264042,48.72640379868388],"bearing":180.552932240457,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314606344 REGION did user= false animated= true bearing 180.6 zoom 16.00 center 5.97819,48.72644
+1794314606344 REGION will user= false animated= true
+1794314606826 POS 30 48.726368 5.978187 heading 180.4598842149817 speed 4 acc 5 ts 1794314606822.372 mocked true
+1794314607355 CAM easeTo 67 {"center":[5.9781874266736,48.72636764899478],"bearing":180.45854861333046,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314607359 REGION did user= false animated= true bearing 180.6 zoom 16.00 center 5.97819,48.72640
+1794314607359 REGION will user= false animated= true
+1794314607834 POS 31 48.726331 5.978187 heading 180.34119540105465 speed 4 acc 5 ts 1794314607830.2112 mocked true
+1794314608372 CAM easeTo 68 {"center":[5.978187100410376,48.72633140274704],"bearing":180.34020472233564,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314608377 REGION did user= false animated= true bearing 180.5 zoom 16.00 center 5.97819,48.72637
+1794314608377 REGION will user= false animated= true
+1794314608845 POS 32 48.726296 5.978187 heading 190.8138775138264 speed 4 acc 5 ts 1794314608840.0212 mocked true
+1794314609389 CAM easeTo 69 {"center":[5.978187,48.726296],"bearing":180.10719679568317,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314609393 REGION did user= false animated= true bearing 180.3 zoom 16.00 center 5.97819,48.72633
+1794314609393 REGION will user= false animated= true
+1794314609853 POS 33 48.726260 5.978177 heading 190.8138775138264 speed 4 acc 5 ts 1794314609850.38 mocked true
+1794314610405 CAM easeTo 70 {"center":[5.978176696317368,48.72626031266156],"bearing":190.78323026602823,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314610408 REGION did user= false animated= true bearing 180.1 zoom 16.00 center 5.97819,48.72630
+1794314610408 REGION will user= false animated= true
+1794314610861 POS 34 48.726225 5.978168 heading 189.45352404110434 speed 4 acc 5 ts 1794314610856.7148 mocked true
+1794314611422 CAM easeTo 71 {"center":[5.9781677120079815,48.726224615968654],"bearing":189.4265876304502,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314611425 REGION did user= false animated= true bearing 190.8 zoom 16.00 center 5.97818,48.72626
+1794314611425 REGION will user= false animated= true
+1794314611868 POS 35 48.726189 5.978160 heading 187.85666583700697 speed 4 acc 5 ts 1794314611864.322 mocked true
+1794314612438 CAM easeTo 72 {"center":[5.978160225417645,48.72618872253753],"bearing":187.83415869753662,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314612440 REGION did user= false animated= true bearing 189.4 zoom 16.00 center 5.97817,48.72622
+1794314612440 REGION will user= false animated= true
+1794314612881 POS 36 48.726153 5.978155 heading 185.83342358659579 speed 4 acc 5 ts 1794314612874.037 mocked true
+1794314613439 CAM easeTo 73 {"center":[5.97815464713473,48.7261526001858],"bearing":185.8166223897538,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314613444 REGION did user= false animated= true bearing 187.8 zoom 16.00 center 5.97816,48.72619
+1794314613444 REGION will user= false animated= true
+1794314613887 POS 37 48.726118 5.978153 heading 201.63088683634362 speed 4 acc 5 ts 1794314613884.2922 mocked true
+1794314614455 CAM easeTo 74 {"center":[5.978153,48.726118],"bearing":181.79866470092864,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314614457 REGION did user= false animated= true bearing 185.8 zoom 16.00 center 5.97815,48.72615
+1794314614457 REGION will user= false animated= true
+1794314614894 POS 38 48.726084 5.978133 heading 201.63088683634362 speed 4 acc 5 ts 1794314614891.57 mocked true
+1794314615455 CAM easeTo 75 {"center":[5.978132815958113,48.72608432645052],"bearing":201.57395289053306,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314615460 REGION did user= false animated= true bearing 181.8 zoom 16.00 center 5.97815,48.72612
+1794314615460 REGION will user= false animated= true
+1794314615904 POS 39 48.726050 5.978115 heading 199.18146947806162 speed 4 acc 5 ts 1794314615901.9312 mocked true
+1794314616472 CAM easeTo 76 {"center":[5.978114771571666,48.72605001015154],"bearing":199.12992608328918,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314616477 REGION did user= false animated= true bearing 201.6 zoom 16.00 center 5.97813,48.72608
+1794314616477 REGION will user= false animated= true
+1794314616914 POS 40 48.726015 5.978099 heading 196.1864302389957 speed 4 acc 5 ts 1794314616912.156 mocked true
+1794314617489 CAM easeTo 77 {"center":[5.97809946298853,48.72601511915491],"bearing":196.14197825683496,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314617492 REGION did user= false animated= true bearing 199.1 zoom 16.00 center 5.97811,48.72605
+1794314617492 REGION will user= false animated= true
+1794314617920 POS 41 48.725980 5.978088 heading 192.2665451111901 speed 4 acc 5 ts 1794314617916.588 mocked true
+1794314618505 CAM easeTo 78 {"center":[5.978087862890033,48.725979822347],"bearing":192.232084574779,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314618510 REGION did user= false animated= true bearing 196.1 zoom 16.00 center 5.97810,48.72602
+1794314618510 REGION will user= false animated= true
+1794314618921 POS 42 48.725944 5.978084 heading 207.10176409200082 speed 4 acc 5 ts 1794314618918.417 mocked true
+1794314619522 CAM easeTo 79 {"center":[5.978084,48.725944],"bearing":184.0688446125787,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314619525 REGION did user= false animated= true bearing 192.2 zoom 16.00 center 5.97809,48.72598
+1794314619525 REGION will user= false animated= true
+1794314619933 POS 43 48.725912 5.978059 heading 207.10176409200082 speed 4 acc 5 ts 1794314619928.78 mocked true
+1794314620539 CAM easeTo 80 {"center":[5.978058979765923,48.72591165541092],"bearing":207.03444769773938,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314620543 REGION did user= false animated= true bearing 184.1 zoom 16.00 center 5.97808,48.72594
+1794314620543 REGION will user= false animated= true
+1794314620935 POS 44 48.725879 5.978037 heading 204.23980037322963 speed 4 acc 5 ts 1794314620933.5088 mocked true
+1794314621555 CAM easeTo 81 {"center":[5.9780365559261694,48.72587870704067],"bearing":204.17768218586644,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314621559 REGION did user= false animated= true bearing 207.0 zoom 16.00 center 5.97806,48.72591
+1794314621559 REGION will user= false animated= true
+1794314621947 POS 45 48.725845 5.978017 heading 200.69541866350139 speed 4 acc 5 ts 1794314621943.805 mocked true
+1794314622572 CAM easeTo 82 {"center":[5.978017146230067,48.72584471606237],"bearing":200.6405820098548,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314622573 REGION did user= false animated= true bearing 204.2 zoom 16.00 center 5.97804,48.72588
+1794314622573 REGION will user= false animated= true
+1794314622948 POS 46 48.725810 5.978002 heading 195.90167102718146 speed 4 acc 5 ts 1794314622946.718 mocked true
+1794314623274 POS 47 48.727358 5.978104 heading 157.67134362227705 speed 4 acc 5 ts 1794314623272.508 mocked true
+1794314623572 CAM easeTo 83 {"center":[5.978104,48.727358],"bearing":2.483748412796558,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314623576 REGION did user= false animated= true bearing 200.6 zoom 16.00 center 5.97802,48.72584
+1794314623576 REGION will user= false animated= true
+1794314624283 POS 48 48.727325 5.978125 heading 157.67134362227705 speed 4 acc 5 ts 1794314624277.049 mocked true
+1794314624589 CAM easeTo 84 {"center":[5.978124747636805,48.72732457977043],"bearing":157.73023106759615,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314624590 REGION did user= false animated= true bearing 2.5 zoom 16.00 center 5.97810,48.72736
+1794314624590 REGION will user= false animated= true
+1794314625292 POS 49 48.727290 5.978143 heading 160.27516255589393 speed 4 acc 5 ts 1794314625287.378 mocked true
+1794314625589 CAM easeTo 85 {"center":[5.978143283232341,48.72729037801949],"bearing":160.32838058448715,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314625594 REGION did user= false animated= true bearing 157.7 zoom 16.00 center 5.97812,48.72732
+1794314625594 REGION will user= false animated= true
+1794314626294 POS 50 48.727256 5.978159 heading 163.50868842434988 speed 4 acc 5 ts 1794314626288.6692 mocked true
+1794314626605 CAM easeTo 86 {"center":[5.978158733108393,48.72725585230663],"bearing":163.55426831220177,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314626617 REGION did user= false animated= true bearing 160.3 zoom 16.00 center 5.97814,48.72729
+1794314626617 REGION will user= false animated= true
+1794314627295 POS 51 48.727221 5.978170 heading 167.7757982675313 speed 4 acc 5 ts 1794314627292.15 mocked true
+1794314627622 CAM easeTo 87 {"center":[5.978170282296201,48.72722058488787],"bearing":167.8104389005224,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314627625 REGION did user= false animated= true bearing 163.6 zoom 16.00 center 5.97816,48.72726
+1794314627625 REGION will user= false animated= true
+1794314628305 POS 52 48.727190 5.978173 heading 172.59627114735096 speed 4 acc 5 ts 1794314628302.5132 mocked true
+1794314628639 CAM easeTo 88 {"center":[5.978173,48.72719],"bearing":176.64547091039424,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314628642 REGION did user= false animated= true bearing 167.8 zoom 16.00 center 5.97817,48.72722
+1794314628643 REGION will user= false animated= true
+1794314629317 POS 53 48.727154 5.978180 heading 172.59627114735096 speed 4 acc 5 ts 1794314629312.31 mocked true
+1794314629655 CAM easeTo 89 {"center":[5.9781800733008685,48.7271539879236],"bearing":172.617650696277,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314629660 REGION did user= false animated= true bearing 176.6 zoom 16.00 center 5.97817,48.72719
+1794314629660 REGION will user= false animated= true
+1794314630325 POS 54 48.727118 5.978186 heading 173.55490573900633 speed 4 acc 5 ts 1794314630319.0251 mocked true
+1794314630672 CAM easeTo 90 {"center":[5.978186216310676,48.727118011503315],"bearing":173.57356272946254,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314630676 REGION did user= false animated= true bearing 172.6 zoom 16.00 center 5.97818,48.72715
+1794314630676 REGION will user= false animated= true
+1794314631332 POS 55 48.727082 5.978191 heading 174.67724448319697 speed 4 acc 5 ts 1794314631326.03 mocked true
+1794314631689 CAM easeTo 91 {"center":[5.978191294282537,48.72708195321449],"bearing":174.6926901106002,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314631694 REGION did user= false animated= true bearing 173.6 zoom 16.00 center 5.97819,48.72712
+1794314631694 REGION will user= false animated= true
+1794314632329 POS 56 48.727046 5.978195 heading 176.09589855571076 speed 4 acc 5 ts 1794314632326.367 mocked true
+1794314632705 CAM easeTo 92 {"center":[5.9781949968718076,48.727046059797175],"bearing":176.10725482564965,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314632706 REGION did user= false animated= true bearing 174.7 zoom 16.00 center 5.97819,48.72708
+1794314632706 REGION will user= false animated= true
+1794314633337 POS 57 48.727013 5.978196 heading 188.89042325706157 speed 4 acc 5 ts 1794314633336.4902 mocked true
+1794314633722 CAM easeTo 93 {"center":[5.978196,48.727013],"bearing":178.85334504499042,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314633723 REGION did user= false animated= true bearing 176.1 zoom 16.00 center 5.97819,48.72705
+1794314633723 REGION will user= false animated= true
+1794314634347 POS 58 48.726977 5.978188 heading 188.89042325706157 speed 4 acc 5 ts 1794314634346.585 mocked true
+1794314634738 CAM easeTo 94 {"center":[5.97818751308743,48.72697710571319],"bearing":188.86490744058477,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314634739 REGION did user= false animated= true bearing 178.9 zoom 16.00 center 5.97820,48.72701
+1794314634739 REGION will user= false animated= true
+1794314635359 POS 59 48.726941 5.978180 heading 187.76464402546176 speed 4 acc 5 ts 1794314635356.669 mocked true
+1794314635755 CAM easeTo 95 {"center":[5.978180093796834,48.72694110807857],"bearing":187.74227957283034,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314635756 REGION did user= false animated= true bearing 188.9 zoom 16.00 center 5.97819,48.72698
+1794314635756 REGION will user= false animated= true
+1794314636367 POS 60 48.726905 5.978174 heading 186.44210149557793 speed 4 acc 5 ts 1794314636366.7542 mocked true
+1794314636772 CAM easeTo 96 {"center":[5.978173932332019,48.72690500667111],"bearing":186.42348000190677,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314636773 REGION did user= false animated= true bearing 187.7 zoom 16.00 center 5.97818,48.72694
+1794314636773 REGION will user= false animated= true
+1794314637378 POS 61 48.726869 5.978169 heading 184.77574929652695 speed 4 acc 5 ts 1794314637376.876 mocked true
+1794314637673 REGION will user= true animated= false
+1794314637773 CAM easeTo 97 {"center":[5.978169360215624,48.726868801418476],"bearing":184.76189554771744,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314638384 POS 62 48.726834 5.978168 heading 176.8024422261935 speed 4 acc 5 ts 1794314638381.796 mocked true
+1794314638788 CAM easeTo 98 {"center":[5.978168,48.726834],"bearing":181.4768984796073,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314638789 REGION did user= true animated= true bearing 186.8 zoom 16.00 center 5.97845,48.72843
+1794314638789 USER GESTURE -> suivi suspendu 10 s
+1794314638789 REGION will user= false animated= true
+1794314639393 POS 63 48.726798 5.978171 heading 176.8024422261935 speed 4 acc 5 ts 1794314639391.887 mocked true
+1794314639805 CAM paused 9 s left
+1794314639806 REGION did user= false animated= true bearing 181.5 zoom 16.00 center 5.97817,48.72683
+1794314640408 POS 64 48.726761 5.978174 heading 177.21745093897258 speed 4 acc 5 ts 1794314640402.472 mocked true
+1794314640806 CAM paused 8 s left
+1794314641822 CAM paused 7 s left
+1794314642838 CAM paused 6 s left
+1794314643855 CAM paused 5 s left
+1794314644872 CAM paused 4 s left
+1794314645889 CAM paused 3 s left
+1794314646905 CAM paused 2 s left
+1794314647922 CAM paused 1 s left
+1794314648939 CAM easeTo 99 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314648940 REGION will user= false animated= true
+1794314649943 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314649955 CAM easeTo 100 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314649958 REGION will user= false animated= true
+1794314650960 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314650972 CAM easeTo 101 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314650975 REGION will user= false animated= true
+1794314651976 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314651989 CAM easeTo 102 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314651993 REGION will user= false animated= true
+1794314653005 CAM easeTo 103 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314653006 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314653006 REGION will user= false animated= true
+1794314654006 CAM easeTo 104 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314654010 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314654010 REGION will user= false animated= true
+1794314655022 CAM easeTo 105 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314655023 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314655023 REGION will user= false animated= true
+1794314656022 CAM easeTo 106 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314656027 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314656027 REGION will user= false animated= true
+1794314657039 CAM easeTo 107 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314657043 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314657043 REGION will user= false animated= true
+1794314658056 CAM easeTo 108 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314658060 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314658060 REGION will user= false animated= true
+1794314659072 CAM easeTo 109 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314659077 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314659077 REGION will user= false animated= true
+1794314660089 CAM easeTo 110 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314660093 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314660093 REGION will user= false animated= true
+1794314661105 CAM easeTo 111 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314661110 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314661110 REGION will user= false animated= true
+1794314662122 CAM easeTo 112 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314662125 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314662125 REGION will user= false animated= true
+1794314663139 CAM easeTo 113 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314663139 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314663139 REGION will user= false animated= true
+1794314664139 CAM easeTo 114 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314664141 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314664141 REGION will user= false animated= true
+1794314665155 CAM easeTo 115 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314665156 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314665156 REGION will user= false animated= true
+1794314666160 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314666172 CAM easeTo 116 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314666175 REGION will user= false animated= true
+1794314667176 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314667189 CAM easeTo 117 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314667192 REGION will user= false animated= true
+1794314668194 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314668206 CAM easeTo 118 {"center":[5.9781737291040375,48.726761436694304],"bearing":177.22554144744743,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314668209 REGION will user= false animated= true
+1794314668968 POS 65 48.727358 5.978104 heading 157.67134362227705 speed 4 acc 5 ts 1794314668962.9211 mocked true
+1794314669222 CAM easeTo 119 {"center":[5.978104,48.727358],"bearing":355.59109566665126,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314669227 REGION did user= false animated= true bearing 177.2 zoom 16.00 center 5.97817,48.72676
+1794314669227 REGION will user= false animated= true
+1794314669976 POS 66 48.727324 5.978125 heading 157.67134362227705 speed 4 acc 5 ts 1794314669972.5151 mocked true
+1794314670239 CAM easeTo 120 {"center":[5.978124850914681,48.72732441341075],"bearing":157.73023100005457,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314670243 REGION did user= false animated= true bearing 355.6 zoom 16.00 center 5.97810,48.72736
+1794314670243 REGION will user= false animated= true
+1794314670981 POS 67 48.727290 5.978143 heading 160.29164416658588 speed 4 acc 5 ts 1794314670977.937 mocked true
+1794314671256 CAM easeTo 121 {"center":[5.978143278805906,48.727290379582634],"bearing":160.3448249514795,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314671260 REGION did user= false animated= true bearing 157.7 zoom 16.00 center 5.97812,48.72732
+1794314671260 REGION will user= false animated= true
+1794314671991 POS 68 48.727256 5.978159 heading 163.50660833088443 speed 4 acc 5 ts 1794314671987.657 mocked true
+1794314672272 CAM easeTo 122 {"center":[5.978158860748489,48.72725556338553],"bearing":163.55219322989046,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314672277 REGION did user= false animated= true bearing 160.3 zoom 16.00 center 5.97814,48.72729
+1794314672277 REGION will user= false animated= true
+1794314672998 POS 69 48.727220 5.978170 heading 167.83010406499497 speed 4 acc 5 ts 1794314672996.461 mocked true
+1794314673289 CAM easeTo 123 {"center":[5.978170421620165,48.72722009788177],"bearing":167.86460004963533,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314673291 REGION did user= false animated= true bearing 163.6 zoom 16.00 center 5.97816,48.72726
+1794314673291 REGION will user= false animated= true
+1794314674004 POS 70 48.727190 5.978173 heading 172.59627114735096 speed 4 acc 5 ts 1794314674001.4028 mocked true
+1794314674289 CAM easeTo 124 {"center":[5.978173,48.72719],"bearing":176.765685257624,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314674294 REGION did user= false animated= true bearing 167.9 zoom 16.00 center 5.97817,48.72722
+1794314674294 REGION will user= false animated= true
+1794314675009 POS 71 48.727154 5.978180 heading 172.59627114735096 speed 4 acc 5 ts 1794314675005.733 mocked true
+1794314675305 CAM easeTo 125 {"center":[5.978180034983968,48.72715418300525],"bearing":172.61765072389903,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314675306 REGION did user= false animated= true bearing 176.8 zoom 16.00 center 5.97817,48.72719
+1794314675306 REGION will user= false animated= true
+1794314676014 POS 72 48.727118 5.978186 heading 173.54838241715464 speed 4 acc 5 ts 1794314676008.737 mocked true
+1794314676310 REGION did user= false animated= true bearing 172.6 zoom 16.00 center 5.97818,48.72715
+1794314676322 CAM easeTo 126 {"center":[5.978186161281551,48.727118341045085],"bearing":173.5670580150911,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314676324 REGION will user= false animated= true
+1794314677015 POS 73 48.727082 5.978191 heading 174.6641272896267 speed 4 acc 5 ts 1794314677012.095 mocked true
+1794314677322 CAM easeTo 127 {"center":[5.978191232700646,48.7270824183268],"bearing":174.67961059155687,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314677328 REGION did user= false animated= true bearing 173.6 zoom 16.00 center 5.97819,48.72712
+1794314677328 REGION will user= false animated= true
+1794314678026 POS 74 48.727046 5.978195 heading 176.0713842006716 speed 4 acc 5 ts 1794314678022.547 mocked true
+1794314678339 CAM easeTo 128 {"center":[5.978194995406859,48.727046170445284],"bearing":176.08281134269498,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314678343 REGION did user= false animated= true bearing 174.7 zoom 16.00 center 5.97819,48.72708
+1794314678343 REGION will user= false animated= true
+1794314679036 POS 75 48.727013 5.978196 heading 188.89042325706157 speed 4 acc 5 ts 1794314679032.889 mocked true
+1794314679357 CAM easeTo 129 {"center":[5.978196,48.727013],"bearing":178.85550045234436,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314679359 REGION did user= false animated= true bearing 176.1 zoom 16.00 center 5.97819,48.72705
+1794314679359 REGION will user= false animated= true
+1794314680044 POS 76 48.726977 5.978188 heading 188.89042325706157 speed 4 acc 5 ts 1794314680041.148 mocked true
+1794314680372 CAM easeTo 130 {"center":[5.978187529758159,48.72697717621985],"bearing":188.86490742524933,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314680376 REGION did user= false animated= true bearing 178.9 zoom 16.00 center 5.97820,48.72701
+1794314680376 REGION will user= false animated= true
+1794314681055 POS 77 48.726941 5.978180 heading 187.76741644305676 speed 4 acc 5 ts 1794314681050.932 mocked true
+1794314681389 CAM easeTo 131 {"center":[5.97818011081038,48.72694119325524],"bearing":187.7450441887015,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314681393 REGION did user= false animated= true bearing 188.9 zoom 16.00 center 5.97819,48.72698
+1794314681393 REGION will user= false animated= true
+1794314682060 POS 78 48.726905 5.978174 heading 186.4460049662057 speed 4 acc 5 ts 1794314682055.839 mocked true
+1794314682406 CAM easeTo 132 {"center":[5.978173978216151,48.72690528295086],"bearing":186.4273723447378,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314682410 REGION did user= false animated= true bearing 187.7 zoom 16.00 center 5.97818,48.72694
+1794314682410 REGION will user= false animated= true
+1794314683422 CAM easeTo 133 {"center":[5.978173978216151,48.72690528295086],"bearing":186.4273723447378,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314683426 REGION did user= false animated= true bearing 186.4 zoom 16.00 center 5.97817,48.72691
+1794314683427 REGION will user= false animated= true
+1794314684439 CAM easeTo 134 {"center":[5.978173978216151,48.72690528295086],"bearing":186.4273723447378,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314684444 REGION did user= false animated= true bearing 186.4 zoom 16.00 center 5.97817,48.72691
+1794314684444 REGION will user= false animated= true
+1794314685455 CAM easeTo 135 {"center":[5.978173978216151,48.72690528295086],"bearing":186.4273723447378,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314685456 REGION did user= false animated= true bearing 186.4 zoom 16.00 center 5.97817,48.72691
+1794314685456 REGION will user= false animated= true
+1794314686456 CAM easeTo 136 {"center":[5.978173978216151,48.72690528295086],"bearing":186.4273723447378,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314686460 REGION did user= false animated= true bearing 186.4 zoom 16.00 center 5.97817,48.72691
+1794314686460 REGION will user= false animated= true
+1794314687472 CAM easeTo 137 {"center":[5.978173978216151,48.72690528295086],"bearing":186.4273723447378,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314687474 REGION did user= false animated= true bearing 186.4 zoom 16.00 center 5.97817,48.72691
+1794314687475 REGION will user= false animated= true
+1794314688489 CAM easeTo 138 {"center":[5.978173978216151,48.72690528295086],"bearing":186.4273723447378,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314688492 REGION did user= false animated= true bearing 186.4 zoom 16.00 center 5.97817,48.72691
+1794314688492 REGION will user= false animated= true
+1794314689505 CAM easeTo 139 {"center":[5.978173978216151,48.72690528295086],"bearing":186.4273723447378,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314689506 REGION did user= false animated= true bearing 186.4 zoom 16.00 center 5.97817,48.72691
+1794314689506 REGION will user= false animated= true
+1794314690508 REGION did user= false animated= true bearing 186.4 zoom 16.00 center 5.97817,48.72691
+1794314690522 CAM easeTo 140 {"center":[5.978173978216151,48.72690528295086],"bearing":186.4273723447378,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314690523 REGION will user= false animated= true
+1794314690752 POS 79 48.727358 5.978104 heading -1 speed -1 acc 5 ts 1794314690749.755 mocked true
+1794314690862 POS 80 48.727355 5.978105 heading -1 speed -1 acc 5 ts 1794314690861.3337 mocked true
+1794314690967 POS 81 48.727351 5.978107 heading -1 speed -1 acc 5 ts 1794314690965.553 mocked true
+1794314691067 POS 82 48.727348 5.978108 heading -1 speed -1 acc 5 ts 1794314691066.235 mocked true
+1794314691169 POS 83 48.727345 5.978110 heading -1 speed -1 acc 5 ts 1794314691167.612 mocked true
+1794314691269 POS 84 48.727341 5.978111 heading -1 speed -1 acc 5 ts 1794314691268.6208 mocked true
+1794314691369 POS 85 48.727338 5.978112 heading -1 speed -1 acc 5 ts 1794314691367.973 mocked true
+1794314691472 POS 86 48.727334 5.978114 heading -1 speed -1 acc 5 ts 1794314691471.344 mocked true
+1794314691524 REGION did user= false animated= true bearing 186.4 zoom 16.00 center 5.97817,48.72691
+1794314691539 CAM easeTo 141 {"center":[5.97811366,48.72733448],"bearing":164.84104536591235,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314691540 REGION will user= false animated= true
+1794314691577 POS 87 48.727331 5.978115 heading -1 speed -1 acc 5 ts 1794314691572.5889 mocked true
+1794314691675 POS 88 48.727328 5.978116 heading -1 speed -1 acc 5 ts 1794314691670.5862 mocked true
+1794314691770 POS 89 48.727324 5.978118 heading -1 speed -1 acc 5 ts 1794314691768.212 mocked true
+1794314691868 POS 90 48.727321 5.978119 heading -1 speed -1 acc 5 ts 1794314691865.378 mocked true
+1794314691965 POS 91 48.727318 5.978121 heading -1 speed -1 acc 5 ts 1794314691963.721 mocked true
+1794314692065 POS 92 48.727314 5.978122 heading -1 speed -1 acc 5 ts 1794314692063.478 mocked true
+1794314692164 POS 93 48.727311 5.978123 heading -1 speed -1 acc 5 ts 1794314692162.429 mocked true
+1794314692264 POS 94 48.727308 5.978125 heading -1 speed -1 acc 5 ts 1794314692263.706 mocked true
+1794314692365 POS 95 48.727304 5.978126 heading -1 speed -1 acc 5 ts 1794314692363.4272 mocked true
+1794314692465 POS 96 48.727301 5.978127 heading -1 speed -1 acc 5 ts 1794314692463.357 mocked true
+1794314692542 REGION did user= false animated= true bearing 164.8 zoom 16.00 center 5.97811,48.72733
+1794314692555 CAM easeTo 142 {"center":[5.97812746,48.72730088],"bearing":164.8410357033605,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314692557 REGION will user= false animated= true
+1794314692567 POS 97 48.727298 5.978129 heading -1 speed -1 acc 5 ts 1794314692562.9302 mocked true
+1794314692665 POS 98 48.727294 5.978130 heading -1 speed -1 acc 5 ts 1794314692662.7441 mocked true
+1794314692763 POS 99 48.727291 5.978132 heading -1 speed -1 acc 5 ts 1794314692761.584 mocked true
+1794314692863 POS 100 48.727287 5.978133 heading -1 speed -1 acc 5 ts 1794314692861.248 mocked true
+1794314692964 POS 101 48.727284 5.978134 heading -1 speed -1 acc 5 ts 1794314692962.534 mocked true
+1794314693065 POS 102 48.727281 5.978136 heading -1 speed -1 acc 5 ts 1794314693063.3699 mocked true
+1794314693167 POS 103 48.727277 5.978137 heading -1 speed -1 acc 5 ts 1794314693163.013 mocked true
+1794314693264 POS 104 48.727274 5.978139 heading -1 speed -1 acc 5 ts 1794314693263.022 mocked true
+1794314693363 POS 105 48.727271 5.978140 heading -1 speed -1 acc 5 ts 1794314693362.877 mocked true
+1794314693466 POS 106 48.727267 5.978141 heading -1 speed -1 acc 5 ts 1794314693464.911 mocked true
+1794314693566 POS 107 48.727264 5.978143 heading -1 speed -1 acc 5 ts 1794314693564.422 mocked true
+1794314693572 CAM easeTo 143 {"center":[5.97814264,48.72726392],"bearing":164.84102507456032,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314693575 REGION did user= false animated= true bearing 164.8 zoom 16.00 center 5.97813,48.72730
+1794314693575 REGION will user= false animated= true
+1794314693669 POS 108 48.727261 5.978144 heading -1 speed -1 acc 5 ts 1794314693667.984 mocked true
+1794314693779 POS 109 48.727257 5.978145 heading -1 speed -1 acc 5 ts 1794314693777.2478 mocked true
+1794314693881 POS 110 48.727254 5.978147 heading -1 speed -1 acc 5 ts 1794314693879.366 mocked true
+1794314693981 POS 111 48.727250 5.978148 heading -1 speed -1 acc 5 ts 1794314693980.175 mocked true
+1794314694084 POS 112 48.727247 5.978150 heading -1 speed -1 acc 5 ts 1794314694081.8228 mocked true
+1794314694192 POS 113 48.727244 5.978151 heading -1 speed -1 acc 5 ts 1794314694188.842 mocked true
+1794314694297 POS 114 48.727240 5.978152 heading -1 speed -1 acc 5 ts 1794314694292.294 mocked true
+1794314694394 POS 115 48.727237 5.978154 heading -1 speed -1 acc 5 ts 1794314694391.676 mocked true
+1794314694503 POS 116 48.727234 5.978155 heading -1 speed -1 acc 5 ts 1794314694500.679 mocked true
+1794314694589 CAM easeTo 144 {"center":[5.97815506,48.72723368],"bearing":164.8410163782744,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314694591 REGION did user= false animated= true bearing 164.8 zoom 16.00 center 5.97814,48.72726
+1794314694591 REGION will user= false animated= true
+1794314694602 POS 117 48.727230 5.978156 heading -1 speed -1 acc 5 ts 1794314694600.3032 mocked true
+1794314694708 POS 118 48.727227 5.978158 heading -1 speed -1 acc 5 ts 1794314694704.843 mocked true
+1794314694807 POS 119 48.727224 5.978159 heading -1 speed -1 acc 5 ts 1794314694802.774 mocked true
+1794314694905 POS 120 48.727220 5.978161 heading -1 speed -1 acc 5 ts 1794314694900.897 mocked true
+1794314695003 POS 121 48.727217 5.978162 heading -1 speed -1 acc 5 ts 1794314694999.063 mocked true
+1794314695098 POS 122 48.727214 5.978163 heading -1 speed -1 acc 5 ts 1794314695096.014 mocked true
+1794314695202 POS 123 48.727210 5.978165 heading -1 speed -1 acc 5 ts 1794314695200.8518 mocked true
+1794314695300 POS 124 48.727207 5.978166 heading -1 speed -1 acc 5 ts 1794314695296.581 mocked true
+1794314695398 POS 125 48.727203 5.978167 heading -1 speed -1 acc 5 ts 1794314695394.23 mocked true
+1794314695496 POS 126 48.727200 5.978169 heading -1 speed -1 acc 5 ts 1794314695491.9382 mocked true
+1794314695594 POS 127 48.727197 5.978170 heading -1 speed -1 acc 5 ts 1794314695592.578 mocked true
+1794314695605 CAM easeTo 145 {"center":[5.97817024,48.72719672],"bearing":164.84100574948707,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314695607 REGION did user= false animated= true bearing 164.8 zoom 16.00 center 5.97816,48.72723
+1794314695607 REGION will user= false animated= true
+1794314695711 POS 128 48.727193 5.978172 heading -1 speed -1 acc 5 ts 1794314695709.6792 mocked true
+1794314695820 POS 129 48.727190 5.978173 heading -1 speed -1 acc 5 ts 1794314695818.9722 mocked true
+1794314695923 POS 130 48.727186 5.978173 heading -1 speed -1 acc 5 ts 1794314695921.883 mocked true
+1794314696025 POS 131 48.727183 5.978174 heading -1 speed -1 acc 5 ts 1794314696023.275 mocked true
+1794314696128 POS 132 48.727179 5.978174 heading -1 speed -1 acc 5 ts 1794314696123.8599 mocked true
+1794314696225 POS 133 48.727176 5.978175 heading -1 speed -1 acc 5 ts 1794314696221.731 mocked true
+1794314696325 POS 134 48.727172 5.978175 heading -1 speed -1 acc 5 ts 1794314696321.1091 mocked true
+1794314696425 POS 135 48.727169 5.978176 heading -1 speed -1 acc 5 ts 1794314696420.999 mocked true
+1794314696521 POS 136 48.727165 5.978176 heading -1 speed -1 acc 5 ts 1794314696520.186 mocked true
+1794314696608 REGION did user= false animated= true bearing 164.8 zoom 16.00 center 5.97817,48.72720
+1794314696622 CAM easeTo 146 {"center":[5.97817622,48.72716522],"bearing":175.10077396146357,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314696624 POS 137 48.727162 5.978177 heading -1 speed -1 acc 5 ts 1794314696621.502 mocked true
+1794314696624 REGION will user= false animated= true
+1794314696722 POS 138 48.727158 5.978177 heading -1 speed -1 acc 5 ts 1794314696720.394 mocked true
+1794314696822 POS 139 48.727155 5.978178 heading -1 speed -1 acc 5 ts 1794314696820.489 mocked true
+1794314696921 POS 140 48.727151 5.978178 heading -1 speed -1 acc 5 ts 1794314696919.377 mocked true
+1794314697021 POS 141 48.727148 5.978179 heading -1 speed -1 acc 5 ts 1794314697019.5762 mocked true
+1794314697121 POS 142 48.727144 5.978179 heading -1 speed -1 acc 5 ts 1794314697119.529 mocked true
+1794314697220 POS 143 48.727140 5.978179 heading -1 speed -1 acc 5 ts 1794314697218.3462 mocked true
+1794314697321 POS 144 48.727137 5.978180 heading -1 speed -1 acc 5 ts 1794314697318.9958 mocked true
+1794314697421 POS 145 48.727133 5.978180 heading -1 speed -1 acc 5 ts 1794314697419.313 mocked true
+1794314697518 POS 146 48.727130 5.978181 heading -1 speed -1 acc 5 ts 1794314697517.229 mocked true
+1794314697619 POS 147 48.727126 5.978181 heading -1 speed -1 acc 5 ts 1794314697617.7249 mocked true
+1794314697639 CAM easeTo 147 {"center":[5.97818128,48.72712628],"bearing":175.10077018659547,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314697641 REGION did user= false animated= true bearing 175.1 zoom 16.00 center 5.97818,48.72717
+1794314697641 REGION will user= false animated= true
+1794314697719 POS 148 48.727123 5.978182 heading -1 speed -1 acc 5 ts 1794314697717.4011 mocked true
+1794314697816 POS 149 48.727119 5.978182 heading -1 speed -1 acc 5 ts 1794314697814.193 mocked true
+1794314697913 POS 150 48.727116 5.978183 heading -1 speed -1 acc 5 ts 1794314697911.479 mocked true
+1794314698011 POS 151 48.727112 5.978183 heading -1 speed -1 acc 5 ts 1794314698009.697 mocked true
+1794314698108 POS 152 48.727109 5.978184 heading -1 speed -1 acc 5 ts 1794314698106.457 mocked true
+1794314698207 POS 153 48.727105 5.978184 heading -1 speed -1 acc 5 ts 1794314698203.83 mocked true
+1794314698306 POS 154 48.727102 5.978184 heading -1 speed -1 acc 5 ts 1794314698301.971 mocked true
+1794314698404 POS 155 48.727098 5.978185 heading -1 speed -1 acc 5 ts 1794314698400.392 mocked true
+1794314698501 POS 156 48.727094 5.978185 heading -1 speed -1 acc 5 ts 1794314698497.1162 mocked true
+1794314698597 POS 157 48.727091 5.978186 heading -1 speed -1 acc 5 ts 1794314698595.346 mocked true
+1794314698655 CAM easeTo 148 {"center":[5.97818588,48.72709088],"bearing":175.10076676397432,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314698659 REGION did user= false animated= true bearing 175.1 zoom 16.00 center 5.97818,48.72713
+1794314698659 REGION will user= false animated= true
+1794314698696 POS 158 48.727087 5.978186 heading -1 speed -1 acc 5 ts 1794314698694.226 mocked true
+1794314698797 POS 159 48.727084 5.978187 heading -1 speed -1 acc 5 ts 1794314698793.461 mocked true
+1794314698892 POS 160 48.727080 5.978187 heading -1 speed -1 acc 5 ts 1794314698890.168 mocked true
+1794314698991 POS 161 48.727077 5.978188 heading -1 speed -1 acc 5 ts 1794314698987.5933 mocked true
+1794314699090 POS 162 48.727073 5.978188 heading -1 speed -1 acc 5 ts 1794314699085.5142 mocked true
+1794314699189 POS 163 48.727070 5.978189 heading -1 speed -1 acc 5 ts 1794314699184.792 mocked true
+1794314699286 POS 164 48.727066 5.978189 heading -1 speed -1 acc 5 ts 1794314699281.995 mocked true
+1794314699381 POS 165 48.727063 5.978190 heading -1 speed -1 acc 5 ts 1794314699378.865 mocked true
+1794314699480 POS 166 48.727059 5.978190 heading -1 speed -1 acc 5 ts 1794314699476.412 mocked true
+1794314699574 POS 167 48.727055 5.978190 heading -1 speed -1 acc 5 ts 1794314699571.971 mocked true
+1794314699671 POS 168 48.727052 5.978191 heading -1 speed -1 acc 5 ts 1794314699669.5098 mocked true
+1794314699675 REGION did user= false animated= true bearing 175.1 zoom 16.00 center 5.97819,48.72709
+1794314699678 CAM easeTo 149 {"center":[5.978190939999999,48.72705194],"bearing":175.1007629789525,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314699678 REGION will user= false animated= true
+1794314699779 POS 169 48.727048 5.978191 heading -1 speed -1 acc 5 ts 1794314699770.882 mocked true
+1794314699880 POS 170 48.727045 5.978192 heading -1 speed -1 acc 5 ts 1794314699876.063 mocked true
+1794314699979 POS 171 48.727041 5.978192 heading -1 speed -1 acc 5 ts 1794314699972.085 mocked true
+1794314700080 POS 172 48.727038 5.978193 heading -1 speed -1 acc 5 ts 1794314700075.8582 mocked true
+1794314700178 POS 173 48.727034 5.978193 heading -1 speed -1 acc 5 ts 1794314700174.814 mocked true
+1794314700275 POS 174 48.727031 5.978194 heading -1 speed -1 acc 5 ts 1794314700271.892 mocked true
+1794314700372 POS 175 48.727027 5.978194 heading -1 speed -1 acc 5 ts 1794314700369.684 mocked true
+1794314700471 POS 176 48.727024 5.978195 heading -1 speed -1 acc 5 ts 1794314700467.3782 mocked true
+1794314700568 POS 177 48.727020 5.978195 heading -1 speed -1 acc 5 ts 1794314700566.652 mocked true
+1794314700667 POS 178 48.727017 5.978196 heading -1 speed -1 acc 5 ts 1794314700665.062 mocked true
+1794314700689 CAM easeTo 150 {"center":[5.97819554,48.72701654],"bearing":175.10075955670766,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314700691 REGION did user= false animated= true bearing 175.1 zoom 16.00 center 5.97819,48.72705
+1794314700691 REGION will user= false animated= true
+1794314700765 POS 179 48.727013 5.978196 heading -1 speed -1 acc 5 ts 1794314700762.978 mocked true
+1794314700864 POS 180 48.727009 5.978195 heading -1 speed -1 acc 5 ts 1794314700862.932 mocked true
+1794314700964 POS 181 48.727006 5.978195 heading -1 speed -1 acc 5 ts 1794314700962.6619 mocked true
+1794314701065 POS 182 48.727002 5.978194 heading -1 speed -1 acc 5 ts 1794314701063.569 mocked true
+1794314701166 POS 183 48.726999 5.978194 heading -1 speed -1 acc 5 ts 1794314701163.6008 mocked true
+1794314701265 POS 184 48.726995 5.978193 heading -1 speed -1 acc 5 ts 1794314701264.093 mocked true
+1794314701365 POS 185 48.726992 5.978193 heading -1 speed -1 acc 5 ts 1794314701363.4028 mocked true
+1794314701464 POS 186 48.726988 5.978192 heading -1 speed -1 acc 5 ts 1794314701462.1438 mocked true
+1794314701566 POS 187 48.726984 5.978192 heading -1 speed -1 acc 5 ts 1794314701564.304 mocked true
+1794314701672 POS 188 48.726981 5.978191 heading -1 speed -1 acc 5 ts 1794314701669.148 mocked true
+1794314701705 CAM easeTo 151 {"center":[5.97819096,48.72698078],"bearing":185.89122343693208,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314701707 REGION did user= false animated= true bearing 175.1 zoom 16.00 center 5.97820,48.72702
+1794314701707 REGION will user= false animated= true
+1794314701777 POS 189 48.726977 5.978190 heading -1 speed -1 acc 5 ts 1794314701773.175 mocked true
+1794314701879 POS 190 48.726974 5.978190 heading -1 speed -1 acc 5 ts 1794314701874.768 mocked true
+1794314701980 POS 191 48.726970 5.978189 heading -1 speed -1 acc 5 ts 1794314701976.8027 mocked true
+1794314702082 POS 192 48.726966 5.978189 heading -1 speed -1 acc 5 ts 1794314702078.5342 mocked true
+1794314702180 POS 193 48.726963 5.978188 heading -1 speed -1 acc 5 ts 1794314702178.671 mocked true
+1794314702279 POS 194 48.726959 5.978188 heading -1 speed -1 acc 5 ts 1794314702278.306 mocked true
+1794314702381 POS 195 48.726956 5.978187 heading -1 speed -1 acc 5 ts 1794314702379.741 mocked true
+1794314702482 POS 196 48.726952 5.978186 heading -1 speed -1 acc 5 ts 1794314702479.331 mocked true
+1794314702580 POS 197 48.726949 5.978186 heading -1 speed -1 acc 5 ts 1794314702579.4429 mocked true
+1794314702681 POS 198 48.726945 5.978185 heading -1 speed -1 acc 5 ts 1794314702680.052 mocked true
+1794314702708 REGION did user= false animated= true bearing 185.9 zoom 16.00 center 5.97819,48.72698
+1794314702722 CAM easeTo 152 {"center":[5.9781853599999994,48.72694498],"bearing":185.89122761068813,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314702723 REGION will user= false animated= true
+1794314702782 POS 199 48.726941 5.978185 heading -1 speed -1 acc 5 ts 1794314702780.392 mocked true
+1794314702882 POS 200 48.726938 5.978184 heading -1 speed -1 acc 5 ts 1794314702878.68 mocked true
+1794314702979 POS 201 48.726934 5.978184 heading -1 speed -1 acc 5 ts 1794314702977.083 mocked true
+1794314703079 POS 202 48.726931 5.978183 heading -1 speed -1 acc 5 ts 1794314703077.055 mocked true
+1794314703177 POS 203 48.726927 5.978183 heading -1 speed -1 acc 5 ts 1794314703174.5059 mocked true
+1794314703274 POS 204 48.726923 5.978182 heading -1 speed -1 acc 5 ts 1794314703271.2358 mocked true
+1794314703374 POS 205 48.726920 5.978181 heading -1 speed -1 acc 5 ts 1794314703370.1448 mocked true
+1794314703474 POS 206 48.726916 5.978181 heading -1 speed -1 acc 5 ts 1794314703470.1582 mocked true
+1794314703572 POS 207 48.726913 5.978180 heading -1 speed -1 acc 5 ts 1794314703568.7551 mocked true
+1794314703670 POS 208 48.726909 5.978180 heading -1 speed -1 acc 5 ts 1794314703667.644 mocked true
+1794314703725 REGION did user= false animated= true bearing 185.9 zoom 16.00 center 5.97819,48.72694
+1794314703739 CAM easeTo 153 {"center":[5.97817976,48.72690918],"bearing":185.8912317751638,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314703741 REGION will user= false animated= true
+1794314703768 POS 209 48.726906 5.978179 heading -1 speed -1 acc 5 ts 1794314703766.053 mocked true
+1794314703871 POS 210 48.726902 5.978179 heading -1 speed -1 acc 5 ts 1794314703870.2932 mocked true
+1794314703977 POS 211 48.726898 5.978178 heading -1 speed -1 acc 5 ts 1794314703976.2402 mocked true
+1794314704081 POS 212 48.726895 5.978178 heading -1 speed -1 acc 5 ts 1794314704079.4038 mocked true
+1794314704188 POS 213 48.726891 5.978177 heading -1 speed -1 acc 5 ts 1794314704187.0698 mocked true
+1794314704289 POS 214 48.726888 5.978176 heading -1 speed -1 acc 5 ts 1794314704287.023 mocked true
+1794314704389 POS 215 48.726884 5.978176 heading -1 speed -1 acc 5 ts 1794314704386.98 mocked true
+1794314704491 POS 216 48.726881 5.978175 heading -1 speed -1 acc 5 ts 1794314704489.073 mocked true
+1794314704591 POS 217 48.726877 5.978175 heading -1 speed -1 acc 5 ts 1794314704587.8247 mocked true
+1794314704696 POS 218 48.726873 5.978174 heading -1 speed -1 acc 5 ts 1794314704695.234 mocked true
+1794314704755 CAM easeTo 154 {"center":[5.97817416,48.72687338],"bearing":185.89123593963714,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314704758 REGION did user= false animated= true bearing 185.9 zoom 16.00 center 5.97818,48.72691
+1794314704758 REGION will user= false animated= true
+1794314704798 POS 219 48.726870 5.978174 heading -1 speed -1 acc 5 ts 1794314704796.545 mocked true
+1794314704897 POS 220 48.726866 5.978173 heading -1 speed -1 acc 5 ts 1794314704894.721 mocked true
+1794314704996 POS 221 48.726863 5.978172 heading -1 speed -1 acc 5 ts 1794314704994.463 mocked true
+1794314705098 POS 222 48.726859 5.978172 heading -1 speed -1 acc 5 ts 1794314705094.461 mocked true
+1794314705206 POS 223 48.726855 5.978171 heading -1 speed -1 acc 5 ts 1794314705203.372 mocked true
+1794314705310 POS 224 48.726852 5.978171 heading -1 speed -1 acc 5 ts 1794314705307.329 mocked true
+1794314705408 POS 225 48.726848 5.978170 heading -1 speed -1 acc 5 ts 1794314705404.601 mocked true
+1794314705505 POS 226 48.726845 5.978170 heading -1 speed -1 acc 5 ts 1794314705503.398 mocked true
+1794314705603 POS 227 48.726841 5.978169 heading -1 speed -1 acc 5 ts 1794314705601.1428 mocked true
+1794314705702 POS 228 48.726838 5.978169 heading -1 speed -1 acc 5 ts 1794314705699.6619 mocked true
+1794314705772 CAM easeTo 155 {"center":[5.97816856,48.726837579999994],"bearing":185.89124009249775,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314705773 REGION did user= false animated= true bearing 185.9 zoom 16.00 center 5.97817,48.72687
+1794314705773 REGION will user= false animated= true
+1794314705816 POS 229 48.726834 5.978168 heading -1 speed -1 acc 5 ts 1794314705815.223 mocked true
+1794314705922 POS 230 48.726830 5.978168 heading -1 speed -1 acc 5 ts 1794314705921.185 mocked true
+1794314706023 POS 231 48.726827 5.978168 heading -1 speed -1 acc 5 ts 1794314706022.64 mocked true
+1794314706129 POS 232 48.726823 5.978169 heading -1 speed -1 acc 5 ts 1794314706124.1619 mocked true
+1794314706224 POS 233 48.726820 5.978169 heading -1 speed -1 acc 5 ts 1794314706222.249 mocked true
+1794314706322 POS 234 48.726816 5.978169 heading -1 speed -1 acc 5 ts 1794314706320.6492 mocked true
+1794314706421 POS 235 48.726813 5.978169 heading -1 speed -1 acc 5 ts 1794314706418.6558 mocked true
+1794314706522 POS 236 48.726809 5.978169 heading -1 speed -1 acc 5 ts 1794314706518.226 mocked true
+1794314706618 POS 237 48.726805 5.978170 heading -1 speed -1 acc 5 ts 1794314706615.9812 mocked true
+1794314706718 POS 238 48.726802 5.978170 heading -1 speed -1 acc 5 ts 1794314706716.6938 mocked true
+1794314706772 CAM easeTo 156 {"center":[5.9781698,48.726801779999995],"bearing":177.8894930141969,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314706775 REGION did user= false animated= true bearing 185.9 zoom 16.00 center 5.97817,48.72684
+1794314706775 REGION will user= false animated= true
+1794314706816 POS 239 48.726798 5.978170 heading -1 speed -1 acc 5 ts 1794314706814.4277 mocked true
+1794314706915 POS 240 48.726795 5.978170 heading -1 speed -1 acc 5 ts 1794314706913.418 mocked true
+1794314707015 POS 241 48.726791 5.978170 heading -1 speed -1 acc 5 ts 1794314707013.207 mocked true
+1794314707115 POS 242 48.726787 5.978171 heading -1 speed -1 acc 5 ts 1794314707113.455 mocked true
+1794314707213 POS 243 48.726784 5.978171 heading -1 speed -1 acc 5 ts 1794314707212.782 mocked true
+1794314707317 POS 244 48.726780 5.978171 heading -1 speed -1 acc 5 ts 1794314707315.418 mocked true
+1794314707417 POS 245 48.726777 5.978171 heading -1 speed -1 acc 5 ts 1794314707414.906 mocked true
+1794314707514 POS 246 48.726773 5.978171 heading -1 speed -1 acc 5 ts 1794314707512.999 mocked true
+1794314707614 POS 247 48.726770 5.978172 heading -1 speed -1 acc 5 ts 1794314707613.637 mocked true
+1794314707716 POS 248 48.726766 5.978172 heading -1 speed -1 acc 5 ts 1794314707714.046 mocked true
+1794314707789 CAM easeTo 157 {"center":[5.9781718,48.726765979999996],"bearing":177.88949150372628,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314707791 REGION did user= false animated= true bearing 177.9 zoom 16.00 center 5.97817,48.72680
+1794314707791 REGION will user= false animated= true
+1794314707820 POS 249 48.726762 5.978172 heading -1 speed -1 acc 5 ts 1794314707816.4849 mocked true
+1794314707920 POS 250 48.726759 5.978172 heading -1 speed -1 acc 5 ts 1794314707917.671 mocked true
+1794314708019 POS 251 48.726755 5.978172 heading -1 speed -1 acc 5 ts 1794314708016.501 mocked true
+1794314708117 POS 252 48.726752 5.978173 heading -1 speed -1 acc 5 ts 1794314708115.343 mocked true
+1794314708215 POS 253 48.726748 5.978173 heading -1 speed -1 acc 5 ts 1794314708213.362 mocked true
+1794314708314 POS 254 48.726744 5.978173 heading -1 speed -1 acc 5 ts 1794314708312.002 mocked true
+1794314708414 POS 255 48.726741 5.978173 heading -1 speed -1 acc 5 ts 1794314708412.176 mocked true
+1794314708513 POS 256 48.726737 5.978173 heading -1 speed -1 acc 5 ts 1794314708511.403 mocked true
+1794314708612 POS 257 48.726734 5.978174 heading -1 speed -1 acc 5 ts 1794314708610.7878 mocked true
+1794314708710 POS 258 48.726730 5.978174 heading -1 speed -1 acc 5 ts 1794314708707.552 mocked true
+1794314708805 CAM easeTo 158 {"center":[5.9781737999999995,48.72673018],"bearing":177.88949001198466,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314708808 REGION did user= false animated= true bearing 177.9 zoom 16.00 center 5.97817,48.72677
+1794314708808 REGION will user= false animated= true
+1794314708808 POS 259 48.726727 5.978174 heading -1 speed -1 acc 5 ts 1794314708806.373 mocked true
+1794314708905 POS 260 48.726723 5.978174 heading -1 speed -1 acc 5 ts 1794314708903.374 mocked true
+1794314709003 POS 261 48.726719 5.978174 heading -1 speed -1 acc 5 ts 1794314709001.4292 mocked true
+1794314709101 POS 262 48.726716 5.978175 heading -1 speed -1 acc 5 ts 1794314709099.683 mocked true
+1794314709203 POS 263 48.726712 5.978175 heading -1 speed -1 acc 5 ts 1794314709198.042 mocked true
+1794314709298 POS 264 48.726709 5.978175 heading -1 speed -1 acc 5 ts 1794314709296.4102 mocked true
+1794314709399 POS 265 48.726705 5.978175 heading -1 speed -1 acc 5 ts 1794314709395.2698 mocked true
+1794314709495 POS 266 48.726702 5.978175 heading -1 speed -1 acc 5 ts 1794314709493.6099 mocked true
+1794314709596 POS 267 48.726698 5.978176 heading -1 speed -1 acc 5 ts 1794314709591.309 mocked true
+1794314709694 POS 268 48.726694 5.978176 heading -1 speed -1 acc 5 ts 1794314709689.248 mocked true
+1794314709789 POS 269 48.726691 5.978176 heading -1 speed -1 acc 5 ts 1794314709786.8528 mocked true
+1794314709822 CAM easeTo 159 {"center":[5.9781759999999995,48.7266908],"bearing":177.88948835658425,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314709824 REGION did user= false animated= true bearing 177.9 zoom 16.00 center 5.97817,48.72673
+1794314709824 REGION will user= false animated= true
+1794314709889 POS 270 48.726687 5.978176 heading -1 speed -1 acc 5 ts 1794314709884.69 mocked true
+1794314709985 POS 271 48.726684 5.978176 heading -1 speed -1 acc 5 ts 1794314709983.4941 mocked true
+1794314710084 POS 272 48.726680 5.978177 heading -1 speed -1 acc 5 ts 1794314710081.7617 mocked true
+1794314710181 POS 273 48.726676 5.978177 heading -1 speed -1 acc 5 ts 1794314710178.926 mocked true
+1794314710279 POS 274 48.726673 5.978177 heading -1 speed -1 acc 5 ts 1794314710277.594 mocked true
+1794314710378 POS 275 48.726669 5.978177 heading -1 speed -1 acc 5 ts 1794314710373.6492 mocked true
+1794314710474 POS 276 48.726666 5.978177 heading -1 speed -1 acc 5 ts 1794314710470.608 mocked true
+1794314710570 POS 277 48.726662 5.978178 heading -1 speed -1 acc 5 ts 1794314710568.3 mocked true
+1794314710668 POS 278 48.726659 5.978178 heading -1 speed -1 acc 5 ts 1794314710666.099 mocked true
+1794314710766 POS 279 48.726655 5.978178 heading -1 speed -1 acc 5 ts 1794314710762.7358 mocked true
+1794314710825 REGION did user= false animated= true bearing 177.9 zoom 16.00 center 5.97818,48.72669
+1794314710839 CAM easeTo 160 {"center":[5.978178,48.726655],"bearing":177.8894868554803,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314710841 REGION will user= false animated= true
+1794314710863 POS 280 48.726651 5.978178 heading -1 speed -1 acc 5 ts 1794314710860.8599 mocked true
+1794314710963 POS 281 48.726648 5.978178 heading -1 speed -1 acc 5 ts 1794314710958.8298 mocked true
+1794314711064 POS 282 48.726644 5.978179 heading -1 speed -1 acc 5 ts 1794314711059.0461 mocked true
+1794314711162 POS 283 48.726641 5.978179 heading -1 speed -1 acc 5 ts 1794314711156.998 mocked true
+1794314711261 POS 284 48.726637 5.978179 heading -1 speed -1 acc 5 ts 1794314711258.1658 mocked true
+1794314711361 POS 285 48.726634 5.978179 heading -1 speed -1 acc 5 ts 1794314711356.446 mocked true
+1794314711458 POS 286 48.726630 5.978180 heading -1 speed -1 acc 5 ts 1794314711454.667 mocked true
+1794314711555 POS 287 48.726626 5.978180 heading -1 speed -1 acc 5 ts 1794314711553.3271 mocked true
+1794314711654 POS 288 48.726623 5.978180 heading -1 speed -1 acc 5 ts 1794314711652.2488 mocked true
+1794314711754 POS 289 48.726619 5.978180 heading -1 speed -1 acc 5 ts 1794314711752.1501 mocked true
+1794314711854 POS 290 48.726616 5.978180 heading -1 speed -1 acc 5 ts 1794314711852.573 mocked true
+1794314711856 CAM easeTo 161 {"center":[5.97818042,48.72661562],"bearing":177.67865412442632,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314711857 REGION did user= false animated= true bearing 177.9 zoom 16.00 center 5.97818,48.72665
+1794314711857 REGION will user= false animated= true
+1794314711954 POS 291 48.726612 5.978181 heading -1 speed -1 acc 5 ts 1794314711952.248 mocked true
+1794314712064 POS 292 48.726608 5.978181 heading -1 speed -1 acc 5 ts 1794314712060.1821 mocked true
+1794314712163 POS 293 48.726605 5.978181 heading -1 speed -1 acc 5 ts 1794314712160.1958 mocked true
+1794314712263 POS 294 48.726601 5.978181 heading -1 speed -1 acc 5 ts 1794314712261.6282 mocked true
+1794314712364 POS 295 48.726598 5.978182 heading -1 speed -1 acc 5 ts 1794314712362.4712 mocked true
+1794314712465 POS 296 48.726594 5.978182 heading -1 speed -1 acc 5 ts 1794314712462.839 mocked true
+1794314712565 POS 297 48.726591 5.978182 heading -1 speed -1 acc 5 ts 1794314712563 mocked true
+1794314712665 POS 298 48.726587 5.978182 heading -1 speed -1 acc 5 ts 1794314712663.8643 mocked true
+1794314712765 POS 299 48.726583 5.978182 heading -1 speed -1 acc 5 ts 1794314712764.4858 mocked true
+1794314712858 REGION did user= false animated= true bearing 177.7 zoom 16.00 center 5.97818,48.72662
+1794314712866 POS 300 48.726580 5.978183 heading -1 speed -1 acc 5 ts 1794314712864.2522 mocked true
+1794314712872 CAM easeTo 162 {"center":[5.97818262,48.72657982],"bearing":177.678652473684,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314712874 REGION will user= false animated= true
+1794314712964 POS 301 48.726576 5.978183 heading -1 speed -1 acc 5 ts 1794314712961.8372 mocked true
+1794314713062 POS 302 48.726573 5.978183 heading -1 speed -1 acc 5 ts 1794314713059.866 mocked true
+1794314713163 POS 303 48.726569 5.978183 heading -1 speed -1 acc 5 ts 1794314713157.865 mocked true
+1794314713258 POS 304 48.726565 5.978184 heading -1 speed -1 acc 5 ts 1794314713255.11 mocked true
+1794314713355 POS 305 48.726562 5.978184 heading -1 speed -1 acc 5 ts 1794314713353.159 mocked true
+1794314713455 POS 306 48.726558 5.978184 heading -1 speed -1 acc 5 ts 1794314713451.341 mocked true
+1794314713552 POS 307 48.726555 5.978184 heading -1 speed -1 acc 5 ts 1794314713550.355 mocked true
+1794314713653 POS 308 48.726551 5.978184 heading -1 speed -1 acc 5 ts 1794314713649.397 mocked true
+1794314713748 POS 309 48.726548 5.978185 heading -1 speed -1 acc 5 ts 1794314713745.912 mocked true
+1794314713846 POS 310 48.726544 5.978185 heading -1 speed -1 acc 5 ts 1794314713844.432 mocked true
+1794314713889 CAM easeTo 163 {"center":[5.97818482,48.72654402],"bearing":177.67865082770174,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314713892 REGION did user= false animated= true bearing 177.7 zoom 16.00 center 5.97818,48.72658
+1794314713892 REGION will user= false animated= true
+1794314713945 POS 311 48.726540 5.978185 heading -1 speed -1 acc 5 ts 1794314713944.509 mocked true
+1794314714051 POS 312 48.726537 5.978185 heading -1 speed -1 acc 5 ts 1794314714049.1792 mocked true
+1794314714153 POS 313 48.726533 5.978185 heading -1 speed -1 acc 5 ts 1794314714152.5723 mocked true
+1794314714261 POS 314 48.726530 5.978186 heading -1 speed -1 acc 5 ts 1794314714259.787 mocked true
+1794314714362 POS 315 48.726526 5.978186 heading -1 speed -1 acc 5 ts 1794314714360.807 mocked true
+1794314714463 POS 316 48.726523 5.978186 heading -1 speed -1 acc 5 ts 1794314714459.429 mocked true
+1794314714563 POS 317 48.726519 5.978186 heading -1 speed -1 acc 5 ts 1794314714558.139 mocked true
+1794314714664 POS 318 48.726515 5.978187 heading -1 speed -1 acc 5 ts 1794314714659.9932 mocked true
+1794314714764 POS 319 48.726512 5.978187 heading -1 speed -1 acc 5 ts 1794314714760.114 mocked true
+1794314714862 POS 320 48.726508 5.978187 heading -1 speed -1 acc 5 ts 1794314714857.902 mocked true
+1794314714905 CAM easeTo 164 {"center":[5.97818702,48.72650822],"bearing":177.67864917696124,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314714909 REGION did user= false animated= true bearing 177.7 zoom 16.00 center 5.97818,48.72654
+1794314714909 REGION will user= false animated= true
+1794314714960 POS 321 48.726505 5.978187 heading -1 speed -1 acc 5 ts 1794314714955.292 mocked true
+1794314715057 POS 322 48.726501 5.978187 heading -1 speed -1 acc 5 ts 1794314715053.581 mocked true
+1794314715154 POS 323 48.726497 5.978188 heading -1 speed -1 acc 5 ts 1794314715151.949 mocked true
+1794314715252 POS 324 48.726494 5.978188 heading -1 speed -1 acc 5 ts 1794314715250.188 mocked true
+1794314715351 POS 325 48.726490 5.978188 heading -1 speed -1 acc 5 ts 1794314715349.4822 mocked true
+1794314715451 POS 326 48.726487 5.978188 heading -1 speed -1 acc 5 ts 1794314715448.81 mocked true
+1794314715553 POS 327 48.726483 5.978189 heading -1 speed -1 acc 5 ts 1794314715549.021 mocked true
+1794314715648 POS 328 48.726480 5.978189 heading -1 speed -1 acc 5 ts 1794314715646.597 mocked true
+1794314715754 POS 329 48.726476 5.978189 heading -1 speed -1 acc 5 ts 1794314715752.2678 mocked true
+1794314715858 POS 330 48.726472 5.978189 heading -1 speed -1 acc 5 ts 1794314715854.828 mocked true
+1794314715922 CAM easeTo 165 {"center":[5.978188960000001,48.7264724],"bearing":180.4199415692766,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314715923 REGION did user= false animated= true bearing 177.7 zoom 16.00 center 5.97819,48.72651
+1794314715923 REGION will user= false animated= true
+1794314715964 POS 331 48.726469 5.978189 heading -1 speed -1 acc 5 ts 1794314715962.616 mocked true
+1794314716073 POS 332 48.726465 5.978189 heading -1 speed -1 acc 5 ts 1794314716072.049 mocked true
+1794314716180 POS 333 48.726462 5.978189 heading -1 speed -1 acc 5 ts 1794314716178.2131 mocked true
+1794314716286 POS 334 48.726458 5.978189 heading -1 speed -1 acc 5 ts 1794314716284.035 mocked true
+1794314716384 POS 335 48.726454 5.978189 heading -1 speed -1 acc 5 ts 1794314716383.152 mocked true
+1794314716484 POS 336 48.726451 5.978189 heading -1 speed -1 acc 5 ts 1794314716482.1711 mocked true
+1794314716584 POS 337 48.726447 5.978189 heading -1 speed -1 acc 5 ts 1794314716582.554 mocked true
+1794314716684 POS 338 48.726444 5.978189 heading -1 speed -1 acc 5 ts 1794314716682.561 mocked true
+1794314716784 POS 339 48.726440 5.978189 heading -1 speed -1 acc 5 ts 1794314716782.349 mocked true
+1794314716884 POS 340 48.726436 5.978189 heading -1 speed -1 acc 5 ts 1794314716882.627 mocked true
+1794314716922 CAM easeTo 166 {"center":[5.97818856,48.7264364],"bearing":180.41994186988796,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314716924 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72647
+1794314716924 REGION will user= false animated= true
+1794314716984 POS 341 48.726433 5.978189 heading -1 speed -1 acc 5 ts 1794314716981.648 mocked true
+1794314717084 POS 342 48.726429 5.978188 heading -1 speed -1 acc 5 ts 1794314717082.354 mocked true
+1794314717185 POS 343 48.726426 5.978188 heading -1 speed -1 acc 5 ts 1794314717180.735 mocked true
+1794314717284 POS 344 48.726422 5.978188 heading -1 speed -1 acc 5 ts 1794314717279.657 mocked true
+1794314717381 POS 345 48.726418 5.978188 heading -1 speed -1 acc 5 ts 1794314717377.533 mocked true
+1794314717480 POS 346 48.726415 5.978188 heading -1 speed -1 acc 5 ts 1794314717476.398 mocked true
+1794314717580 POS 347 48.726411 5.978188 heading -1 speed -1 acc 5 ts 1794314717574.974 mocked true
+1794314717674 POS 348 48.726408 5.978188 heading -1 speed -1 acc 5 ts 1794314717672.185 mocked true
+1794314717774 POS 349 48.726404 5.978188 heading -1 speed -1 acc 5 ts 1794314717770.97 mocked true
+1794314717874 POS 350 48.726400 5.978188 heading -1 speed -1 acc 5 ts 1794314717869.7961 mocked true
+1794314717925 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72644
+1794314717939 CAM easeTo 167 {"center":[5.97818816,48.726400399999996],"bearing":180.41994217049916,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314717941 REGION will user= false animated= true
+1794314717970 POS 351 48.726397 5.978188 heading -1 speed -1 acc 5 ts 1794314717968.0881 mocked true
+1794314718070 POS 352 48.726393 5.978188 heading -1 speed -1 acc 5 ts 1794314718066.082 mocked true
+1794314718167 POS 353 48.726390 5.978188 heading -1 speed -1 acc 5 ts 1794314718163.184 mocked true
+1794314718268 POS 354 48.726386 5.978188 heading -1 speed -1 acc 5 ts 1794314718264.902 mocked true
+1794314718374 POS 355 48.726382 5.978188 heading -1 speed -1 acc 5 ts 1794314718371.5579 mocked true
+1794314718479 POS 356 48.726379 5.978188 heading -1 speed -1 acc 5 ts 1794314718476.352 mocked true
+1794314718582 POS 357 48.726375 5.978188 heading -1 speed -1 acc 5 ts 1794314718579.932 mocked true
+1794314718682 POS 358 48.726372 5.978188 heading -1 speed -1 acc 5 ts 1794314718680.296 mocked true
+1794314718781 POS 359 48.726368 5.978188 heading -1 speed -1 acc 5 ts 1794314718778.996 mocked true
+1794314718881 POS 360 48.726364 5.978188 heading -1 speed -1 acc 5 ts 1794314718879.223 mocked true
+1794314718955 CAM easeTo 168 {"center":[5.97818776,48.7263644],"bearing":180.41994248043449,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314718959 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72640
+1794314718959 REGION will user= false animated= true
+1794314718980 POS 361 48.726361 5.978188 heading -1 speed -1 acc 5 ts 1794314718977.808 mocked true
+1794314719085 POS 362 48.726357 5.978188 heading -1 speed -1 acc 5 ts 1794314719080.2632 mocked true
+1794314719188 POS 363 48.726354 5.978188 heading -1 speed -1 acc 5 ts 1794314719186.2678 mocked true
+1794314719295 POS 364 48.726350 5.978188 heading -1 speed -1 acc 5 ts 1794314719291.641 mocked true
+1794314719400 POS 365 48.726346 5.978188 heading -1 speed -1 acc 5 ts 1794314719397.9812 mocked true
+1794314719501 POS 366 48.726343 5.978188 heading -1 speed -1 acc 5 ts 1794314719498.8452 mocked true
+1794314719598 POS 367 48.726339 5.978187 heading -1 speed -1 acc 5 ts 1794314719596.031 mocked true
+1794314719697 POS 368 48.726336 5.978187 heading -1 speed -1 acc 5 ts 1794314719695.616 mocked true
+1794314719798 POS 369 48.726332 5.978187 heading -1 speed -1 acc 5 ts 1794314719796.001 mocked true
+1794314719897 POS 370 48.726328 5.978187 heading -1 speed -1 acc 5 ts 1794314719895.4001 mocked true
+1794314719972 CAM easeTo 169 {"center":[5.978187360000001,48.7263284],"bearing":180.41994277172108,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314719974 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72636
+1794314719974 REGION will user= false animated= true
+1794314719999 POS 371 48.726325 5.978187 heading -1 speed -1 acc 5 ts 1794314719997.1309 mocked true
+1794314720097 POS 372 48.726321 5.978187 heading -1 speed -1 acc 5 ts 1794314720094.856 mocked true
+1794314720199 POS 373 48.726318 5.978187 heading -1 speed -1 acc 5 ts 1794314720194.549 mocked true
+1794314720296 POS 374 48.726314 5.978187 heading -1 speed -1 acc 5 ts 1794314720292.647 mocked true
+1794314720395 POS 375 48.726310 5.978187 heading -1 speed -1 acc 5 ts 1794314720389.649 mocked true
+1794314720490 POS 376 48.726307 5.978187 heading -1 speed -1 acc 5 ts 1794314720487.086 mocked true
+1794314720590 POS 377 48.726303 5.978187 heading -1 speed -1 acc 5 ts 1794314720586.196 mocked true
+1794314720690 POS 378 48.726300 5.978187 heading -1 speed -1 acc 5 ts 1794314720686.812 mocked true
+1794314720791 POS 379 48.726296 5.978187 heading -1 speed -1 acc 5 ts 1794314720787.413 mocked true
+1794314720972 CAM easeTo 170 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314720975 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72633
+1794314720975 REGION will user= false animated= true
+1794314721989 CAM easeTo 171 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314721990 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314721990 REGION will user= false animated= true
+1794314723005 CAM easeTo 172 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314723007 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314723007 REGION will user= false animated= true
+1794314724006 CAM easeTo 173 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314724010 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314724011 REGION will user= false animated= true
+1794314725022 CAM easeTo 174 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314725026 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314725026 REGION will user= false animated= true
+1794314726039 CAM easeTo 175 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314726043 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314726043 REGION will user= false animated= true
+1794314727056 CAM easeTo 176 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314727060 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314727060 REGION will user= false animated= true
+1794314728072 CAM easeTo 177 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314728077 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314728077 REGION will user= false animated= true
+1794314729089 CAM easeTo 178 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314729091 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314729091 REGION will user= false animated= true
+1794314730094 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314730106 CAM easeTo 179 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314730109 REGION will user= false animated= true
+1794314731122 CAM easeTo 180 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314731127 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314731127 REGION will user= false animated= true
+1794314732139 CAM easeTo 181 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314732142 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314732142 REGION will user= false animated= true
+1794314733155 CAM easeTo 182 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314733158 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314733158 REGION will user= false animated= true
+1794314734172 CAM easeTo 183 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314734174 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314734174 REGION will user= false animated= true
+1794314735177 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314735189 CAM easeTo 184 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314735192 REGION will user= false animated= true
+1794314736205 CAM easeTo 185 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314736209 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314736209 REGION will user= false animated= true
+1794314737222 CAM easeTo 186 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314737223 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314737223 REGION will user= false animated= true
+1794314738222 CAM easeTo 187 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314738223 REGION will user= false animated= true
+1794314738390 KA read: isActivated=false
+1794314739222 CAM easeTo 188 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314739223 REGION will user= false animated= true
+1794314739806 KA after toggle: isActivated=true
+1794314740239 CAM easeTo 189 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314740240 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314740240 REGION will user= false animated= true
+1794314740357 KA read: isActivated=true
+1794314741051 APPSTATE inactive isActivated true
+1794314741240 CAM easeTo 190 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314741241 REGION will user= false animated= true
+1794314741798 APPSTATE background isActivated false
+1794314747353 CAM easeTo 191 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314747360 APPSTATE+1s inactive isActivated false
+1794314747361 REGION will user= false animated= true
+1794314747361 APPSTATE+1s background isActivated true
+1794314747368 POS 380 48.726296 5.978187 heading -1 speed -1 acc 5 ts 1794314720787.413 mocked true
+1794314747596 APPSTATE active isActivated true
+1794314748356 CAM easeTo 192 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314748359 REGION will user= false animated= true
+1794314748610 APPSTATE+1s active isActivated true
+1794314749372 CAM easeTo 193 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314749377 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314749377 REGION will user= false animated= true
+1794314750389 CAM easeTo 194 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314750394 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314750394 REGION will user= false animated= true
+1794314751405 CAM easeTo 195 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314751408 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314751408 REGION will user= false animated= true
+1794314752409 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314752422 CAM easeTo 196 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314752424 REGION will user= false animated= true
+1794314753425 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314753439 CAM easeTo 197 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314753441 REGION will user= false animated= true
+1794314754455 CAM easeTo 198 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314754458 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314754458 REGION will user= false animated= true
+1794314755472 CAM easeTo 199 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314755473 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314755473 REGION will user= false animated= true
+1794314756489 CAM easeTo 200 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314756489 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314756489 REGION will user= false animated= true
+1794314756757 KA read: isActivated=true
+1794314757490 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314757490 CAM easeTo 201 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314757490 REGION will user= false animated= true
+1794314758189 KA after toggle: isActivated=false
+1794314758505 CAM easeTo 202 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314758506 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314758506 REGION will user= false animated= true
+1794314758724 KA read: isActivated=false
+1794314759506 CAM easeTo 203 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314759509 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314759509 REGION will user= false animated= true
+1794314760522 CAM easeTo 204 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314760523 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314760523 REGION will user= false animated= true
+1794314761522 CAM easeTo 205 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314761527 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314761527 REGION will user= false animated= true
+1794314762539 CAM easeTo 206 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314762542 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314762543 REGION will user= false animated= true
+1794314763556 CAM easeTo 207 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314763559 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314763559 REGION will user= false animated= true
+1794314764572 CAM easeTo 208 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314764577 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314764577 REGION will user= false animated= true
+1794314765589 CAM easeTo 209 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314765594 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314765594 REGION will user= false animated= true
+1794314766606 CAM easeTo 210 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314766610 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314766610 REGION will user= false animated= true
+1794314767622 CAM easeTo 211 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314767627 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314767627 REGION will user= false animated= true
+1794314768639 CAM easeTo 212 {"center":[5.978187,48.726296],"bearing":180.41994304227072,"zoom":16,"padding":{"top":350,"bottom":0,"left":0,"right":0},"duration":1000}
+1794314768644 REGION did user= false animated= true bearing 180.4 zoom 16.00 center 5.97819,48.72630
+1794314768644 REGION will user= false animated= true

@@ -85,6 +85,10 @@ class ValhallaRouteModule : Module() {
       guarded { it.traceAttributesRaw(requestJson) }
     }
 
+    AsyncFunction("traceRoute") { requestJson: String ->
+      guarded { it.traceRouteRaw(requestJson) }
+    }
+
     OnDestroy { closeEngine() }
   }
 }

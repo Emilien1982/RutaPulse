@@ -76,6 +76,35 @@ Retirés le 21 octobre 2026, car plus aucun écran ne les utilise (les écrans
 | `suivi.segments` | Hauteur 64 (`cible.velo`), bord 3 `couleur.texte`, rayon 32 ; choisi : fond `couleur.texte`, texte `#FFFFFF` (18,9:1) ; libellés 20, graisse 700 | « Automatique » / « Maximum » |
 | `suivi.panneau-titre` | 24, graisse 800 | « Réglages du suivi » |
 
+La roue dentée et le panneau arrivent en phase 8b. En 8a, l'écran de suivi
+n'a pas de roue dentée.
+
+### États du suivi (écran 30, phase 8a)
+
+Ajoutés le 10 novembre 2026 (phase 8a, T1). Écrans : `30-suivi-velo.html`,
+écrans 1 à 8.
+
+| Jeton | Valeur | Usage |
+|---|---|---|
+| `guidage.picto` | Carré de 124 (dessin dans un carré de 96, trait 13, bouts ronds), `couleur.texte` | Pictogramme du panneau : direction, arrivée, « Suivez le tracé », écart, départ, GPS. Planche en bas de l'écran 30 |
+| `guidage.precision` | 20, graisse 600, `couleur.texte`, une ligne | Ligne sous la consigne : raison (« Tronçon tracé à la main »), « Signal GPS perdu ». En `couleur.texte` et non `texte-2` : elle se lit aussi sur le jaune. Quand elle s'affiche, la consigne passe à une ligne, sans le type de voie |
+| `suivi.attribution` | Version courte de l'attribution (voir « Attribution ») : « © OpenStreetMap » + « i », en bas à gauche de la carte, fond blanc à 75 %, texte `couleur.texte-2` | Écran de suivi : la version complète passerait sous « Terminer ». Le « i » ouvre la boîte native de MapLibre |
+| `guidage.panneau` | Hauteur 262, bord du bas `bord.guidage` ; dans l'ordre : pictogramme et distance (ligne de 124), consigne (2 lignes au plus), précision | Même structure dans tous les états : l'écran ne saute pas |
+| `suivi.bas` | Du bas de la carte (724) au bas de l'écran, bord du haut `bord.guidage` ; deux colonnes égales, 16 entre elles ; étiquette `texte.guidage-etiquette` en `couleur.texte-2`, valeur `texte.guidage-restant` | « Reste » et « D+ restant » (décision 3) |
+| `suivi.terminer` | 140 × 64 (`cible.velo`), rayon 32 ; fond `couleur.fond`, bord 2 `couleur.danger`, texte 20 / 700 `couleur.danger` ; `ombre.flottant` | Bouton « Terminer », flottant à 16 du bord droit et 16 au-dessus de `suivi.bas` |
+| `trace.ecart` | Points ronds de 5 en `couleur.texte`, un tous les 10 ; halo `#FFFFFF` (points de 9 dessous) | De la position au point visé : point du tracé le plus proche (écart), ou le départ (départ loin). Noir, pour ne pas ressembler au trait de liaison magenta |
+| `marqueur.position-sans-cap` | Rond de 30 : `carte.position`, bord blanc de 3, sans flèche | Position quand le cap est inconnu (avant le premier mouvement, ou à l'arrêt hors du tracé) |
+| `marqueur.position-perdue` | Même rond, fond `#8C8C8C` (= `carte.parcouru` opaque) | Plus de 10 s sans position |
+
+Formats des nombres du suivi (virgule décimale forcée) :
+
+| Valeur | Règle |
+|---|---|
+| Distance du panneau | 1 km et plus : une décimale (10 km et plus : aucune). 300 à 999 m : arrondi à 50 m. Moins de 300 m : arrondi à 10 m, jamais sous 10 m |
+| Reste | 1 km et plus : une décimale (100 km et plus : aucune). Moins de 1 km : arrondi à 10 m |
+| D+ restant, D+ de l'arrivée | Mètres entiers, espace fine des milliers ; inconnu : « — » |
+| Durée de l'arrivée | Moins d'une heure : « 52 min » ; sinon « 1 h 52 » |
+
 ## Couleurs : hors navigation (style années 70)
 
 Contraste du texte mesuré sur `hn.creme` (fond des écrans) et sur
@@ -227,6 +256,7 @@ Une seule graisse de Jost suffit en v1 (700).
 | `texte.guidage-restant` | 36 | 800 | système | Distance restante (valeur) ; chiffres de l'écran « Arrivée » |
 | `texte.guidage-etiquette` | 20 | 600 | système | « Reste », libellés lus en roulant (minimum en roulant) |
 | `texte.titre-fete` | 44 | 700 | Jost, capitales, espacement 2 | « ARRIVÉE ! » |
+| `texte.titre-fete-long` | 32 | 700 | Jost, capitales, espacement 2 | « SORTIE TERMINÉE » : en 44, il ne tient pas sur une ligne. Ajouté le 10 novembre 2026 (phase 8a) |
 | `texte.titre-ecran` | 26 | 700 | Jost, capitales, espacement 0,5 | « MES ITINÉRAIRES », « ZONES HORS LIGNE » |
 | `texte.titre-etat` | 24 | 700 | Jost | Titre d'un état vide (50, 51) |
 | `texte.titre-nom` | 22 | 700 | Jost | Nom de l'itinéraire ou du circuit en tête d'écran ou de feuille ; titre d'une erreur |
@@ -288,7 +318,7 @@ système). Tailles au zoom 15 ; courbes complètes dans `style-carte.md`.
 
 | Jeton | Valeur | Usage |
 |---|---|---|
-| `bord.guidage` | 3, `couleur.texte` | Bas du panneau de guidage, haut du panneau « Reste » |
+| `bord.guidage` | 3, `couleur.texte` | Bas du panneau de guidage, haut du bandeau « Reste » / « D+ restant » |
 | `rayon.bouton-velo` | 32 | Boutons de 64 du suivi |
 | `rayon.plein` | 999 | Boutons ronds |
 

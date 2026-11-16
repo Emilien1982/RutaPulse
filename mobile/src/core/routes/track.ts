@@ -65,6 +65,37 @@ export function thinTrack(track: LonLat[], max = MAX_ENGINE_POINTS): LonLat[] {
   return out;
 }
 
+/**
+ * The first point, then a point every `stepM` meters of the line (taken on
+ * the line, between two of its points), then the last point (ADR 0021,
+ * section 1.1). A noisy track with a point every 8 m makes the matching of
+ * the engine fail; one point every 20 m does not.
+ */
+export function spaceEvery(track: readonly LonLat[], stepM: number): LonLat[] {
+  const first = track[0];
+  if (!first) return [];
+  const out: LonLat[] = [first];
+  // Length walked since the last point that was written.
+  let since = 0;
+  for (let i = 1; i < track.length; i++) {
+    const a = track[i - 1] as LonLat;
+    const b = track[i] as LonLat;
+    const segment = trackLengthM([a, b]);
+    let at = 0;
+    while (segment > 0 && since + (segment - at) >= stepM) {
+      at += stepM - since;
+      since = 0;
+      const f = at / segment;
+      out.push([a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f]);
+    }
+    since += segment - at;
+  }
+  const last = track[track.length - 1] as LonLat;
+  const written = out[out.length - 1] as LonLat;
+  if (written[0] !== last[0] || written[1] !== last[1]) out.push(last);
+  return out;
+}
+
 /** Encoded polyline of at most 66 points, evenly taken, ends included. */
 export function previewOf(track: readonly LonLat[]): string {
   if (track.length <= PREVIEW_POINTS) return encodePolyline6([...track]);

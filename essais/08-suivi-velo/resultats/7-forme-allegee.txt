@@ -1,0 +1,8 @@
+1: 1020 pts -> 1703 pts; directions full 68 / 20 m 68; identical: True; trace_route 97 ms, trace_attributes 13 ms; same matched shape (B6): True
+2: 1025 pts -> 1068 pts; directions full 40 / 20 m 40; identical: True; trace_route 12 ms, trace_attributes 9 ms; same matched shape (B6): True
+3: 3928 pts -> 1768 pts; directions full 52 / 20 m 53; identical: False; trace_route 23 ms, trace_attributes 15 ms; same matched shape (B6): False
+    --- full
+    +++ 20 m
+    @@ -48,0 +49 @@
+    +Serrez à gauche pour rester sur Place Duroc.
+3d: 1292 pts -> 1747 pts; directions full 52 / 20 m 52; identical: True; trace_route 16 ms, trace_attributes 14 ms; same matched shape (B6): False

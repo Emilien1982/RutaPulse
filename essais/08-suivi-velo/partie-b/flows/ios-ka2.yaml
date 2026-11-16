@@ -1,0 +1,5 @@
+appId: fr.rutapulse.app
+---
+- tapOn: "KA?"
+- tapOn: "KeepAwake"
+- tapOn: "KA?"

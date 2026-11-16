@@ -89,6 +89,10 @@ public class ValhallaRouteModule: Module {
       try self.guarded { try $0.traceAttributes(rawRequest: requestJson) }
     }
 
+    AsyncFunction("traceRoute") { (requestJson: String) -> String in
+      try self.guarded { try $0.traceRoute(rawRequest: requestJson) }
+    }
+
     OnDestroy {
       self.closeEngine()
     }

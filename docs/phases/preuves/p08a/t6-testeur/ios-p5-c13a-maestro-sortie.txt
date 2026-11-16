@@ -1,0 +1,29 @@
+fr.rutapulse.app: 34250
+replay pid 34262
+Parsed 27 waypoints
+Running on iPhone 17 - iOS 26.5 - DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D
+ > Flow p08a-suivi-arrivee-ios
+Tap on "Itinéraires.*"... COMPLETED
+Scrolling DOWN until "Itinéraire du 4 nov.*" is visible with speed 40, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Tap on "Itinéraire du 4 nov.*"... COMPLETED
+Assert that id: info-start is visible... COMPLETED
+Take screenshot ios-p5-c13a-01-infos... COMPLETED
+Tap on id: info-start... COMPLETED
+Assert that id: tracking-panel is visible... COMPLETED
+Assert that "Reste.*" is visible... COMPLETED
+Assert that ".*6[0-9][0-9].*", id: tracking-remaining is visible... COMPLETED
+Take screenshot ios-p5-c13a-02-depart... COMPLETED
+Assert that ".*sur la piste.*", id: tracking-instruction is visible... COMPLETED
+Take screenshot ios-p5-c13a-03-direction-changee... COMPLETED
+Assert that ".*jusqu.au tracé.*" is visible... COMPLETED
+Assert that "Le guidage reprend sur le tracé.*" is visible... COMPLETED
+Take screenshot ios-p5-c13a-04-ecart... COMPLETED
+Assert that ".*jusqu.au tracé.*" is not visible... COMPLETED
+Assert that id: tracking-instruction is visible... COMPLETED
+Take screenshot ios-p5-c13a-05-retour-sur-le-trace... COMPLETED
+Assert that id: ride-end is visible... COMPLETED
+Assert that "ARRIVÉE.*" is visible... COMPLETED
+Take screenshot ios-p5-c13a-06-arrivee... COMPLETED
+Tap on id: ride-close... COMPLETED
+Assert that id: info-start is visible... COMPLETED
+Take screenshot ios-p5-c13a-07-apres-fermer... COMPLETED

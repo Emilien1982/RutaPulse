@@ -1,0 +1,38 @@
+11-10 14:02:35.748  4708  4762 I ReactNativeJS: 'ESSAI', 'KA read: isActivated=true'
+== avant: etat apres lecture (14:02:37)
+  mWakefulness=Awake
+Wake Locks: size=2
+  SCREEN_BRIGHT_WAKE_LOCK        'WindowManager/displayId:0' ON_AFTER_RELEASE ACQ=-9s869ms (uid=1000 pid=536 w
+  mCurrentFocus=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+  mHoldScreenWindow=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+== arriere-plan (HOME) +4 s, ecran encore allume (14:02:48)
+  mWakefulness=Awake
+Wake Locks: size=1
+  mCurrentFocus=Window{66daddf u0 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.
+  mHoldScreenWindow=null
+== retour au premier plan +3 s (14:02:51)
+  mWakefulness=Awake
+Wake Locks: size=1
+  SCREEN_BRIGHT_WAKE_LOCK        'WindowManager/displayId:0' ON_AFTER_RELEASE ACQ=-3s66ms (uid=1000 pid=536 ws
+  mCurrentFocus=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+  mHoldScreenWindow=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+== retour +25 s (> 15 s de timeout) (14:03:14)
+  mWakefulness=Awake
+Wake Locks: size=1
+  SCREEN_BRIGHT_WAKE_LOCK        'WindowManager/displayId:0' ON_AFTER_RELEASE ACQ=-25s523ms (uid=1000 pid=536 
+  mCurrentFocus=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+  mHoldScreenWindow=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+'APPSTATE background isActivated true'
+'APPSTATE active isActivated true'
+'APPSTATE+1s background isActivated true'
+'APPSTATE+1s active isActivated true'
+== KeepAwake coupe (demontage useKeepAwake) +1 s (14:03:26)
+  mWakefulness=Awake
+Wake Locks: size=1
+  mCurrentFocus=Window{1b46142 u0 fr.rutapulse.app/fr.rutapulse.app.MainActivity}
+  mHoldScreenWindow=null
+== KeepAwake coupe +26 s (> 15 s) (14:03:51)
+  mWakefulness=Asleep
+Wake Locks: size=0
+  mCurrentFocus=null
+  mHoldScreenWindow=null

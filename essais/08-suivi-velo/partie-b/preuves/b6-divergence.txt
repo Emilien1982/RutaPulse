@@ -1,0 +1,5 @@
+B6 : forme recalée de trace_route vs trace_attributes (map_snap), même requête de forme (réponses identiques sur Mac, iOS, Android)
+1: identiques (1015 points, 34033 m)
+2: identiques (1025 points, 21327 m)
+3: DIFFERENT. trace_route 1264 pts / 34178 m ; trace_attributes 1299 pts / 34954 m ; 1er point different: 533 (km 16.31) ; points communs depuis le début: 533
+3d: DIFFERENT. trace_route 1262 pts / 34167 m ; trace_attributes 1297 pts / 34904 m ; 1er point different: 1262 (km 34.17) ; points communs depuis le début: 1262

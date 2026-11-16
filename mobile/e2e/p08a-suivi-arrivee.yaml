@@ -1,0 +1,78 @@
+# C13 (phase 8a), parcours 1 : suivi d'un itinéraire jusqu'à l'arrivée.
+# Ouvrir « Petite Suisse Lorraine à VTT (3) » (34,9 km), démarrer le suivi,
+# voir la direction changer, s'écarter puis revenir sur le tracé, arriver,
+# fermer.
+# Prérequis (Android seulement, version release) :
+#  - mode avion : adb -s emulator-5584 shell cmd connectivity airplane-mode enable
+#    (à remettre à la fin avec « disable ») ;
+#  - la position de départ posée AVANT : adb -s emulator-5584 emu geo fix 5.984049 48.830921
+#  - la trace rejouée à côté, une position par seconde :
+#    python3 -I essais/08-suivi-velo/t3-outils/android_replay.py <trace.json> 0 <n>
+#    La trace commence par 60 positions immobiles au départ (le temps que le
+#    parcours arrive au suivi), puis le circuit tous les 50 m, avec un écart de
+#    60 m vers le nord entre les positions 30 et 50 du circuit.
+# Pas de boucle ni de « repeat » : seulement des attentes (extendedWaitUntil).
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- tapOn: 'Itinéraires'
+- extendedWaitUntil:
+    visible: 'Petite Suisse Lorraine à VTT \(3\)'
+    timeout: 15000
+- tapOn: 'Petite Suisse Lorraine à VTT \(3\)'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- takeScreenshot: android-p4-c13a-01-infos
+- tapOn:
+    id: 'info-start'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-panel'
+    timeout: 20000
+- assertVisible: 'Reste'
+- assertVisible:
+    id: 'tracking-remaining'
+    text: '.*34,9.*'
+- takeScreenshot: android-p4-c13a-02-depart
+# Une direction change : « Tournez à gauche » arrive après la première.
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-instruction'
+      text: '.*Tournez à gauche.*'
+    timeout: 240000
+- takeScreenshot: android-p4-c13a-03-direction-changee
+# L'écart de 60 m : la distance jusqu'au tracé, sans alerte.
+- extendedWaitUntil:
+    visible: '.*jusqu.au tracé.*'
+    timeout: 240000
+- assertVisible: 'Le guidage reprend sur le tracé.*'
+- takeScreenshot: android-p4-c13a-04-ecart
+# Retour sur le tracé : le guidage reprend.
+- extendedWaitUntil:
+    notVisible: '.*jusqu.au tracé.*'
+    timeout: 120000
+- assertVisible:
+    id: 'tracking-instruction'
+- takeScreenshot: android-p4-c13a-05-retour-sur-le-trace
+# Arrivée : le circuit fait 34,9 km, à 50 m par seconde (environ 12 minutes).
+- extendedWaitUntil:
+    visible:
+      id: 'ride-end'
+    timeout: 1200000
+- assertVisible: 'ARRIVÉE.*'
+- takeScreenshot: android-p4-c13a-06-arrivee
+- tapOn:
+    id: 'ride-close'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- takeScreenshot: android-p4-c13a-07-apres-fermer

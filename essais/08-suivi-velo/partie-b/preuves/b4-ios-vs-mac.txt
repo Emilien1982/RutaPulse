@@ -1,0 +1,8 @@
+1 trace_route: IDENTICAL (parsed JSON)
+1 trace_attributes: IDENTICAL (parsed JSON)
+2 trace_route: IDENTICAL (parsed JSON)
+2 trace_attributes: IDENTICAL (parsed JSON)
+3 trace_route: IDENTICAL (parsed JSON)
+3 trace_attributes: IDENTICAL (parsed JSON)
+3d trace_route: IDENTICAL (parsed JSON)
+3d trace_attributes: IDENTICAL (parsed JSON)

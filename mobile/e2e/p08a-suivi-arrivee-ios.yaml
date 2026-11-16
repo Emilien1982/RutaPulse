@@ -1,0 +1,76 @@
+# C13 (phase 8a), parcours 1, variante iOS (iPhone 17, version release) :
+# suivi d'un itinéraire jusqu'à l'arrivée. Itinéraire « Itinéraire du 4 nov. »
+# (622 m) : démarrer, voir la direction changer, s'écarter de 60 m puis
+# revenir sur le tracé, arriver, fermer.
+# Le simulateur n'a pas de mode avion : la spec le permet (C13). Les
+# sélecteurs de texte exacts ne marchent pas sur iOS : expressions « .* ».
+# Prérequis, dans cet ordre (le parcours ne lance pas l'app : launchApp de
+# Maestro peut échouer sur iOS) :
+#  1. placer le simulateur au premier point, quelques secondes avant
+#     « Démarrer le suivi » :
+#     xcrun simctl location <udid> set 48.751513,5.966751
+#  2. xcrun simctl terminate <udid> fr.rutapulse.app ; xcrun simctl launch <udid> fr.rutapulse.app
+#  3. lancer le parcours, puis le rejeu à côté, environ 25 s plus tard :
+#     python3 -I essais/08-suivi-velo/t3-outils/ios_replay.py <trace.json> 0 126
+#     trace.json : trace_from_saved_route.py (pas de 5 m) puis décalage de
+#     60 m vers le côté des positions 35 à 65. ios_replay garde un point
+#     sur cinq et rejoue à 10 m/s (environ 62 s).
+# Pas de boucle ni de « repeat » : seulement des attentes (extendedWaitUntil).
+appId: fr.rutapulse.app
+---
+- tapOn: 'Itinéraires.*'
+- scrollUntilVisible:
+    element: 'Itinéraire du 4 nov.*'
+    timeout: 30000
+- tapOn: 'Itinéraire du 4 nov.*'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- takeScreenshot: ios-p5-c13a-01-infos
+- tapOn:
+    id: 'info-start'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-panel'
+    timeout: 20000
+- assertVisible: 'Reste.*'
+- assertVisible:
+    id: 'tracking-remaining'
+    text: '.*6[0-9][0-9].*'
+- takeScreenshot: ios-p5-c13a-02-depart
+# Le rejeu avance : la direction change (« Tournez à droite sur la piste »
+# arrive après la première).
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-instruction'
+      text: '.*sur la piste.*'
+    timeout: 120000
+- takeScreenshot: ios-p5-c13a-03-direction-changee
+# L'écart de 60 m : la distance jusqu'au tracé, sans alerte.
+- extendedWaitUntil:
+    visible: '.*jusqu.au tracé.*'
+    timeout: 120000
+- assertVisible: 'Le guidage reprend sur le tracé.*'
+- takeScreenshot: ios-p5-c13a-04-ecart
+# Retour sur le tracé : le guidage reprend.
+- extendedWaitUntil:
+    notVisible: '.*jusqu.au tracé.*'
+    timeout: 120000
+- assertVisible:
+    id: 'tracking-instruction'
+- takeScreenshot: ios-p5-c13a-05-retour-sur-le-trace
+# Arrivée.
+- extendedWaitUntil:
+    visible:
+      id: 'ride-end'
+    timeout: 180000
+- assertVisible: 'ARRIVÉE.*'
+- takeScreenshot: ios-p5-c13a-06-arrivee
+- tapOn:
+    id: 'ride-close'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- takeScreenshot: ios-p5-c13a-07-apres-fermer

@@ -4,6 +4,7 @@ export {
   mapColors,
   markerShadow,
   markerShadowRaised,
+  navColors,
   shadow,
   sheetShadow,
   terrainColors,
