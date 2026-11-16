@@ -83,7 +83,7 @@ Remarques non bloquantes du testeur sur le code final (`p08a/t8-final/LISEZMOI.m
 
 ## Intégration continue
 
-__CI__
+Workflow « verify », run [43911198726](https://github.com/Emilien1982/RutaPulse/actions/runs/43911198726) sur le commit 7bdcf3b : réussi (lu par l’API publique de GitHub le 16 novembre 2026).
 
 ## Écarts acceptés
 
