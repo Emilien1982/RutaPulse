@@ -61,3 +61,34 @@ pas comme ancienne. La règle protège sans doute une position en cache sur
 un vrai téléphone, pas ce scénario. Le « Reste » faux montre aussi que
 l'avancement reste calé sur la première position acceptée, même quand
 toutes les suivantes la contredisent. Suite : voir les résultats de la phase.
+
+## 4. Pas 3 (16 novembre) : règle de cohérence 051c657 — défaut propre à l'émulateur, reporté à la phase 10
+
+APK release de 051c657 (« BUILD SUCCESSFUL » vérifié), `emulator-5584`.
+Même scénario que § 3 ; 30 positions rejouées (environ 0,75 km attendus).
+
+| Capture | Vu | Attendu |
+|---|---|---|
+| `android-p3-01-apres-demarrer-avant-depart-reel.png` | « Recherche du GPS… », Reste 34,9 km | idem |
+| `android-p3-02-depart-reel-6s.png` | « 1,7 km jusqu'au tracé », Reste 14,3 km | Reste ≈ 34,8 km |
+| `android-p3-03-depart-reel-14s.png` | Reste 15,9 km | ≈ 34,5 km |
+| `android-p3-04-fin-rejeu.png` | Reste 15,5 km | ≈ 34,1 km |
+| `android-p3-05-confirmer-terminer.png` | boîte « Terminer » | — |
+| `android-p3-06-sortie-terminee.png` | 2,6 km, D+ 66 m | ≈ 0,75 km |
+
+**Cause, mesurée** : pendant « Recherche du GPS… », `dumpsys location` lu
+trois fois à 3 s d'écart donne la même position (celle du `geo fix`) avec
+une heure qui avance (« et » suit le temps écoulé). L'émulateur repousse le
+`geo fix` environ chaque seconde, daté « maintenant ». Le filtre
+`takenAt < startedAt` ne la voit donc pas comme ancienne, et deux positions
+identiques sont cohérentes entre elles (vitesse 0) : la règle ne se
+déclenche pas.
+
+**Décision du pilotage (14 novembre)** : ce cas est propre à l'émulateur ;
+il est noté dans les résultats et reporté à la phase 10 (vrai téléphone).
+Sur un vrai téléphone, une position en cache garde son heure ancienne : le
+filtre de 33f64e9 la rejette, et un saut brutal est rattrapé par 051c657.
+
+**À regarder en phase 10** : « Reste 14,3 km » au lieu d'environ 33 km
+laisse penser que la position éloignée a été placée sur un passage plus
+tardif de la boucle. Non analysé ici.
