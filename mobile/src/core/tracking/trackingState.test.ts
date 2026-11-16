@@ -360,7 +360,7 @@ describe('C6: arrival', () => {
       [0, 0],
       [2000, 0],
     ];
-    // the rider starts at the end: the line is reached there, 100 % in, but approach first
+    // the rider starts 200 m from the end (at 1 800 m) and rides to it
     const fixes = rideAlong(
       [
         [1800, 0],
@@ -369,7 +369,7 @@ describe('C6: arrival', () => {
       { startAt: T0, speed: 2 },
     );
     const { states } = firstEnded(sourceOf(path), fixes);
-    // placed at 1 990 m (more than 90 %) and within 30 m: it is an arrival
+    // placed near the end (more than 90 %) and within 30 m: it is an arrival
     expect(states[states.length - 1]?.status).toBe('ended');
     // 80 % of the line is not enough
     const early = firstEnded(

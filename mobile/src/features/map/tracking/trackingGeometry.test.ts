@@ -116,18 +116,11 @@ describe('boundsZoom', () => {
     expect(zoom).toBeCloseTo(Math.log2(280 / ((512 * 0.01) / 360)), 3);
   });
 
-  it('spaces the dots by 10 points at that zoom, not at a stale one', () => {
-    const bounds: [number, number, number, number] = [6.1, 48.7, 6.103, 48.701];
-    const zoom = boundsZoom(bounds, 0, size, pad);
-    const aimed = 10 * metersPerPoint(zoom, 48.7);
-    const stale = 10 * metersPerPoint(zoom - 3, 48.7);
-    expect(stale / aimed).toBeCloseTo(8, 5);
-    // About 25 dots for 250 points of gap; a stale zoom leaves only a few.
-    const from: [number, number] = [6.1, 48.7];
-    const to: [number, number] = [6.103, 48.701];
-    expect(gapDots(from, to, aimed).features.length).toBeGreaterThan(
-      gapDots(from, to, stale).features.length,
-    );
+  it('stops at the max zoom of the map: a box of 30 m gives 18', () => {
+    // About 30 m: 0.0004 degree of latitude.
+    const box: [number, number, number, number] = [6.1, 48.7, 6.1, 48.7004];
+    expect(boundsZoom(box, 0, size, pad, 18)).toBe(18);
+    expect(boundsZoom(box, 0, size, pad)).toBeGreaterThan(18);
   });
 
   it('zooms out for a box turned by the bearing', () => {

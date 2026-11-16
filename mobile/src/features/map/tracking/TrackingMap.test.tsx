@@ -7,6 +7,9 @@ import type { ReactNode } from 'react';
 import { buildLine, type TrackingSource } from '@/core/tracking/trackingLine';
 import { lineOf, straight, toLonLat } from '@/core/tracking/testing/fabricate';
 
+import { distanceM } from '@/core/tracking/trackingLine';
+
+import { boundsZoom, metersPerPoint } from './trackingGeometry';
 import { TrackingSession } from './TrackingSession';
 
 const mockEaseTo = jest.fn();
@@ -15,6 +18,10 @@ let mockMapProps: {
   onRegionWillChange?: (e: unknown) => void;
   onRegionDidChange?: (e: unknown) => void;
 } = {};
+const mockSources: Record<
+  string,
+  { features: { geometry: { coordinates: number[] } }[] }
+> = {};
 let mockOnFix: ((location: unknown) => void) | null = null;
 let now = 1_700_000_000_000;
 
@@ -41,7 +48,10 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       return null;
     }),
     Layer: () => null,
-    GeoJSONSource: () => null,
+    GeoJSONSource: (props: { id: string; data: never }) => {
+      mockSources[props.id] = props.data;
+      return null;
+    },
   };
 });
 jest.mock('expo-router', () => ({
@@ -173,5 +183,58 @@ describe('gesture of the rider', () => {
     });
     await fix(200);
     expect(mockEaseTo.mock.calls.length).toBe(before + 1);
+  });
+});
+
+describe('dots of the gap line', () => {
+  const dots = () =>
+    mockSources['suivi-ecart']?.features.map((f) => f.geometry.coordinates) ??
+    [];
+  const spacing = () => {
+    const [a, b] = dots();
+    return distanceM(a as [number, number], b as [number, number]);
+  };
+  async function offTrack() {
+    await open();
+    await fix(1000, 500);
+    await fix(1000, 500);
+  }
+
+  it('are 10 points apart at the zoom the camera aims at', async () => {
+    await offTrack();
+    const [bounds, options] = mockFitBounds.mock.calls.at(-1) as [
+      [number, number, number, number],
+      { bearing: number; padding: never },
+    ];
+    const zoom = boundsZoom(
+      bounds,
+      options.bearing,
+      { width: 390, height: 462 },
+      options.padding,
+    );
+    expect(dots().length).toBeGreaterThan(1);
+    expect(spacing()).toBeCloseTo(10 * metersPerPoint(zoom, bounds[1]), 0);
+  });
+
+  it('ignore the zoom of the events of our own camera', async () => {
+    await offTrack();
+    const before = dots();
+    await act(async () => {
+      mockMapProps.onRegionDidChange?.({
+        nativeEvent: { userInteraction: false, zoom: 12 },
+      });
+    });
+    expect(dots()).toEqual(before);
+  });
+
+  it('follow the zoom of a gesture of the rider', async () => {
+    await offTrack();
+    const before = dots();
+    await act(async () => {
+      mockMapProps.onRegionDidChange?.({
+        nativeEvent: { userInteraction: true, zoom: 12 },
+      });
+    });
+    expect(dots()).not.toEqual(before);
   });
 });

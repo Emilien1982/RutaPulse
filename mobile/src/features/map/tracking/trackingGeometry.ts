@@ -172,13 +172,15 @@ export function metersPerPoint(zoom: number, latitude: number): number {
 /**
  * The zoom `fitBounds` ends on: the box [west, south, east, north], turned
  * by the bearing, fits in the screen minus the padding. Known before the
- * camera finishes, unlike the zoom read from the map events.
+ * camera finishes, unlike the zoom read from the map events. `maxZoom` is
+ * the limit of the map (18 for a zone, 22 for MapLibre by default).
  */
 export function boundsZoom(
   bounds: [number, number, number, number],
   bearing: number,
   size: { width: number; height: number },
   padding: { top: number; bottom: number; left: number; right: number },
+  maxZoom = 22,
 ): number {
   // Web Mercator at zoom 0 (a world of 512 points).
   const x = (lon: number) => ((lon + 180) / 360) * 512;
@@ -212,7 +214,7 @@ export function boundsZoom(
     h: size.height - padding.top - padding.bottom,
   };
   const zoom = Math.min(Math.log2(room.w / w), Math.log2(room.h / h));
-  return Number.isFinite(zoom) ? Math.min(Math.max(zoom, 0), 22) : 22;
+  return Number.isFinite(zoom) ? Math.min(Math.max(zoom, 0), maxZoom) : maxZoom;
 }
 
 /** Most dots of the gap line (a safety: a very long gap). */

@@ -18,6 +18,7 @@ import type { TrackingSource } from '@/core/tracking/trackingLine';
 import type { Zone } from '@/core/zones/catalogue';
 import { mapColors, navColors, text } from '@/ui/theme';
 
+import { MAX_ZOOM } from '../mapStyle';
 import { ZoneBaseMap } from '../ZoneBaseMap';
 import {
   boundsZoom,
@@ -160,7 +161,13 @@ export function TrackingMap({
       const fitPadding = { top: 80, bottom: 80, left: 60, right: 60 };
       if (width > 0) {
         setAimedZoom(
-          boundsZoom(plan.bounds, bearing, { width, height }, fitPadding),
+          boundsZoom(
+            plan.bounds,
+            bearing,
+            { width, height },
+            fitPadding,
+            zone ? MAX_ZOOM : undefined,
+          ),
         );
       }
       camera.current?.fitBounds(plan.bounds, {
@@ -169,7 +176,17 @@ export function TrackingMap({
         duration: 1000,
       });
     }
-  }, [source, placement, imminent, northUp, height, width, resume, loaded]);
+  }, [
+    source,
+    placement,
+    imminent,
+    northUp,
+    height,
+    width,
+    resume,
+    loaded,
+    zone,
+  ]);
 
   useEffect(
     () => () => {
