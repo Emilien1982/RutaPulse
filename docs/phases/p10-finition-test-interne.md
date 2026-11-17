@@ -1,7 +1,9 @@
 # Phase 10 — Finition et test interne
 
 > 17 novembre 2026. Spec de la session de pilotage, **à valider par
-> Émilien**. Dernière phase de la v1 (la phase 9 est passée en V2 le
+> Émilien**. Réponses d'Émilien du 17 novembre : pas d'iPhone pour
+> l'instant, **l'essai réel se fait sur Android** ; zone Nancy pour
+> l'essai. Dernière phase de la v1 (la phase 9 est passée en V2 le
 > 10 novembre). Décision d'Émilien du 10 novembre : commencer par l'APK
 > Android installable et l'app iOS installée par Xcode, pour **un premier
 > essai réel au plus tôt**.
@@ -24,7 +26,7 @@ couper en deux, avec ton essai sur le terrain entre les deux :
 
 | Partie | Contenu | Taille |
 |---|---|---|
-| **10a — Premier essai réel** | Icône, écran de démarrage, textes du système en français ; APK Android signé et installable ; app iOS installable par Xcode avec ton compte Apple gratuit ; guide d'installation ; fiche d'essai terrain | **P** |
+| **10a — Premier essai réel** | Icône, écran de démarrage, textes du système en français ; APK Android signé et installable ; guide d'installation ; fiche d'essai terrain | **P** |
 | *Ton essai* | Tu installes l'app, tu roules avec la fiche d'essai, tu notes ce qui ne va pas | — |
 | **10b — Finitions** | Écran « Licences et attributions » ; très grandes tailles de texte ; brouillon gardé sur Android ; écarts de design en attente ; rapidité iOS ; corrections venues de ton essai | **M** |
 
@@ -55,9 +57,9 @@ sa passation écrite. Pour repère : la phase 8b (P) a pris environ
   l'app, boutons des feuilles natives.
 - **Android** : un fichier `RutaPulse-1.0.0.apk`, signé par une clé
   propre au projet, gardée hors du dépôt. Une commande le fabrique.
-- **iOS** : l'app se construit pour un vrai iPhone. Un guide dit, pas à
-  pas, ce que tu fais dans Xcode avec ton compte Apple gratuit (tu te
-  connectes toi-même ; personne d'autre ne tape ton mot de passe).
+- **iOS** : l'icône, l'écran de démarrage et les textes sont faits aussi,
+  vérifiés sur simulateur. L'installation sur un iPhone attend que tu en
+  aies un.
 - Un **guide d'installation** (`docs/installer-sur-un-telephone.md`) et une
   **fiche d'essai terrain** (`docs/essais/terrain-1.md`) : ce qu'il faut
   vérifier pendant la sortie, dans l'ordre, avec une case à cocher et
@@ -67,18 +69,20 @@ sa passation écrite. Pour repère : la phase 8b (P) a pris environ
 
 | # | Critère | Comment on le vérifie |
 |---|---|---|
-| C1 | **Essai d'abord** : un APK release signé par une clé de test s'installe sur `emulator-5584` après désinstallation ; l'app iOS se construit en Release pour un appareil (`generic/platform=iOS`), sans signature, sur le Mac | Essai jetable de T1, sorties brutes gardées |
+| C1 | **Essai d'abord** : un APK release signé par une clé de test s'installe sur `emulator-5584` après désinstallation, puis un second APK (build 2) s'installe par-dessus sans perdre un itinéraire enregistré | Essai jetable de T1, sorties brutes gardées |
 | C2 | **Icône A** aux formats demandés : iOS (carré de 1024 px), Android adaptative (fond, dessin et version monochrome, dans la zone sûre de 66 dp). Plus aucune image d'Expo dans `mobile/assets/images` | Captures de l'écran d'accueil des deux simulateurs ; comparaison du designer à la maquette v1/70 |
 | C3 | **Écran de démarrage** aux couleurs de l'app (pas de bleu d'Expo), sans saut visible vers le premier écran | Captures ; vidéo courte ou suite de captures au démarrage |
 | C4 | **Français partout** : langue de l'app déclarée française sur iOS (`CFBundleDevelopmentRegion`) et Android ; demande de position, boutons « OK » et « Annuler » des feuilles natives en français, même sur un téléphone réglé en anglais | Captures sur simulateur en anglais et en français |
 | C5 | **APK signé** : une commande (`npm run build:apk`) fabrique l'APK release ; la clé et ses mots de passe sont **hors du dépôt** ; l'APK installé sur l'émulateur ouvre la carte et calcule un itinéraire en mode avion | Sortie de la commande, `apksigner verify`, parcours Maestro de fumée sur l'APK |
-| C6 | **iOS pour appareil** : `xcodebuild` Release pour `generic/platform=iOS` réussit sans signature ; les réglages de signature restent à choisir dans Xcode (équipe gratuite), rien n'est écrit en dur dans le dépôt | Sortie de la commande |
-| C7 | **Guide d'installation** clair : Android (par câble ou par fichier), iOS (Xcode, compte gratuit, confiance du développeur dans Réglages, réinstallation tous les 7 jours) ; ce que fait Émilien et ce que fait Claude | Relu par le pilotage |
+| C6 | **iOS sur simulateur** : build Release, icône, démarrage et textes en français vérifiés ; pas d'installation sur un appareil (pas d'iPhone) | Captures |
+| C7 | **Guide d'installation** clair pour Android (par câble ou par fichier, mise à jour par-dessus, autorisation des sources inconnues) ; ce que fait Émilien et ce que fait Claude | Relu par le pilotage |
 | C8 | **Fiche d'essai terrain** : reprend toute la liste « À vérifier sur un vrai téléphone » de `PILOTAGE.md` et la section « Reporté » des phases 8a et 8b, classée dans l'ordre d'une sortie (avant de partir, au départ, en roulant, à l'arrivée, après) | Relue par le pilotage |
 | C9 | Aucun secret dans le dépôt (clé, mot de passe, identifiant d'équipe Apple) ; `npm run verify` passe, `pytest` passe, la CI est verte | Audit `git grep` ; sorties ; run GitHub |
 
 ## Hors périmètre de 10a
 
+- Installation sur un iPhone et signature iOS gratuite : quand Émilien
+  aura un iPhone.
 - Publication sur les stores, TestFlight (essai d'Apple, compte payant),
   Google Play : hors v1.
 - Suivi téléphone verrouillé, notification, Live Activity : V2.
@@ -92,9 +96,9 @@ sa passation écrite. Pour repère : la phase 8b (P) a pris environ
 
 | # | Qui | Tâche |
 |---|---|---|
-| T1 | `developpeur` pour l'essai, puis `architecte` et `designer` | **Essai jetable** (C1) : APK release signé par une clé de test, installé sur `emulator-5584` ; build iOS Release pour appareil sans signature. Puis l'architecte écrit l'**ADR 0022** (distribution en test interne : clé Android, où elle vit, comment la sauvegarder ; signature iOS gratuite ; numéro de version ; ce qui reste hors du dépôt). Le designer exporte l'**icône A** et dessine l'**écran de démarrage** (maquette v1/70 complétée). **Le pilotage te montre l'ADR, l'icône et l'écran de démarrage pour validation** |
+| T1 | `developpeur` pour l'essai, puis `architecte` et `designer` | **Essai jetable** (C1) : APK release signé par une clé de test, installé sur `emulator-5584`, puis un build 2 par-dessus. Puis l'architecte écrit l'**ADR 0022** (distribution en test interne : clé Android, où elle vit, comment la sauvegarder ; numéro de version ; mise à jour par-dessus ; ce qui reste hors du dépôt ; une note pour la signature iOS gratuite plus tard). Le designer exporte l'**icône A** et dessine l'**écran de démarrage** (maquette v1/70 complétée). **Le pilotage te montre l'ADR, l'icône et l'écran de démarrage pour validation** |
 | T2 | `developpeur` | Icône, écran de démarrage, langue française déclarée, textes du système en français (C2 à C4) |
-| T3 | `developpeur` | Commande `npm run build:apk`, build iOS pour appareil, guide d'installation (C5 à C7) |
+| T3 | `developpeur` | Commande `npm run build:apk`, guide d'installation (C5, C7) |
 | T4 | session de phase, puis `testeur` | Fiche d'essai terrain (C8). Le testeur installe l'APK sur l'émulateur après désinstallation, joue le parcours de fumée, fait les captures release (icône, démarrage, textes en anglais et en français) |
 | T5 | `designer` | Compare icône et écran de démarrage à la maquette v1/70 |
 
@@ -108,36 +112,26 @@ Chaque tâche de code passe ensuite par le `relecteur`, puis par le
   pour ta veille emploi : 10 points (mardi à samedi), plus 5 points de
   marge. La phase peut donc utiliser environ 34 points. Estimation : 15 à
   25 points. Elle tient.
-- **Risque 1 : la signature iOS gratuite**, jamais éprouvée sur un vrai
-  iPhone. Limites connues (essai 2, § C5) : profil valable 7 jours, donc
-  réinstallation chaque semaine ; 3 appareils. L'identifiant
-  `fr.rutapulse.app` peut être déjà pris chez Apple ; on le changerait
-  alors pour l'essai.
+- **Risque 1 : iOS non éprouvé sur un vrai téléphone.** Les points iOS
+  de la fiche (luminosité réelle, signature gratuite) restent ouverts
+  jusqu'à ce que tu aies un iPhone.
 - **Risque 2 : la clé Android.** Si elle est perdue, les mises à jour
   de l'APK ne s'installent plus par-dessus l'ancien (il faut désinstaller,
   et les itinéraires sont perdus). L'ADR 0022 dit où la garder et
   comment la sauvegarder.
-- **Risque 3 : la place sur le Mac.** Environ 13 Go libres le 17 novembre,
-  sous le seuil d'alerte de 20 Go et tout près du seuil d'arrêt (12 Go).
-  La phase construit l'app en release. **La place doit être réglée avant
-  le lancement** (copies Time Machine, ton accord).
+- **Risque 3 : la place sur le Mac.** 45 Go libres le 17 novembre après
+  l'effacement des copies Time Machine ; elles reviennent à environ 1 Go
+  par heure pendant une phase.
 - **Ce que tu devras faire** : valider cette spec et le découpage ;
   valider l'ADR 0022, l'icône et l'écran de démarrage (T1) ; valider la
-  fusion ; te connecter à Xcode avec ton compte Apple ; installer l'app
-  et faire l'essai.
+  fusion ; installer l'APK sur ton téléphone Android et faire l'essai.
 
-## Questions
+## Questions (réponses d'Émilien du 17 novembre)
 
-1. **As-tu un iPhone pour l'essai ?** Le téléphone Android
-   (`R5CR21B1KDW`) est connu. Sans iPhone, l'essai réel se fait sur
-   Android seulement, et la signature iOS reste « construite, pas
-   éprouvée ».
-2. **Où feras-tu le premier essai ?** L'app n'a que la zone Nancy.
-   Si tu roules ailleurs, on ajoute ta zone : quelques lignes dans
-   `zones/zones.json`, puis tu lances le workflow « Fabriquer une zone »
-   sur GitHub (environ une heure). Recommandation : une sortie connue
-   dans la zone Nancy si possible, pour comparer avec ce qu'on a vu en
-   simulateur.
+1. **iPhone ?** Pas pour l'instant : on se concentre sur Android.
+2. **Lieu de l'essai ?** La zone Nancy. Émilien ajoute : à court terme,
+   il faudra pouvoir **créer et charger de nouvelles zones depuis le
+   téléphone**. Ce besoin est hors de la 10a (voir plus bas).
 
 ## Choix déjà faits par le pilotage (tu peux les changer)
 
@@ -155,6 +149,16 @@ Chaque tâche de code passe ensuite par le `relecteur`, puis par le
    phases. Tu remplis ce que tu peux ; le reste attend une autre sortie.
 
 ---
+
+# Nouveau besoin : des zones depuis le téléphone
+
+Demande d'Émilien du 17 novembre. Aujourd'hui, l'app **charge** déjà une
+zone du catalogue depuis le téléphone (onglet Zones). Ce qui manque :
+**créer** une zone nouvelle sans passer par le Mac. La fabrique tourne sur
+GitHub (machine ARM, environ une heure) ; l'app ne peut pas la lancer
+elle-même sans une clé GitHub, qui serait un secret dans l'app. Il faut
+donc un petit service entre les deux, ou une autre voie. Place et forme à
+décider avec Émilien.
 
 # Phase 10b — Finitions (liste de départ)
 

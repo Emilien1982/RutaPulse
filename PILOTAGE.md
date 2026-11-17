@@ -116,7 +116,8 @@
 
 ## Décisions en attente
 
-- Spec et découpage de la phase 10, questions 1 (iPhone ?) et 2 (lieu de l'essai).
+- Spec et découpage de la phase 10 (Q1 et Q2 répondues : Android seul, zone Nancy).
+- Créer et charger de nouvelles zones depuis le téléphone (demande d'Émilien du 17 novembre, « à court terme ») : place et forme à décider.
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
