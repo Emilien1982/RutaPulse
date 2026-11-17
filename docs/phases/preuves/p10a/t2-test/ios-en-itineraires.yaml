@@ -1,0 +1,6 @@
+appId: fr.rutapulse.app
+---
+- tapOn:
+    point: "37%,96%"
+- waitForAnimationToEnd
+- takeScreenshot: c4-ios-en-itineraires
