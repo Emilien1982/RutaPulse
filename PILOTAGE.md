@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-17 — Phase 10a, T1 : ADR 0022 (distribution en test interne), icône A et écran de démarrage validés par Émilien, avec les 7 recommandations : copie de la clé hors du Mac (fichier chiffré dans son nuage et sur clé USB, mot de passe dans son gestionnaire) ; APK arm64-v8a seul ; vraie clé créée par Claude en T3 ; registre des APK dans le guide ; anneau brun sur l'écran de démarrage ; démarrage caché dès la police chargée ; icônes iOS sombre, teintée et en couches plus tard. C4 tenu avec réserve sur Android (écrans du système dans la langue du téléphone). 18 + 2 copies Time Machine effacées avec son accord : 63 Go libres.
 - 2026-11-17 — Règle d'Émilien : après chaque fusion (verify sur `main`, CI verte, tout poussé), supprimer le worktree de la phase par `git worktree remove` après `git status`, puis `git worktree prune` ; branches gardées. Trois anciens worktrees retirés le même jour (8a, 8b, copie sur a6db623).
 - 2026-11-17 — Spec de la phase 10 ([p10-finition-test-interne.md](docs/phases/p10-finition-test-interne.md)) validée par Émilien : découpage en 10a (premier essai réel, Android, P) puis 10b (finitions, M), avec les choix du pilotage. Phase 10a lancée le même jour.
 - 2026-11-17 — Phase 10 : pas d'iPhone, l'essai réel se fait sur Android, dans la zone Nancy. Créer une zone depuis le téléphone (sans passer par le Mac) : **V2**, décision d'Émilien (demande un petit service entre l'app et GitHub).
