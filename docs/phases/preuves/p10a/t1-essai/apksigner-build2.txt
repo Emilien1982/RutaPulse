@@ -1,0 +1,17 @@
+Verifies
+Verified using v1 scheme (JAR signing): false
+Verified using v2 scheme (APK Signature Scheme v2): true
+Verified using v3 scheme (APK Signature Scheme v3): false
+Verified using v3.1 scheme (APK Signature Scheme v3.1): false
+Verified using v4 scheme (APK Signature Scheme v4): false
+Verified for SourceStamp: false
+Number of signers: 1
+Signer #1 certificate DN: CN=Essai RutaPulse
+Signer #1 certificate SHA-256 digest: 283fd7a1dee1c1e4d7dbf6b291e0955c7438527e474df07fc031f64a7074a584
+Signer #1 certificate SHA-1 digest: 301800ae7c4eeea91bdcba72d52209644ca2ee50
+Signer #1 certificate MD5 digest: e90d747bfe7ac43fd70b14a174e65a2c
+Signer #1 key algorithm: RSA
+Signer #1 key size (bits): 2048
+Signer #1 public key SHA-256 digest: f6f2944bf3794bd2372fcef543376ccac7dd061a211eb21077613a3b891e0bfc
+Signer #1 public key SHA-1 digest: 94f0fc46f8a1c9e29e2c546797a0bdec8594f5f7
+Signer #1 public key MD5 digest: 832f2733cadd39774985eddbced72b7e

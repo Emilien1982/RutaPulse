@@ -1,0 +1,65 @@
+# Phase 10a (C5) : parcours de fumée de l'APK signé, en mode avion.
+# La carte s'ouvre, on crée un itinéraire (départ, arrivée), le calcul
+# aboutit (distance affichée), on l'enregistre, il apparaît dans l'onglet
+# Itinéraires.
+# Prérequis : APK release installé, zone Nancy téléchargée, mode avion activé
+# AVANT le lancement et coupé APRÈS, par adb (ce parcours n'y touche pas) :
+#   adb -s emulator-5584 shell cmd connectivity airplane-mode enable
+# Lancement : maestro --device emulator-5584 test e2e/p10a-fumee-apk.yaml
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- setLocation:
+    latitude: 48.751
+    longitude: 5.967
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+- setLocation:
+    latitude: 48.751
+    longitude: 5.967
+- waitForAnimationToEnd:
+    timeout: 4000
+- assertNotVisible: 'Pas encore de carte'
+- takeScreenshot: p10a-fumee-01-carte-mode-avion
+- tapOn:
+    id: 'new-route-button'
+- extendedWaitUntil:
+    visible: 'Touchez le départ sur la carte'
+    timeout: 10000
+- tapOn:
+    point: '50%,50%'
+- extendedWaitUntil:
+    visible: "Touchez l'arrivée sur la carte"
+    timeout: 10000
+- tapOn:
+    point: '50%,38%'
+- extendedWaitUntil:
+    visible:
+      id: 'route-distance'
+      text: '.*[1-9].*'
+    timeout: 60000
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: p10a-fumee-02-itineraire-calcule
+- tapOn:
+    id: 'route-save'
+- extendedWaitUntil:
+    visible:
+      id: 'info-modify'
+    timeout: 15000
+- assertVisible:
+    id: 'info-title'
+    text: 'Itinéraire du .*'
+- tapOn:
+    id: 'info-back'
+- extendedWaitUntil:
+    visible:
+      id: 'route-row-.*'
+    timeout: 10000
+- assertVisible: 'Mes itinéraires'
+- assertVisible: 'Itinéraire du .*'
+- takeScreenshot: p10a-fumee-03-liste-itineraires

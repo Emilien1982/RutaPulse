@@ -1,0 +1,13 @@
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+- tapOn: 'Zones.*'
+- extendedWaitUntil:
+    visible: 'Télécharger la zone Nancy.*'
+    timeout: 30000
+- tapOn: 'Télécharger la zone Nancy.*'
+- extendedWaitUntil:
+    visible: 'Prête sans réseau'
+    timeout: 600000
+- takeScreenshot: zone-prete

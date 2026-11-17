@@ -1,0 +1,3 @@
+95:        versionCode 2
+122:            signingConfig signingConfigs.debug
+127:            signingConfig signingConfigs.release

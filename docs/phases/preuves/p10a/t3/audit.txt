@@ -1,0 +1,10 @@
+# 1. fichiers sensibles suivis
+(fin, vide attendu)
+# 2. git grep mots de passe, cles, equipe Apple (hors .md)
+(fin, vide attendu)
+# 3. vrai mot de passe, fichiers suivis
+absent
+# 4. vrai mot de passe, tout le worktree (suivi et non suivi, ignores compris, sans node_modules)
+absent
+# 5. dans l'APK (binaire)
+absent

@@ -6,3 +6,6 @@ __pycache__/
 zones/work/
 zones/out/
 zones/.venv/
+
+# Construction iOS Release (DerivedData locale)
+.derived-ios/

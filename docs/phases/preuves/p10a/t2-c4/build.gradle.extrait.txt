@@ -1,0 +1,4 @@
+78: * allowing to use e.g. `Date.toLocaleString` and `String.localeCompare` that
+79: * give correct results when using with locales other than en-US. Note that
+90:    namespace 'fr.rutapulse.app'
+92:        applicationId 'fr.rutapulse.app'

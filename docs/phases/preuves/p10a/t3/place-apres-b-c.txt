@@ -1,0 +1,1 @@
+/dev/disk2s1s1   460Gi    12Gi    52Gi    19%    459k  542M    0%   /

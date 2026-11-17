@@ -4,7 +4,10 @@ import { AppStatusBar } from '@/features/shell/AppStatusBar';
 import { FontGate } from '@/features/shell/FontGate';
 import { QueryProvider } from '@/features/shell/QueryProvider';
 import { RoutingEngineStarter } from '@/features/shell/RoutingEngineStarter';
+import { setSplashScreenOptions } from '@/features/shell/splashScreenOptions';
 import { ZoneDownloaderStarter } from '@/features/zones/ZoneDownloaderStarter';
+
+setSplashScreenOptions();
 
 export default function RootLayout() {
   return (

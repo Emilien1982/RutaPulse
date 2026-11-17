@@ -1,0 +1,11 @@
+# Extrait de plutil -p du .app Release iOS construit (.derived-ios/Build/Products/Release-iphonesimulator/RutaPulse.app/Info.plist), 17 nov. 2026
+  "CFBundleDevelopmentRegion" => "fr"
+  "CFBundleDisplayName" => "RutaPulse"
+  "CFBundleExecutable" => "RutaPulse"
+  "CFBundleIcons" => {
+  "CFBundleLocalizations" => [
+    0 => "fr"
+  ]
+  "NSLocationWhenInUseUsageDescription" => "RutaPulse utilise votre position pour l'afficher sur la carte, seulement quand l'app est ouverte."
+  "NSUserActivityTypes" => [
+    0 => "fr.rutapulse.app.expo.index_route"

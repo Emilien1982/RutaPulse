@@ -1,0 +1,2 @@
+Filesystem        Size    Used   Avail Capacity iused ifree %iused  Mounted on
+/dev/disk2s1s1   460Gi    12Gi    55Gi    18%    459k  572M    0%   /

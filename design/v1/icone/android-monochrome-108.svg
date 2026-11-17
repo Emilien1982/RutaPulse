@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RutaPulse, icon A, Android 13+ themed icon (monochrome layer).
+     Black on transparent; the system replaces black with the theme colour.
+     108 x 108 dp, render at 1024 px. Token icone.monochrome: the sun cut by
+     its two lines (same shapes as the colour icon), then a horizon bar.
+     Bar: 6 high like a band of the colour icon, 4 below the sun, round ends.
+     Everything fits in the safe zone (circle of 66 dp): farthest point
+     31.3 from the centre, limit 33. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" viewBox="0 0 108 108">
+  <path d="M33.826 49 A24 24 0 0 1 74.174 49 Z" fill="#000000"/>
+  <path d="M32.419 51.5 H75.581 A24 24 0 0 1 76.798 54.5 H31.202 A24 24 0 0 1 32.419 51.5 Z" fill="#000000"/>
+  <path d="M30.388 57.7 H77.612 A24 24 0 0 1 78 62 H30 A24 24 0 0 1 30.388 57.7 Z" fill="#000000"/>
+  <rect x="27" y="66" width="54" height="6" rx="3" fill="#000000"/>
+</svg>

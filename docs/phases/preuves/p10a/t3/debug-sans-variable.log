@@ -1,0 +1,1010 @@
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle-plugin:settings-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle-plugin:shared:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:pluginDescriptors UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:processResources UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:processResources UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:shared:compileKotlin UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:compileJava NO-SOURCE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:processResources NO-SOURCE
+> Task :gradle-plugin:shared:compileJava NO-SOURCE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:classes UP-TO-DATE
+> Task :gradle-plugin:shared:processResources NO-SOURCE
+> Task :gradle-plugin:shared:classes UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin-shared:jar UP-TO-DATE
+> Task :gradle-plugin:shared:jar UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:settings-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:settings-plugin:jar UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:compileKotlin UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:compileJava NO-SOURCE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:classes UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-settings-plugin:jar UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :gradle-plugin:react-native-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-dev-launcher-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-module-gradle-plugin:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-module-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :expo-dev-launcher-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :expo-dev-launcher-gradle-plugin:processResources UP-TO-DATE
+> Task :expo-module-gradle-plugin:processResources UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:compileKotlin UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:compileJava NO-SOURCE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:pluginDescriptors UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:processResources UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:classes UP-TO-DATE
+> Task :expo-gradle-plugin:expo-autolinking-plugin:jar UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:compileKotlin UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:compileJava NO-SOURCE
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:compileJava NO-SOURCE
+> Task :gradle-plugin:react-native-gradle-plugin:pluginDescriptors UP-TO-DATE
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:pluginDescriptors UP-TO-DATE
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:processResources UP-TO-DATE
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:classes UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:processResources UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:classes UP-TO-DATE
+> Task :expo-gradle-plugin:expo-max-sdk-override-plugin:jar UP-TO-DATE
+> Task :gradle-plugin:react-native-gradle-plugin:jar UP-TO-DATE
+> Task :expo-dev-launcher-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :expo-module-gradle-plugin:compileKotlin UP-TO-DATE
+> Task :expo-dev-launcher-gradle-plugin:compileJava NO-SOURCE
+> Task :expo-module-gradle-plugin:compileJava NO-SOURCE
+> Task :expo-dev-launcher-gradle-plugin:classes UP-TO-DATE
+> Task :expo-module-gradle-plugin:classes UP-TO-DATE
+> Task :expo-module-gradle-plugin:jar UP-TO-DATE
+> Task :expo-dev-launcher-gradle-plugin:jar UP-TO-DATE
+
+> Configure project :app
+WARNING: The option setting 'android.builtInKotlin=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+WARNING: The option setting 'android.newDsl=false' is deprecated.
+The current default is 'true'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+ ℹ️  [33mApplying gradle plugin[0m '[32mexpo-max-sdk-override-plugin[0m'
+  [expo-max-sdk-override-plugin] This plugin will find all permissions declared with `android:maxSdkVersion`. If there exists a declaration with the `android:maxSdkVersion` annotation and another one without, the plugin will remove the annotation from the final merged manifest. In order to see a log with the changes run a clean build of the app.
+WARNING: API 'applicationVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling applicationVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+WARNING: API 'testVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling testVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+WARNING: API 'unitTestVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling unitTestVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+ ℹ️  [33mApplying gradle plugin[0m '[32mexpo-dev-launcher-gradle-plugin[0m'
+
+> Configure project :
+[32m[ExpoRootProject][0m The Kotlin Gradle plugin used by this build is [32m2.2.10[0m, but the version catalog declares [33m2.2.0[0m. Using the plugin version.
+[32m[ExpoRootProject][0m Using the following versions:
+  - buildTools:  [32m37.0.0[0m
+  - minSdk:      [32m24[0m
+  - compileSdk:  [32m37[0m
+  - targetSdk:   [32m36[0m
+  - ndk:         [32m27.1.12297006[0m
+  - kotlin:      [32m2.2.10[0m
+  - ksp:         [32m2.2.10-2.0.2[0m
+
+> Configure project :expo-modules-core
+[expo-modules-core] Ignoring prebuilt libs: built for RN 0.88.1, installed RN 0.88.0 - building from source
+Linking react-native-worklets native libs into expo-modules-core build tasks
+task ':react-native-worklets:mergeDebugNativeLibs'
+task ':react-native-worklets:mergeReleaseNativeLibs'
+
+> Configure project :expo
+WARNING: API 'libraryVariants' is obsolete and has been replaced with 'AndroidComponentsExtension'.
+It will be removed in version 10.0 of the Android Gradle plugin.
+The legacy variant API is disabled by default in AGP 9.0, but can be re-enabled by adding 
+    android.newDsl=false
+to this project's gradle.properties file.
+For more information, see http://developer.android.com/build/r/new-dsl.
+
+To determine what is calling libraryVariants, use -Pandroid.debug.obsoleteApi=true on the command line to display more information.
+
+Using expo modules
+  - [32mexpo-dom-webview[0m (58.0.2)
+  - [32mexpo-log-box[0m (58.0.12)
+  - [32mexpo-constants[0m (58.0.13)
+  - [32mexpo-dev-client[0m (58.0.14)
+  - [32mexpo-dev-launcher[0m (58.0.14)
+  - [32mexpo-dev-menu[0m (58.0.11)
+  - [32mexpo-dev-menu-interface[0m (58.0.1)
+  - [32mexpo-json-utils[0m (58.0.1)
+  - [32mexpo-manifests[0m (58.0.1)
+  - [32mexpo-modules-core[0m (58.0.29)
+  - [32mexpo-updates-interface[0m (58.0.1)
+  - [32mvalhalla-route[0m (0.1.0)
+  - [33m[📦][0m [32mexpo-asset[0m (58.0.18)
+  - [33m[📦][0m [32mexpo-brightness[0m (58.0.3)
+  - [33m[📦][0m [32mexpo-document-picker[0m (58.0.4)
+  - [33m[📦][0m [32mexpo-file-system[0m (58.0.11)
+  - [33m[📦][0m [32mexpo-font[0m (58.0.9)
+  - [33m[📦][0m [32mexpo-keep-awake[0m (58.0.3)
+  - [33m[📦][0m [32mexpo-linking[0m (58.0.13)
+  - [33m[📦][0m [32mexpo-location[0m (58.0.19)
+  - [33m[📦][0m [32mexpo-network[0m (58.0.4)
+  - [33m[📦][0m [32mexpo-router[0m (58.0.24)
+  - [33m[📦][0m [32mexpo-sharing[0m (58.0.22)
+  - [33m[📦][0m [32mexpo-splash-screen[0m (58.0.10)
+  - [33m[📦][0m [32mexpo-sqlite[0m (58.0.15)
+  - [33m[📦][0m [32mexpo-status-bar[0m (58.0.4)
+
+
+> Task :expo-json-utils:preBuild UP-TO-DATE
+> Task :expo-constants:preBuild UP-TO-DATE
+> Task :expo-dev-menu:preBuild UP-TO-DATE
+> Task :expo-dev-menu-interface:preBuild UP-TO-DATE
+> Task :expo-dev-client:preBuild UP-TO-DATE
+> Task :expo-dom-webview:preBuild UP-TO-DATE
+> Task :expo-log-box:preBuild UP-TO-DATE
+> Task :expo-dev-launcher:preBuild UP-TO-DATE
+> Task :expo-modules-core:preBuild UP-TO-DATE
+> Task :expo-manifests:preBuild UP-TO-DATE
+> Task :expo-updates-interface:preBuild UP-TO-DATE
+> Task :react-native-gesture-handler:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-masked-view_masked-view:preBuild UP-TO-DATE
+> Task :valhalla-route:preBuild UP-TO-DATE
+> Task :react-native-safe-area-context:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-svg:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-screens:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :maplibre_maplibre-react-native:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-gesture-handler:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-gesture-handler:preBuild UP-TO-DATE
+> Task :expo-dev-client:preDebugBuild UP-TO-DATE
+> Task :react-native-svg:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-svg:preBuild UP-TO-DATE
+> Task :react-native-safe-area-context:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-safe-area-context:preBuild UP-TO-DATE
+> Task :expo-dev-launcher:preDebugBuild UP-TO-DATE
+> Task :expo-dev-menu:preDebugBuild UP-TO-DATE
+> Task :react-native-screens:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-screens:preBuild UP-TO-DATE
+> Task :expo-dev-menu-interface:preDebugBuild UP-TO-DATE
+> Task :expo-dev-client:processDebugNavigationResources
+> Task :maplibre_maplibre-react-native:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :maplibre_maplibre-react-native:preBuild UP-TO-DATE
+> Task :expo-json-utils:preDebugBuild UP-TO-DATE
+> Task :expo-dom-webview:preDebugBuild UP-TO-DATE
+> Task :expo-dev-menu-interface:processDebugNavigationResources
+> Task :expo-log-box:preDebugBuild UP-TO-DATE
+> Task :expo-json-utils:processDebugNavigationResources
+> Task :expo-log-box:processDebugNavigationResources
+> Task :expo-manifests:preDebugBuild UP-TO-DATE
+> Task :expo-manifests:processDebugNavigationResources
+> Task :expo-modules-core:preDebugBuild UP-TO-DATE
+> Task :expo-modules-core:processDebugNavigationResources
+> Task :expo-updates-interface:preDebugBuild UP-TO-DATE
+> Task :expo-updates-interface:processDebugNavigationResources
+> Task :maplibre_maplibre-react-native:preDebugBuild UP-TO-DATE
+> Task :expo-dev-launcher:processDebugNavigationResources
+> Task :react-native-gesture-handler:preDebugBuild UP-TO-DATE
+> Task :maplibre_maplibre-react-native:processDebugNavigationResources
+> Task :react-native-masked-view_masked-view:preDebugBuild UP-TO-DATE
+> Task :react-native-masked-view_masked-view:processDebugNavigationResources
+> Task :react-native-gesture-handler:processDebugNavigationResources
+> Task :react-native-safe-area-context:preDebugBuild UP-TO-DATE
+> Task :react-native-safe-area-context:processDebugNavigationResources
+> Task :react-native-screens:preDebugBuild UP-TO-DATE
+> Task :react-native-screens:processDebugNavigationResources
+> Task :react-native-svg:preDebugBuild UP-TO-DATE
+> Task :react-native-svg:processDebugNavigationResources
+> Task :valhalla-route:preDebugBuild UP-TO-DATE
+> Task :valhalla-route:processDebugNavigationResources
+> Task :expo-modules-core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-dev-menu:processDebugNavigationResources
+> Task :expo-dom-webview:processDebugNavigationResources
+> Task :expo-dev-client:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-modules-core:generateDebugBuildConfig
+> Task :expo-dev-launcher:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-modules-core:generateDebugResources
+> Task :expo-modules-core:packageDebugResources
+> Task :react-native-reanimated:assertMinimalReactNativeVersionTask
+> Task :expo:generateInlineModules
+> Task :expo:generatePackagesList UP-TO-DATE
+> Task :expo:preBuild
+> Task :react-native-worklets:assertMinimalReactNativeVersionTask
+> Task :react-native-worklets:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-worklets:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-worklets:prepareWorkletsHeadersForPrefabs UP-TO-DATE
+> Task :react-native-worklets:preBuild
+> Task :expo:preDebugBuild
+> Task :expo:processDebugNavigationResources
+> Task :react-native-worklets:preDebugBuild
+> Task :react-native-worklets:processDebugNavigationResources
+> Task :expo:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo:generateDebugResources
+> Task :react-native-reanimated:assertWorkletsVersionTask
+> Task :expo-constants:createDebugExpoConfig
+> Task :react-native-reanimated:generateCodegenSchemaFromJavaScript UP-TO-DATE
+> Task :react-native-reanimated:generateCodegenArtifactsFromSchema UP-TO-DATE
+> Task :react-native-reanimated:prepareReanimatedHeadersForPrefabs UP-TO-DATE
+> Task :react-native-reanimated:preBuild
+> Task :react-native-reanimated:preDebugBuild
+> Task :react-native-reanimated:processDebugNavigationResources
+> Task :react-native-worklets:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :react-native-worklets:generateDebugBuildConfig
+> Task :react-native-worklets:generateDebugResources
+> Task :react-native-worklets:packageDebugResources
+> Task :expo:packageDebugResources
+> Task :expo:parseDebugLocalResources
+> Task :expo:generateDebugRFile
+> Task :react-native-worklets:parseDebugLocalResources
+> Task :expo-modules-core:parseDebugLocalResources
+> Task :expo-dev-client:dataBindingMergeDependencyArtifactsDebug
+> Task :expo-modules-core:javaPreCompileDebug
+> Task :react-native-worklets:javaPreCompileDebug
+> Task :expo-dev-menu:generateDebugResources
+> Task :expo-dev-client:generateDebugResources
+> Task :react-native-worklets:generateDebugRFile
+> Task :expo-modules-core:generateDebugRFile
+> Task :expo-dev-menu-interface:generateDebugResources
+> Task :expo-dev-client:packageDebugResources
+> Task :expo-dev-menu-interface:packageDebugResources
+> Task :expo-dev-client:parseDebugLocalResources
+> Task :expo-dev-client:generateDebugBuildConfig
+> Task :expo-dev-client:dataBindingGenBaseClassesDebug
+> Task :expo-dev-menu:packageDebugResources
+> Task :expo-dev-client:generateDebugRFile
+> Task :expo-dev-client:javaPreCompileDebug
+> Task :expo-dev-menu-interface:parseDebugLocalResources
+> Task :expo-dev-menu:parseDebugLocalResources
+> Task :expo-json-utils:generateDebugResources
+> Task :expo-manifests:generateDebugResources
+> Task :expo-dev-menu-interface:generateDebugRFile
+> Task :expo-updates-interface:generateDebugResources
+> Task :expo-manifests:packageDebugResources
+> Task :expo-json-utils:packageDebugResources
+> Task :expo-updates-interface:packageDebugResources
+> Task :expo-dev-menu:generateDebugRFile
+> Task :expo-dev-menu:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-dev-menu-interface:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-json-utils:parseDebugLocalResources
+> Task :expo-manifests:parseDebugLocalResources
+> Task :expo-dev-menu:generateDebugBuildConfig
+> Task :expo-updates-interface:parseDebugLocalResources
+> Task :expo-dev-menu:javaPreCompileDebug
+> Task :expo-dev-launcher:dataBindingMergeDependencyArtifactsDebug
+> Task :expo-dev-menu-interface:javaPreCompileDebug
+> Task :expo-manifests:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-updates-interface:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-manifests:generateDebugRFile
+> Task :expo-manifests:javaPreCompileDebug
+> Task :expo-updates-interface:generateDebugRFile
+> Task :expo-dom-webview:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-json-utils:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-dev-launcher:generateDebugResources
+> Task :expo-log-box:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-updates-interface:javaPreCompileDebug
+> Task :valhalla-route:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-json-utils:generateDebugRFile
+> Task :maplibre_maplibre-react-native:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-json-utils:javaPreCompileDebug
+> Task :react-native-gesture-handler:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :valhalla-route:generateDebugResources
+> Task :react-native-gesture-handler:generateDebugBuildConfig
+> Task :maplibre_maplibre-react-native:generateDebugBuildConfig
+> Task :expo-dom-webview:generateDebugResources
+> Task :react-native-gesture-handler:generateDebugResources
+> Task :maplibre_maplibre-react-native:generateDebugResources
+> Task :expo-log-box:generateDebugBuildConfig
+> Task :expo:javaPreCompileDebug
+> Task :react-native-reanimated:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-dom-webview:packageDebugResources
+> Task :valhalla-route:packageDebugResources
+> Task :react-native-gesture-handler:packageDebugResources
+> Task :maplibre_maplibre-react-native:packageDebugResources
+> Task :expo-log-box:generateDebugResources
+> Task :react-native-gesture-handler:parseDebugLocalResources
+> Task :expo-dom-webview:parseDebugLocalResources
+> Task :expo-dom-webview:javaPreCompileDebug
+> Task :expo-log-box:packageDebugResources
+> Task :expo-dom-webview:generateDebugRFile
+> Task :valhalla-route:parseDebugLocalResources
+> Task :expo-log-box:parseDebugLocalResources
+> Task :expo-dev-launcher:packageDebugResources
+> Task :valhalla-route:javaPreCompileDebug
+> Task :expo-log-box:javaPreCompileDebug
+> Task :react-native-gesture-handler:generateDebugRFile
+> Task :expo-log-box:generateDebugRFile
+> Task :expo-dev-launcher:generateDebugBuildConfig
+> Task :valhalla-route:generateDebugRFile
+> Task :react-native-reanimated:generateDebugBuildConfig
+> Task :expo-dev-launcher:javaPreCompileDebug
+> Task :expo-dev-launcher:parseDebugLocalResources
+> Task :react-native-svg:generateDebugBuildConfig
+> Task :maplibre_maplibre-react-native:javaPreCompileDebug
+> Task :react-native-gesture-handler:javaPreCompileDebug
+> Task :react-native-safe-area-context:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :react-native-reanimated:generateDebugResources
+> Task :react-native-svg:generateDebugResources
+> Task :react-native-masked-view_masked-view:generateDebugResources
+> Task :react-native-safe-area-context:generateDebugBuildConfig
+> Task :react-native-safe-area-context:generateDebugResources
+> Task :react-native-reanimated:packageDebugResources
+> Task :react-native-svg:packageDebugResources
+> Task :react-native-safe-area-context:packageDebugResources
+> Task :react-native-masked-view_masked-view:packageDebugResources
+> Task :react-native-reanimated:javaPreCompileDebug
+> Task :react-native-svg:parseDebugLocalResources
+> Task :maplibre_maplibre-react-native:parseDebugLocalResources
+> Task :react-native-svg:generateDebugRFile
+> Task :react-native-svg:javaPreCompileDebug
+> Task :react-native-masked-view_masked-view:javaPreCompileDebug
+> Task :app:generateAutolinkingNewArchitectureFiles UP-TO-DATE
+> Task :app:generateAutolinkingPackageList UP-TO-DATE
+> Task :app:generateCodegenSchemaFromJavaScript SKIPPED
+> Task :app:generateCodegenArtifactsFromSchema SKIPPED
+> Task :app:generateReactNativeEntryPoint UP-TO-DATE
+> Task :app:preBuild
+> Task :app:preDebugBuild
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:generateDebugBuildConfig
+> Task :app:generateDebugResValues
+> Task :app:generateDebugResources
+> Task :react-native-masked-view_masked-view:parseDebugLocalResources
+> Task :maplibre_maplibre-react-native:generateDebugRFile
+> Task :react-native-reanimated:parseDebugLocalResources
+> Task :react-native-masked-view_masked-view:generateDebugRFile
+> Task :react-native-reanimated:generateDebugRFile
+> Task :react-native-safe-area-context:parseDebugLocalResources
+> Task :react-native-safe-area-context:generateDebugRFile
+> Task :app:packageDebugResources
+> Task :react-native-screens:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :react-native-safe-area-context:javaPreCompileDebug
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :expo:generateDebugAssets UP-TO-DATE
+> Task :app:javaPreCompileDebug
+> Task :expo-dev-client:generateDebugAssets UP-TO-DATE
+> Task :expo:mergeDebugAssets
+> Task :react-native-screens:generateDebugBuildConfig
+> Task :expo-dev-client:mergeDebugAssets
+> Task :expo-dev-menu:generateDebugAssets UP-TO-DATE
+> Task :react-native-screens:generateDebugResources
+> Task :expo-dev-menu:mergeDebugAssets
+> Task :expo-dev-menu-interface:generateDebugAssets UP-TO-DATE
+> Task :react-native-screens:packageDebugResources
+> Task :react-native-screens:parseDebugLocalResources
+> Task :react-native-screens:generateDebugRFile
+> Task :expo-dom-webview:generateDebugAssets UP-TO-DATE
+> Task :expo-dev-menu-interface:mergeDebugAssets
+> Task :expo-json-utils:generateDebugAssets UP-TO-DATE
+> Task :expo-json-utils:mergeDebugAssets
+> Task :expo-log-box:generateDebugAssets UP-TO-DATE
+> Task :expo-dom-webview:mergeDebugAssets
+> Task :expo-log-box:mergeDebugAssets
+> Task :expo-modules-core:generateDebugAssets UP-TO-DATE
+> Task :expo-manifests:generateDebugAssets UP-TO-DATE
+> Task :expo-modules-core:mergeDebugAssets
+> Task :expo-updates-interface:generateDebugAssets UP-TO-DATE
+> Task :expo-updates-interface:mergeDebugAssets
+> Task :react-native-gesture-handler:generateDebugAssets UP-TO-DATE
+> Task :expo-manifests:mergeDebugAssets
+> Task :react-native-reanimated:generateDebugAssets UP-TO-DATE
+> Task :react-native-gesture-handler:mergeDebugAssets
+> Task :react-native-safe-area-context:generateDebugAssets UP-TO-DATE
+> Task :react-native-safe-area-context:mergeDebugAssets
+> Task :react-native-worklets:generateDebugAssets UP-TO-DATE
+> Task :react-native-worklets:mergeDebugAssets
+> Task :valhalla-route:generateDebugAssets UP-TO-DATE
+> Task :expo-dev-launcher:dataBindingGenBaseClassesDebug
+> Task :react-native-reanimated:mergeDebugAssets
+> Task :valhalla-route:mergeDebugAssets
+> Task :expo:writeDebugAarMetadata
+> Task :expo-dev-launcher:generateDebugAssets UP-TO-DATE
+> Task :expo-dev-launcher:mergeDebugAssets
+> Task :expo-dev-launcher:generateDebugRFile
+> Task :expo-dev-client:writeDebugAarMetadata
+> Task :expo-dev-launcher:writeDebugAarMetadata
+> Task :expo-dev-menu:writeDebugAarMetadata
+> Task :expo-dev-menu-interface:writeDebugAarMetadata
+> Task :expo-dom-webview:writeDebugAarMetadata
+> Task :expo-log-box:writeDebugAarMetadata
+> Task :expo-manifests:writeDebugAarMetadata
+> Task :expo-modules-core:writeDebugAarMetadata
+> Task :expo-updates-interface:writeDebugAarMetadata
+> Task :react-native-gesture-handler:writeDebugAarMetadata
+> Task :react-native-reanimated:writeDebugAarMetadata
+> Task :react-native-safe-area-context:writeDebugAarMetadata
+> Task :react-native-worklets:writeDebugAarMetadata
+> Task :maplibre_maplibre-react-native:generateDebugAssets UP-TO-DATE
+> Task :expo-json-utils:writeDebugAarMetadata
+> Task :valhalla-route:writeDebugAarMetadata
+> Task :maplibre_maplibre-react-native:mergeDebugAssets
+> Task :expo:extractDeepLinksDebug
+> Task :maplibre_maplibre-react-native:writeDebugAarMetadata
+> Task :expo-dev-client:extractDeepLinksDebug
+> Task :expo:processDebugManifest
+> Task :expo-dev-launcher:extractDeepLinksDebug
+> Task :expo-dev-client:processDebugManifest
+> Task :expo-dev-menu:extractDeepLinksDebug
+> Task :expo-dev-launcher:processDebugManifest
+> Task :expo-dev-menu-interface:extractDeepLinksDebug
+> Task :expo-dev-menu:processDebugManifest
+> Task :expo-dev-menu-interface:processDebugManifest
+> Task :expo-dom-webview:extractDeepLinksDebug
+> Task :react-native-screens:javaPreCompileDebug
+> Task :react-native-screens:generateDebugAssets UP-TO-DATE
+> Task :react-native-screens:mergeDebugAssets
+> Task :react-native-screens:writeDebugAarMetadata
+> Task :expo-dom-webview:processDebugManifest
+> Task :expo-json-utils:extractDeepLinksDebug
+> Task :expo-log-box:extractDeepLinksDebug
+> Task :expo-json-utils:processDebugManifest
+> Task :expo-manifests:extractDeepLinksDebug
+> Task :expo-log-box:processDebugManifest
+> Task :expo-modules-core:extractDeepLinksDebug
+> Task :expo-manifests:processDebugManifest
+> Task :expo-updates-interface:extractDeepLinksDebug
+
+> Task :expo-modules-core:processDebugManifest
+/Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/AndroidManifest.xml:8:9-11:45 Warning:
+	meta-data#com.facebook.soloader.enabled@android:value was tagged at AndroidManifest.xml:8 to replace other declarations but no other declaration present
+
+> Task :maplibre_maplibre-react-native:extractDeepLinksDebug
+> Task :maplibre_maplibre-react-native:processDebugManifest
+> Task :react-native-gesture-handler:extractDeepLinksDebug
+
+> Task :react-native-masked-view_masked-view:compileDebugJavaWithJavac
+Note: /Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@react-native-masked-view/masked-view/android/src/main/java/org/reactnative/maskedview/RNCMaskedViewPackage.java uses or overrides a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :expo-updates-interface:processDebugManifest
+> Task :react-native-masked-view_masked-view:bundleLibCompileToJarDebug
+> Task :react-native-masked-view_masked-view:generateDebugAssets UP-TO-DATE
+> Task :react-native-reanimated:extractDeepLinksDebug
+> Task :react-native-masked-view_masked-view:mergeDebugAssets
+> Task :react-native-masked-view_masked-view:processDebugJavaRes NO-SOURCE
+> Task :react-native-gesture-handler:processDebugManifest
+> Task :react-native-safe-area-context:extractDeepLinksDebug
+> Task :react-native-masked-view_masked-view:bundleLibRuntimeToJarDebug
+> Task :react-native-masked-view_masked-view:writeDebugAarMetadata
+> Task :react-native-reanimated:processDebugManifest
+> Task :react-native-masked-view_masked-view:extractDeepLinksDebug
+
+> Task :react-native-safe-area-context:processDebugManifest
+package="com.th3rdwave.safeareacontext" found in source AndroidManifest.xml: /Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-safe-area-context/android/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="com.th3rdwave.safeareacontext" from the source AndroidManifest.xml: /Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-safe-area-context/android/src/main/AndroidManifest.xml.
+
+> Task :react-native-masked-view_masked-view:processDebugManifest
+> Task :react-native-screens:extractDeepLinksDebug
+> Task :react-native-worklets:extractDeepLinksDebug
+> Task :react-native-screens:processDebugManifest
+> Task :react-native-worklets:processDebugManifest
+> Task :valhalla-route:extractDeepLinksDebug
+> Task :expo:mapDebugSourceSetPaths
+> Task :valhalla-route:processDebugManifest
+> Task :expo:compileDebugLibraryResources
+> Task :expo-dev-launcher:mapDebugSourceSetPaths
+> Task :expo-dev-client:mapDebugSourceSetPaths
+> Task :expo-dev-client:compileDebugLibraryResources
+> Task :expo-dev-menu:mapDebugSourceSetPaths
+> Task :expo-dev-launcher:compileDebugLibraryResources
+> Task :expo-dev-menu-interface:mapDebugSourceSetPaths
+> Task :expo-dev-menu-interface:compileDebugLibraryResources
+> Task :expo-dev-menu:compileDebugLibraryResources
+> Task :expo-json-utils:mapDebugSourceSetPaths
+> Task :expo-dom-webview:mapDebugSourceSetPaths
+> Task :expo-json-utils:compileDebugLibraryResources
+> Task :expo-dom-webview:compileDebugLibraryResources
+> Task :expo-log-box:mapDebugSourceSetPaths
+> Task :expo-manifests:mapDebugSourceSetPaths
+> Task :expo-manifests:compileDebugLibraryResources
+> Task :expo-log-box:compileDebugLibraryResources
+> Task :expo-updates-interface:mapDebugSourceSetPaths
+> Task :expo-modules-core:mapDebugSourceSetPaths
+> Task :expo-updates-interface:compileDebugLibraryResources
+> Task :expo-modules-core:compileDebugLibraryResources
+> Task :maplibre_maplibre-react-native:mapDebugSourceSetPaths
+> Task :react-native-gesture-handler:mapDebugSourceSetPaths
+> Task :react-native-gesture-handler:compileDebugLibraryResources
+> Task :maplibre_maplibre-react-native:compileDebugLibraryResources
+> Task :react-native-reanimated:mapDebugSourceSetPaths
+> Task :react-native-masked-view_masked-view:mapDebugSourceSetPaths
+> Task :react-native-masked-view_masked-view:compileDebugLibraryResources
+> Task :react-native-reanimated:compileDebugLibraryResources
+> Task :react-native-safe-area-context:mapDebugSourceSetPaths
+> Task :react-native-screens:mapDebugSourceSetPaths
+> Task :react-native-safe-area-context:compileDebugLibraryResources
+> Task :react-native-worklets:mapDebugSourceSetPaths
+> Task :react-native-worklets:compileDebugLibraryResources
+> Task :valhalla-route:mapDebugSourceSetPaths
+> Task :valhalla-route:compileDebugLibraryResources
+> Task :react-native-screens:compileDebugLibraryResources
+> Task :expo:mergeDebugJniLibFolders
+> Task :expo:mergeDebugNativeLibs NO-SOURCE
+> Task :expo:copyDebugJniLibsProjectOnly
+> Task :expo-dev-client:mergeDebugJniLibFolders
+> Task :expo-dev-client:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-dev-client:copyDebugJniLibsProjectOnly
+> Task :expo-dev-launcher:mergeDebugJniLibFolders
+> Task :expo-dev-launcher:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-dev-launcher:copyDebugJniLibsProjectOnly
+> Task :expo-dev-menu:mergeDebugJniLibFolders
+> Task :expo-dev-menu:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-dev-menu:copyDebugJniLibsProjectOnly
+> Task :expo-dev-menu-interface:mergeDebugJniLibFolders
+> Task :expo-dev-menu-interface:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-dev-menu-interface:copyDebugJniLibsProjectOnly
+> Task :expo-dom-webview:mergeDebugJniLibFolders
+> Task :expo-dom-webview:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-dom-webview:copyDebugJniLibsProjectOnly
+> Task :expo-json-utils:mergeDebugJniLibFolders
+> Task :expo-json-utils:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-json-utils:copyDebugJniLibsProjectOnly
+> Task :expo-log-box:mergeDebugJniLibFolders
+> Task :expo-log-box:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-log-box:copyDebugJniLibsProjectOnly
+> Task :expo-manifests:mergeDebugJniLibFolders
+> Task :expo-manifests:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-manifests:copyDebugJniLibsProjectOnly
+> Task :expo-modules-core:unpackExpoModulesV2Cpp UP-TO-DATE
+> Task :expo-modules-core:mergeDebugJniLibFolders
+> Task :expo-updates-interface:mergeDebugJniLibFolders
+> Task :expo-updates-interface:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-updates-interface:copyDebugJniLibsProjectOnly
+> Task :maplibre_maplibre-react-native:mergeDebugJniLibFolders
+> Task :maplibre_maplibre-react-native:mergeDebugNativeLibs NO-SOURCE
+> Task :maplibre_maplibre-react-native:copyDebugJniLibsProjectOnly
+> Task :react-native-gesture-handler:mergeDebugJniLibFolders
+> Task :react-native-masked-view_masked-view:mergeDebugJniLibFolders
+> Task :react-native-masked-view_masked-view:mergeDebugNativeLibs NO-SOURCE
+> Task :react-native-masked-view_masked-view:copyDebugJniLibsProjectOnly
+> Task :react-native-reanimated:mergeDebugJniLibFolders
+> Task :react-native-safe-area-context:mergeDebugJniLibFolders
+> Task :react-native-safe-area-context:mergeDebugNativeLibs NO-SOURCE
+> Task :react-native-safe-area-context:copyDebugJniLibsProjectOnly
+> Task :valhalla-route:mergeDebugJniLibFolders
+> Task :valhalla-route:mergeDebugNativeLibs NO-SOURCE
+> Task :valhalla-route:copyDebugJniLibsProjectOnly
+> Task :react-native-worklets:compileDebugKotlin
+> Task :app:generateDebugGlobalSynthetics
+> Task :app:desugarDebugFileDependencies
+> Task :app:mapDebugSourceSetPaths
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:mergeDebugJniLibFolders
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:checkDebugDuplicateClasses
+> Task :expo-constants:createExpoFingerprint
+> Task :expo-constants:preDebugBuild
+> Task :expo-constants:processDebugNavigationResources
+> Task :expo-constants:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :expo-constants:generateDebugResources
+> Task :expo-constants:packageDebugResources
+
+> Task :react-native-safe-area-context:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-safe-area-context/android/src/main/java/com/th3rdwave/safeareacontext/SafeAreaProviderManager.kt:40:19 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-safe-area-context/android/src/main/java/com/th3rdwave/safeareacontext/SafeAreaView.kt:8:8 'class UIManagerModule : ReactContextBaseJavaModule, LifecycleEventListener, UIManager' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-safe-area-context/android/src/main/java/com/th3rdwave/safeareacontext/SafeAreaView.kt:46:54 'class UIManagerModule : ReactContextBaseJavaModule, LifecycleEventListener, UIManager' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-safe-area-context/android/src/main/java/com/th3rdwave/safeareacontext/SafeAreaViewShadowNode.kt:9:32 'class LayoutShadowNode : ReactShadowNodeImpl' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-safe-area-context/android/src/main/java/com/th3rdwave/safeareacontext/SafeAreaViewShadowNode.kt:110:61 'class NativeViewHierarchyOptimizer : Any' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+
+> Task :expo-constants:parseDebugLocalResources
+> Task :expo-constants:generateDebugRFile
+> Task :expo-constants:generateDebugAssets UP-TO-DATE
+> Task :expo-constants:mergeDebugAssets
+> Task :expo-constants:extractDeepLinksDebug
+> Task :expo-constants:writeDebugAarMetadata
+> Task :expo-constants:mapDebugSourceSetPaths
+> Task :expo-constants:javaPreCompileDebug
+> Task :expo-constants:compileDebugLibraryResources
+> Task :expo-constants:mergeDebugJniLibFolders
+> Task :expo-constants:processDebugManifest
+> Task :expo-constants:mergeDebugNativeLibs NO-SOURCE
+> Task :expo-constants:copyDebugJniLibsProjectOnly
+> Task :react-native-safe-area-context:compileDebugJavaWithJavac
+> Task :react-native-safe-area-context:bundleLibCompileToJarDebug
+> Task :react-native-safe-area-context:processDebugJavaRes
+> Task :react-native-safe-area-context:bundleLibRuntimeToJarDebug
+> Task :react-native-screens:configureCMakeDebug[arm64-v8a]
+> Task :react-native-worklets:configureCMakeDebug[arm64-v8a]
+> Task :react-native-worklets:compileDebugJavaWithJavac
+> Task :react-native-worklets:bundleLibCompileToJarDebug
+> Task :react-native-worklets:processDebugJavaRes
+> Task :react-native-worklets:bundleLibRuntimeToJarDebug
+
+> Task :react-native-svg:compileDebugJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :react-native-svg:generateDebugAssets UP-TO-DATE
+> Task :react-native-svg:mergeDebugAssets
+> Task :react-native-svg:processDebugJavaRes NO-SOURCE
+> Task :react-native-svg:writeDebugAarMetadata
+> Task :react-native-svg:extractDeepLinksDebug
+> Task :react-native-svg:processDebugManifest
+> Task :react-native-svg:mapDebugSourceSetPaths
+> Task :react-native-svg:bundleLibRuntimeToJarDebug
+> Task :react-native-svg:compileDebugLibraryResources
+> Task :react-native-svg:mergeDebugJniLibFolders
+> Task :react-native-svg:mergeDebugNativeLibs NO-SOURCE
+> Task :react-native-svg:copyDebugJniLibsProjectOnly
+> Task :react-native-svg:bundleLibCompileToJarDebug
+> Task :app:processDebugNavigationResources
+> Task :app:parseDebugLocalResources
+> Task :app:mergeDebugAssets
+> Task :app:generateDebugRFile
+> Task :app:compressDebugAssets
+> Task :app:compileDebugNavigationResources
+> Task :app:checkDebugAarMetadata
+> Task :app:mergeDebugResources
+
+> Task :app:processDebugMainManifest
+/Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/android/app/src/debug/AndroidManifest.xml Warning:
+	uses-permission#android.permission.WRITE_SETTINGS was tagged at AndroidManifest.xml:0 to remove other declarations but no other declaration present
+/Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/android/app/src/debug/AndroidManifest.xml:6:5-162 Warning:
+	application@android:usesCleartextTraffic was tagged at AndroidManifest.xml:6 to replace other declarations but no other declaration present
+/Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/android/app/src/debug/AndroidManifest.xml Warning:
+	provider#expo.modules.filesystem.FileSystemFileProvider@android:authorities was tagged at AndroidManifest.xml:0 to replace other declarations but no other declaration present
+
+> Task :app:expoDebugOverrideMaxSdkConflicts
+[33m---------- Expo Max Sdk Override Plugin ----------[0m
+[32m>>> No 'android:maxSdkVersion' conflicts found[0m
+[33m--------------------------------------------------[0m
+
+> Task :app:processDebugManifest
+> Task :app:processDebugManifestForPackage
+
+> Task :react-native-reanimated:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/NodesManager.kt:13:8 'class UIManagerModule : ReactContextBaseJavaModule, LifecycleEventListener, UIManager' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/NodesManager.kt:58:95 'fun resolveCustomDirectEventName(eventName: String): String?' is deprecated.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/NodesManager.kt:232:29 'fun receiveEvent(surfaceId: Int, targetTag: Int, eventName: String, canCoalesceEvent: Boolean, customCoalesceKey: Int, params: WritableMap?, category: Int): Unit' is deprecated. Use the overload with eventTimestamp parameter instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/ReanimatedPackage.kt:5:8 'class ReactInstanceManager : Any' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/ReanimatedPackage.kt:60:73 'class ReactInstanceManager : Any' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/ReanimatedPackage.kt:61:63 'val reactNativeHost: ReactNativeHost' is deprecated. You should not use ReactNativeHost directly in the New Architecture. Use ReactHost instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/nativeProxy/EventHandler.kt:7:8 'class UIManagerModule : ReactContextBaseJavaModule, LifecycleEventListener, UIManager' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/nativeProxy/EventHandler.kt:26:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/nativeProxy/EventHandler.kt:39:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/nativeProxy/EventHandler.kt:49:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/nativeProxy/EventHandler.kt:58:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/nativeProxy/NoopEventHandler.kt:8:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/nativeProxy/NoopEventHandler.kt:20:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/nativeProxy/NoopEventHandler.kt:29:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/nativeProxy/NoopEventHandler.kt:37:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-reanimated/android/src/main/java/com/swmansion/reanimated/sensor/ReanimatedSensor.kt:28:26 'val defaultDisplay: Display!' is deprecated. Deprecated in Java.
+
+> Task :react-native-reanimated:compileDebugJavaWithJavac
+> Task :react-native-reanimated:processDebugJavaRes
+> Task :react-native-reanimated:bundleLibCompileToJarDebug
+> Task :react-native-reanimated:bundleLibRuntimeToJarDebug
+> Task :app:processDebugResources
+
+> Task :maplibre_maplibre-react-native:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/AbstractEvent.kt:5:8 'interface RCTEventEmitter : JavaScriptModule' is deprecated. Use [RCTModernEventEmitter] instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/AbstractEvent.kt:12:5 'constructor<T : Event<T>>(viewTag: Int): Event<T>' is deprecated. Use constructor with explicit surfaceId instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/AbstractEvent.kt:15:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/AbstractEvent.kt:15:44 'interface RCTEventEmitter : JavaScriptModule' is deprecated. Use [RCTModernEventEmitter] instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/AbstractEvent.kt:16:25 'fun receiveEvent(targetTag: Int, eventName: String, params: WritableMap?): Unit' is deprecated. Use [RCTModernEventEmitter.receiveEvent] instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/AbstractEventEmitter.kt:5:8 'object MapBuilder : Any' is deprecated. Use Kotlin's built-in collections extensions.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/AbstractEventEmitter.kt:58:17 'object MapBuilder : Any' is deprecated. Use Kotlin's built-in collections extensions.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/camera/MLRNCamera.kt:84:36 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/images/MLRNImages.kt:116:18 'fun execute(vararg p0: (Mutable)Map.(Mutable)Entry<String!, ImageEntry!>!): AsyncTask<(Mutable)Map.(Mutable)Entry<String!, ImageEntry!>!, Void!, (Mutable)List<(Mutable)Map.(Mutable)Entry<String!, DownloadedImage!>!>!>!' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/images/MLRNImages.kt:129:14 'fun execute(vararg p0: (Mutable)Map.(Mutable)Entry<String!, ImageEntry!>!): AsyncTask<(Mutable)Map.(Mutable)Entry<String!, ImageEntry!>!, Void!, (Mutable)List<(Mutable)Map.(Mutable)Entry<String!, DownloadedImage!>!>!>!' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/images/MLRNImages.kt:139:36 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/layer/style/MLRNStyle.kt:58:14 'fun execute(vararg p0: (Mutable)Map.(Mutable)Entry<String!, ImageEntry!>!): AsyncTask<(Mutable)Map.(Mutable)Entry<String!, ImageEntry!>!, Void!, (Mutable)List<(Mutable)Map.(Mutable)Entry<String!, DownloadedImage!>!>!>!' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/location/LocationComponentManager.kt:156:22 'fun padding(p0: IntArray?): LocationComponentOptions.Builder' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/location/LocationComponentManager.kt:156:36 'fun getPadding(): IntArray' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/mapview/MLRNMapView.kt:184:36 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/mapview/MLRNMapView.kt:1408:23 'fun setPadding(p0: Int, p1: Int, p2: Int, p3: Int): Unit' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/mapview/MLRNMapViewManager.kt:10:8 'class LayoutShadowNode : ReactShadowNodeImpl' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/mapview/MLRNMapViewManager.kt:37:46 'class LayoutShadowNode : ReactShadowNodeImpl' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/mapview/MLRNMapViewManager.kt:39:50 'class LayoutShadowNode : ReactShadowNodeImpl' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/mapview/MLRNMapViewManager.kt:254:9 'class LayoutShadowNode : ReactShadowNodeImpl' is deprecated. This class is part of Legacy Architecture and will be removed in a future release.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/sources/MLRNSource.kt:36:36 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/sources/imagesource/MLRNImageSource.kt:27:13 'constructor(id: String?, coordinates: LatLngQuad?, url: URL): ImageSource' is deprecated. use {@link ImageSource#ImageSource(String, LatLngQuad, URI)} instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/components/sources/imagesource/MLRNImageSource.kt:39:26 'fun getInstance(): ResourceDrawableIdHelper' is deprecated. Use .instance instead, this API is for backward compat.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/utils/ReactTagResolver.kt:63:41 Unchecked cast of 'View?' to 'V (of fun <V> withViewResolved)'.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@maplibre/maplibre-react-native/android/src/main/java/org/maplibre/reactnative/utils/ReactTagResolver.kt:77:41 Unchecked cast of 'View' to 'V (of fun <V> withViewResolved)'.
+
+> Task :maplibre_maplibre-react-native:compileDebugJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :maplibre_maplibre-react-native:processDebugJavaRes
+> Task :maplibre_maplibre-react-native:bundleLibCompileToJarDebug
+> Task :maplibre_maplibre-react-native:bundleLibRuntimeToJarDebug
+
+> Task :react-native-gesture-handler:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt:880:45 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerButtonViewManager.kt:1298:45 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-gesture-handler/android/src/main/java/com/swmansion/gesturehandler/react/RNGestureHandlerDetectorView.kt:271:43 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+
+> Task :react-native-gesture-handler:compileDebugJavaWithJavac
+> Task :react-native-gesture-handler:processDebugJavaRes
+> Task :react-native-gesture-handler:bundleLibCompileToJarDebug
+> Task :react-native-gesture-handler:bundleLibRuntimeToJarDebug
+> Task :react-native-screens:buildCMakeDebug[arm64-v8a]
+> Task :react-native-screens:mergeDebugJniLibFolders
+> Task :react-native-screens:mergeDebugNativeLibs
+> Task :react-native-screens:copyDebugJniLibsProjectOnly
+
+> Task :react-native-screens:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/RNScreensPackage.kt:70:9 The corresponding parameter in the supertype 'BaseReactPackage' is named 'name'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/RNScreensPackage.kt:71:9 The corresponding parameter in the supertype 'BaseReactPackage' is named 'reactContext'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/RNScreensPackage.kt:83:17 'constructor(name: String, className: String, canOverrideExistingModule: Boolean, needsEagerInit: Boolean, hasConstants: Boolean, isCxxModule: Boolean, isTurboModule: Boolean): ReactModuleInfo' is deprecated. This constructor is deprecated and will be removed in the future. Use ReactModuleInfo(String, String, boolean, boolean, boolean, boolean)].
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/Screen.kt:54:77 Unchecked cast of '(CoordinatorLayout.Behavior<View!>?..CoordinatorLayout.Behavior<*>?)' to 'BottomSheetBehavior<Screen>'.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/Screen.kt:59:33 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/Screen.kt:534:14 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenContainer.kt:73:74 'static field HIDE_NOT_ALWAYS: Int' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenContainer.kt:252:18 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenContainer.kt:262:18 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenFragment.kt:225:37 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenFragment.kt:242:14 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenFragment.kt:258:22 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenFragment.kt:327:22 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStack.kt:120:14 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackFragment.kt:179:18 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackFragment.kt:236:31 'var targetElevation: Float' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackFragment.kt:239:13 'fun setHasOptionsMenu(p0: Boolean): Unit' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackFragment.kt:450:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackFragment.kt:457:22 'fun onPrepareOptionsMenu(p0: Menu): Unit' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackFragment.kt:460:18 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackFragment.kt:465:22 'fun onCreateOptionsMenu(p0: Menu, p1: MenuInflater): Unit' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.kt:199:14 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenStackHeaderConfig.kt:209:14 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt:48:42 'fun replaceSystemWindowInsets(p0: Int, p1: Int, p2: Int, p3: Int): @NonNull() WindowInsetsCompat' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt:49:39 'val systemWindowInsetLeft: Int' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt:51:39 'val systemWindowInsetRight: Int' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreenWindowTraits.kt:52:39 'val systemWindowInsetBottom: Int' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/ScreensModule.kt:104:14 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/SearchBarView.kt:137:29 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/bottomsheet/DimmingView.kt:66:9 The corresponding parameter in the supertype 'ReactCompoundView' is named 'touchX'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/bottomsheet/DimmingView.kt:67:9 The corresponding parameter in the supertype 'ReactCompoundView' is named 'touchY'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/bottomsheet/DimmingView.kt:71:9 The corresponding parameter in the supertype 'ReactCompoundViewGroup' is named 'touchX'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/bottomsheet/DimmingView.kt:72:9 The corresponding parameter in the supertype 'ReactCompoundViewGroup' is named 'touchY'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/gamma/common/event/BaseEventEmitter.kt:12:38 'fun getEventDispatcherForReactTag(context: ReactContext, reactTag: Int): EventDispatcher?' is deprecated. reactTag is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/gamma/modals/dimmingview/DimmingView.kt:64:9 The corresponding parameter in the supertype 'ReactCompoundView' is named 'touchX'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/gamma/modals/dimmingview/DimmingView.kt:65:9 The corresponding parameter in the supertype 'ReactCompoundView' is named 'touchY'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/gamma/modals/dimmingview/DimmingView.kt:69:9 The corresponding parameter in the supertype 'ReactCompoundViewGroup' is named 'touchX'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/gamma/modals/dimmingview/DimmingView.kt:70:9 The corresponding parameter in the supertype 'ReactCompoundViewGroup' is named 'touchY'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/gamma/modals/formsheet/FormSheetContentView.kt:11:8 'object ReactFeatureFlags : Any' is deprecated. Use com.facebook.react.internal.featureflags.ReactNativeFeatureFlags instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/gamma/modals/formsheet/FormSheetContentView.kt:39:33 'fun getEventDispatcher(context: ReactContext, uiManagerType: Int): EventDispatcher?' is deprecated. UIManagerType is no longer needed.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/gamma/modals/formsheet/FormSheetContentView.kt:44:13 'object ReactFeatureFlags : Any' is deprecated. Use com.facebook.react.internal.featureflags.ReactNativeFeatureFlags instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/gamma/modals/formsheet/FormSheetHostViewManager.kt:38:9 The corresponding parameter in the supertype 'ViewGroupManager' is named 'view'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/gamma/tabs/host/TabsHostViewManager.kt:44:9 The corresponding parameter in the supertype 'ViewGroupManager' is named 'view'. This may cause problems when calling this function with named arguments.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native-screens/android/src/main/java/com/swmansion/rnscreens/safearea/SafeAreaView.kt:143:45 'fun consumeDisplayCutout(): @NonNull() WindowInsetsCompat' is deprecated. Deprecated in Java.
+
+> Task :react-native-screens:compileDebugJavaWithJavac
+> Task :react-native-screens:processDebugJavaRes
+> Task :react-native-screens:bundleLibCompileToJarDebug
+> Task :react-native-screens:bundleLibRuntimeToJarDebug
+> Task :app:mergeExtDexDebug
+> Task :react-native-worklets:buildCMakeDebug[arm64-v8a][worklets]
+
+> Task :expo-modules-core:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/CppType.kt:42:23 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/JavaCallback.kt:38:10 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/JavaCallback.kt:96:45 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:49:15 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:64:30 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:66:14 'constructor(byteBuffer: ByteBuffer): NativeArrayBuffer' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:74:39 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:75:7 'constructor(byteBuffer: ByteBuffer): NativeArrayBuffer' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:80:37 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:86:47 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:92:23 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:92:43 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:95:41 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/jni/NativeArrayBuffer.kt:105:14 'constructor(byteBuffer: ByteBuffer): NativeArrayBuffer' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/ColorCompat.kt:115:5 This annotation is currently applied to the value parameter only, but in the future it will also be applied to field.
+- To opt in to applying to both value parameter and field, add '-Xannotation-default-target=param-property' to your compiler arguments.
+- To keep applying to the value parameter only, use the '@param:' annotation target.
+
+See https://youtrack.jetbrains.com/issue/KT-73255 for more details.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/JSTypeConverter.kt:7:8 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/JSTypeConverter.kt:245:55 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/JSTypeConverter.kt:247:19 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/ReturnType.kt:6:8 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/ReturnType.kt:45:5 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/TypeConverterProvider.kt:19:8 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/java/expo/modules/kotlin/types/TypeConverterProvider.kt:254:7 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+
+> Task :expo-modules-core:compileDebugJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :expo-modules-core:processDebugJavaRes
+> Task :expo-modules-core:bundleLibCompileToJarDebug
+> Task :expo-dev-client:compileDebugKotlin NO-SOURCE
+> Task :expo-dev-menu-interface:compileDebugKotlin NO-SOURCE
+> Task :expo-dev-menu-interface:compileDebugJavaWithJavac NO-SOURCE
+> Task :expo-modules-core:bundleLibRuntimeToJarDebug
+> Task :react-native-worklets:externalNativeBuildDebug
+> Task :expo-dev-menu-interface:bundleLibCompileToJarDebug
+> Task :expo-dev-menu-interface:processDebugJavaRes NO-SOURCE
+> Task :expo-dev-menu-interface:bundleLibRuntimeToJarDebug
+> Task :react-native-worklets:generateJsonModelDebug
+> Task :react-native-worklets:prefabDebugConfigurePackage
+> Task :expo-dev-client:compileDebugJavaWithJavac
+> Task :expo-dev-client:bundleLibCompileToJarDebug
+> Task :expo-dev-client:processDebugJavaRes NO-SOURCE
+> Task :expo-dev-client:bundleLibRuntimeToJarDebug
+> Task :react-native-worklets:prefabDebugPackage
+> Task :react-native-worklets:mergeDebugJniLibFolders
+> Task :react-native-worklets:mergeDebugNativeLibs
+> Task :expo-json-utils:compileDebugKotlin
+> Task :expo-json-utils:compileDebugJavaWithJavac NO-SOURCE
+> Task :expo-json-utils:bundleLibCompileToJarDebug
+> Task :expo-updates-interface:compileDebugKotlin
+> Task :expo-updates-interface:compileDebugJavaWithJavac NO-SOURCE
+> Task :expo-updates-interface:bundleLibCompileToJarDebug
+> Task :expo-json-utils:processDebugJavaRes
+> Task :expo-updates-interface:processDebugJavaRes
+> Task :expo-json-utils:bundleLibRuntimeToJarDebug
+> Task :expo-updates-interface:bundleLibRuntimeToJarDebug
+> Task :react-native-worklets:copyDebugJniLibsProjectOnly
+> Task :expo-constants:compileDebugKotlin
+> Task :expo-constants:compileDebugJavaWithJavac NO-SOURCE
+> Task :expo-constants:bundleLibCompileToJarDebug
+> Task :expo-constants:processDebugJavaRes
+> Task :expo-constants:bundleLibRuntimeToJarDebug
+> Task :valhalla-route:compileDebugKotlin
+> Task :valhalla-route:compileDebugJavaWithJavac NO-SOURCE
+> Task :valhalla-route:bundleLibCompileToJarDebug
+> Task :valhalla-route:processDebugJavaRes
+> Task :valhalla-route:bundleLibRuntimeToJarDebug
+
+> Task :expo-manifests:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-manifests/android/src/main/java/expo/modules/manifests/core/EmbeddedManifest.kt:19:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-manifests/android/src/main/java/expo/modules/manifests/core/EmbeddedManifest.kt:19:86 'fun getLegacyID(): String' is deprecated. Prefer scopeKey or projectId depending on use case.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-manifests/android/src/main/java/expo/modules/manifests/core/ExpoUpdatesManifest.kt:16:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-manifests/android/src/main/java/expo/modules/manifests/core/Manifest.kt:13:3 Deprecations and opt-ins on a method overridden from 'Any' may not be reported.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-manifests/android/src/main/java/expo/modules/manifests/core/Manifest.kt:15:12 'fun getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters.
+
+> Task :expo-manifests:compileDebugJavaWithJavac NO-SOURCE
+> Task :expo-manifests:bundleLibCompileToJarDebug
+> Task :expo-manifests:processDebugJavaRes
+> Task :expo-manifests:bundleLibRuntimeToJarDebug
+> Task :expo-log-box:compileDebugKotlin
+> Task :react-native-reanimated:configureCMakeDebug[arm64-v8a]
+> Task :react-native-reanimated:generateJsonModelDebug
+> Task :react-native-reanimated:prefabDebugConfigurePackage
+> Task :expo-log-box:compileDebugJavaWithJavac
+> Task :expo-log-box:bundleLibCompileToJarDebug
+> Task :expo-log-box:processDebugJavaRes
+> Task :expo-log-box:bundleLibRuntimeToJarDebug
+
+> Task :expo-dom-webview:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@expo/dom-webview/android/src/main/java/expo/modules/webview/DomWebView.kt:200:16 'var allowFileAccessFromFileURLs: Boolean' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/@expo/dom-webview/android/src/main/java/expo/modules/webview/DomWebView.kt:254:18 'fun executeOnJavaScriptThread(runnable: Runnable): Unit' is deprecated. Use RuntimeContext.schedule instead.
+
+> Task :expo-dom-webview:compileDebugJavaWithJavac NO-SOURCE
+> Task :expo-dom-webview:processDebugJavaRes
+> Task :expo-dom-webview:bundleLibCompileToJarDebug
+> Task :expo-modules-core:configureCMakeDebug[arm64-v8a]
+> Task :expo-dom-webview:bundleLibRuntimeToJarDebug
+> Task :react-native-gesture-handler:configureCMakeDebug[arm64-v8a]
+> Task :app:configureCMakeDebug[arm64-v8a]
+
+> Task :expo-dev-menu:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-menu/android/src/debug/java/com/facebook/react/devsupport/DevMenuSettingsBase.kt:6:8 'class PreferenceManager : Any' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-menu/android/src/debug/java/com/facebook/react/devsupport/DevMenuSettingsBase.kt:18:51 'class PreferenceManager : Any' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-menu/android/src/debug/java/com/facebook/react/devsupport/DevMenuSettingsBase.kt:18:69 'static fun getDefaultSharedPreferences(p0: Context!): SharedPreferences!' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-menu/android/src/debug/java/com/facebook/react/devsupport/DevMenuSettingsBase.kt:51:13 This code uses error suppression for 'NOTHING_TO_OVERRIDE'. While it might compile and work, the compiler behavior is UNSPECIFIED and WILL NOT BE PRESERVED. Please report your use case to the Kotlin issue tracker instead: https://kotl.in/issue
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-menu/android/src/debug/java/com/facebook/react/devsupport/DevMenuSettingsBase.kt:58:13 This code uses error suppression for 'NOTHING_TO_OVERRIDE'. While it might compile and work, the compiler behavior is UNSPECIFIED and WILL NOT BE PRESERVED. Please report your use case to the Kotlin issue tracker instead: https://kotl.in/issue
+
+> Task :expo-dev-menu:compileDebugJavaWithJavac
+> Task :expo-dev-menu:processDebugJavaRes
+> Task :expo-dev-menu:bundleLibCompileToJarDebug
+> Task :expo-dev-menu:bundleLibRuntimeToJarDebug
+
+> Task :expo-modules-core:buildCMakeDebug[arm64-v8a]
+C/C++: ninja: Entering directory `/Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/.cxx/Debug/173a2v4t/arm64-v8a'
+C/C++: In file included from /Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/common/cpp/EventEmitter.cpp:5:
+C/C++: /Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native/ReactCommon/cxxreact/ErrorUtils.h:10:2: warning: Deprecated: use <jserrorhandler/ErrorUtils.h> instead. [-W#warnings]
+C/C++:    10 | #warning Deprecated: use <jserrorhandler/ErrorUtils.h> instead.
+C/C++:       |  ^
+C/C++: 1 warning generated.
+C/C++: /Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/cpp/installers/MainRuntimeInstaller.cpp:66:43: warning: 'RuntimeSchedulerCallInvoker' is deprecated: Use ReactInstance::createJSCallInvoker(), which shares the instance's buffered runtime executor so async calls are ordered against callable module calls [-Wdeprecated-declarations]
+C/C++:    66 |     callInvoker = std::make_shared<react::RuntimeSchedulerCallInvoker>(runtimeScheduler);
+C/C++:       |                                           ^
+C/C++: /Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native/ReactCommon/react/renderer/runtimescheduler/RuntimeSchedulerCallInvoker.h:22:9: note: 'RuntimeSchedulerCallInvoker' has been explicitly marked deprecated here
+C/C++:    22 | class [[deprecated(
+C/C++:       |         ^
+C/C++: 1 warning generated.
+
+> Task :expo-dev-launcher:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-launcher/android/src/debug/java/expo/modules/devlauncher/DevLauncherController.kt:515:12 Call uses reflection API which is not found in compilation classpath. Make sure you have kotlin-reflect.jar in the classpath.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-launcher/android/src/debug/java/expo/modules/devlauncher/launcher/DevLauncherRecentlyOpenedAppsRegistry.kt:33:47 Unchecked cast of 'MutableMap<Any?, Any?>' to 'MutableMap<String, Any>'.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-launcher/android/src/debug/java/expo/modules/devlauncher/launcher/DevLauncherRecentlyOpenedAppsRegistry.kt:51:27 'fun getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-launcher/android/src/debug/java/expo/modules/devlauncher/modules/DevLauncherModule.kt:14:29 'fun getRawJson(): JSONObject' is deprecated. Prefer to use specific field getters.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-launcher/android/src/debug/java/expo/modules/devlauncher/react/DevLauncherBridgelessDevSupportManager.kt:46:38 This code uses error suppression for 'NOTHING_TO_OVERRIDE'. While it might compile and work, the compiler behavior is UNSPECIFIED and WILL NOT BE PRESERVED. Please report your use case to the Kotlin issue tracker instead: https://kotl.in/issue
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-launcher/android/src/debug/java/expo/modules/devlauncher/react/DevLauncherDevSupportManagerFactory.kt:18:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-dev-launcher/android/src/main/java/expo/modules/devlauncher/DevLauncherPackage.kt:15:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+
+> Task :expo-dev-launcher:compileDebugJavaWithJavac
+> Task :expo-dev-launcher:processDebugJavaRes
+> Task :expo-dev-launcher:bundleLibRuntimeToJarDebug
+> Task :expo-dev-launcher:bundleLibCompileToJarDebug
+
+> Task :expo:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo/android/src/main/java/expo/modules/ExpoModulesPackage.kt:34:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:22:8 'class ReactInstanceManager : Any' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:103:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:103:43 'class ReactInstanceManager : Any' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo/android/src/main/java/expo/modules/ReactActivityDelegateWrapper.kt:104:21 'val reactInstanceManager: ReactInstanceManager' is deprecated. Deprecated in Java.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo/android/src/main/java/expo/modules/fetch/ExpoFetchModule.kt:15:8 'class NativeArrayBuffer : Destructible' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo/android/src/main/java/expo/modules/fetch/ExpoFetchModule.kt:33:39 'constructor(reactContext: ReactContext): ForwardingCookieHandler' is deprecated. Use the default constructor.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo/android/src/main/java/expo/modules/fetch/ExpoFetchModule.kt:111:27 'constructor(byteBuffer: ByteBuffer): NativeArrayBuffer' is deprecated. Use ArrayBuffer instead.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo/android/src/main/java/expo/modules/fetch/NativeResponse.kt:44:16 This declaration overrides a deprecated member but is not marked as deprecated itself. Add the '@Deprecated' annotation or suppress the diagnostic.
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo/android/src/main/java/expo/modules/fetch/NativeResponse.kt:46:11 'fun deallocate(): Unit' is deprecated. Use sharedObjectDidRelease() instead.
+
+> Task :expo:compileDebugJavaWithJavac NO-SOURCE
+> Task :expo:processDebugJavaRes
+> Task :expo:bundleLibCompileToJarDebug
+> Task :expo:bundleLibRuntimeToJarDebug
+
+> Task :expo-modules-core:buildCMakeDebug[arm64-v8a]
+C/C++: /Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/expo-modules-core/android/src/main/cpp/fabric/ExpoComponentDescriptorFactory.cpp:18:5: warning: 'RawPropsParser' is deprecated [-Wdeprecated-declarations]
+C/C++:    18 |     react::RawPropsParser(/*useRawPropsJsiValue=*/true)
+C/C++:       |     ^
+C/C++: /Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/node_modules/react-native/ReactCommon/react/renderer/core/RawPropsParser.h:31:5: note: 'RawPropsParser' has been explicitly marked deprecated here
+C/C++:    31 |   [[deprecated]] explicit RawPropsParser(bool /* ignored */) : RawPropsParser() {}
+C/C++:       |     ^
+C/C++: 1 warning generated.
+
+> Task :app:compileDebugKotlin
+w: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/android/app/src/main/java/fr/rutapulse/app/MainActivity.kt:40:20 'constructor(activity: ReactActivity, mainComponentName: String, fabricEnabled: Boolean): DefaultReactActivityDelegate' is deprecated. Creating DefaultReactActivityDelegate with flags is deprecated.
+
+> Task :app:compileDebugJavaWithJavac
+> Task :app:processDebugJavaRes
+> Task :app:transformDebugClassesWithAsm
+> Task :app:dexBuilderDebug
+> Task :app:mergeProjectDexDebug
+> Task :app:mergeDebugJavaResource
+> Task :app:mergeLibDexDebug
+> Task :expo-modules-core:mergeDebugNativeLibs
+> Task :expo-modules-core:copyDebugJniLibsProjectOnly
+> Task :react-native-reanimated:buildCMakeDebug[arm64-v8a][reanimated]
+> Task :react-native-reanimated:externalNativeBuildDebug
+> Task :react-native-reanimated:prefabDebugPackage
+> Task :react-native-reanimated:mergeDebugNativeLibs
+> Task :react-native-reanimated:copyDebugJniLibsProjectOnly
+> Task :react-native-gesture-handler:buildCMakeDebug[arm64-v8a]
+> Task :react-native-gesture-handler:mergeDebugNativeLibs
+> Task :react-native-gesture-handler:copyDebugJniLibsProjectOnly
+> Task :app:buildCMakeDebug[arm64-v8a]
+> Task :app:mergeDebugNativeLibs
+> Task :app:stripDebugDebugSymbols
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+[Incubating] Problems report is available at: file:///Users/utilisateur/dev_ai/vtt-nav/.claude/worktrees/zealous-gates-8ea709/mobile/android/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.4.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 1m 18s
+522 actionable tasks: 469 executed, 53 up-to-date
+code de sortie : 0

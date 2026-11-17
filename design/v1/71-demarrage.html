@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=390, initial-scale=1">
+<title>RutaPulse v1 – Écran de démarrage, et fichiers de l'icône</title>
+<!--
+  Planche 71, v1, style années 70. Phase 10a, tâche T1 (designer), critères
+  C2 et C3 de docs/phases/p10-finition-test-interne.md. Suite de la planche
+  70 (icône A, « le soleil rayé », choisie le 21 octobre 2026).
+
+  Ce fichier contient plusieurs écrans, l'un sous l'autre (comme v1/90) :
+   1. Démarrage sur iOS : l'image centrée sur la couleur de fond.
+   2. Démarrage sur Android 12 et plus : l'icône dans un rond au centre, sur
+      la couleur de fond (imposé par le système).
+   3. Juste après, sur les deux : le premier rendu de l'app (fond crème et
+      barre d'onglets), pendant que la carte se charge.
+  Puis une planche (géométrie Android, fichiers exportés) et une note
+  « Pour le développeur » avec les valeurs exactes.
+
+  Fichiers sources : design/v1/icone/ (LISEZMOI.md dedans).
+  Valeurs : design/tokens.md, « Icône » et « Écran de démarrage » (en cas
+  d'écart, tokens.md fait foi).
+-->
+<style>
+:root{
+  --creme:#F4E4C1; --creme-clair:#FBF1DA; --brun:#3A1F0F; --brun-2:#5A3A28;
+  --moutarde:#F0A830; --orange:#E2652B; --rouille:#B5452A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:390px;background:var(--creme)}
+body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--brun);-webkit-font-smoothing:antialiased}
+.geo{font-family:"Futura","Futura PT",Jost,"Century Gothic","Avenir Next",sans-serif;font-weight:700}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden;background:var(--creme)}
+
+/* Image de démarrage : demarrage.svg, imageWidth 176, centrée dans l'écran */
+.demarrage{position:absolute;left:107px;top:334px;width:176px;height:176px}
+
+/* Barres du système */
+.barre-ios{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20;color:var(--brun)}
+.barre-ios .icones,.barre-android .icones{display:flex;gap:6px;align-items:center}
+.indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--brun);z-index:30}
+.barre-android{position:absolute;top:0;left:0;right:0;height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px 0 22px;font-family:Roboto,system-ui,sans-serif;font-size:14px;font-weight:500;color:var(--brun);z-index:20}
+.poignee-android{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);width:108px;height:4px;border-radius:2px;background:var(--brun);z-index:30}
+
+/* Écran 3 : premier rendu (onglet Carte, avant la carte) — repris de v1/90 */
+.degrade-etat{position:absolute;top:0;left:0;right:0;height:47px;background:linear-gradient(rgba(244,228,193,.94),rgba(244,228,193,.6));z-index:10}
+.rayures-bas{position:absolute;left:0;right:0;bottom:83px;height:9px;background:linear-gradient(var(--moutarde) 0 3px,var(--orange) 3px 6px,var(--rouille) 6px 9px);z-index:6}
+.onglets{position:absolute;left:0;right:0;bottom:0;height:83px;background:var(--brun);display:flex;padding-top:7px;z-index:6}
+.onglet{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:13px;font-weight:500;color:var(--creme)}
+.pastille{width:64px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center}
+.onglet.actif{font-weight:800}
+.onglet.actif .pastille{background:var(--moutarde);color:var(--brun)}
+.ecran.apres .indicateur{background:var(--creme)}
+
+/* Hors du téléphone : légendes, planche, note */
+.cartouche{background:var(--brun);color:var(--creme);padding:14px 16px;font-size:15px;line-height:1.35;border-top:9px solid var(--moutarde)}
+.cartouche b{font-size:17px}
+.note{padding:8px 16px 48px;font-size:15px;line-height:1.4}
+.note h2{font-size:20px;margin:20px 0 8px;letter-spacing:.5px}
+.note h3{font-size:16px;margin:16px 0 4px}
+.note p{margin:4px 0}
+.note ul,.note ol{padding-left:18px;margin:4px 0}
+.note li{margin:3px 0}
+.note code,.note pre{font-size:12.5px}
+.note pre{background:var(--creme-clair);border:2px solid var(--brun);border-radius:12px;padding:8px 10px;overflow-x:auto;line-height:1.35}
+.note q{quotes:"« " " »"}
+.note table{border-collapse:collapse;width:100%;font-size:13.5px;margin:6px 0}
+.note td,.note th{border:1px solid var(--brun-2);padding:4px 5px;vertical-align:top;text-align:left}
+.planche{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.planche > div{background:var(--creme-clair);border:2px solid var(--brun);border-radius:14px;padding:10px 4px 8px;text-align:center;font-size:13px;line-height:1.3}
+.planche svg{display:block;margin:0 auto 6px}
+.damier{background:repeating-conic-gradient(#E9E4DA 0 25%,#FFFFFF 0 50%) 0 0/12px 12px}
+</style>
+</head>
+<body>
+
+<!-- ===== Dessins communs ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <!-- Dessin de l'icône A dans le carré de 108, sans le fond crème.
+       Mêmes formes que le symbole « icone-a » de v1/70 : le soleil (54, 62 ;
+       rayon 24) est découpé en trois morceaux exacts au lieu d'être recouvert
+       de deux filets crème. -->
+  <g id="a-dessin">
+    <path d="M33.826 49 A24 24 0 0 1 74.174 49 Z" fill="#F0A830"/>
+    <path d="M32.419 51.5 H75.581 A24 24 0 0 1 76.798 54.5 H31.202 A24 24 0 0 1 32.419 51.5 Z" fill="#F0A830"/>
+    <path d="M30.388 57.7 H77.612 A24 24 0 0 1 78 62 H30 A24 24 0 0 1 30.388 57.7 Z" fill="#F0A830"/>
+    <rect y="62" width="108" height="6" fill="#E2652B"/>
+    <rect y="68" width="108" height="6" fill="#B5452A"/>
+    <rect y="74" width="108" height="34" fill="#3A1F0F"/>
+    <path d="M47 108 C38 95 62 88 53 74 L55 74 C68 88 48 95 69 108 Z" fill="#F4E4C1"/>
+  </g>
+  <g id="a-mono">
+    <path d="M33.826 49 A24 24 0 0 1 74.174 49 Z"/>
+    <path d="M32.419 51.5 H75.581 A24 24 0 0 1 76.798 54.5 H31.202 A24 24 0 0 1 32.419 51.5 Z"/>
+    <path d="M30.388 57.7 H77.612 A24 24 0 0 1 78 62 H30 A24 24 0 0 1 30.388 57.7 Z"/>
+    <rect x="27" y="66" width="54" height="6" rx="3"/>
+  </g>
+  <clipPath id="disque"><circle cx="54" cy="54" r="36"/></clipPath>
+  <clipPath id="masque-ios"><rect x="18" y="18" width="72" height="72" rx="16"/></clipPath>
+  <clipPath id="masque-android"><circle cx="54" cy="54" r="36"/></clipPath>
+  <!-- Image de démarrage (demarrage.svg) : le disque visible de l'icône dans un anneau brun -->
+  <symbol id="demarrage" viewBox="15 15 78 78">
+    <g clip-path="url(#disque)"><rect width="108" height="108" fill="#F4E4C1"/><use href="#a-dessin"/></g>
+    <circle cx="54" cy="54" r="37.25" fill="none" stroke="#3A1F0F" stroke-width="3.5"/>
+  </symbol>
+
+  <symbol id="o-carte" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></g></symbol>
+  <symbol id="o-itin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></g></symbol>
+  <symbol id="o-zones" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></g></symbol>
+  <symbol id="o-reglages" viewBox="0 0 24 24"><g fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></g></symbol>
+  <symbol id="i-reseau" viewBox="0 0 18 12"><g fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></g></symbol>
+  <symbol id="i-batterie" viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="19" height="8" rx="1.5" fill="currentColor"/><rect x="25" y="4" width="2" height="4" rx="1" fill="currentColor" opacity=".5"/></symbol>
+</defs>
+</svg>
+
+<!-- ===== Écran 1 : démarrage iOS ===== -->
+<div class="cartouche"><b>1 · iOS : démarrage</b><br>Fond <code>hn.creme</code>, image <code>demarrage.svg</code> de 176 points, centrée. Pas de texte : le nom est sous l'icône, sur l'écran d'accueil.</div>
+<div class="ecran" aria-label="Écran de démarrage iOS">
+  <div class="barre-ios"><span>09:41</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+  <svg class="demarrage" aria-label="Icône A dans un anneau brun"><use href="#demarrage" width="100%" height="100%"/></svg>
+  <div class="indicateur"></div>
+</div>
+
+<!-- ===== Écran 2 : démarrage Android 12 et plus ===== -->
+<div class="cartouche"><b>2 · Android 12 et plus : démarrage</b><br>Le système pose l'image au centre d'un carré de 288 dp et la coupe au rond de 192 dp. Notre image fait 176 dp et elle est déjà ronde : rien n'est coupé, le rendu est le même que sur iOS.</div>
+<div class="ecran" aria-label="Écran de démarrage Android">
+  <div class="barre-android"><span>9:41</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+  <svg class="demarrage" aria-label="Icône A dans un anneau brun"><use href="#demarrage" width="100%" height="100%"/></svg>
+  <div class="poignee-android"></div>
+</div>
+
+<!-- ===== Écran 3 : juste après ===== -->
+<div class="cartouche"><b>3 · Juste après, sur les deux</b><br>L'app cache l'écran de démarrage quand la police Jost est chargée (<code>FontGate</code>). Le premier rendu est l'onglet Carte : fond crème (<code>MapScreen</code>, avant la lecture du disque), barre d'onglets. Seuls l'image et les onglets changent ; le fond reste le même. Puis la carte arrive (v1/90).</div>
+<div class="ecran apres" aria-label="Premier rendu de l'onglet Carte">
+  <div class="degrade-etat"></div>
+  <div class="barre-ios"><span>09:41</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+  <div class="rayures-bas"></div>
+  <div class="onglets">
+    <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24"><use href="#o-carte"/></svg></span>Carte</div>
+    <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-itin"/></svg></span>Itinéraires</div>
+    <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-zones"/></svg></span>Zones</div>
+    <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-reglages"/></svg></span>Réglages</div>
+  </div>
+  <div class="indicateur"></div>
+</div>
+
+<!-- ===== Planche et note ===== -->
+<div class="cartouche"><b>Planche : géométrie et fichiers</b></div>
+<div class="note">
+
+<h3>Android 12 et plus : où tombe l'image</h3>
+<div class="planche" style="grid-template-columns:1fr 1fr">
+  <div>
+    <svg width="150" height="150" viewBox="0 0 288 288" aria-label="Carré de 288, rond de 192, image de 176">
+      <rect x="1" y="1" width="286" height="286" fill="#F4E4C1" stroke="#5A3A28" stroke-width="2" stroke-dasharray="6 5"/>
+      <svg x="56" y="56" width="176" height="176"><use href="#demarrage" width="100%" height="100%"/></svg>
+      <circle cx="144" cy="144" r="96" fill="none" stroke="#5A3A28" stroke-width="2" stroke-dasharray="6 5"/>
+    </svg>
+    Carré de 288 dp (tirets) ; rond de 192 dp coupé par le système (tirets) ; notre image : 176 dp
+  </div>
+  <div>
+    <svg width="150" height="150" viewBox="0 0 108 108" aria-label="Zone sûre de l'icône adaptative">
+      <rect width="108" height="108" fill="#F4E4C1"/><use href="#a-dessin"/>
+      <circle cx="54" cy="54" r="36" fill="none" stroke="#FBF1DA" stroke-width="1.2"/>
+      <circle cx="54" cy="54" r="33" fill="none" stroke="#3A1F0F" stroke-width="1" stroke-dasharray="2 2"/>
+    </svg>
+    Icône adaptative, 108 dp : partie visible (cercle de 72, trait clair) et zone sûre (66, tirets)
+  </div>
+</div>
+
+<h3>Les fichiers exportés (design/v1/icone/)</h3>
+<div class="planche">
+  <div>
+    <svg width="88" height="88" viewBox="18 18 72 72"><g clip-path="url(#masque-ios)"><rect width="108" height="108" fill="#F4E4C1"/><use href="#a-dessin"/></g></svg>
+    <code>icone-ios-1024</code><br>iOS, arrondi par le système
+  </div>
+  <div>
+    <svg width="88" height="88" viewBox="0 0 108 108"><rect width="108" height="108" fill="#F4E4C1"/></svg>
+    <code>android-fond-108</code><br>couche du fond
+  </div>
+  <div>
+    <svg class="damier" width="88" height="88" viewBox="0 0 108 108"><use href="#a-dessin"/></svg>
+    <code>android-dessin-108</code><br>couche du dessin (damier = transparent)
+  </div>
+  <div>
+    <svg class="damier" width="88" height="88" viewBox="0 0 108 108"><use href="#a-mono" fill="#000"/></svg>
+    <code>android-monochrome-108</code><br>noir sur transparent
+  </div>
+  <div>
+    <svg width="88" height="88" viewBox="18 18 72 72" aria-label="Exemple d'icône à thème"><g clip-path="url(#masque-android)"><rect width="108" height="108" fill="#DCE3F5"/><use href="#a-mono" fill="#1F2A44"/></g></svg>
+    Icône à thème (Android 13), couleurs d'exemple du système
+  </div>
+  <div>
+    <svg class="damier" width="88" height="88"><use href="#demarrage" width="100%" height="100%"/></svg>
+    <code>demarrage</code><br>image de démarrage
+  </div>
+</div>
+
+<h2 class="geo">POUR LE DÉVELOPPEUR</h2>
+<p>Le détail (fichiers, tailles, destinations) est dans <code>design/v1/icone/LISEZMOI.md</code>. L'essentiel :</p>
+<table>
+  <tr><th>Réglage <code>expo-splash-screen</code></th><th>Valeur</th><th>Pourquoi</th></tr>
+  <tr><td><code>backgroundColor</code></td><td><code>#F4E4C1</code> (<code>hn.creme</code>)</td><td>Le fond du premier rendu de l'onglet Carte : aucun saut de couleur</td></tr>
+  <tr><td><code>image</code></td><td><code>./assets/images/splash-icon.png</code>, rendu de <code>demarrage.svg</code> en 1024 px, transparent autour du rond</td><td>Une seule image pour iOS et Android</td></tr>
+  <tr><td><code>imageWidth</code></td><td><code>176</code></td><td>Tient dans le rond de 192 dp d'Android (8 de marge de chaque côté), donc rien n'est coupé</td></tr>
+</table>
+<p>Et dans le code, à côté de <code>preventAutoHideAsync()</code> : <code>SplashScreen.setOptions({ fade: true, duration: 300 })</code>. Le fondu (iOS) adoucit la disparition du rond et l'arrivée des onglets.</p>
+
+<h3>Règles</h3>
+<ul>
+  <li>Pas de bleu d'Expo, nulle part : ni au démarrage, ni dans l'icône, ni dans <code>adaptiveIcon.backgroundColor</code> (aujourd'hui <code>#E6F4FE</code>, à passer en <code>#F4E4C1</code>).</li>
+  <li>Pas de texte sur l'écran de démarrage (lisibilité à 48 points, traduction).</li>
+  <li>Pas de version sombre : l'app force le thème clair (décision 12).</li>
+</ul>
+
+<h3>À vérifier en T2 et T5 (captures)</h3>
+<ul>
+  <li>Android : le rond de 176 dp est entier, centré, sans bord coupé ; l'icône de l'écran d'accueil montre le soleil entier quel que soit le masque.</li>
+  <li>Les deux : pas d'écran blanc ni gris entre le démarrage et le crème de l'onglet Carte.</li>
+  <li>La barre d'état reste en texte foncé sur le crème pendant le démarrage.</li>
+</ul>
+</div>
+
+</body>
+</html>

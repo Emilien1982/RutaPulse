@@ -1,0 +1,4 @@
+-rw-r--r--@ 1 utilisateur  staff  54158175 17 nov.  15:07 apk/RutaPulse-1.0.0-1.apk
+ 52M	apk/RutaPulse-1.0.0-1.apk
+  28 arm64-v8a
+Essai T1 (4 architectures) : 172 Mo

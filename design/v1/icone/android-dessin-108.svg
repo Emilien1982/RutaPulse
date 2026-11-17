@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RutaPulse, icon A, Android adaptive icon: foreground layer, transparent
+     outside the drawing. 108 x 108 dp, render at 1024 px.
+     Safe zone (circle of 66 dp, centre 54 54): the sun and the horizon fit in
+     it (farthest point of the sun: 25.3 from the centre, limit 33).
+     The three bands, the ground and the path are flat areas that run to the
+     edges on purpose: they fill any launcher mask (circle, squircle, square)
+     and the parallax shift. Same shapes as the symbol "icone-a" of
+     design/v1/70-icone.html; the two cream lines of the sky are gaps here,
+     the background layer shows through (same colour). -->
+<svg xmlns="http://www.w3.org/2000/svg" width="108" height="108" viewBox="0 0 108 108">
+  <path d="M33.826 49 A24 24 0 0 1 74.174 49 Z" fill="#F0A830"/>
+  <path d="M32.419 51.5 H75.581 A24 24 0 0 1 76.798 54.5 H31.202 A24 24 0 0 1 32.419 51.5 Z" fill="#F0A830"/>
+  <path d="M30.388 57.7 H77.612 A24 24 0 0 1 78 62 H30 A24 24 0 0 1 30.388 57.7 Z" fill="#F0A830"/>
+  <rect x="0" y="62" width="108" height="6" fill="#E2652B"/>
+  <rect x="0" y="68" width="108" height="6" fill="#B5452A"/>
+  <rect x="0" y="74" width="108" height="34" fill="#3A1F0F"/>
+  <path d="M47 108 C38 95 62 88 53 74 L55 74 C68 88 48 95 69 108 Z" fill="#F4E4C1"/>
+</svg>

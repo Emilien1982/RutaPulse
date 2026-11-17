@@ -9,12 +9,17 @@
     "userInterfaceStyle": "light",
     "ios": {
       "bundleIdentifier": "fr.rutapulse.app",
-      "icon": "./assets/expo.icon"
+      "buildNumber": "1",
+      "infoPlist": {
+        "CFBundleDevelopmentRegion": "fr",
+        "CFBundleLocalizations": ["fr"]
+      }
     },
     "android": {
       "package": "fr.rutapulse.app",
+      "versionCode": 1,
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#F4E4C1",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -27,9 +32,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#F4E4C1",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 176
         }
       ],
       "expo-font",
@@ -38,11 +43,16 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "RutaPulse utilise votre position pour l'afficher sur la carte, seulement quand l'app est ouverte."
+          "locationWhenInUsePermission": "RutaPulse utilise votre position pour l'afficher sur la carte, seulement quand l'app est ouverte.",
+          "locationAlwaysAndWhenInUsePermission": false,
+          "locationAlwaysPermission": false,
+          "motionUsagePermission": false,
+          "locationFullAccuracyPermission": false
         }
       ],
       "expo-status-bar",
       "./plugins/withAndroidAccent",
+      "./plugins/withReleaseSigning",
       "expo-sqlite"
     ],
     "experiments": {

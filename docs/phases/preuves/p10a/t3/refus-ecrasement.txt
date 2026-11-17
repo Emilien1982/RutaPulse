@@ -1,0 +1,2 @@
+apk/RutaPulse-1.0.0-1.apk existe déjà : augmenter android.versionCode dans app.json, ou supprimer le fichier à la main.
+code de sortie : 1
