@@ -53,6 +53,7 @@
     "format": "prettier --write .",
     "test": "jest",
     "verify": "npm run typecheck && npm run lint && npm run test",
+    "build:apk": "bash scripts/build-apk.sh",
     "postinstall": "patch-package --error-on-fail"
   },
   "private": true

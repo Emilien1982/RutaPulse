@@ -9,6 +9,7 @@
     "userInterfaceStyle": "light",
     "ios": {
       "bundleIdentifier": "fr.rutapulse.app",
+      "buildNumber": "1",
       "infoPlist": {
         "CFBundleDevelopmentRegion": "fr",
         "CFBundleLocalizations": ["fr"]
@@ -16,6 +17,7 @@
     },
     "android": {
       "package": "fr.rutapulse.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#F4E4C1",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -50,6 +52,7 @@
       ],
       "expo-status-bar",
       "./plugins/withAndroidAccent",
+      "./plugins/withReleaseSigning",
       "expo-sqlite"
     ],
     "experiments": {

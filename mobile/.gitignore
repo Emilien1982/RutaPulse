@@ -45,3 +45,7 @@ yarn-error.*
 
 # Gradle output of local native modules
 /modules/*/android/build/
+
+# APK signés remis (ADR 0022)
+/apk/
+*.apk
