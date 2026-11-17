@@ -175,7 +175,7 @@ l'APK n'est pas signé par la clé de RutaPulse.
 
 | Date | Version | Build | Commit | SHA-256 du fichier APK | Remarque |
 |---|---|---|---|---|---|
-| 2026-11-17 | 1.0.0 | 1 | commit de T3 de la phase 10a (« Faire T3 de la phase 10a ») | `7cc80be3ddefc6657869dedc4f52ba28578c8307fbd71c214612b71703e82b4e` | Premier APK signé par la vraie clé, `arm64-v8a` seul, 52 Mo. Pas encore installé sur le téléphone. |
+| 2026-11-17 | 1.0.0 | 1 | `1afa69a` | `7cc80be3ddefc6657869dedc4f52ba28578c8307fbd71c214612b71703e82b4e` | Premier APK signé par la vraie clé, `arm64-v8a` seul, 52 Mo. Pas encore installé sur le téléphone. |
 
 Pour vérifier qu'un fichier APK est bien celui du registre :
 `shasum -a 256 <fichier>.apk`.
