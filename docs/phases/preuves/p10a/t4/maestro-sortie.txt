@@ -1,0 +1,25 @@
+Running on Pixel_6_API_34_arm64_e3
+ > Flow p10a-fumee-apk
+Launch app "fr.rutapulse.app"... COMPLETED
+Set location (48.751, 5.967)... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Set location (48.751, 5.967)... COMPLETED
+Wait for animation to end within 4000 ms... COMPLETED
+Assert that "Pas encore de carte" is not visible... COMPLETED
+Take screenshot p10a-fumee-01-carte-mode-avion... COMPLETED
+Tap on id: new-route-button... COMPLETED
+Assert that "Touchez le départ sur la carte" is visible... COMPLETED
+Tap on point (50%,50%)... COMPLETED
+Assert that "Touchez l'arrivée sur la carte" is visible... COMPLETED
+Tap on point (50%,38%)... COMPLETED
+Assert that ".*[1-9].*", id: route-distance is visible... COMPLETED
+Wait for animation to end within 4000 ms... COMPLETED
+Take screenshot p10a-fumee-02-itineraire-calcule... COMPLETED
+Tap on id: route-save... COMPLETED
+Assert that id: info-modify is visible... COMPLETED
+Assert that "Itinéraire du .*", id: info-title is visible... COMPLETED
+Tap on id: info-back... COMPLETED
+Assert that id: route-row-.* is visible... COMPLETED
+Assert that "Mes itinéraires" is visible... COMPLETED
+Assert that "Itinéraire du .*" is visible... COMPLETED
+Take screenshot p10a-fumee-03-liste-itineraires... COMPLETED

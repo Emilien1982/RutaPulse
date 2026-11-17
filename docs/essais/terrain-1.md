@@ -1,7 +1,7 @@
 # Essai terrain 1 — RutaPulse sur un vrai téléphone Android
 
 > Fiche de la phase 10a (critère C8). À remplir par Émilien pendant et
-> après une sortie en VTT dans la zone Nancy.
+> après une sortie en VTT (vélo tout terrain) dans la zone Nancy.
 > Elle reprend toute la liste « À vérifier sur un vrai téléphone » de
 > `PILOTAGE.md` et la section « Reporté » des phases 8a et 8b
 > (`docs/phases/p08a-suivi-velo-resultats.md`,
@@ -17,13 +17,15 @@
   beaucoup (bouton marche + volume bas).
 - Ce que tu ne peux pas vérifier ce jour-là : écris « pas vu ». Une autre
   sortie s'en chargera.
-- Les points marqués **(iOS)** attendent un iPhone : saute-les.
 - La source de chaque point est entre crochets, pour retrouver le
   contexte : [P] = liste du pilotage, [8a] et [8b] = section « Reporté »
   de ces phases.
+- Ce que la v1 ne fait pas encore (suivi téléphone verrouillé,
+  notification) est en fin de fiche : rien à vérifier.
 
 **Téléphone :** ……… **Version d'Android :** ……… **Date :** ………
-**Version de l'app (Réglages Android › Applications › RutaPulse) :** ………
+**Fichier APK installé** (le fichier d'installation, par exemple
+`RutaPulse-1.0.0-1.apk`) **:** ………
 
 ---
 
@@ -32,17 +34,17 @@
 - [ ] L'app s'installe avec le guide (`docs/installer-sur-un-telephone.md`).
   Remarque : ……
 - [ ] L'icône « soleil rayé » et le nom « RutaPulse » sont nets sur
-  l'écran d'accueil, avec ton fond d'écran (clair ou sombre).
+  l'écran d'accueil, avec ton fond d'écran (clair ou sombre). Sur fond
+  sombre, y a-t-il un anneau rose autour de l'icône (vu sur l'émulateur
+  en phase 10a, `docs/phases/preuves/p10a/t2-test/c2-android-dock-zoom.png`) ?
   Remarque : ……
-- [ ] Au lancement, l'écran de démarrage est aux couleurs de l'app, sans
-  flash blanc ni bleu, puis l'onglet Carte arrive sans saut.
-  Remarque : ……
-- [ ] Onglet Zones : la zone Nancy se télécharge (environ 100 Mo), puis
-  s'affiche comme téléchargée.
-  Remarque : ……
+- [ ] Au lancement, l'écran de démarrage est crème avec le rond du
+  soleil, sans flash blanc ni bleu, puis l'onglet Carte arrive sans
+  saut. Remarque : ……
+- [ ] Onglet Zones : la zone Nancy se télécharge (environ 110 Mo), puis
+  affiche « Prête sans réseau ». Remarque : ……
 - [ ] Les textes du système sont en français : demande de position,
-  boutons « OK » et « Annuler », nom de l'app.
-  Remarque : ……
+  boutons « OK » et « Annuler », nom de l'app. Remarque : ……
 - [ ] **Temps de calcul d'un itinéraire** : crée un itinéraire d'environ
   20 km. Il s'affiche en combien de temps (à la louche, en secondes) ?
   [P] Remarque : ……
@@ -57,9 +59,10 @@
   [P] Remarque : ……
 - [ ] **Double appui pour zoomer** sur la carte de création : il zoome
   sans poser de point par erreur. [P] Remarque : ……
-- [ ] **Importe un vrai GPX VTT** (un fichier d'une sortie réelle, par
-  exemple d'un site de traces). Il s'ouvre, et ses directions paraissent
-  justes. [P] [8a] Remarque : ……
+- [ ] **Importe un vrai GPX VTT** (GPX : le format de fichier des traces
+  GPS ; prends le fichier d'une sortie réelle, par exemple d'un site de
+  traces) : il s'importe et s'affiche sur la carte. Ses directions se
+  vérifient en roulant (section 3). [P] [8a] Remarque : ……
 - [ ] Enregistre l'itinéraire du jour. Il apparaît dans l'onglet
   Itinéraires. Remarque : ……
 - [ ] Réglages : « Luminosité de l'écran » sur « Automatique » pour
@@ -67,10 +70,10 @@
 
 ## 2. Au départ (sur place, de préférence en mode avion)
 
+- [ ] **Note le niveau de batterie** au départ : …… % (il servira en
+  section 5). [P]
 - [ ] **Mode avion** : la carte s'affiche, l'itinéraire s'ouvre, un
   nouveau calcul marche. Remarque : ……
-- [ ] **Onglet Carte : flèche de cap** sur le point bleu. Elle tourne
-  quand tu tournes le téléphone ou quand tu roules. [8b] Remarque : ……
 - [ ] **Onglet Carte : halo de précision** autour du point bleu. Sa
   taille paraît juste (petit à découvert, plus grand en forêt). [8b]
   Remarque : ……
@@ -79,33 +82,46 @@
   ancien endroit. [P] [8a] Remarque : ……
 - [ ] « Reste » au départ correspond à la longueur de l'itinéraire (pas
   une valeur trop petite). [8a] Remarque : ……
-- [ ] **Notification de suivi** visible, puis **verrouille le
-  téléphone** : la notification se voit sur l'écran verrouillé. [P]
-  Remarque : ……
 
 ## 3. En roulant
 
+La flèche de cap et le pincement à deux doigts (onglet Carte) se font
+**sans démarrer le suivi**,
+quelques minutes : pendant un suivi, l'écran de suivi occupe tout
+l'écran, et le quitter propose de terminer la sortie.
+
+- [ ] **Onglet Carte : flèche de cap** sur le point bleu. Elle montre la
+  direction où tu roules (pas celle où pointe le téléphone). À l'arrêt
+  plus de 5 secondes, elle disparaît : c'est normal. Est-elle
+  confortable à lire ? [8b] Remarque : ……
 - [ ] **Précision du GPS en forêt** : le point reste sur le chemin (écart
   noté à la louche). [P] [8a] Remarque : ……
 - [ ] **Directions** : les virages annoncés sont justes, sans doublon
   pour deux virages du même côté proches (25 à 50 m), ni annonce inutile
   dans un zigzag. [8a] Remarque : ……
+- [ ] **Vrai GPX VTT** (ce jour-là ou une autre sortie) : en roulant ce
+  GPX, note si « Suivez le tracé » remplace souvent les directions, et à
+  peu près sur quelle part du parcours. Plus d'un dixième du parcours :
+  à signaler. [P] [8a] Remarque : ……
 - [ ] **Caméra** : la carte suit sans à-coups, à vitesse de vélo. [8a]
   Remarque : ……
-- [ ] **Pincement à deux doigts** pendant que la carte suit ta position :
-  le zoom marche, et le suivi reprend comme prévu. [8b] Remarque : ……
+- [ ] **Pincement à deux doigts** sur l'onglet Carte pendant que le
+  bouton de recentrage est foncé (« suit ma position ») : le zoom marche,
+  et le bouton reste foncé après le pincement. [8b] Remarque : ……
 - [ ] **Luminosité réelle** : « Maximum » (roue dentée pendant le suivi)
   rend l'écran lisible au soleil. « Automatique » rend la main au
   téléphone. [8b] Remarque : ……
 - [ ] **Hors de l'itinéraire** : quitte volontairement le tracé sur
-  100 m, puis reviens. L'écart s'affiche, puis disparaît. Remarque : ……
+  100 m, puis reviens. « Vous êtes à … du tracé » s'affiche, puis
+  disparaît. Remarque : ……
 - [ ] **Trait de liaison** (s'il y a un point posé hors chemin) : il se
   voit et ne gêne pas. Sur Android, il est en tirets, pas en points ronds
   (écart M1 connu). [8b] Remarque : ……
-- [ ] **Téléphone verrouillé longtemps** (au moins 20 minutes) : au
-  déverrouillage, le suivi a continué (distance qui avance). Modes
-  d'économie d'énergie du téléphone et mise en veille (Doze) : rien ne
-  coupe le suivi. [P] Remarque : ……
+- [ ] **Verrouiller pendant le suivi** : en v1, verrouiller le téléphone
+  (ou passer à une autre app) met le suivi en pause, sans GPS. Verrouille
+  quelques minutes, puis déverrouille : le suivi reprend, il n'est pas
+  perdu. La distance faite pendant la pause compte en ligne droite :
+  c'est normal. Remarque : ……
 - [ ] **Fluidité générale** : rien ne rame (écran de suivi, carte).
   [8a] [8b] Remarque : ……
 
@@ -113,16 +129,17 @@
 
 - [ ] À moins de 30 m de l'arrivée, le panneau du haut dit « Arrivée ».
   Remarque : ……
-- [ ] « Terminer » : le résumé de la sortie s'affiche (distance, temps).
-  Remarque : ……
+- [ ] « Terminer » : le résumé de la sortie s'affiche. Sa distance
+  paraît-elle juste par rapport à l'itinéraire (pas beaucoup plus, ni
+  beaucoup moins) ? [8a] Remarque : ……
 - [ ] La luminosité revient à son réglage d'avant le suivi. [8b]
   Remarque : ……
 
 ## 5. Après (à la maison)
 
-- [ ] **Batterie** : niveau au départ …… %, à l'arrivée …… %, durée de
-  la sortie …… (écran allumé une partie du temps, verrouillé le reste).
-  [P] Remarque : ……
+- [ ] **Batterie** : niveau au départ …… % (section 2), à l'arrivée
+  …… %, durée de la sortie …… (écran allumé pendant le suivi). [P]
+  Remarque : ……
 - [ ] **Luminosité après une fermeture de force** : pendant un suivi en
   « Maximum », ferme l'app de force (liste des apps récentes). En la
   rouvrant, la luminosité du téléphone est revenue à la normale. [8b]
@@ -134,11 +151,22 @@
 
 ## Hors de cet essai
 
-Points qui ne se vérifient pas sur un téléphone, ou attendent un iPhone.
-Ils restent ouverts, pour mémoire.
+### Pas encore dans la v1 (V2)
 
-- **(iOS)** Live Activity avec un compte Apple gratuit (signature :
-  2 identifiants et un App Group, sans push). [P]
+Ces fonctions n'existent pas encore : leur absence n'est pas un défaut.
+
+- **Suivi téléphone verrouillé** et **notification de suivi** sur
+  l'écran verrouillé (phase 9, passée en V2). [P]
+- **Mise en veille d'Android** (Doze) et économies d'énergie des
+  fabricants pendant un suivi verrouillé : à vérifier avec le suivi
+  verrouillé, en V2. [P]
+- **(iOS)** Live Activity (le suivi affiché sur l'écran verrouillé de
+  l'iPhone) avec un compte Apple gratuit : signature avec deux
+  identifiants et un App Group (groupe d'apps qui partagent des
+  données), sans push (notifications envoyées par un serveur). [P]
+
+### Reporté
+
 - **(iOS)** Luminosité réelle sur iPhone. [8b]
 - **(iOS)** Écarts M3, M5 et M6 du designer
   (`design/comparaisons/p08b-t6-finitions.md`). [8b]
