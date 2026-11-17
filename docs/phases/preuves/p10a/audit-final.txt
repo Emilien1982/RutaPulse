@@ -1,0 +1,7 @@
+Audit ADR 0022 § 8, 2026-11-17 15:32, sur b781a63
+== 1. fichiers sensibles suivis
+(rien)
+== 2. motifs de secret hors Markdown
+(rien)
+== 3. vrai mot de passe
+(absent)
