@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RutaPulse, splash screen image (expo-splash-screen "image").
+     The visible disc of icon A (circle of 72 of the 108 canvas, what the
+     Android launcher shows) in a brown ring, transparent outside.
+     Ring: hn.brun, 3.5 wide (outer radius 39), i.e. 3.5 / 78 of the width:
+     about 8 points at imageWidth 176, the proportion of hn.medaillon
+     (border 3 on 64). The ring overlaps the edge of the drawing by 0.5 so no
+     light seam shows. viewBox 15 15 78 78 = outer edge of the ring.
+     Render at 1024 px, keep the transparency. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="15 15 78 78">
+  <defs>
+    <clipPath id="disc"><circle cx="54" cy="54" r="36"/></clipPath>
+  </defs>
+  <g clip-path="url(#disc)">
+    <rect x="0" y="0" width="108" height="108" fill="#F4E4C1"/>
+    <path d="M33.826 49 A24 24 0 0 1 74.174 49 Z" fill="#F0A830"/>
+    <path d="M32.419 51.5 H75.581 A24 24 0 0 1 76.798 54.5 H31.202 A24 24 0 0 1 32.419 51.5 Z" fill="#F0A830"/>
+    <path d="M30.388 57.7 H77.612 A24 24 0 0 1 78 62 H30 A24 24 0 0 1 30.388 57.7 Z" fill="#F0A830"/>
+    <rect x="0" y="62" width="108" height="6" fill="#E2652B"/>
+    <rect x="0" y="68" width="108" height="6" fill="#B5452A"/>
+    <rect x="0" y="74" width="108" height="34" fill="#3A1F0F"/>
+    <path d="M47 108 C38 95 62 88 53 74 L55 74 C68 88 48 95 69 108 Z" fill="#F4E4C1"/>
+  </g>
+  <circle cx="54" cy="54" r="37.25" fill="none" stroke="#3A1F0F" stroke-width="3.5"/>
+</svg>

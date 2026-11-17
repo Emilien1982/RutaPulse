@@ -505,9 +505,24 @@ Dessin de A, dans le carré de 108 : fond `hn.creme` ; soleil `hn.moutarde`
 | `icone.canevas` | 108 × 108 (couches Android) ; partie visible : cercle de 72 au centre ; zone sûre : cercle de 66 |
 | `icone.ios` | Carré plein de 1024 px, sans transparence, recadré sur les 72 du centre ; iOS arrondit lui-même les coins |
 | `icone.fond` | `hn.creme` |
-| `icone.monochrome` | Android 13 et plus (icônes à thème) : une couche d'une seule couleur, le soleil coupé de ses deux filets et la ligne d'horizon |
+| `icone.monochrome` | Android 13 et plus (icônes à thème) : une couche d'une seule couleur, le soleil coupé de ses deux filets et la ligne d'horizon. Barre d'horizon : x 27 à 81, y 66 à 72 (6 de haut comme une bande, 4 sous le soleil), bouts ronds. Tout tient dans la zone sûre |
+| `icone.fichiers` | Sources SVG dans `v1/icone/` (LISEZMOI dedans), rendues en PNG de 1024 px. Le soleil y est découpé en trois morceaux exacts au lieu d'être recouvert de deux filets crème : même image. Ajouté le 17 novembre 2026 (phase 10a, T1) |
 | `icone.notification` | Android : petite icône blanche, silhouette simplifiée de A dans un carré de 24 : demi-soleil (centre 12, 16 ; rayon 9) coupé d'**un seul** filet (y 11 à 12,8), et une barre d'horizon (y 17,8, haut 2,6, bouts ronds). Deux filets se boucheraient à 24 dp. Couleur d'accent `hn.rouille` (écran 31) |
 | `icone.live-activity` | iOS : icône A en couleur, 20 points, rayon 5, liseré `hn.brun` à 45 % de 1 point pour la détacher du blanc (écran 32) |
+
+## Écran de démarrage
+
+Planche : `v1/71-demarrage.html`. Ajouté le 17 novembre 2026 (phase 10a,
+T1). Réglages du plugin `expo-splash-screen` : `v1/icone/LISEZMOI.md`.
+
+| Jeton | Valeur | Raison |
+|---|---|---|
+| `demarrage.fond` | `hn.creme` (`#F4E4C1`) | C'est le fond du premier rendu de l'onglet Carte : pas de saut de couleur |
+| `demarrage.image` | Le disque visible de l'icône A (cercle de 72 du carré de 108) dans un anneau `hn.brun` de 3,5 sur 78 (environ 8 points à 176, la proportion de `hn.medaillon`) ; transparent autour | Une seule image pour iOS et Android. Elle est déjà ronde : le rond d'Android 12 et plus ne la coupe pas |
+| `demarrage.largeur` | 176 (`imageWidth`), centrée dans l'écran | Tient dans le rond de 192 dp qu'Android 12 et plus laisse visible, avec 8 de marge de chaque côté |
+| `demarrage.fondu` | 300 ms (iOS) | Adoucit la disparition du rond et l'arrivée de la barre d'onglets |
+
+Pas de texte, pas de version sombre (décision 12).
 
 ## Mode sombre en v1 : non (décision 12)
 

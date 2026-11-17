@@ -1,0 +1,9 @@
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- tapOn: 'Itinéraires.*'
+- waitForAnimationToEnd:
+    timeout: 4000
+- takeScreenshot: liste

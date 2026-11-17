@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- RutaPulse, icon A "soleil rayé", iOS. Square of 1024 px, opaque, no rounded
+     corners (iOS rounds them). Crop of the 72 central units of the 108 canvas
+     (viewBox 18 18 72 72), as in design/v1/70-icone.html.
+     Sun: circle (54, 62), r 24, cut at the horizon (y 62) and by two lines
+     (y 49 to 51.5 and y 54.5 to 57.7). Drawn as three exact pieces, so no
+     clipPath is needed by the converter. Colours: design/tokens.md. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="18 18 72 72">
+  <rect x="0" y="0" width="108" height="108" fill="#F4E4C1"/>
+  <path d="M33.826 49 A24 24 0 0 1 74.174 49 Z" fill="#F0A830"/>
+  <path d="M32.419 51.5 H75.581 A24 24 0 0 1 76.798 54.5 H31.202 A24 24 0 0 1 32.419 51.5 Z" fill="#F0A830"/>
+  <path d="M30.388 57.7 H77.612 A24 24 0 0 1 78 62 H30 A24 24 0 0 1 30.388 57.7 Z" fill="#F0A830"/>
+  <rect x="0" y="62" width="108" height="6" fill="#E2652B"/>
+  <rect x="0" y="68" width="108" height="6" fill="#B5452A"/>
+  <rect x="0" y="74" width="108" height="34" fill="#3A1F0F"/>
+  <path d="M47 108 C38 95 62 88 53 74 L55 74 C68 88 48 95 69 108 Z" fill="#F4E4C1"/>
+</svg>
