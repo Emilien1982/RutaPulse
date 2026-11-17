@@ -4,7 +4,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { t } from '@/core/i18n/t';
 import { directionLabel, type Direction } from '@/core/tracking/directionText';
-import { panelDistance, type Panel } from '@/core/tracking/trackingState';
+import { panelNumber, type Panel } from '@/core/tracking/trackingState';
 import { navColors } from '@/ui/theme';
 
 import { Picto, pictoOf, type PictoKind } from './Picto';
@@ -35,8 +35,7 @@ function withoutWay(direction: Direction): Direction {
 }
 
 function linesOf(panel: Panel): Lines {
-  const distance =
-    panel.distanceM === null ? null : panelDistance(panel.distanceM);
+  const distance = panelNumber(panel);
   const spoken = distance ? `${distance.value} ${distance.unit}` : '';
   const reason =
     panel.reason === 'hand'
@@ -88,12 +87,16 @@ function linesOf(panel: Panel): Lines {
       return {
         picto: { kind: 'arrive', flip: false },
         distance,
-        instruction: t('tracking.arrive'),
+        // Under 30 m there is no number: the word takes its place.
+        title: distance ? undefined : t('tracking.arrive'),
+        instruction: distance ? t('tracking.arrive') : undefined,
         note: reason,
-        label: t('tracking.panelLabel', {
-          distance: spoken,
-          direction: t('tracking.arrive'),
-        }),
+        label: distance
+          ? t('tracking.panelLabel', {
+              distance: spoken,
+              direction: t('tracking.arrive'),
+            })
+          : t('tracking.arrive'),
       };
     default: {
       const text = panel.direction

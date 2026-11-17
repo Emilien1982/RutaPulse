@@ -8,6 +8,7 @@ import { groupThousands } from '@/core/routing/formatRoute';
 import { buildGuidance } from './guidance';
 import type { Direction } from './directionText';
 import {
+  ARRIVAL_M,
   hasArrived,
   initialPlacement,
   MAX_ACCURACY_M,
@@ -237,6 +238,11 @@ export type Panel = {
   silent: boolean;
 };
 
+/** `remainingM` to the millimeter: the float noise of the sphere is not a distance. */
+function arrivalM(line: TrackingLine, placement: Placement): number {
+  return Math.round(remainingM(line, placement) * 1000) / 1000;
+}
+
 /** The panel, by the order of priority of the mock-up 30. */
 export function panelOf(state: TrackingState): Panel {
   const { placement, line, directions } = state;
@@ -270,7 +276,8 @@ export function panelOf(state: TrackingState): Panel {
     return {
       ...base,
       kind: inSight ? 'arrive' : 'follow',
-      distanceM: toM,
+      // On the arrival, the same distance as "Reste" (ADR 0021, section 11.1).
+      distanceM: inSight ? arrivalM(line, placement) : toM,
       direction: inSight ? (directions[directions.length - 1] ?? null) : inside,
       reason: inside.reason === 'noMatch' ? null : inside.reason,
       imminent: inSight,
@@ -281,8 +288,12 @@ export function panelOf(state: TrackingState): Panel {
   const next = directions.find((d) =>
     d.kind === 'turn' ? d.atM >= at : d.kind === 'follow' ? d.fromM > at : true,
   );
-  if (!next) return { ...base, kind: 'arrive', distanceM: 0 };
-  const distance = (next.kind === 'follow' ? next.fromM : next.atM) - at;
+  if (!next)
+    return { ...base, kind: 'arrive', distanceM: arrivalM(line, placement) };
+  const distance =
+    next.kind === 'arrive'
+      ? arrivalM(line, placement)
+      : (next.kind === 'follow' ? next.fromM : next.atM) - at;
   return {
     ...base,
     kind: next.kind === 'arrive' ? 'arrive' : 'turn',
@@ -318,6 +329,18 @@ export function panelDistance(meters: number): { value: string; unit: string } {
     m >= 300 ? Math.round(m / 50) * 50 : Math.max(10, Math.round(m / 10) * 10);
   if (rounded >= 1000) return km('1,0');
   return { value: String(rounded), unit: t('tracking.unit.m') };
+}
+
+/**
+ * The big number of the panel, or null when it only says "Arrivée": on the
+ * arrival, under 30 m (ADR 0021, section 11.1).
+ */
+export function panelNumber(
+  panel: Panel,
+): { value: string; unit: string } | null {
+  if (panel.distanceM === null) return null;
+  if (panel.kind === 'arrive' && panel.distanceM < ARRIVAL_M) return null;
+  return panelDistance(panel.distanceM);
 }
 
 /**

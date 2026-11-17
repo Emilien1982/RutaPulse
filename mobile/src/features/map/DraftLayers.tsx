@@ -12,7 +12,7 @@ import type { LegState } from './useLegResults';
 
 // Widths of the mockup (zoom 15): line 7, casing 11. About x 0.6 at zoom 12
 // and x 1.3 at zoom 17 (design/tokens.md).
-function widthByZoom(at15: number) {
+export function widthByZoom(at15: number) {
   return [
     'interpolate',
     ['linear'],

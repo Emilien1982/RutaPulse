@@ -4,7 +4,7 @@
 import type { Draft } from '@/core/draft/draft';
 import { VALHALLA_EARTH_RADIUS_M } from '@/core/gpx/trackLengthM';
 import type { LonLat, SavedLeg } from '@/core/routes/savedRoute';
-import { MAX_ENGINE_POINTS, thinTrack } from '@/core/routes/track';
+import { MAX_ENGINE_POINTS, routeLinks, thinTrack } from '@/core/routes/track';
 import type { Bbox } from '@/core/zones/catalogue';
 
 const RAD = Math.PI / 180;
@@ -143,8 +143,17 @@ export type FreeReason = 'hand' | 'outOfZone' | 'noMatch';
 /** A stretch of the line without directions (distances along the line). */
 export type FreePart = { fromM: number; toM: number; reason: FreeReason };
 
-/** The line and the stretches that never get directions from the engine. */
-export type TrackingSource = { line: TrackingLine; free: FreePart[] };
+/**
+ * The line and the stretches that never get directions from the engine, and
+ * the dotted links to the points placed (drawn only: never part of the line,
+ * ADR 0021, section 10).
+ */
+export type TrackingSource = {
+  line: TrackingLine;
+  free: FreePart[];
+  /** Optional only so that the sources written before 8b still type. */
+  links?: LonLat[][];
+};
 
 /** Index ranges of a line, in the order of the line. */
 type IndexRange = { from: number; to: number; reason: FreeReason };
@@ -250,8 +259,9 @@ export function sourceOfCreated(
   });
   close();
   const line = buildLine(points);
-  if (!bbox) return { line, free: allOutOfZone(line) };
-  return { line, free: rangesToFree(line, ranges) };
+  const links = routeLinks(draft, legs);
+  if (!bbox) return { line, free: allOutOfZone(line), links };
+  return { line, free: rangesToFree(line, ranges), links };
 }
 
 /**
@@ -263,7 +273,7 @@ export function sourceOfGpx(
   bbox: Bbox | null,
 ): TrackingSource {
   const line = buildLine(thinTrack([...track], MAX_ENGINE_POINTS));
-  if (!bbox) return { line, free: allOutOfZone(line) };
+  if (!bbox) return { line, free: allOutOfZone(line), links: [] };
   const ranges: IndexRange[] = [];
   const out = line.points.map((p) => !insideBox(bbox, p));
   for (let i = 0; i < out.length; i++) {
@@ -277,7 +287,7 @@ export function sourceOfGpx(
     });
     i = end;
   }
-  return { line, free: rangesToFree(line, ranges) };
+  return { line, free: rangesToFree(line, ranges), links: [] };
 }
 
 /** The stretches between the free ones: they get directions from the engine. */

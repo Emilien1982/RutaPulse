@@ -3,6 +3,7 @@
 // 5, 6 and 8). Pure logic.
 
 import type { Draft } from '@/core/draft/draft';
+import { linkSegments } from '@/core/routing/routeLink';
 import { encodePolyline6 } from '@/core/routing/routeResponse';
 import type { Bbox } from '@/core/zones/catalogue';
 
@@ -36,6 +37,23 @@ export function trackOfCreated(draft: Draft, legs: SavedLeg[]): LonLat[] {
     if (!from || !to) return;
     if (legs[i - 1]?.mode !== 'path') push([from.lon, from.lat]);
     if (legs[i + 1]?.mode !== 'path') push([to.lon, to.lat]);
+  });
+  return out;
+}
+
+/**
+ * The dotted links to draw (ADR 0021, section 10): at both ends of each
+ * computed leg, from the point placed to the shape. Not part of the track:
+ * never counted, never exported. Hand legs and trace legs have none.
+ */
+export function routeLinks(draft: Draft, legs: SavedLeg[]): LonLat[][] {
+  const out: LonLat[][] = [];
+  legs.forEach((leg, i) => {
+    if (leg.mode !== 'path' || leg.trace) return;
+    const from = draft.points[i];
+    const to = draft.points[i + 1];
+    if (!from || !to || leg.shape.length < 2) return;
+    out.push(...linkSegments(from, to, leg.shape));
   });
   return out;
 }

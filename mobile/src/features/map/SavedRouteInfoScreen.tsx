@@ -33,7 +33,7 @@ import type {
 } from '@/core/routes/savedRoute';
 import { announcement } from '@/core/routes/routeName';
 import { formatRouteDate, zoneLine } from '@/core/routes/routeText';
-import { trackOfCreated } from '@/core/routes/track';
+import { routeLinks, trackOfCreated } from '@/core/routes/track';
 import { canAttachZone, routeZoneStatus } from '@/core/routes/routeZone';
 import type { RouteZoneStatus } from '@/core/routes/routeZone';
 import type { Catalogue, Zone } from '@/core/zones/catalogue';
@@ -457,6 +457,20 @@ function trackMapData(track: LonLat[]): {
 
 const NO_LINKS: LineCollection = { type: 'FeatureCollection', features: [] };
 
+function linksCollection(links: LonLat[][]): LineCollection {
+  return {
+    type: 'FeatureCollection',
+    features: links.map((coordinates) => ({
+      type: 'Feature',
+      properties: { mode: 'path' },
+      geometry: {
+        type: 'LineString',
+        coordinates: coordinates as [number, number][],
+      },
+    })),
+  };
+}
+
 function GpxInfos({
   route,
   zone,
@@ -519,6 +533,13 @@ function PlainInfos({
     [route],
   );
   const data = useMemo(() => trackMapData(track), [track]);
+  const links = useMemo(
+    () =>
+      route.origin === 'gpx'
+        ? NO_LINKS
+        : linksCollection(routeLinks(route.draft, route.legs)),
+    [route],
+  );
   const zoneName = route.zone?.name ?? '';
   // Outside every zone: the zone that holds the track, when the catalogue is
   // already in memory (no request here).
@@ -544,7 +565,7 @@ function PlainInfos({
         zone={zone}
         draft={data.draft}
         lines={data.lines}
-        links={NO_LINKS}
+        links={links}
       />
     ) : (
       <ArchFrame label={t('routes.arcLabel')}>

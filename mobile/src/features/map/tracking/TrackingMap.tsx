@@ -19,6 +19,7 @@ import type { TrackingSource } from '@/core/tracking/trackingLine';
 import type { Zone } from '@/core/zones/catalogue';
 import { mapColors, navColors, text } from '@/ui/theme';
 
+import { widthByZoom } from '../DraftLayers';
 import { MAX_ZOOM } from '../mapStyle';
 import { UserPuckLayers } from '../UserPuckLayers';
 import { ZoneBaseMap } from '../ZoneBaseMap';
@@ -226,8 +227,34 @@ export function TrackingMap({
     },
   };
 
+  // The dotted links to the points placed: first, so under the route; no
+  // `beforeId` (it breaks on iOS, see DraftLayers).
+  const links = useMemo(
+    () => ({
+      type: 'FeatureCollection' as const,
+      features: (source.links ?? []).map((coordinates) => ({
+        type: 'Feature' as const,
+        properties: {},
+        geometry: { type: 'LineString' as const, coordinates },
+      })),
+    }),
+    [source],
+  );
+
   const layers = (
     <>
+      <GeoJSONSource id="suivi-liaison" data={links}>
+        <Layer
+          id="suivi-liaison-ligne"
+          type="line"
+          layout={ROUND}
+          paint={{
+            'line-color': mapColors.routeLink,
+            'line-width': widthByZoom(3),
+            'line-dasharray': [0.1, 2.5],
+          }}
+        />
+      </GeoJSONSource>
       <GeoJSONSource id="suivi-fait" data={pieces.done}>
         <Layer
           id="suivi-fait-ligne"
