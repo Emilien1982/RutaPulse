@@ -35,9 +35,12 @@
   Remarque : ……
 - [ ] L'icône « soleil rayé » et le nom « RutaPulse » sont nets sur
   l'écran d'accueil, avec ton fond d'écran (clair ou sombre). Sur fond
-  sombre, y a-t-il un anneau rose autour de l'icône (vu sur l'émulateur
-  en phase 10a, `docs/phases/preuves/p10a/t2-test/c2-android-dock-zoom.png`) ?
-  Remarque : ……
+  sombre, y a-t-il un anneau de couleur autour de l'icône dans le dock ?
+  Sur l'émulateur (Pixel), c'est le lanceur qui marque ainsi une app
+  qu'il suggère (`design/comparaisons/p10a-t5-icone-demarrage.md`, A1) :
+  appui long, puis « Épingler », et l'anneau doit partir. Si ton
+  téléphone a des icônes à thème (d'une seule couleur), regarde aussi
+  celle de RutaPulse. Remarque : ……
 - [ ] Au lancement, l'écran de démarrage est crème avec le rond du
   soleil, sans flash blanc ni bleu, puis l'onglet Carte arrive sans
   saut. Remarque : ……
