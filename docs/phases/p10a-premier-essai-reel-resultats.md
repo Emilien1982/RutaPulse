@@ -68,8 +68,7 @@ a son `LISEZMOI.md`.
 
 ## Intégration continue
 
-À compléter après le push de ce document (run lu par l'API publique de
-GitHub).
+Workflow « verify », run [44104445634](https://github.com/Emilien1982/RutaPulse/actions/runs/44104445634) sur le commit 3bd859b : réussi (lu par l'API publique de GitHub le 17 novembre 2026).
 
 ## Décisions prises pendant la phase
 
