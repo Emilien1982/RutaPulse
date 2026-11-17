@@ -129,9 +129,41 @@
 
 ## Prochaine étape
 
-Écrire la spec de la phase 8b (luminosité C9, onglet Carte C10 : flèche de cap, halo, états du recentrage, cadrage hors zone ; trait de liaison C11 ; voir `docs/phases/p08-suivi-velo.md`, « Découpage en 8a et 8b »), la faire valider par Émilien, puis la lancer. Y ajouter les deux remarques du testeur de la 8a (« Arrivée 10 m » contre « Reste 0 m » ; pointillés de l'écart qui se serrent pendant un recadrage). Puis la phase 10, à commencer par l'APK Android et l'installation iOS pour un premier essai réel.
+Écrire la spec de la phase 10 (finition et test interne), à commencer par l'APK Android installable et l'installation iOS pour un premier essai réel. Avant : régler la place du Mac (copies Time Machine, accord d'Émilien). Voir la passation du 17 novembre.
 
-## Passation du pilotage (16 novembre 2026)
+## Passation du pilotage (17 novembre 2026)
+
+La session de pilotage du 16 au 17 novembre (`local_d494a558-d4db-4909-a30e-ca4e7c02a077`)
+passe la main après la fusion de la phase 8b, comme le veut la règle d'Émilien.
+
+**État exact**
+- `main` à jour : phases 0 à 8b fusionnées (bca7093), README et pilotage à jour (voir `git log`).
+  `verify` (3 052 tests) et `pytest` (280) repassés sur `main` après `npm ci`.
+- Worktree de la phase 8b (`.claude/worktrees/eloquent-kalam-fad4f0`) gardé comme trace ; tout est
+  poussé. Branche jetable locale `claude/p08b-essai`, jamais poussée, à ne pas fusionner.
+- **Place libre : environ 17 Go**, sous le seuil d'alerte. 9 copies Time Machine locales le
+  17 novembre. **Question ouverte à Émilien** : les effacer toutes, ou toutes sauf la plus récente.
+  À régler avant la phase 10, qui construit l'app.
+- Quota de la semaine : environ 47 % le mardi 17 au matin (renouvellement le lundi 23 à 7 h).
+  La phase 8b (taille P, 2 sessions de phase) a pris environ 25 points.
+- **Prochaine étape : spec de la phase 10** (finition et test interne), en commençant par l'APK
+  Android installable et l'app iOS installée par Xcode, pour un premier essai réel. Y reprendre :
+  la liste « À vérifier sur un vrai téléphone », les écarts M1 à M6 de la 8b
+  (`design/comparaisons/p08b-t6-finitions.md`), les « Points connus » marqués phase 10.
+
+**Leçons de la phase 8b**
+- Le garde-fou refuse au testeur d'écrire un `LISEZMOI.md` de preuves : il le rend dans son compte
+  rendu et la session de phase l'écrit, en vérifiant les chemins.
+- Un sous-agent a effacé sa propre construction iOS de référence (DerivedData, hors du worktree)
+  sans demander : dire à chaque sous-agent « aucun effacement hors du worktree, même de ce que tu
+  as créé ».
+- Une session ne peut pas en lancer une autre quand Émilien écrit depuis son téléphone (contrôle à
+  distance) : lui demander de dire « oui » depuis le Mac, ou faire continuer l'ancienne session.
+- Une nouvelle dépendance de la phase (ici `expo-brightness`) manque dans `mobile/node_modules`
+  de `main` après la fusion : lancer `npm ci` avant `verify`.
+- Le garde-fou a refusé un `git push` de `main` hors fusion : pousser seulement à la fusion.
+
+## Passation du pilotage (16 novembre 2026, archive)
 
 La session de pilotage du 10 au 16 novembre (`local_b89c76a2-43a1-4417-8c81-ac486e333c4d`)
 passe la main après la fusion de la phase 8a, comme le veut la règle d'Émilien.
