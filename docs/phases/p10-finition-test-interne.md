@@ -131,7 +131,7 @@ Chaque tâche de code passe ensuite par le `relecteur`, puis par le
 1. **iPhone ?** Pas pour l'instant : on se concentre sur Android.
 2. **Lieu de l'essai ?** La zone Nancy. Émilien ajoute : à court terme,
    il faudra pouvoir **créer et charger de nouvelles zones depuis le
-   téléphone**. Ce besoin est hors de la 10a (voir plus bas).
+   téléphone**. Ce besoin passe en V2 (voir plus bas).
 
 ## Choix déjà faits par le pilotage (tu peux les changer)
 
@@ -159,6 +159,8 @@ GitHub (machine ARM, environ une heure) ; l'app ne peut pas la lancer
 elle-même sans une clé GitHub, qui serait un secret dans l'app. Il faut
 donc un petit service entre les deux, ou une autre voie. Place et forme à
 décider avec Émilien.
+
+**Décision d'Émilien du 17 novembre : V2.** Rien dans la phase 10.
 
 # Phase 10b — Finitions (liste de départ)
 

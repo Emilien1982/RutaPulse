@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-17 — Phase 10 : pas d'iPhone, l'essai réel se fait sur Android, dans la zone Nancy. Créer une zone depuis le téléphone (sans passer par le Mac) : **V2**, décision d'Émilien (demande un petit service entre l'app et GitHub).
 - 2026-11-17 — Place du Mac : avec l'accord d'Émilien (« toutes sauf la récente »), 18 copies Time Machine locales effacées une par une ; la plus récente gardée. 13 → 45 Go libres.
 - 2026-11-17 — Nouvelle session de pilotage : `local_fabe586d-cffb-4098-8605-c5332290c5be` (passation après la phase 8b). C'est l'adresse à donner dans les briefs de phase.
 - 2026-11-17 — Phase 8b fusionnée dans main (bca7093) : luminosité pendant le suivi (onglet Réglages et panneau 31b, rendue à la fin et en arrière-plan), onglet Carte (flèche de cap, halo, recentrage à trois états, cadrage hors zone à 10 km), même point sur l'écran de suivi, trait de liaison sur Infos et pendant le suivi, distance d'arrivée alignée. 9 critères tenus, 4 avec réserve (luminosité iOS non visible sur simulateur ; flèche Android non vue ; léger tassement des pointillés pendant un recadrage iOS ; temps par position en Node seulement). Écarts M1 à M6 du designer reportés en phase 10. 3 052 tests, 280 pytest, CI verte (run 44004427637). ADR 0021 complété (§ 8 à 12).
@@ -117,7 +118,6 @@
 ## Décisions en attente
 
 - Spec et découpage de la phase 10 (Q1 et Q2 répondues : Android seul, zone Nancy).
-- Créer et charger de nouvelles zones depuis le téléphone (demande d'Émilien du 17 novembre, « à court terme ») : place et forme à décider.
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
