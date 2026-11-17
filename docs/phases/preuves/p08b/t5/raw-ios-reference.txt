@@ -1,0 +1,7 @@
+reference run 1: C13T5 MAP loaded +111ms
+reference run 2: C13T5 MAP loaded +116ms
+reference run 3: C13T5 MAP loaded +116ms
+reference run 4: C13T5 MAP loaded +122ms
+reference run 5: C13T5 MAP loaded +120ms
+reference run 6: C13T5 MAP loaded +123ms
+reference run 7: C13T5 MAP loaded +118ms

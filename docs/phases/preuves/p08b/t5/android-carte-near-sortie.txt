@@ -1,0 +1,11 @@
+near est:
+ETAT: Recentrer sur ma position
+ETAT: hors de la zone
+near sud:
+ETAT: Recentrer sur ma position
+ETAT: hors de la zone
+loin:
+ETAT: Recentrer sur ma position
+ETAT: hors de la zone
+refusee:
+ETAT: Position désactivée

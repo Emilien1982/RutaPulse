@@ -1,0 +1,8 @@
+near est:
+Assert that "La carte suit ma position" is visible... FAILED
+Assertion is false: "La carte suit ma position" is visible
+near sud:
+Assert that "La carte suit ma position" is visible... FAILED
+Assertion is false: "La carte suit ma position" is visible
+refusee:
+Assert that "Position désactivée.*" is visible... COMPLETED

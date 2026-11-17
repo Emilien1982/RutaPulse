@@ -1,0 +1,16 @@
+appId: fr.rutapulse.app
+---
+- tapOn:
+    point: 37%, 95%
+- tapOn:
+    point: 50%, 54%
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- tapOn:
+    id: 'info-start'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-panel'
+    timeout: 20000

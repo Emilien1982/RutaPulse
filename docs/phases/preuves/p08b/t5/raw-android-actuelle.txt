@@ -1,0 +1,7 @@
+actuelle run 1: 25324 25377 I ReactNativeJS: C13T5 MAP loaded +1217ms
+actuelle run 2: 25487 25512 I ReactNativeJS: C13T5 MAP loaded +1152ms
+actuelle run 3: 25610 25635 I ReactNativeJS: C13T5 MAP loaded +1108ms
+actuelle run 4: 25733 25758 I ReactNativeJS: C13T5 MAP loaded +1051ms
+actuelle run 5: 25857 25882 I ReactNativeJS: C13T5 MAP loaded +1008ms
+actuelle run 6: 25983 26010 I ReactNativeJS: C13T5 MAP loaded +1043ms
+actuelle run 7: 26105 26133 I ReactNativeJS: C13T5 MAP loaded +1208ms

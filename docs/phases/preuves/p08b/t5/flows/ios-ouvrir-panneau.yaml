@@ -1,0 +1,8 @@
+appId: fr.rutapulse.app
+---
+- tapOn:
+    id: 'tracking-gear'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-settings-panel'
+    timeout: 5000

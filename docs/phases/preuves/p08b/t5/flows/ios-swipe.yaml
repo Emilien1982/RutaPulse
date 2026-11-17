@@ -1,0 +1,5 @@
+appId: fr.rutapulse.app
+---
+- swipe:
+    start: 50%, 60%
+    end: 50%, 40%

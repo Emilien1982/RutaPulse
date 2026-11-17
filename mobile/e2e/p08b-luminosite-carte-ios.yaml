@@ -1,0 +1,82 @@
+# C14 (phase 8b), iOS (iPhone 17, version release, SANS mode avion : le
+# simulateur n'en a pas, la spec le permet) :
+# démarrer le suivi, ouvrir le panneau (roue dentée), choisir « Maximum »,
+# le retrouver dans l'onglet Réglages ; ouvrir l'onglet Carte et voir le
+# bouton « La carte suit ma position ».
+# Prérequis : l'app est déjà lancée (launchApp de Maestro peut échouer sur
+# iOS) et le simulateur est placé au départ, quelques secondes avant :
+#   xcrun simctl location <udid> set 48.751513,5.966751
+#   xcrun simctl terminate <udid> fr.rutapulse.app ; xcrun simctl launch <udid> fr.rutapulse.app
+# Itinéraire « Itinéraire du 4 nov. » (622 m). Pas de boucle ni de
+# « repeat ». Sur iOS, les textes exacts passent par des expressions « .* ».
+appId: fr.rutapulse.app
+---
+# Point de départ connu : « Automatique » dans l'onglet Réglages.
+- tapOn: 'Réglages.*'
+- extendedWaitUntil:
+    visible: 'Luminosité.*'
+    timeout: 10000
+- tapOn: '.*Automatique.*'
+- takeScreenshot: ios-p8b-c14-01-reglages-automatique
+- tapOn: 'Itinéraires.*'
+- scrollUntilVisible:
+    element: 'Itinéraire du 4 nov.*'
+    timeout: 30000
+- tapOn: 'Itinéraire du 4 nov.*'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- tapOn:
+    id: 'info-start'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-panel'
+    timeout: 20000
+- assertVisible:
+    id: 'tracking-gear'
+- takeScreenshot: ios-p8b-c14-02-suivi-roue-fermee
+- tapOn:
+    id: 'tracking-gear'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-settings-panel'
+    timeout: 5000
+- assertVisible: 'Luminosité de l.écran.*'
+- takeScreenshot: ios-p8b-c14-03-panneau-automatique
+- tapOn: '.*Maximum.*'
+- takeScreenshot: ios-p8b-c14-04-panneau-maximum
+- tapOn:
+    id: 'tracking-settings-close'
+- extendedWaitUntil:
+    notVisible:
+      id: 'tracking-settings-panel'
+    timeout: 5000
+- tapOn:
+    id: 'tracking-finish'
+- extendedWaitUntil:
+    visible: 'Terminer la sortie.*'
+    timeout: 10000
+- tapOn:
+    point: '68%,57%'
+# Aucun trajet parcouru : le suivi se ferme sans écran « Sortie terminée ».
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+# Le choix est retrouvé dans l'onglet Réglages.
+# Le bouton retour (« Itinéraires », en haut à gauche) ne se trouve pas par son texte sur iOS.
+- tapOn:
+    point: '10%,10%'
+- tapOn: 'Réglages.*'
+- extendedWaitUntil:
+    visible: 'Luminosité.*'
+    timeout: 10000
+- assertVisible: 'Pendant le suivi.*'
+- takeScreenshot: ios-p8b-c14-05-reglages-maximum
+# Onglet Carte : le bouton dit que la carte suit la position.
+- tapOn: 'Carte.*'
+- extendedWaitUntil:
+    visible: 'La carte suit ma position.*'
+    timeout: 30000
+- takeScreenshot: ios-p8b-c14-06-carte-suit-ma-position

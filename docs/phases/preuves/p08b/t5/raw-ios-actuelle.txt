@@ -1,0 +1,7 @@
+actuelle run 1: C13T5 MAP loaded +104ms
+actuelle run 2: C13T5 MAP loaded +110ms
+actuelle run 3: C13T5 MAP loaded +111ms
+actuelle run 4: C13T5 MAP loaded +112ms
+actuelle run 5: C13T5 MAP loaded +109ms
+actuelle run 6: C13T5 MAP loaded +108ms
+actuelle run 7: C13T5 MAP loaded +111ms

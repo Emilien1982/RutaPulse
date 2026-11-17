@@ -1,0 +1,50 @@
+# C13 : ouverture de l'onglet Carte, release, 7 ouvertures a froid par version et par plateforme
+# Delai entre le premier rendu JS de ZoneBaseMap (montage de la carte de l'onglet) et onDidFinishLoadingMap.
+# Journal temporaire identique dans les deux versions (console.log 'C13T5 MAP loaded +Nms'), retire ensuite.
+# Reference = b3570a9 (avant T3), actuelle = adf5d6c. Zone Nancy v6, position 48.727358,5.978104, app tuee entre chaque essai.
+# Android = emulator-5584 ; iOS = iPhone 17 (simulateur). Journaux bruts : raw-*.txt (copies ci-dessous).
+
+## brut android reference
+reference run 1: 24428 24457 I ReactNativeJS: C13T5 MAP loaded +1022ms
+reference run 2: 24546 24574 I ReactNativeJS: C13T5 MAP loaded +1137ms
+reference run 3: 24668 24695 I ReactNativeJS: C13T5 MAP loaded +1021ms
+reference run 4: 24788 24817 I ReactNativeJS: C13T5 MAP loaded +1145ms
+reference run 5: 24913 24940 I ReactNativeJS: C13T5 MAP loaded +1247ms
+reference run 6: 25035 25063 I ReactNativeJS: C13T5 MAP loaded +1230ms
+reference run 7: 25158 25184 I ReactNativeJS: C13T5 MAP loaded +1130ms
+
+## brut android actuelle
+actuelle run 1: 25324 25377 I ReactNativeJS: C13T5 MAP loaded +1217ms
+actuelle run 2: 25487 25512 I ReactNativeJS: C13T5 MAP loaded +1152ms
+actuelle run 3: 25610 25635 I ReactNativeJS: C13T5 MAP loaded +1108ms
+actuelle run 4: 25733 25758 I ReactNativeJS: C13T5 MAP loaded +1051ms
+actuelle run 5: 25857 25882 I ReactNativeJS: C13T5 MAP loaded +1008ms
+actuelle run 6: 25983 26010 I ReactNativeJS: C13T5 MAP loaded +1043ms
+actuelle run 7: 26105 26133 I ReactNativeJS: C13T5 MAP loaded +1208ms
+
+## brut ios reference
+reference run 1: C13T5 MAP loaded +111ms
+reference run 2: C13T5 MAP loaded +116ms
+reference run 3: C13T5 MAP loaded +116ms
+reference run 4: C13T5 MAP loaded +122ms
+reference run 5: C13T5 MAP loaded +120ms
+reference run 6: C13T5 MAP loaded +123ms
+reference run 7: C13T5 MAP loaded +118ms
+
+## brut ios actuelle
+actuelle run 1: C13T5 MAP loaded +104ms
+actuelle run 2: C13T5 MAP loaded +110ms
+actuelle run 3: C13T5 MAP loaded +111ms
+actuelle run 4: C13T5 MAP loaded +112ms
+actuelle run 5: C13T5 MAP loaded +109ms
+actuelle run 6: C13T5 MAP loaded +108ms
+actuelle run 7: C13T5 MAP loaded +111ms
+
+## Tableau (ms)
+plateforme | version   | mediane | min | max | valeurs
+android    | reference |    1137 | 1021 | 1247 | [1022, 1137, 1021, 1145, 1247, 1230, 1130]
+android    | actuelle  |    1108 | 1008 | 1217 | [1217, 1152, 1108, 1051, 1008, 1043, 1208]
+android: ecart des medianes actuelle - reference = -29 ms (-2.6 %)
+ios        | reference |     118 | 111 | 123 | [111, 116, 116, 122, 120, 123, 118]
+ios        | actuelle  |     110 | 104 | 112 | [104, 110, 111, 112, 109, 108, 111]
+ios: ecart des medianes actuelle - reference = -8 ms (-6.8 %)

@@ -1,0 +1,7 @@
+appId: fr.rutapulse.app
+---
+- tapOn:
+    point: '10%,10%'
+- tapOn: 'Réglages.*'
+- tapOn: '.*Automatique.*'
+- takeScreenshot: ios-fin-reglages-automatique-remis

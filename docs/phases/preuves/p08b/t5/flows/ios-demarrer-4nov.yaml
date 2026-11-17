@@ -1,0 +1,17 @@
+appId: fr.rutapulse.app
+---
+- tapOn: 'Itinéraires.*'
+- scrollUntilVisible:
+    element: 'Itinéraire du 4 nov.*'
+    timeout: 30000
+- tapOn: 'Itinéraire du 4 nov.*'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- tapOn:
+    id: 'info-start'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-panel'
+    timeout: 20000

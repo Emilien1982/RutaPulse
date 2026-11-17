@@ -1,0 +1,39 @@
+Running on Pixel_6_API_34_arm64_e3
+ > Flow p08b-luminosite-carte
+Launch app "fr.rutapulse.app"... COMPLETED
+Assert that id: new-route-button is visible... COMPLETED
+Tap on "Réglages"... COMPLETED
+Assert that "Luminosité.*" is visible... COMPLETED
+Tap on "Automatique"... COMPLETED
+Assert that "Automatique" is visible... COMPLETED
+Take screenshot android-p8b-c14-01-reglages-automatique... COMPLETED
+Tap on "Itinéraires"... COMPLETED
+Assert that "Petite Suisse Lorraine à VTT \(5\)" is visible... COMPLETED
+Tap on "Petite Suisse Lorraine à VTT \(5\)"... COMPLETED
+Assert that id: info-start is visible... COMPLETED
+Tap on id: info-start... COMPLETED
+Assert that id: tracking-panel is visible... COMPLETED
+Assert that id: tracking-gear is visible... COMPLETED
+Take screenshot android-p8b-c14-02-suivi-roue-fermee... COMPLETED
+Tap on id: tracking-gear... COMPLETED
+Assert that id: tracking-settings-panel is visible... COMPLETED
+Assert that "Luminosité de l.écran" is visible... COMPLETED
+Take screenshot android-p8b-c14-03-panneau-automatique... COMPLETED
+Tap on "Maximum"... COMPLETED
+Assert that "Maximum" is visible... COMPLETED
+Take screenshot android-p8b-c14-04-panneau-maximum... COMPLETED
+Tap on id: tracking-settings-close... COMPLETED
+Assert that id: tracking-settings-panel is not visible... COMPLETED
+Tap on id: tracking-finish... COMPLETED
+Assert that "Terminer la sortie.*" is visible... COMPLETED
+Tap on id: android:id/button1... COMPLETED
+Assert that id: info-start is visible... COMPLETED
+Tap on "Itinéraires"... COMPLETED
+Tap on "Réglages"... COMPLETED
+Assert that "Luminosité.*" is visible... COMPLETED
+Assert that "Pendant le suivi" is visible... COMPLETED
+Assert that "Maximum" is visible... COMPLETED
+Take screenshot android-p8b-c14-05-reglages-maximum... COMPLETED
+Tap on "Carte"... COMPLETED
+Assert that "La carte suit ma position" is visible... COMPLETED
+Take screenshot android-p8b-c14-06-carte-suit-ma-position... COMPLETED
