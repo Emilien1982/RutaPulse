@@ -138,7 +138,48 @@
 
 Émilien : sauvegarder la clé de signature (guide, « Sauvegarder la clé de signature »), désinstaller l'app d'essai du 10 novembre, installer `RutaPulse-1.0.0-1.apk` avec le guide, puis rouler avec la fiche `docs/essais/terrain-1.md`. Ensuite : spec de la phase 10b (finitions), à partir de la fiche remplie et de la liste de départ de `docs/phases/p10-finition-test-interne.md`.
 
-## Passation du pilotage (17 novembre 2026)
+## Passation du pilotage (17 novembre 2026, après la phase 10a)
+
+La session de pilotage du 17 novembre (`local_fabe586d-cffb-4098-8605-c5332290c5be`)
+passe la main après la fusion de la phase 10a, comme le veut la règle d'Émilien.
+
+**État exact**
+- `main` à jour et poussé : phases 0 à 10a fusionnées (89c490d), README et pilotage à jour
+  (ddd0a8c). `npm ci`, `verify` (3 074 tests) et `pytest` (280) repassés sur `main`.
+- Worktree de la 10a (`zealous-gates-8ea709`) supprimé après la fusion (règle d'Émilien) ;
+  branche `claude/phase-10a-essai-reel-414250` gardée et poussée.
+- Clé de signature Android dans `~/.rutapulse/` (`rutapulse-release.p12`, `signing.properties`),
+  hors du dépôt. Ne jamais en lire ni en afficher le contenu. APK remis : registre dans
+  `docs/installer-sur-un-telephone.md`. Prochain APK : build 2 (`versionCode` +1, commit à part).
+- **Attente d'Émilien** : sauvegarder la clé ; désinstaller l'app d'essai du 10 novembre ;
+  installer l'APK (`mobile/apk/RutaPulse-1.0.0-1.apk`, ignoré par git) ; rouler avec
+  `docs/essais/terrain-1.md`. Pas d'iPhone : iOS reste sur simulateur.
+- **Prochaine étape : spec de la phase 10b** (finitions, M), à partir de la fiche remplie et de
+  la liste de départ de `docs/phases/p10-finition-test-interne.md`, plus `colorPrimary` Android
+  et planche 71 (comparaison `design/comparaisons/p10a-t5-icone-demarrage.md`).
+- Quota : environ 62 % le mardi 17 au soir (renouvellement le lundi 23 à 7 h). La 10a (P) a pris
+  environ 8 points. Place libre : environ 50 Go ; une seule copie Time Machine gardée le 17.
+- Réveil horaire : à recréer dans la nouvelle session (`CronCreate`, minute 23).
+
+**Règle d'Émilien du 17 novembre** : après chaque fusion (verify sur `main`, CI verte, tout
+poussé), `git status` dans le worktree de la phase, puis `git worktree remove` (jamais `rm -rf`)
+et `git worktree prune` ; garder les branches ; jamais en milieu de phase. L'accord de fusion vaut
+accord de suppression.
+
+**Leçons de la phase 10a**
+- Depuis Claude Desktop 5.1231.2 (installé le 11 novembre), un message d'Émilien envoyé depuis
+  le téléphone (Remote Control) ne permet pas de lancer une session ; aucun réglage ne l'autorise.
+  Faire continuer la session ouverte, ou préparer un brief qu'Émilien lance lui-même.
+- Le garde-fou refuse au développeur d'écrire un guide dans `docs/` : la session de phase l'écrit.
+- Les dialogues du système (position, fichiers, partage) suivent la langue du téléphone, même
+  avec le français seule langue déclarée : réserve acceptée.
+- Une commande d'attente de CI en arrière-plan ne s'est pas terminée : le réveil horaire du
+  pilotage lit le run par l'API publique et relance la phase.
+- Un worktree n'a pas de `.venv` : `pytest` se lance avec `zones/.venv/bin/python` du dépôt principal.
+- Une phase P bien cadrée tient en une session (passation après T3, suite dans la même session) :
+  environ 8 points de quota.
+
+## Passation du pilotage (17 novembre 2026, après la phase 8b, archive)
 
 La session de pilotage du 16 au 17 novembre (`local_d494a558-d4db-4909-a30e-ca4e7c02a077`)
 passe la main après la fusion de la phase 8b, comme le veut la règle d'Émilien.
