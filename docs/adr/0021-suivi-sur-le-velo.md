@@ -1532,6 +1532,17 @@ la tâche qui en a besoin, sur les deux simulateurs, en release :
   proche, zoom 15 (§ 9.4, règle du toucher). Le toucher dit qu'on veut
   voir sa position.
 
+- 2026-11-17, T4, décision de la session de phase (relecture) :
+  `TrackingSource.links` est facultatif (`links?:`), pas `links: LonLat[][]`
+  (§ 10.3). Le rendre obligatoire forçait à modifier des tests déjà
+  commités. `sourceOfCreated` et `sourceOfGpx` le remplissent toujours ;
+  `TrackingMap` lit `source.links ?? []`.
+- 2026-11-17, T4, décision du pilotage : le remède du § 11.2 (`easeTo` au
+  lieu de `fitBounds`) n'est pas appliqué. Le contrôle T4-a trouve, caméra
+  arrêtée, le zoom réel égal au zoom prévu (42 cadrages). Reste un léger
+  tassement des pointillés pendant la seconde du recadrage sur iOS,
+  accepté (`docs/phases/preuves/p08b/t4/LISEZMOI.md`).
+
 ## Questions tranchées par Émilien (10 novembre 2026)
 
 Les trois recommandations sont retenues. La question 7 du designer est
