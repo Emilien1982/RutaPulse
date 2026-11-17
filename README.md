@@ -96,8 +96,8 @@ process est volontairement maximal.
   les imports interdits entre dossiers), Prettier, un hook qui contrôle
   chaque fichier modifié par un agent, et la CI à chaque push.
 
-**En chiffres** (17 novembre 2026) : 11 phases livrées en 4 semaines
-(1 restante), **3 052 tests Jest** et **280 tests pytest**, 21 ADR, des
+**En chiffres** (17 novembre 2026) : 12 phases livrées en 4 semaines
+(la finition reste), **3 074 tests Jest** et **280 tests pytest**, 22 ADR, des
 parcours Maestro sur Android et iOS.
 
 ## État d'avancement
@@ -114,9 +114,10 @@ parcours Maestro sur Android et iOS.
 | 7 | Circuits VTT balisés | ✅ |
 | 8a | Suivi sur le vélo | ✅ |
 | 8b | Finitions du suivi : luminosité, carte, cap | ✅ |
-| 10 | Finition et premier essai sur un vrai téléphone | à faire |
+| 10a | Premier essai réel : icône, écran de démarrage, APK Android signé | ✅ |
+| 10b | Finitions, après l'essai sur le terrain | à faire |
 
-Plus tard (V2) : suivi téléphone verrouillé, guidage vocal.
+Plus tard (V2) : suivi téléphone verrouillé, guidage vocal, création d'une zone depuis le téléphone.
 
 ## Pour aller plus loin
 
