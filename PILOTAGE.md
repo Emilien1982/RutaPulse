@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-17 — Règle d'Émilien : après chaque fusion (verify sur `main`, CI verte, tout poussé), supprimer le worktree de la phase par `git worktree remove` après `git status`, puis `git worktree prune` ; branches gardées. Trois anciens worktrees retirés le même jour (8a, 8b, copie sur a6db623).
 - 2026-11-17 — Spec de la phase 10 ([p10-finition-test-interne.md](docs/phases/p10-finition-test-interne.md)) validée par Émilien : découpage en 10a (premier essai réel, Android, P) puis 10b (finitions, M), avec les choix du pilotage. Phase 10a lancée le même jour.
 - 2026-11-17 — Phase 10 : pas d'iPhone, l'essai réel se fait sur Android, dans la zone Nancy. Créer une zone depuis le téléphone (sans passer par le Mac) : **V2**, décision d'Émilien (demande un petit service entre l'app et GitHub).
 - 2026-11-17 — Place du Mac : avec l'accord d'Émilien (« toutes sauf la récente »), 18 copies Time Machine locales effacées une par une ; la plus récente gardée. 13 → 45 Go libres.
@@ -154,6 +155,11 @@ passe la main après la fusion de la phase 8b, comme le veut la règle d'Émilie
   Android installable et l'app iOS installée par Xcode, pour un premier essai réel. Y reprendre :
   la liste « À vérifier sur un vrai téléphone », les écarts M1 à M6 de la 8b
   (`design/comparaisons/p08b-t6-finitions.md`), les « Points connus » marqués phase 10.
+
+- **Worktrees** (règle d'Émilien du 17 novembre) : après chaque fusion, supprimer le worktree de
+  la phase par `git worktree remove`, après `git status` (voir « Rôle du pilotage », 2 novembre).
+  Le 17 novembre, retirés avec son accord : `eloquent-kalam-fad4f0` (8b),
+  `phase-8a-suivi-velo-7c0055` (8a), `youthful-joliot-f99390` (copie sur a6db623) ; branches gardées.
 
 **Leçons de la phase 8b**
 - Le garde-fou refuse au testeur d'écrire un `LISEZMOI.md` de preuves : il le rend dans son compte
@@ -334,6 +340,14 @@ fusion de la phase 5, comme le veut la règle d'Émilien. Ce qu'il faut savoir :
   captures, fichiers) avant de le présenter.
 - Après une fusion : relancer `npm run verify` et `pytest` sur `main`,
   audit des secrets et des e-mails, mise à jour de ce fichier, push.
+- **Règle d'Émilien du 17 novembre 2026** : après chaque fusion, une fois
+  `npm ci` et `verify` passés sur `main`, la CI verte et tout poussé,
+  supprimer le worktree de la phase par `git worktree remove` (jamais
+  `rm -rf`), puis `git worktree prune`. Avant : `git status` dans le
+  worktree ; s'il reste quelque chose de non commité, le montrer à
+  Émilien. Jamais à une passation au milieu d'une phase. Garder les
+  branches. L'accord de fusion d'Émilien vaut accord pour supprimer le
+  worktree de cette phase.
 
 **Règles d'Émilien du 2 novembre 2026** (aussi en mémoire, `pilotage-sobre`)
 - Conversation de pilotage silencieuse : seulement les questions pour
