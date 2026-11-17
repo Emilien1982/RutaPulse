@@ -1,0 +1,3 @@
+appId: fr.rutapulse.app
+---
+- assertVisible: "La carte suit ma position"

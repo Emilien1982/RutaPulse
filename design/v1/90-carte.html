@@ -3,60 +3,41 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=390, initial-scale=1">
-<title>RutaPulse v1 – Carte, une zone téléchargée</title>
+<title>RutaPulse v1 – Carte, une zone téléchargée : position, cap, recentrage</title>
 <!--
-  Écran 90, v1. Phase 2 (carte hors ligne), tâche T0. Fonctions 1 et 6 du
-  cadrage ; décisions 8 (zoom jusqu'à 18) et 13 (IGN dans les attributions).
-  Instant montré : la zone Nancy est prête, le téléphone est en mode avion.
-  On a déplacé la carte : la position est visible mais n'est plus au centre,
-  le bouton de recentrage est donc au repos. Zoom 15 environ, quartier de
-  Clairlieu (Villers-lès-Nancy), au bord de la forêt de Haye.
+  Écran 90, v1, style années 70. Phase 2 (carte hors ligne), tâche T0 ;
+  fonctions 1 et 6 du cadrage ; décisions 8 (zoom jusqu'à 18) et 13 (IGN dans
+  les attributions).
 
-  CE QUI EST À L'ÉCRAN, ET RIEN DE PLUS
+  COMPLÉTÉ LE 16 NOVEMBRE 2026 (phase 8b, T1, designer). Spec :
+  docs/phases/p08b-suivi-velo-finitions.md (critère C10). Questions 2 et 3 de
+  la phase 8 (validées le 10 novembre). Essai de la plateforme :
+  docs/phases/preuves/p08b/t1-essai/LISEZMOI.md.
+  Ce fichier contient maintenant plusieurs écrans, l'un sous l'autre (comme
+  v1/12 et 30), puis une planche et une note en bas de page.
+   1. Ouverture dans la zone : centrée sur la position, zoom 14, « suit ma
+      position » ; à l'arrêt, cap inconnu : rond sans flèche.
+   2. En roulant, la carte suit : flèche de cap, halo de précision.
+   3. Carte déplacée à la main : bouton au repos (l'écran d'origine).
+   4. Hors de la zone, à moins de 10 km du bord : position et bord ensemble.
+   5. Plus de 10 km du bord, ou pas encore de position : toute la zone.
+   6. Position refusée : viseur barré.
+  Planche : point de position et bouton, en grand. Note : « Pour l'architecte
+  et le développeur » (valeurs exactes), règles, textes, questions.
+
+  CE QUI EST À L'ÉCRAN, ET RIEN DE PLUS (inchangé depuis la phase 7)
   - La carte, plein écran, du haut de l'écran jusqu'aux rayures. Pas de barre
-    du haut (même principe que l'écran 12). Un dégradé crème sous la barre
-    d'état garde l'heure lisible sur une carte sombre.
-  - Le style de la carte : design/style-carte.md (couleurs, épaisseurs, ordre).
-    Ici au zoom 15 : routes blanches bordées, pistes brunes pleines, sentiers
-    en tirets rouges, un escalier en hachures, courbes beiges (maîtresses tous
-    les 50 m, cote écrite), ombrage du relief.
-    Pas de trottoirs : avant le zoom 16, ils ne sont pas dessinés. Le quartier
-    n'a plus aucun tiret rouge (défaut de l'essai 3 corrigé).
-  - Ma position : jeton marqueur.position (rond bleu de 32, bord blanc de 3,
-    flèche blanche du cap), halo bleu pâle pour la précision. Sans cap connu,
-    le rond sans flèche (convention des deux plateformes). Dessinée par
-    MapLibre (UserLocation), au-dessus de toute la carte.
-  - Bouton « Recentrer sur ma position » : rond de 48 en haut à droite (16 du
-    bord), style des boutons posés sur la carte (10, 12). Trois états :
-      au repos (montré) : fond hn.creme-clair, viseur hn.brun ;
-      carte qui suit ma position : fond hn.brun, viseur hn.creme (comme un
-        segment choisi) ; il repasse au repos dès qu'on déplace la carte ;
-      position refusée : viseur barré ; toucher ouvre la boîte du système qui
-        mène aux réglages de l'app.
-    Toucher : la carte glisse sur ma position, au zoom 15 si l'on était plus
-    loin, sans changer le zoom si l'on était plus près.
-    Phase 7 : le bouton des couches prend cette place (60) et celui-ci descend
-    à 120, comme sur l'écran 12. Pas de bouton des couches en phase 2.
-  - Attributions, en permanence : « © OpenStreetMap © OpenMapTiles
-    © Mapterhorn © IGN », 11 points, hn.brun-2 sur hn.creme-clair à 88 %, en bas
-    à gauche, 8 au-dessus des rayures. L'attribution et le logo de MapLibre
-    sont désactivés.
-  - Barre d'onglets, « Carte » actif, surmontée des rayures.
+    du haut. Un dégradé crème sous la barre d'état garde l'heure lisible.
+  - Style de la carte : design/style-carte.md. Couche des circuits : v1/12
+    (non dessinée ici sur les écrans 1 à 3, pour ne montrer que la position).
+  - Ma position, le bouton de recentrage, « Nouvel itinéraire » (v1/12,
+    écran 1), les attributions, la barre d'onglets.
+  - Le nord reste en haut (rotation et inclinaison coupées) : c'est la
+    flèche qui tourne, pas la carte. Pas de boussole.
 
-  GESTES
-  - Un doigt pour déplacer, double touche pour zoomer, deux doigts pour
-    zoomer (pas obligatoire : le double touche suffit avec des gants).
-  - Zoom de 8 à 18. Rotation et inclinaison désactivées : le nord reste en
-    haut, donc pas de boussole à afficher (elle sert au suivi, écran 30).
-
-  À L'OUVERTURE
-  - Position connue et dans la zone : centrée sur elle, zoom 14, bouton en
-    mode « suit ma position ».
-  - Sinon : toute la zone à l'écran. (Hors zone : question au Product Owner.)
-
-  Pas sur cet écran (hors phase 2) : itinéraire, circuits, bouton des couches,
-  « Nouvel itinéraire ». Pas d'échelle graphique : un élément de moins.
-  Valeurs : design/tokens.md. Carte : dessin simplifié en SVG.
+  Valeurs : design/tokens.md (en cas d'écart, tokens.md fait foi). Carte :
+  dessin simplifié en SVG, pas à l'échelle exacte ; les épaisseurs des zooms
+  sont dans style-carte.md.
 -->
 <style>
 :root{
@@ -66,175 +47,575 @@
   --position:#1A73E8;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:390px;height:844px;overflow:hidden;background:var(--creme)}
+html,body{width:390px;background:var(--creme)}
 body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text",Roboto,"Segoe UI",system-ui,sans-serif;color:var(--brun);font-variant-numeric:tabular-nums;-webkit-font-smoothing:antialiased}
-.ecran{position:relative;width:390px;height:844px;overflow:hidden}
+.geo{font-family:"Futura","Futura PT",Jost,"Century Gothic","Avenir Next",sans-serif;font-weight:700}
+.ecran{position:relative;width:390px;height:844px;overflow:hidden;background:var(--creme)}
 svg.carte{position:absolute;left:0;top:0;width:390px;height:752px}
+/* Écran 1 (zoom 14) : la carte du zoom 15 réduite de moitié, traits gardés (épaisseurs : style-carte.md) */
+#terrain *{vector-effect:non-scaling-stroke}
 .barre-etat{position:absolute;top:0;left:0;right:0;height:47px;display:flex;align-items:center;justify-content:space-between;padding:0 28px 0 34px;font-size:16px;font-weight:600;z-index:20;color:var(--brun);background:linear-gradient(rgba(244,228,193,.94),rgba(244,228,193,.6))}
 .barre-etat .icones{display:flex;gap:6px;align-items:center}
 .indicateur{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:var(--creme);z-index:30}
 
 /* Bouton posé sur la carte : hn.creme-clair, hn.bord, hn.ombre */
-.flottant{position:absolute;right:16px;width:48px;height:48px;border-radius:24px;background:var(--creme-clair);border:2.5px solid var(--brun);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
+.flottant{position:absolute;right:16px;width:48px;height:48px;border-radius:24px;background:var(--creme-clair);border:2.5px solid var(--brun);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center;z-index:5}
+/* État « suit ma position » : fond hn.brun, viseur hn.creme (comme un segment choisi) */
+.flottant.suit{background:var(--brun)}
+.nouvel{position:absolute;left:50%;transform:translateX(-50%);top:663px;height:56px;padding:0 24px 0 18px;border-radius:28px;background:var(--creme-clair);border:2.5px solid var(--brun);box-shadow:var(--ombre);display:flex;align-items:center;gap:10px;font-size:20px;white-space:nowrap;z-index:5}
 
-/* Ma position : marqueur.position */
-.halo{position:absolute;width:56px;height:56px;margin:-28px 0 0 -28px;border-radius:50%;background:rgba(26,115,232,.18);border:1px solid rgba(26,115,232,.35)}
-.position{position:absolute;width:32px;height:32px;margin:-16px 0 0 -16px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+/* Message hors zone (existant) : crème clair, bord brun, rayon 18, au moins 48 de haut */
+.message{position:absolute;left:16px;right:80px;top:60px;min-height:48px;display:flex;align-items:center;background:var(--creme-clair);border:2.5px solid var(--brun);border-radius:18px;padding:8px 12px;font-size:15px;line-height:1.3;color:var(--brun-2);z-index:5}
+
+/* Ma position : marqueur.position (32), marqueur.position-halo */
+.halo{position:absolute;border-radius:50%;background:rgba(26,115,232,.16);border:1px solid rgba(26,115,232,.40);z-index:3}
+.position{position:absolute;width:32px;height:32px;margin:-16px 0 0 -16px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.30));z-index:4}
 
 /* Attribution : texte.attribution */
-.attribution{position:absolute;left:8px;top:727px;font-size:11px;line-height:17px;color:var(--brun-2);background:rgba(251,241,218,.88);padding:0 5px;border-radius:4px}
+.attribution{position:absolute;left:8px;top:727px;font-size:11px;line-height:17px;color:var(--brun-2);background:rgba(251,241,218,.88);padding:0 5px;border-radius:4px;z-index:5}
 
-.rayures-bas{position:absolute;left:0;right:0;bottom:83px;height:9px;background:linear-gradient(var(--moutarde) 0 3px,var(--orange) 3px 6px,var(--rouille) 6px 9px)}
-.onglets{position:absolute;left:0;right:0;bottom:0;height:83px;background:var(--brun);display:flex;padding-top:7px}
+.rayures-bas{position:absolute;left:0;right:0;bottom:83px;height:9px;background:linear-gradient(var(--moutarde) 0 3px,var(--orange) 3px 6px,var(--rouille) 6px 9px);z-index:6}
+.onglets{position:absolute;left:0;right:0;bottom:0;height:83px;background:var(--brun);display:flex;padding-top:7px;z-index:6}
 .onglet{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:13px;font-weight:500;color:var(--creme)}
 .pastille{width:64px;height:32px;border-radius:16px;display:flex;align-items:center;justify-content:center}
 .onglet.actif{font-weight:800}
 .onglet.actif .pastille{background:var(--moutarde);color:var(--brun)}
+
+/* Hors du téléphone : légendes, planche, note */
+.cartouche{background:var(--brun);color:var(--creme);padding:14px 16px;font-size:15px;line-height:1.35;border-top:9px solid var(--moutarde)}
+.cartouche b{font-size:17px}
+.cartouche code{font-size:13px}
+.note{padding:8px 16px 48px;font-size:15px;line-height:1.4}
+.note.haut{padding-bottom:16px;border-bottom:9px solid var(--brun)}
+.note h2{font-size:20px;margin:20px 0 8px;letter-spacing:.5px}
+.note h3{font-size:16px;margin:16px 0 4px}
+.note p{margin:4px 0}
+.note ul,.note ol{padding-left:18px;margin:4px 0}
+.note li{margin:3px 0}
+.note code{font-size:13px}
+.note q{quotes:"« " " »"}
+.note table{border-collapse:collapse;width:100%;font-size:13.5px;margin:6px 0}
+.note td,.note th{border:1px solid var(--brun-2);padding:4px 5px;vertical-align:top;text-align:left}
+.planche{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.planche > div{background:#EEEBE4;border:2px solid var(--brun);border-radius:14px;padding:10px 4px 8px;text-align:center;font-size:13px;line-height:1.3;position:relative}
+.planche .grand{position:relative;width:110px;height:110px;margin:0 auto 6px}
+.planche .grand > *{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}
+.planche .bouton{position:relative;width:48px;height:48px;margin:6px auto 8px;border-radius:24px;background:var(--creme-clair);border:2.5px solid var(--brun);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
+.planche .bouton.suit{background:var(--brun)}
 </style>
 </head>
 <body>
-<div class="ecran">
 
-<!-- Carte : couleurs carte.*, épaisseurs du zoom 15 (style-carte.md). Ordre de dessin du style. -->
-<svg class="carte" viewBox="0 0 390 752" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de la zone Nancy, quartier de Clairlieu et forêt de Haye">
-  <defs>
-    <filter id="flou" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18"/></filter>
-    <path id="rue-hetres" d="M205 600 C250 590 300 600 400 585"/>
-  </defs>
+<!-- ===== Dessins communs (repris par <use>) ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="flou" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="18"/></filter>
+  <path id="rue-hetres" d="M205 600 C250 590 300 600 400 585"/>
+  <pattern id="maisons" width="60" height="44" patternUnits="userSpaceOnUse">
+    <g fill="#D6CCBD"><rect x="6" y="6" width="14" height="11"/><rect x="30" y="8" width="13" height="12"/><rect x="10" y="26" width="15" height="11"/><rect x="36" y="28" width="14" height="12"/></g>
+  </pattern>
 
-  <!-- 1 fond -->
-  <rect x="-10" y="-10" width="420" height="780" fill="#EEEBE4"/>
-  <!-- 2 prairie (prés sur le versant) -->
-  <path d="M250 250 C300 190 350 120 400 60 L400 390 C330 410 270 440 215 470 C180 440 120 420 90 400 C150 360 200 310 250 250 Z" fill="#E4E9D0"/>
-  <!-- 3 forêt (plateau de Haye, et un bois en bas à gauche) -->
-  <path d="M-10 -10 H400 V60 C340 120 300 190 250 250 C200 310 150 360 90 400 C50 425 20 440 -10 450 Z" fill="#D3E4C0"/>
-  <path d="M-10 600 C40 585 100 590 140 620 C160 660 160 710 150 760 L-10 760 Z" fill="#D3E4C0"/>
-  <!-- 4 bâti (quartier) -->
-  <path d="M215 470 C270 440 330 410 400 390 L400 760 L190 760 C200 650 205 560 215 470 Z" fill="#E3DCD0"/>
-  <!-- 7 ruisseau : carte.eau-trait, 1,2 -->
-  <path d="M-10 640 C40 625 90 610 130 600 C160 592 185 580 205 562" fill="none" stroke="#7DB0CB" stroke-width="1.2" stroke-linecap="round"/>
-  <!-- 8 ombrage : versant tourné vers le sud-est, à l'ombre (lumière du nord-ouest) -->
-  <g filter="url(#flou)" fill="none" stroke="#4A3F35">
-    <path d="M-10 362 C90 342 170 312 250 262 S360 192 400 182" stroke-width="110" opacity=".13"/>
+  <!-- Clairlieu et forêt de Haye au zoom 15 (dessin de la phase 2, prolongé tout autour
+       pour les écrans 1 et 2). Sans étiquettes : elles sont posées par écran. -->
+  <g id="terrain">
+    <!-- 1 fond -->
+    <rect x="-700" y="-900" width="1800" height="2400" fill="#EEEBE4"/>
+    <!-- 2 prairie -->
+    <path d="M250 250 C300 190 350 120 400 60 L400 390 C330 410 270 440 215 470 C180 440 120 420 90 400 C150 360 200 310 250 250 Z" fill="#E4E9D0"/>
+    <path d="M480 120 C600 90 760 80 900 100 C920 180 880 250 800 270 C680 290 560 280 500 240 C470 200 465 150 480 120 Z" fill="#E4E9D0"/>
+    <!-- 3 forêt : plateau de Haye, bois au sud-ouest -->
+    <path d="M-700 -900 H1100 V-140 C900 -90 640 -40 480 0 C440 15 415 35 400 60 C340 120 300 190 250 250 C200 310 150 360 90 400 C50 425 20 440 -10 450 C-200 510 -450 540 -700 580 Z" fill="#D3E4C0"/>
+    <path d="M-700 640 C-400 610 -150 590 -10 600 C40 585 100 590 140 620 C160 660 160 710 150 760 C140 900 110 1150 80 1500 H-700 Z" fill="#D3E4C0"/>
+    <!-- 4 bâti -->
+    <path d="M215 470 C270 440 330 410 400 390 C520 360 700 340 1100 330 V1500 H160 C170 1100 180 900 190 760 C200 650 205 560 215 470 Z" fill="#E3DCD0"/>
+    <!-- 7 ruisseau -->
+    <path d="M-700 690 C-450 680 -200 655 -10 640 C40 625 90 610 130 600 C160 592 185 580 205 562" fill="none" stroke="#7DB0CB" stroke-width="1.2" stroke-linecap="round"/>
+    <!-- 8 ombrage (lumière du nord-ouest) -->
+    <g filter="url(#flou)" fill="none" stroke="#4A3F35">
+      <path d="M-700 552 C-450 482 -200 407 -10 362 C90 342 170 312 250 262 S360 192 400 182 C560 140 800 112 1100 92" stroke-width="110" opacity=".13"/>
+    </g>
+    <g filter="url(#flou)" fill="none" stroke="#FFFFFF">
+      <path d="M-700 420 C-450 350 -200 275 -10 230 C90 210 170 180 250 130 S360 60 400 50 C560 8 800 -20 1100 -40" stroke-width="70" opacity=".35"/>
+    </g>
+    <!-- 9 bâtiments -->
+    <g fill="#D6CCBD">
+      <rect x="236" y="534" width="14" height="11" transform="rotate(-12 243 540)"/>
+      <rect x="254" y="552" width="13" height="12" transform="rotate(-12 260 558)"/>
+      <rect x="318" y="548" width="15" height="11" transform="rotate(-12 325 553)"/>
+      <rect x="340" y="540" width="14" height="13" transform="rotate(-12 347 546)"/>
+      <rect x="356" y="566" width="16" height="11" transform="rotate(-8 364 571)"/>
+      <rect x="228" y="616" width="14" height="12" transform="rotate(-6 235 622)"/>
+      <rect x="252" y="622" width="13" height="12" transform="rotate(-6 258 628)"/>
+      <rect x="276" y="628" width="14" height="11" transform="rotate(-6 283 633)"/>
+      <rect x="350" y="608" width="15" height="12" transform="rotate(-6 357 614)"/>
+      <rect x="372" y="612" width="13" height="12" transform="rotate(-6 378 618)"/>
+      <rect x="352" y="660" width="15" height="12" transform="rotate(-4 359 666)"/>
+      <rect x="374" y="662" width="13" height="12" transform="rotate(-4 380 668)"/>
+      <rect x="296" y="676" width="14" height="12" transform="rotate(-4 303 682)"/>
+      <rect x="300" y="708" width="13" height="12" transform="rotate(-4 306 714)"/>
+      <rect x="366" y="700" width="16" height="12" transform="rotate(-4 374 706)"/>
+      <rect x="230" y="660" width="14" height="12" transform="rotate(-4 237 666)"/>
+      <rect x="252" y="690" width="13" height="12" transform="rotate(-4 258 696)"/>
+    </g>
+    <path d="M400 390 C520 360 700 340 1100 330 V1500 H160 C170 1100 180 900 190 760 L400 760 Z" fill="url(#maisons)"/>
+    <!-- 10 courbes (10 m) -->
+    <g fill="none" stroke="#C9B293" stroke-width="1" stroke-linejoin="round">
+      <path d="M-700 490 C-450 420 -200 345 -10 300 C90 280 170 250 250 200 S360 130 400 120 C560 78 800 50 1100 30"/>
+      <path d="M-700 514 C-450 444 -200 369 -10 324 C90 304 170 274 250 224 S360 154 400 144 C560 102 800 74 1100 54"/>
+      <path d="M-700 534 C-450 464 -200 389 -10 344 C90 324 170 294 250 244 S360 174 400 164 C560 122 800 94 1100 74"/>
+      <path d="M-700 552 C-450 482 -200 407 -10 362 C90 342 170 312 250 262 S360 192 400 182 C560 140 800 112 1100 92"/>
+      <path d="M-700 588 C-450 518 -200 443 -10 398 C90 378 170 348 250 298 S360 228 400 218 C560 176 800 148 1100 128"/>
+      <path d="M-700 608 C-450 538 -200 463 -10 418 C90 398 170 368 250 318 S360 248 400 238 C560 196 800 168 1100 148"/>
+      <path d="M-700 632 C-450 562 -200 487 -10 442 C90 422 170 392 250 342 S360 272 400 262 C560 220 800 192 1100 172"/>
+      <path d="M-700 662 C-450 592 -200 517 -10 472 C90 452 170 422 250 372 S360 302 400 292 C560 250 800 222 1100 202"/>
+    </g>
+    <!-- 11 courbes maîtresses (50 m) -->
+    <g fill="none" stroke="#B89C78" stroke-width="1.8" stroke-linejoin="round">
+      <path d="M-700 462 C-450 392 -200 317 -10 272 C90 252 170 222 250 172 S360 102 400 92 C560 50 800 22 1100 2"/>
+      <path d="M-700 570 C-450 500 -200 425 -10 380 C90 360 170 330 250 280 S360 210 400 200 C560 158 800 130 1100 110"/>
+      <path d="M-700 698 C-450 628 -200 553 -10 508 C90 488 170 458 250 408 S360 338 400 328 C560 286 800 258 1100 238"/>
+    </g>
+    <!-- 13 escalier -->
+    <path d="M200 450 C208 466 217 482 228 500" fill="none" stroke="#6B5E52" stroke-width="3" stroke-dasharray="0.9 0.9"/>
+    <!-- 15-18 bords des voies -->
+    <g fill="none" stroke="#BFB7AA" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M300 600 L318 626" stroke-width="3.5"/>
+      <path d="M372 598 L386 560" stroke-width="3.5"/>
+      <path d="M230 505 C270 520 300 560 320 600 C335 640 345 700 350 760 C355 900 360 1150 365 1500" stroke-width="5.5"/>
+      <path d="M205 600 C250 590 300 600 400 585 C520 570 680 575 1100 560" stroke-width="5.5"/>
+      <path d="M330 650 L400 640 L1100 610" stroke-width="5.5"/>
+      <path d="M238 499 C252 455 265 400 272 360" stroke-width="5.5"/>
+      <path d="M400 760 C560 750 760 760 1100 750" stroke-width="5.5"/>
+      <path d="M560 395 C565 600 575 1000 585 1500" stroke-width="5.5"/>
+      <path d="M820 385 C815 700 805 1100 800 1500" stroke-width="5.5"/>
+      <path d="M190 1000 C420 990 760 1000 1100 990" stroke-width="5.5"/>
+      <path d="M80 1500 C110 1150 140 900 150 760 C175 680 195 600 215 540 C235 480 290 450 400 430 C560 400 800 390 1100 380" stroke-width="7.5"/>
+    </g>
+    <!-- 19 pistes -->
+    <g fill="none" stroke="#7A4A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M272 360 C276 320 268 280 250 250 L190 160 L140 70 L120 -10 L95 -220 L60 -460 L40 -900"/>
+      <path d="M-700 330 L-320 280 L-10 210 L190 160 L400 30 L560 -70 L820 -140 L1100 -170"/>
+      <path d="M-700 150 L-260 110 L-10 90 L140 70 L300 -10 L420 -130 L520 -330 L600 -900"/>
+      <path d="M-600 1100 L-250 980 L60 900 L140 880"/>
+    </g>
+    <!-- 20 sentiers -->
+    <g fill="none" stroke="#C62828" stroke-width="2" stroke-dasharray="5 4" stroke-linecap="butt" stroke-linejoin="round">
+      <path d="M60 -200 C70 -60 80 90 90 185 C100 240 120 290 140 330 C160 370 180 410 200 450"/>
+      <path d="M250 250 C290 245 330 225 360 190 C375 170 390 160 410 150 C470 120 520 90 560 40"/>
+      <path d="M140 330 C110 360 70 380 30 400 C10 410 -5 420 -10 425 C-150 480 -400 520 -700 560"/>
+      <path d="M-700 760 C-450 720 -200 690 -10 680 C30 670 70 690 100 720 C115 735 125 750 130 760"/>
+      <path d="M-500 -700 C-420 -500 -300 -300 -160 -150 C-80 -60 0 20 140 70"/>
+      <path d="M300 -10 C340 -150 300 -300 360 -500 C390 -620 420 -760 440 -900"/>
+      <path d="M-700 -200 C-500 -230 -300 -260 -100 -320 C50 -360 200 -420 400 -500"/>
+    </g>
+    <!-- 21-24 intérieurs des voies -->
+    <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M300 600 L318 626" stroke-width="2.25"/>
+      <path d="M372 598 L386 560" stroke-width="2.25"/>
+      <path d="M230 505 C270 520 300 560 320 600 C335 640 345 700 350 760 C355 900 360 1150 365 1500" stroke-width="3.75"/>
+      <path d="M205 600 C250 590 300 600 400 585 C520 570 680 575 1100 560" stroke-width="3.75"/>
+      <path d="M330 650 L400 640 L1100 610" stroke-width="3.75"/>
+      <path d="M238 499 C252 455 265 400 272 360" stroke-width="3.75"/>
+      <path d="M400 760 C560 750 760 760 1100 750" stroke-width="3.75"/>
+      <path d="M560 395 C565 600 575 1000 585 1500" stroke-width="3.75"/>
+      <path d="M820 385 C815 700 805 1100 800 1500" stroke-width="3.75"/>
+      <path d="M190 1000 C420 990 760 1000 1100 990" stroke-width="3.75"/>
+      <path d="M80 1500 C110 1150 140 900 150 760 C175 680 195 600 215 540 C235 480 290 450 400 430 C560 400 800 390 1100 380" stroke-width="5.5"/>
+    </g>
   </g>
-  <g filter="url(#flou)" fill="none" stroke="#FFFFFF">
-    <path d="M-10 230 C90 210 170 180 250 130 S360 60 400 50" stroke-width="70" opacity=".35"/>
-  </g>
-  <!-- 9 bâtiments : carte.batiment -->
-  <g fill="#D6CCBD">
-    <rect x="236" y="534" width="14" height="11" transform="rotate(-12 243 540)"/>
-    <rect x="254" y="552" width="13" height="12" transform="rotate(-12 260 558)"/>
-    <rect x="318" y="548" width="15" height="11" transform="rotate(-12 325 553)"/>
-    <rect x="340" y="540" width="14" height="13" transform="rotate(-12 347 546)"/>
-    <rect x="356" y="566" width="16" height="11" transform="rotate(-8 364 571)"/>
-    <rect x="228" y="616" width="14" height="12" transform="rotate(-6 235 622)"/>
-    <rect x="252" y="622" width="13" height="12" transform="rotate(-6 258 628)"/>
-    <rect x="276" y="628" width="14" height="11" transform="rotate(-6 283 633)"/>
-    <rect x="350" y="608" width="15" height="12" transform="rotate(-6 357 614)"/>
-    <rect x="372" y="612" width="13" height="12" transform="rotate(-6 378 618)"/>
-    <rect x="352" y="660" width="15" height="12" transform="rotate(-4 359 666)"/>
-    <rect x="374" y="662" width="13" height="12" transform="rotate(-4 380 668)"/>
-    <rect x="296" y="676" width="14" height="12" transform="rotate(-4 303 682)"/>
-    <rect x="300" y="708" width="13" height="12" transform="rotate(-4 306 714)"/>
-    <rect x="366" y="700" width="16" height="12" transform="rotate(-4 374 706)"/>
-    <rect x="230" y="660" width="14" height="12" transform="rotate(-4 237 666)"/>
-    <rect x="252" y="690" width="13" height="12" transform="rotate(-4 258 696)"/>
-  </g>
-  <!-- 10 courbes (10 m) : carte.courbe, 1 -->
-  <g fill="none" stroke="#C9B293" stroke-width="1" stroke-linejoin="round">
-    <path d="M-10 300 C90 280 170 250 250 200 S360 130 400 120"/>
-    <path d="M-10 324 C90 304 170 274 250 224 S360 154 400 144"/>
-    <path d="M-10 344 C90 324 170 294 250 244 S360 174 400 164"/>
-    <path d="M-10 362 C90 342 170 312 250 262 S360 192 400 182"/>
-    <path d="M-10 398 C90 378 170 348 250 298 S360 228 400 218"/>
-    <path d="M-10 418 C90 398 170 368 250 318 S360 248 400 238"/>
-    <path d="M-10 442 C90 422 170 392 250 342 S360 272 400 262"/>
-    <path d="M-10 472 C90 452 170 422 250 372 S360 302 400 292"/>
-  </g>
-  <!-- 11 courbes maîtresses (50 m) : carte.courbe-maitresse, 1,8 -->
-  <g fill="none" stroke="#B89C78" stroke-width="1.8" stroke-linejoin="round">
-    <path d="M-10 272 C90 252 170 222 250 172 S360 102 400 92"/>
-    <path d="M-10 380 C90 360 170 330 250 280 S360 210 400 200"/>
-    <path d="M-10 508 C90 488 170 458 250 408 S360 338 400 328"/>
-  </g>
-  <!-- 13 escalier : carte.escalier, 3, hachures 0,9 / 0,9 -->
-  <path d="M200 450 C208 466 217 482 228 500" fill="none" stroke="#6B5E52" stroke-width="3" stroke-dasharray="0.9 0.9"/>
 
-  <!-- 15-18 bords des voies : carte.voie-bord -->
-  <g fill="none" stroke="#BFB7AA" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M300 600 L318 626" stroke-width="3.5"/>
-    <path d="M372 598 L386 560" stroke-width="3.5"/>
-    <path d="M230 505 C270 520 300 560 320 600 C335 640 345 700 350 760" stroke-width="5.5"/>
-    <path d="M205 600 C250 590 300 600 400 585" stroke-width="5.5"/>
-    <path d="M330 650 L400 640" stroke-width="5.5"/>
-    <path d="M238 499 C252 455 265 400 272 360" stroke-width="5.5"/>
-    <path d="M150 760 C175 680 195 600 215 540 C235 480 290 450 400 430" stroke-width="7.5"/>
-  </g>
-  <!-- 19 pistes : carte.piste, 2,5, plein -->
-  <g fill="none" stroke="#7A4A1E" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M272 360 C276 320 268 280 250 250 L190 160 L140 70 L120 -10"/>
-    <path d="M-10 210 L190 160 L400 30"/>
-    <path d="M-10 90 L140 70 L300 -10"/>
-  </g>
-  <!-- 20 sentiers : carte.sentier, 2, tirets 5 / 4, bouts carrés -->
-  <g fill="none" stroke="#C62828" stroke-width="2" stroke-dasharray="5 4" stroke-linecap="butt" stroke-linejoin="round">
-    <path d="M90 185 C100 240 120 290 140 330 C160 370 180 410 200 450"/>
-    <path d="M250 250 C290 245 330 225 360 190 C375 170 390 160 410 150"/>
-    <path d="M140 330 C110 360 70 380 30 400 C10 410 -5 420 -10 425"/>
-    <path d="M-10 680 C30 670 70 690 100 720 C115 735 125 750 130 760"/>
-  </g>
-  <!-- 21-24 intérieurs des voies : carte.voie -->
-  <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M300 600 L318 626" stroke-width="2.25"/>
-    <path d="M372 598 L386 560" stroke-width="2.25"/>
-    <path d="M230 505 C270 520 300 560 320 600 C335 640 345 700 350 760" stroke-width="3.75"/>
-    <path d="M205 600 C250 590 300 600 400 585" stroke-width="3.75"/>
-    <path d="M330 650 L400 640" stroke-width="3.75"/>
-    <path d="M238 499 C252 455 265 400 272 360" stroke-width="3.75"/>
-    <path d="M150 760 C175 680 195 600 215 540 C235 480 290 450 400 430" stroke-width="5.5"/>
-  </g>
-
-  <!-- 25-30 étiquettes : Noto Sans dans l'app (ici police du système), halo blanc -->
-  <g font-family="'Noto Sans',-apple-system,Roboto,sans-serif" stroke="#FFFFFF" stroke-linejoin="round" paint-order="stroke">
-    <!-- cote : carte.cote -->
+  <!-- Étiquettes du zoom 15 (dans les coordonnées de #terrain) : Noto Sans dans l'app, halo blanc -->
+  <g id="etiquettes-15" font-family="'Noto Sans',-apple-system,Roboto,sans-serif" stroke="#FFFFFF" stroke-linejoin="round" paint-order="stroke">
     <text x="140" y="236" font-size="12.5" fill="#5A3A28" stroke-width="3" transform="rotate(-21 140 236)">400</text>
     <text x="96" y="358" font-size="12.5" fill="#5A3A28" stroke-width="3" transform="rotate(-18 96 358)">350</text>
     <text x="60" y="495" font-size="12.5" fill="#5A3A28" stroke-width="3" transform="rotate(-12 60 495)">300</text>
-    <!-- nom de voie : carte.etiquette-2 -->
     <text font-size="12" fill="#4A4A4A" stroke-width="3"><textPath href="#rue-hetres" startOffset="32%">Allée des Hêtres</textPath></text>
-    <!-- hameau, quartier : carte.etiquette-2 -->
     <text x="300" y="655" font-size="13" fill="#4A4A4A" stroke-width="3" text-anchor="middle">Clairlieu</text>
+  </g>
+
+  <!-- Toute la zone Nancy, zoom 8,7 environ (écrans 5 et 6). Zone : x 0 à 390, y 181 à 571. -->
+  <g id="zone-entiere">
+    <rect x="-10" y="-10" width="410" height="780" fill="#EEEBE4"/>
+    <g fill="#D3E4C0">
+      <path d="M90 300 C120 270 170 280 180 320 C185 360 160 400 120 405 C90 408 70 380 75 345 Z"/>
+      <path d="M-10 60 C60 40 140 60 170 110 L170 150 C120 170 40 160 -10 150 Z"/>
+      <path d="M260 480 C320 460 380 480 400 500 V620 C340 640 280 610 260 570 Z"/>
+      <path d="M300 220 C340 200 390 210 400 220 V320 C360 330 320 310 300 280 Z"/>
+      <path d="M10 470 C50 450 110 470 120 510 C125 540 90 560 40 560 C10 555 -10 530 -10 510 Z"/>
+      <path d="M-10 640 C60 620 150 640 180 690 L180 770 H-10 Z"/>
+      <path d="M40 220 C70 205 110 215 115 240 C118 262 90 275 60 270 C35 265 25 240 40 220 Z"/>
+    </g>
+    <g fill="#E3DCD0">
+      <path d="M190 330 C210 315 245 318 258 338 C268 358 258 385 235 392 C210 398 188 385 184 362 Z"/>
+      <path d="M40 330 C50 322 66 324 70 336 C72 348 62 356 50 354 C40 352 36 342 40 330 Z"/>
+      <path d="M352 440 C362 432 380 434 388 444 C392 456 384 466 370 467 C356 467 348 456 352 440 Z"/>
+      <path d="M200 120 C210 112 226 114 230 126 C232 138 222 146 210 145 C200 143 196 132 200 120 Z"/>
+      <path d="M230 680 C240 672 258 674 262 686 C264 698 254 706 242 705 C232 703 226 692 230 680 Z"/>
+    </g>
+    <g fill="none" stroke="#A8CCDD" stroke-width="2.2" stroke-linecap="round">
+      <path d="M-10 380 C20 360 50 345 60 330 C70 300 100 250 140 200 C170 160 200 140 210 100 C215 60 230 20 240 -10"/>
+      <path d="M400 470 C360 450 320 420 280 390 C260 375 245 360 230 345 C212 320 195 260 160 180"/>
+    </g>
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M215 -10 C215 100 210 200 220 300 C225 400 220 600 210 770 M240 360 C290 380 340 420 400 440 M-10 345 C60 340 140 345 200 350" stroke="#BFB7AA" stroke-width="5"/>
+      <path d="M215 -10 C215 100 210 200 220 300 C225 400 220 600 210 770 M240 360 C290 380 340 420 400 440 M-10 345 C60 340 140 345 200 350" stroke="#FFFFFF" stroke-width="3.2"/>
+    </g>
+    <!-- Circuits balisés, dès le zoom 8 (1,9 à ce zoom) -->
+    <g fill="none" stroke="#2F6BFF" stroke-opacity=".55" stroke-width="1.9" stroke-linejoin="round">
+      <path d="M110 320 C130 300 160 310 160 335 C160 360 130 370 115 355 Z"/>
+      <path d="M300 250 C320 235 350 245 345 270 C340 290 310 290 300 270 Z"/>
+      <path d="M60 450 C90 440 110 460 100 485 C90 505 60 500 55 480 Z"/>
+      <path d="M260 500 C280 490 300 500 298 520 C296 540 270 545 262 530 Z"/>
+      <path d="M50 230 C70 220 95 228 92 248 C90 262 66 266 55 255 Z"/>
+    </g>
+    <g font-family="'Noto Sans',-apple-system,Roboto,sans-serif" font-weight="700" fill="#111111" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round" paint-order="stroke" text-anchor="middle">
+      <text x="222" y="372" font-size="18">Nancy</text>
+      <text x="55" y="322" font-size="14">Toul</text>
+      <text x="372" y="489" font-size="14">Lunéville</text>
+      <text x="215" y="110" font-size="14">Pont-à-Mousson</text>
+      <text x="246" y="726" font-size="14">Charmes</text>
+    </g>
+    <!-- 31 voile hors zone, 32 bord de la zone : au-dessus de tout -->
+    <path d="M-10 -10 H400 V770 H-10 Z M0 181 V571 H390 V181 Z" fill="#CFC8BB" fill-opacity=".72" fill-rule="evenodd"/>
+    <rect x="1.25" y="181" width="387.5" height="390" fill="none" stroke="#3A1F0F" stroke-width="2.5" stroke-dasharray="9 6"/>
+  </g>
+
+  <!-- Viseur, 24 × 24 : cercle de 7, point de 2,5, quatre traits de 3. Couleur : currentColor -->
+  <symbol id="viseur" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></g></symbol>
+  <!-- Viseur barré : barre de (4, 4) à (20, 20), brun 2,3 sur un trait crème clair de 5 -->
+  <symbol id="viseur-barre" viewBox="0 0 24 24"><g fill="none" stroke="#3A1F0F" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="#3A1F0F"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></g><path d="M4 4 L20 20" stroke="#FBF1DA" stroke-width="5" stroke-linecap="round"/><path d="M4 4 L20 20" stroke="#3A1F0F" stroke-width="2.3" stroke-linecap="round"/></symbol>
+
+  <!-- Barre d'état -->
+  <symbol id="i-avion" viewBox="0 0 24 24"><path fill="#3A1F0F" d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></symbol>
+  <symbol id="i-batterie" viewBox="0 0 27 12"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="#3A1F0F" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="1.5" fill="#3A1F0F"/><rect x="25" y="4" width="2" height="4" rx="1" fill="#3A1F0F" opacity=".5"/></symbol>
+  <symbol id="i-reseau" viewBox="0 0 18 12"><g fill="#3A1F0F"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5" width="3" height="7" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".3"/></g></symbol>
+
+  <!-- Onglets -->
+  <symbol id="o-carte" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></g></symbol>
+  <symbol id="o-itin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></g></symbol>
+  <symbol id="o-zones" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></g></symbol>
+  <symbol id="o-reglages" viewBox="0 0 24 24"><g fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></g></symbol>
+  <symbol id="plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16" fill="none" stroke="#3A1F0F" stroke-width="3" stroke-linecap="round"/></symbol>
+</defs>
+</svg>
+
+
+<!-- ===================== NOTE EN TÊTE ===================== -->
+<div class="note haut">
+<h2>Écran 90 — Phase 8b : position, cap et recentrage</h2>
+<p>16 novembre 2026, T1 de la phase 8b (critère C10). Six écrans l'un sous l'autre, une planche en grand, puis la note « Pour l'architecte et le développeur » en bas de page. Carte simplifiée, pas à l'échelle.</p>
+<ol>
+  <li>Ouverture dans la zone : centrée, zoom 14, « suit ma position » ; à l'arrêt, rond sans flèche.</li>
+  <li>En roulant : la carte suit, la flèche montre le cap, le halo la précision.</li>
+  <li>Carte déplacée à la main : bouton au repos.</li>
+  <li>Hors de la zone, à moins de 10 km du bord : la position et le bord, ensemble.</li>
+  <li>Plus de 10 km du bord, ou pas encore de position : toute la zone.</li>
+  <li>Position refusée : viseur barré.</li>
+</ol>
+<p><b>Mon choix pour la flèche :</b> nos propres couches, pas la flèche de MapLibre. Raisons : la sienne est petite (rond d'environ 18, flèche hors du rond), d'un bleu clair qui n'est pas <code>carte.position</code>, et son halo fait environ le double du vrai rayon. Les couches maison sont prouvées sur les deux plateformes par l'essai, et le même dessin sert à l'écran de suivi (30).</p>
+
+<h3>Questions pour Émilien (avec ma recommandation)</h3>
+<ol>
+  <li><b>Le point de l'écran de suivi (30) prend-il aussi la flèche et le halo en 8b ?</b> La maquette 30 les dessine ; l'app de la 8a montre un rond seul (remarque A3 de la 8a : « phase 8b »). La spec 8b ne parle que de l'onglet Carte. <b>Recommandation : oui</b>, mêmes couches en taille 40, pour un coût faible (T3). Autre choix : le garder pour la phase 10.</li>
+  <li><b>Le bouton « Recentrer » quand on est hors de la zone.</b> Aujourd'hui, il va au bord le plus proche au zoom 15, et le point bleu reste hors de l'écran (remarque R1 de la phase 2). <b>Recommandation : à moins de 10 km du bord, il refait le cadrage de l'écran 4</b> (position et bord ensemble). Plus loin, rien ne change. Autre choix : ne rien changer au bouton, seulement à l'ouverture.</li>
+</ol>
+</div>
+
+
+<!-- ===================== ÉCRAN 1 : ouverture dans la zone ===================== -->
+<div class="cartouche"><b>1. Ouverture dans la zone : centrée, zoom 14, « suit ma position »</b><br>Première position connue, dans la zone, carte pas encore touchée : la carte glisse sur la position (300 ms), au zoom 14, et la suit. Le bouton passe au fond brun. On n'a pas encore roulé : le cap est inconnu, le point est un rond sans flèche (convention des deux plateformes). Précision de 8 m : au zoom 14, le halo (3 points de rayon) reste caché sous le rond, c'est voulu.</div>
+<div class="ecran">
+
+<svg class="carte" viewBox="0 0 390 752" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de la zone Nancy, forêt de Haye et Villers-lès-Nancy">
+  <g transform="translate(195 376) scale(.5) translate(-232 -223)"><use href="#terrain"/></g>
+  <g font-family="'Noto Sans',-apple-system,Roboto,sans-serif" stroke="#FFFFFF" stroke-linejoin="round" paint-order="stroke">
+    <text x="128" y="444" font-size="12.5" fill="#5A3A28" stroke-width="3" transform="rotate(-18 128 444)">350</text>
+    <text x="96" y="545" font-size="12.5" fill="#5A3A28" stroke-width="3" transform="rotate(-12 96 545)">300</text>
+    <text x="229" y="597" font-size="13" fill="#4A4A4A" stroke-width="3" text-anchor="middle">Clairlieu</text>
+    <text x="300" y="530" font-size="16" font-weight="700" fill="#111111" stroke-width="3" text-anchor="middle">Villers-lès-Nancy</text>
   </g>
 </svg>
 
-<div class="barre-etat"><span>10:14</span>
-  <span class="icones">
-    <!-- Mode avion -->
-    <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-label="Mode avion"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z"/></svg>
-    <svg width="27" height="12" viewBox="0 0 27 12" fill="currentColor"><rect x=".5" y=".5" width="23" height="11" rx="3" fill="none" stroke="currentColor" opacity=".5"/><rect x="2" y="2" width="16" height="8" rx="1.5"/><rect x="25" y="4" width="2" height="4" rx="1" opacity=".5"/></svg>
-  </span>
-</div>
+<div class="barre-etat"><span>10:12</span><span class="icones"><svg width="17" height="17" aria-label="Mode avion"><use href="#i-avion"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
 
-<!-- Ma position : sur la piste de la forêt, cap vers le nord-ouest -->
-<div class="halo" style="left:232px;top:223px"></div>
-<svg class="position" style="left:232px;top:223px" viewBox="0 0 32 32" aria-label="Ma position"><circle cx="16" cy="16" r="13" fill="#1A73E8" stroke="#fff" stroke-width="3"/><path d="M16 7 L22 21 L16 18 L10 21 Z" fill="#fff" transform="rotate(-34 16 16)"/></svg>
+<!-- Position au centre de la carte (195, 376), cap inconnu : rond sans flèche -->
+<svg class="position" style="left:195px;top:376px" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="#1A73E8" stroke="#fff" stroke-width="3"/></svg>
 
-<!-- Recentrer : au repos (la carte ne suit pas ma position) -->
-<div class="flottant" style="top:60px" role="button" aria-label="Recentrer sur ma position">
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3A1F0F" stroke-width="2.3" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5" fill="#3A1F0F"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
-</div>
+<!-- Recentrer : « suit ma position » -->
+<div class="flottant suit" style="top:60px;color:#F4E4C1" role="button" aria-label="La carte suit ma position"><svg width="24" height="24" aria-hidden="true"><use href="#viseur"/></svg></div>
 
+<div class="nouvel geo" role="button" aria-label="Créer un nouvel itinéraire"><svg width="22" height="22" aria-hidden="true"><use href="#plus"/></svg>Nouvel itinéraire</div>
 <div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
 
 <div class="rayures-bas"></div>
 <div class="onglets">
-  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span>Carte</div>
-  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1.5" fill="currentColor"/><circle cx="4.5" cy="12" r="1.5" fill="currentColor"/><circle cx="4.5" cy="18" r="1.5" fill="currentColor"/></svg></span>Itinéraires</div>
-  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg></span>Zones</div>
-  <div class="onglet"><span class="pastille"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.4"/></svg></span>Réglages</div>
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24"><use href="#o-carte"/></svg></span>Carte</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-itin"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-zones"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-reglages"/></svg></span>Réglages</div>
 </div>
-
 <div class="indicateur"></div>
 </div>
+
+
+<!-- ===================== ÉCRAN 2 : en roulant, la carte suit ===================== -->
+<div class="cartouche"><b>2. En roulant : la carte suit, la flèche montre le cap</b><br>On roule vers le nord-ouest sur la piste. La carte reste nord en haut ; elle glisse pour garder la position au centre. La <b>flèche blanche tourne dans le rond</b> selon le cap (la course, qui vient du mouvement). On a zoomé d'un double toucher (zoom 15) : zoomer ne fait pas sortir du suivi. Sous les arbres, précision de 40 m : le halo dépasse du rond (51 de large).</div>
+<div class="ecran">
+
+<svg class="carte" viewBox="0 0 390 752" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de la zone Nancy, piste en forêt de Haye">
+  <g transform="translate(-37 153)"><use href="#terrain"/><use href="#etiquettes-15"/></g>
+</svg>
+
+<div class="barre-etat"><span>10:31</span><span class="icones"><svg width="17" height="17" aria-label="Mode avion"><use href="#i-avion"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<!-- Halo : précision 40 m au zoom 15 (1,58 m par point à Nancy) : rayon 25,4 -->
+<div class="halo" style="left:195px;top:376px;width:51px;height:51px;margin:-25.5px 0 0 -25.5px"></div>
+<!-- Flèche de cap : cap 326° (nord-ouest), la flèche tourne de -34° -->
+<svg class="position" style="left:195px;top:376px" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="#1A73E8" stroke="#fff" stroke-width="3"/><path d="M16 6.4 L22.8 22.4 L16 18.8 L9.2 22.4 Z" fill="#fff" transform="rotate(-34 16 16)"/></svg>
+
+<div class="flottant suit" style="top:60px;color:#F4E4C1" role="button" aria-label="La carte suit ma position"><svg width="24" height="24" aria-hidden="true"><use href="#viseur"/></svg></div>
+
+<div class="nouvel geo" role="button" aria-label="Créer un nouvel itinéraire"><svg width="22" height="22" aria-hidden="true"><use href="#plus"/></svg>Nouvel itinéraire</div>
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24"><use href="#o-carte"/></svg></span>Carte</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-itin"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-zones"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-reglages"/></svg></span>Réglages</div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ===================== ÉCRAN 3 : carte déplacée, bouton au repos ===================== -->
+<div class="cartouche"><b>3. Carte déplacée à la main : le bouton repasse au repos</b><br>L'écran d'origine (phase 2). On a glissé la carte d'un doigt : elle ne suit plus, le bouton reprend son fond crème clair à l'instant du geste. La position reste visible et sa flèche continue de tourner. Toucher le bouton : la carte glisse sur la position (500 ms), au zoom 15 si l'on était plus loin, sans changer le zoom si l'on était plus près, et le bouton repasse au brun.</div>
+<div class="ecran">
+
+<svg class="carte" viewBox="0 0 390 752" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de la zone Nancy, quartier de Clairlieu et forêt de Haye">
+  <use href="#terrain"/><use href="#etiquettes-15"/>
+</svg>
+
+<div class="barre-etat"><span>10:14</span><span class="icones"><svg width="17" height="17" aria-label="Mode avion"><use href="#i-avion"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<!-- Halo : précision 45 m au zoom 15 : rayon 28 -->
+<div class="halo" style="left:232px;top:223px;width:56px;height:56px;margin:-28px 0 0 -28px"></div>
+<svg class="position" style="left:232px;top:223px" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="#1A73E8" stroke="#fff" stroke-width="3"/><path d="M16 6.4 L22.8 22.4 L16 18.8 L9.2 22.4 Z" fill="#fff" transform="rotate(-34 16 16)"/></svg>
+
+<!-- Recentrer : au repos -->
+<div class="flottant" style="top:60px;color:#3A1F0F" role="button" aria-label="Recentrer sur ma position"><svg width="24" height="24" aria-hidden="true"><use href="#viseur"/></svg></div>
+
+<div class="nouvel geo" role="button" aria-label="Créer un nouvel itinéraire"><svg width="22" height="22" aria-hidden="true"><use href="#plus"/></svg>Nouvel itinéraire</div>
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24"><use href="#o-carte"/></svg></span>Carte</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-itin"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-zones"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-reglages"/></svg></span>Réglages</div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ===================== ÉCRAN 4 : hors zone, à moins de 10 km ===================== -->
+<div class="cartouche"><b>4. Hors de la zone, à moins de 10 km du bord : la position et le bord, ensemble</b><br>Au parking, 2,5 km à l'est du bord de la zone. La carte s'ouvre <b>centrée sur le point du bord le plus proche</b> (la carte reste bloquée sur la zone : son centre n'en sort pas, décision du 26 octobre). Le zoom est le plus fort, 14 au plus, qui garde la position à l'écran avec ses marges : ici zoom 11,6 environ, position à 48 du bord droit. À gauche la zone ; à droite, le voile hors zone. Le message reste tant qu'on est dehors. Bouton au repos : la carte ne peut pas suivre hors de la zone.</div>
+<div class="ecran">
+
+<svg class="carte" viewBox="0 0 390 752" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte du bord est de la zone Nancy ; ma position est hors de la zone, à droite">
+  <rect x="-10" y="-10" width="410" height="780" fill="#EEEBE4"/>
+  <g fill="#D3E4C0">
+    <path d="M-10 120 C60 100 140 130 170 200 C190 260 150 330 90 350 C40 365 -10 340 -10 340 Z"/>
+    <path d="M250 470 C300 440 380 450 400 470 V640 C340 650 280 620 250 580 C230 540 230 500 250 470 Z"/>
+    <path d="M230 40 C290 20 360 50 400 60 V200 C350 220 290 200 260 160 C230 120 220 70 230 40 Z"/>
+    <path d="M-10 520 C60 500 130 540 150 600 C160 650 120 700 60 720 L-10 730 Z"/>
+  </g>
+  <g fill="#E3DCD0">
+    <path d="M40 450 C60 436 100 440 112 460 C120 478 108 500 84 504 C58 508 36 494 34 474 Z"/>
+    <path d="M290 395 C310 380 350 382 372 398 C388 414 380 440 356 450 C328 458 300 446 292 425 Z"/>
+  </g>
+  <g fill="#D6CCBD">
+    <rect x="52" y="456" width="7" height="6"/><rect x="66" y="452" width="6" height="6"/><rect x="80" y="466" width="7" height="6"/><rect x="58" y="478" width="6" height="6"/><rect x="92" y="480" width="7" height="6"/>
+    <rect x="304" y="404" width="7" height="6"/><rect x="320" y="398" width="6" height="6"/><rect x="336" y="410" width="7" height="6"/><rect x="352" y="404" width="6" height="7"/><rect x="316" y="426" width="7" height="6"/><rect x="344" y="430" width="7" height="6"/>
+  </g>
+  <path d="M-10 610 C60 600 120 590 190 570 C260 550 330 560 400 540" fill="none" stroke="#7DB0CB" stroke-width="1.2"/>
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-10 430 C80 420 150 400 220 395 C280 390 320 380 400 372 M120 -10 C130 120 140 260 150 400 C160 500 170 620 175 770 M330 400 C335 300 345 200 360 -10" stroke="#BFB7AA" stroke-width="4.5"/>
+    <path d="M-10 430 C80 420 150 400 220 395 C280 390 320 380 400 372 M120 -10 C130 120 140 260 150 400 C160 500 170 620 175 770 M330 400 C335 300 345 200 360 -10" stroke="#FFFFFF" stroke-width="3"/>
+  </g>
+  <g fill="none" stroke="#7A4A1E" stroke-width="1.6" stroke-linecap="round">
+    <path d="M20 200 L80 240 L150 230"/><path d="M300 520 L350 560 L400 540"/><path d="M250 90 L300 130 L380 120"/>
+  </g>
+  <!-- Un circuit balisé de la zone -->
+  <path d="M40 170 C80 140 140 150 160 210 C175 260 150 310 100 320 C50 330 20 290 25 240 C28 205 30 185 40 170 Z" fill="none" stroke="#2F6BFF" stroke-opacity=".55" stroke-width="3.4" stroke-linejoin="round"/>
+  <!-- 31 voile hors zone, 32 bord de la zone (bord est, au centre de l'écran) -->
+  <rect x="195" y="-10" width="215" height="780" fill="#CFC8BB" fill-opacity=".72"/>
+  <path d="M195 -10 V770" stroke="#3A1F0F" stroke-width="2.5" stroke-dasharray="9 6"/>
+</svg>
+
+<div class="barre-etat"><span>09:41</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<!-- Position : au parking, à l'arrêt (cap inconnu), précision 10 m (halo caché) -->
+<svg class="position" style="left:342px;top:376px" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="14.5" fill="#1A73E8" stroke="#fff" stroke-width="3"/></svg>
+
+<div class="message" role="alert">Vous êtes hors de la zone téléchargée</div>
+<div class="flottant" style="top:60px;color:#3A1F0F" role="button" aria-label="Recentrer sur ma position"><svg width="24" height="24" aria-hidden="true"><use href="#viseur"/></svg></div>
+
+<div class="nouvel geo" role="button" aria-label="Créer un nouvel itinéraire"><svg width="22" height="22" aria-hidden="true"><use href="#plus"/></svg>Nouvel itinéraire</div>
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24"><use href="#o-carte"/></svg></span>Carte</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-itin"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-zones"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-reglages"/></svg></span>Réglages</div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ===================== ÉCRAN 5 : toute la zone ===================== -->
+<div class="cartouche"><b>5. Plus de 10 km du bord, ou pas encore de position : toute la zone</b><br>Comportement actuel, inchangé. Ici, on est à 35 km au sud de la zone : toute la zone à l'écran, le message, pas de point (il est hors de l'écran). Bouton au repos. <b>Avant la première position</b> (GPS en attente) : même cadrage, sans message ni point. Si la première position arrive alors qu'on n'a pas touché la carte, la carte applique la règle de l'écran 1, 4 ou 5 ; si on l'a touchée, elle ne bouge pas, seul le point apparaît.</div>
+<div class="ecran">
+
+<svg class="carte" viewBox="0 0 390 752" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de toute la zone Nancy">
+  <use href="#zone-entiere"/>
+</svg>
+
+<div class="barre-etat"><span>08:55</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<div class="message" role="alert">Vous êtes hors de la zone téléchargée</div>
+<div class="flottant" style="top:60px;color:#3A1F0F" role="button" aria-label="Recentrer sur ma position"><svg width="24" height="24" aria-hidden="true"><use href="#viseur"/></svg></div>
+
+<div class="nouvel geo" role="button" aria-label="Créer un nouvel itinéraire"><svg width="22" height="22" aria-hidden="true"><use href="#plus"/></svg>Nouvel itinéraire</div>
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24"><use href="#o-carte"/></svg></span>Carte</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-itin"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-zones"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-reglages"/></svg></span>Réglages</div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ===================== ÉCRAN 6 : position refusée ===================== -->
+<div class="cartouche"><b>6. Position refusée : viseur barré</b><br>Toute la zone, pas de point, pas de message. Le viseur est barré (dessin de la phase 2). Toucher : sur Android, l'app redemande d'abord la permission tant que le système l'accepte ; sinon, sur les deux plateformes, la boîte native existante <q>Position désactivée</q> (<q>Annuler</q>, <q>Ouvrir les réglages</q>) mène aux réglages du téléphone. Au retour, la permission est relue. Accordée : le bouton passe en « suit ma position » et la carte va sur la position dès qu'elle arrive (règle des écrans 1, 4 ou 5). <b>Avant la réponse</b> à la première demande : viseur au repos, pas barré.</div>
+<div class="ecran">
+
+<svg class="carte" viewBox="0 0 390 752" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carte de toute la zone Nancy">
+  <use href="#zone-entiere"/>
+</svg>
+
+<div class="barre-etat"><span>08:55</span><span class="icones"><svg width="18" height="12"><use href="#i-reseau"/></svg><svg width="27" height="12"><use href="#i-batterie"/></svg></span></div>
+
+<div class="flottant" style="top:60px" role="button" aria-label="Position désactivée" aria-description="Touchez pour l'autoriser dans les réglages"><svg width="24" height="24" aria-hidden="true"><use href="#viseur-barre"/></svg></div>
+
+<div class="nouvel geo" role="button" aria-label="Créer un nouvel itinéraire"><svg width="22" height="22" aria-hidden="true"><use href="#plus"/></svg>Nouvel itinéraire</div>
+<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+
+<div class="rayures-bas"></div>
+<div class="onglets">
+  <div class="onglet actif" aria-current="page"><span class="pastille"><svg width="24" height="24"><use href="#o-carte"/></svg></span>Carte</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-itin"/></svg></span>Itinéraires</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-zones"/></svg></span>Zones</div>
+  <div class="onglet"><span class="pastille"><svg width="24" height="24"><use href="#o-reglages"/></svg></span>Réglages</div>
+</div>
+<div class="indicateur"></div>
+</div>
+
+
+<!-- ===================== PLANCHE ===================== -->
+<div class="note">
+<h2>Planche : le point et le bouton</h2>
+<p>Point de position dessiné au double (64 pour 32), sur <code>carte.fond</code>. Boutons à la taille réelle (48).</p>
+<div class="planche">
+  <div>
+    <div class="grand"><svg width="64" height="64" viewBox="0 0 32 32" style="filter:drop-shadow(0 4px 6px rgba(0,0,0,.30))"><circle cx="16" cy="16" r="14.5" fill="#1A73E8" stroke="#fff" stroke-width="3"/><path d="M16 6.4 L22.8 22.4 L16 18.8 L9.2 22.4 Z" fill="#fff"/></svg></div>
+    <b>Cap connu</b><br>Rond 32, flèche blanche 13,6 × 16 qui tourne
+  </div>
+  <div>
+    <div class="grand"><svg width="64" height="64" viewBox="0 0 32 32" style="filter:drop-shadow(0 4px 6px rgba(0,0,0,.30))"><circle cx="16" cy="16" r="14.5" fill="#1A73E8" stroke="#fff" stroke-width="3"/></svg></div>
+    <b>Cap inconnu</b><br>Même rond, sans flèche
+  </div>
+  <div>
+    <div class="grand"><span style="width:102px;height:102px;border-radius:50%;background:rgba(26,115,232,.16);border:2px solid rgba(26,115,232,.40)"></span><svg width="64" height="64" viewBox="0 0 32 32" style="filter:drop-shadow(0 4px 6px rgba(0,0,0,.30))"><circle cx="16" cy="16" r="14.5" fill="#1A73E8" stroke="#fff" stroke-width="3"/><path d="M16 6.4 L22.8 22.4 L16 18.8 L9.2 22.4 Z" fill="#fff" transform="rotate(-34 16 16)"/></svg></div>
+    <b>Halo</b><br>Rayon = précision (ici 40 m au zoom 15)
+  </div>
+</div>
+<div class="planche">
+  <div><div class="bouton" style="color:#3A1F0F"><svg width="24" height="24"><use href="#viseur"/></svg></div><b>Repos</b><br>La carte ne suit pas</div>
+  <div><div class="bouton suit" style="color:#F4E4C1"><svg width="24" height="24"><use href="#viseur"/></svg></div><b>Suit ma position</b><br>Fond brun, viseur crème</div>
+  <div><div class="bouton"><svg width="24" height="24"><use href="#viseur-barre"/></svg></div><b>Position refusée</b><br>Viseur barré</div>
+</div>
+</div>
+
+
+<!-- ===================== NOTE ===================== -->
+<div class="note">
+<h2>Pour l'architecte et le développeur</h2>
+
+<h3>1. Point de position (onglet Carte et création)</h3>
+<p>Nos couches, dans une source GeoJSON <code>position</code> (un point), <b>au-dessus de toutes les autres</b>, voile et bord de la zone compris (comme le point actuel). Pas le dessin par défaut de <code>UserLocation</code>. De bas en haut :</p>
+<table>
+  <tr><th>Couche</th><th>Valeurs exactes (MapLibre)</th></tr>
+  <tr><td><code>position-halo</code> (circle)</td><td>Rayon = précision du GPS, exact : <code>r0 = précision (m) / (78 271,52 × cos(latitude))</code>, puis <code>circle-radius</code> = <code>["interpolate", ["exponential", 2], ["zoom"], 0, r0, 22, r0 × 4 194 304]</code> (r0 dans une propriété du point). <code>circle-color</code> <code>#1A73E8</code>, <code>circle-opacity</code> 0,16 ; bord <code>circle-stroke-width</code> 1, <code>circle-stroke-color</code> <code>#1A73E8</code>, <code>circle-stroke-opacity</code> 0,4. Pas de taille minimale ni maximale : avec une bonne précision, il est caché sous le rond (c'est voulu, comme Plans et Google Maps). Pas de halo si la précision est inconnue.</td></tr>
+  <tr><td><code>position-ombre</code> (circle), souhaitée</td><td><code>circle-radius</code> 16, <code>#000000</code>, <code>circle-opacity</code> 0,25, <code>circle-blur</code> 0,5, <code>circle-translate</code> [0, 2]. À retirer si elle coûte : le bord blanc détache déjà le rond.</td></tr>
+  <tr><td><code>position-rond</code> (circle)</td><td><code>circle-radius</code> 13, <code>circle-color</code> <code>#1A73E8</code> (<code>carte.position</code>), <code>circle-stroke-width</code> 3, <code>circle-stroke-color</code> <code>#FFFFFF</code> : 32 de diamètre en tout (comme aujourd'hui, 16 blanc + 13 bleu).</td></tr>
+  <tr><td><code>position-fleche</code> (symbol)</td><td>Image <code>fleche-cap</code> : carré transparent de 40 × 40 points, flèche blanche <code>M20 8 L28.5 28 L20 23.5 L11.5 28 Z</code> pointée vers le nord, centrée sur (20, 20) : c'est la flèche du suivi (écran 30). Ici <code>icon-size</code> 0,8 (flèche de 13,6 × 16 dans le rond de 32) ; 1 en suivi. <code>icon-rotate</code> = <code>["get", "heading"]</code> (degrés, 0 = nord, sens horaire), <code>icon-rotation-alignment</code> <code>map</code>, <code>icon-allow-overlap</code> et <code>icon-ignore-placement</code> <code>true</code>. Filtre <code>["has", "heading"]</code> : pas de cap, pas de flèche. Blanc sur <code>#1A73E8</code> : 4,6:1.</td></tr>
+</table>
+<ul>
+  <li><b>Cap connu</b> = la course du GPS (pas de boussole) quand on bouge. On met <code>heading</code> sur le point si le cap est un nombre de 0 à 360 et la vitesse au moins 0,5 m/s. On l'enlève (rond sans flèche) si le cap manque (iOS : -1 ; Android : 0 avec une vitesse de 0, voir l'essai) ou si la vitesse reste sous 0,5 m/s plus de 5 s. Entre deux positions, la flèche garde le dernier cap. Seuils à confirmer par l'architecte.</li>
+  <li>Pas d'animation : le point et la flèche sautent à chaque position (une par seconde), comme aujourd'hui.</li>
+  <li>Le même composant sert à la création (écran 10) : elle a donc aussi la flèche et le halo. Son bouton garde deux états (repos, refusé) : pas de « suit ma position » pendant qu'on pose des points.</li>
+  <li>Pourquoi pas la flèche de MapLibre : rond d'environ 18 et flèche dehors, bleu clair qui n'est pas le nôtre, halo deux fois trop grand (formule fixe), et on ne peut changer ni l'image ni les couleurs sans la remplacer (essai T1, § 2).</li>
+</ul>
+
+<h3>2. Bouton de recentrage : trois états</h3>
+<table>
+  <tr><th>État</th><th>Dessin</th><th>Libellé lu (<code>accessibilityLabel</code>)</th><th>Toucher</th></tr>
+  <tr><td>Repos</td><td>Rond de 48, fond <code>hn.creme-clair</code>, bord <code>hn.bord</code>, <code>hn.ombre</code>, viseur de 24 <code>hn.brun</code> (trait 2,3)</td><td><q>Recentrer sur ma position</q> (existant)</td><td>La carte glisse sur la position (500 ms), zoom 15 si l'on était plus loin, sinon zoom gardé ; puis « suit ». Pas encore de position : le bouton passe en « suit » tout de suite, la carte ira sur la position dès qu'elle arrive.</td></tr>
+  <tr><td>Suit ma position</td><td>Fond <code>hn.brun</code>, même bord, viseur <code>hn.creme</code> (12,3:1)</td><td><q>La carte suit ma position</q></td><td>Rien ne change (la carte suit déjà ; pas de mode boussole, le nord reste en haut).</td></tr>
+  <tr><td>Position refusée</td><td>Fond <code>hn.creme-clair</code>, viseur barré : barre de (4, 4) à (20, 20), <code>hn.brun</code> 2,3 sur un trait <code>hn.creme-clair</code> de 5</td><td><q>Position désactivée</q>, indice (<code>accessibilityHint</code>) <q>Touchez pour l'autoriser dans les réglages</q></td><td>Android : redemande tant que le système l'accepte ; sinon la boîte existante <q>Position désactivée</q>, puis les réglages du téléphone.</td></tr>
+</table>
+<ul>
+  <li>Place : en haut à droite, à 16 du bord, haut à 60 (inchangé).</li>
+  <li><b>Suit → repos</b> : glisser la carte d'un doigt (le changement se voit au début du geste) ; toucher un circuit (la carte cadre le circuit) ; la position sort de la zone (la carte bloquée ne peut plus suivre ; le message apparaît).</li>
+  <li><b>Reste en « suit »</b> : zoomer (double toucher, deux doigts), comme Plans et Google Maps. L'essai n'a testé que le glissement : si MapLibre sort du suivi au zoom, c'est acceptable.</li>
+  <li>Feuille d'un circuit refermée : la carte revient où elle était (existant) ; si elle suivait avant, elle suit de nouveau.</li>
+  <li>Pas d'annonce au lecteur d'écran quand l'état change : le nouveau libellé se lit au prochain passage sur le bouton.</li>
+</ul>
+
+<h3>3. Ouverture et cadrage</h3>
+<p>Une seule fois, au premier affichage de la carte de la zone (lancement, ou zone changée). Revenir sur l'onglet ne recadre pas. Toute la zone s'affiche d'abord ; la règle s'applique à la première position, si la carte n'a pas été touchée entre-temps (glissement de 300 ms, comme aujourd'hui).</p>
+<table>
+  <tr><th>Cas</th><th>Caméra</th><th>Bouton</th><th>Message</th></tr>
+  <tr><td>Position dans la zone</td><td>Centre = position, zoom 14</td><td>Suit</td><td>Non</td></tr>
+  <tr><td>Hors zone, à 10 km du bord ou moins</td><td>Centre = point du bord le plus proche ; zoom = le plus fort, 14 au plus, qui garde le centre de la position à 48 au moins des bords gauche et droit de la carte, à 140 au moins de son haut (sous le message) et à 32 au moins au-dessus de « Nouvel itinéraire »</td><td>Repos</td><td>Oui</td></tr>
+  <tr><td>Hors zone, à plus de 10 km</td><td>Toute la zone (inchangé)</td><td>Repos</td><td>Oui</td></tr>
+  <tr><td>Pas encore de position</td><td>Toute la zone</td><td>Repos</td><td>Non</td></tr>
+  <tr><td>Position refusée</td><td>Toute la zone</td><td>Barré</td><td>Non</td></tr>
+</table>
+<ul>
+  <li><b>Distance au bord</b> : à vol d'oiseau, de la position au point le plus proche du rectangle de la zone (son <code>bbox</code>). C'est aussi le centre du cadrage.</li>
+  <li><b>Pourquoi centrer sur le bord, et pas entre les deux</b> : la carte est bloquée sur la zone (<code>maxBounds</code>), son centre ne peut pas en sortir. Un cadrage « boîte autour des deux points » aurait son centre dehors, serait rabattu sur le bord, et couperait la position. En centrant sur le bord, la position tient dans une moitié de l'écran. À 10 km, le zoom vaut environ 9,6 (au-dessus du minimum, 8).</li>
+  <li>Message hors zone (existant, <code>map.outsideZone</code>) : en haut à gauche, de 16 à 80 du bord droit, haut à 60, <b>au moins 48 de haut</b>, texte centré en hauteur (remarque R2 de la phase 2) ; crème clair, bord brun, rayon 18, texte 15 <code>hn.brun-2</code>. Affiché tant que la position est hors de la zone.</li>
+</ul>
+
+<h3>Textes exacts (pour <code>fr.ts</code>)</h3>
+<ul>
+  <li>Existants, inchangés : <q>Recentrer sur ma position</q> (<code>map.recenter</code>) ; <q>Vous êtes hors de la zone téléchargée</q> ; boîte <q>Position désactivée</q>, <q>Autorisez la position dans les réglages pour voir où vous êtes sur la carte.</q>, <q>Annuler</q>, <q>Ouvrir les réglages</q>.</li>
+  <li>Nouveaux, lecteur d'écran seulement : <q>La carte suit ma position</q> ; <q>Position désactivée</q> (libellé du bouton barré) ; indice <q>Touchez pour l'autoriser dans les réglages</q>.</li>
+</ul>
+
+<h3>Hors périmètre (absent exprès)</h3>
+<p>Rotation de la carte et boussole (le nord reste en haut) ; cap venu de la boussole du téléphone ; point gris « position perdue » sur l'onglet Carte (il existe seulement en suivi) ; le confort réel de la flèche et la précision du halo, à juger sur un vrai téléphone en phase 10.</p>
+</div>
+
 </body>
 </html>

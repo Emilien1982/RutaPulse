@@ -41,6 +41,7 @@ jest.mock('@maplibre/maplibre-react-native', () => {
     },
     UserLocation: () => null,
     useCurrentPosition: () => undefined,
+    Images: () => null,
     Layer: (props: { id: string }) => {
       mockLayers[props.id] = props;
       return null;
@@ -193,7 +194,10 @@ function linkFeatures(): { geometry: { coordinates: number[][] } }[] {
 
 // Top of the absolute wrapper around the recenter button.
 function recenterTop() {
-  let node = screen.getByRole('button', { name: 'Recentrer sur ma position' });
+  // Refused permission: the button is crossed out and says so.
+  let node = screen.getByRole('button', {
+    name: /Recentrer sur ma position|Position désactivée/,
+  });
   while (node.parent) {
     const top = StyleSheet.flatten(node.props.style)?.top;
     if (top !== undefined) return top;

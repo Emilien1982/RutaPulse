@@ -1,0 +1,33 @@
+# C13: start of tracking on the 35 km circuit; the duration of the last command (commands.json) is the delay
+# between the end of the touch on "Démarrer le suivi" and the display of "Reste 43,0 km (the iOS list has a 43 km circuit, longer than 35 km)".
+appId: fr.rutapulse.app
+---
+- tapOn: 'Itinéraires.*'
+- scrollUntilVisible:
+    element: 'Petite Suisse Lorraine à VTT.*'
+    timeout: 30000
+- tapOn: 'Petite Suisse Lorraine à VTT.*'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- takeScreenshot: ios-c13-depart-43km-infos
+- tapOn:
+    id: 'info-start'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-remaining'
+      text: '.*43,0.*'
+    timeout: 20000
+- takeScreenshot: ios-c13-depart-43km-suivi
+- tapOn:
+    id: 'tracking-finish'
+- extendedWaitUntil:
+    visible: 'Terminer la sortie.*'
+    timeout: 10000
+- tapOn:
+    point: '68%,57%'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000

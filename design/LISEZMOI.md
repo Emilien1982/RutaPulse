@@ -41,7 +41,7 @@
 | `v1/11-creation-trace-a-la-main.html` | Création : deux tronçons tracés à la main, en tirets | 2 ; décision 8 |
 | `v1/12-circuit-balise.html` | Carte : un circuit balisé touché, son sens, le départ au point le plus proche, « En faire un itinéraire ». Depuis le 9 novembre 2026 (phase 7, T1), plusieurs écrans l'un sous l'autre : couche des circuits, boucle, aller simple, circuit non transformable, zone à mettre à jour, variantes (dont plusieurs circuits sous le doigt), création ouverte depuis un circuit (points discrets, numéros au zoom proche, partie hors zone) ; note en bas de page | 9 ; décision 7 |
 | `v1/20-infos-itineraire.html` | Infos : distance, durée, D+ et D−, profil, terrain, difficulté, carte en arche | 3 ; décision 13 |
-| `30-suivi-velo.html` | Suivi, direction B. Depuis le 10 novembre 2026 (phase 8a, T1), huit écrans l'un sous l'autre : normal, panneau jaune sous 100 m, « Suivez le tracé », écart au tracé, arrivée en vue, confirmation de « Terminer », attente du GPS, départ loin du tracé ; D+ restant en bas, « Terminer » flottant au-dessus du bandeau ; note (règles, textes exacts, pictogrammes) et questions pour Émilien. **8a : sans roue dentée ; 8b : roue + 31b** | 7 ; décisions 3, 4 ; décisions 6 et 7 (écrans 70) |
+| `30-suivi-velo.html` | Suivi, direction B. Depuis le 10 novembre 2026 (phase 8a, T1), huit écrans l'un sous l'autre : normal, panneau jaune sous 100 m, « Suivez le tracé », écart au tracé, arrivée en vue, confirmation de « Terminer », attente du GPS, départ loin du tracé ; D+ restant en bas, « Terminer » flottant au-dessus du bandeau ; note (règles, textes exacts, pictogrammes) et questions pour Émilien. Depuis le 16 novembre 2026 (phase 8b, T1) : roue dentée sous la boussole sur tous les écrans, qui ouvre 31b | 7 ; décisions 3, 4 ; décisions 6 et 7 (écrans 70) |
 | `31b-suivi-reglages.html` | Suivi, direction B : panneau des réglages du suivi ouvert par la roue dentée, luminosité « Maximum » choisie | 7 ; décision 2, décision 6 (écrans 70) |
 | `31-verrouille-android.html` | Téléphone verrouillé, Android : la notification unique, petite icône A sur un rond rouille | 8 ; décision 7 (écrans 70) |
 | `32-verrouille-ios.html` | Téléphone verrouillé, iOS : la Live Activity (bandeau en direct), icône A | 8 ; décision 7 (écrans 70) |
@@ -53,7 +53,7 @@
 | `v1/60-arrivee.html` | Arrivée : résumé aux chiffres réels (distance parcourue, D+, durée), suivi arrêté, podium fixe, un seul bouton « Fermer ». Depuis le 10 novembre 2026 (phase 8a) : écran 2 « SORTIE TERMINÉE » (après « Terminer »), titre en 32, et une note | décisions 4, 5 (questions) ; décisions 2 à 4 (écrans 70) ; retouche 4 |
 | `v1/70-icone.html` | Icône : A, le soleil rayé, choisie ; B et C pour mémoire ; iOS, Android adaptative, 48 points | décision 5 (style) ; décision 1 (écrans 70) |
 | `v1/80-reglages.html` | Réglages, 4e onglet : Wi-Fi seulement, luminosité pendant le suivi, licences et attributions, version | décisions 2, 10, 13 ; décision 6 (écrans 70) |
-| `v1/90-carte.html` | Onglet Carte avec une zone prête (phase 2) : carte, position, bouton de recentrage, attributions | 1, 6 ; décisions 8, 13 |
+| `v1/90-carte.html` | Onglet Carte avec une zone prête (phase 2) : carte, position, bouton de recentrage, attributions. Depuis le 16 novembre 2026 (phase 8b, T1), six écrans l'un sous l'autre : ouverture dans la zone (zoom 14, « suit ma position »), carte qui suit avec la flèche de cap et le halo, carte déplacée (bouton au repos), hors zone à moins de 10 km (position et bord ensemble), toute la zone, position refusée ; planche ; note « Pour l'architecte et le développeur » et questions | 1, 6 ; décisions 8, 13 ; questions 2 et 3 de la phase 8 |
 | `v1/91-carte-sans-zone.html` | Onglet Carte sans zone : le vététiste de l'écran 50, « Choisir une zone » ouvre l'onglet Zones (phase 2) | 6 ; décision 3 |
 
 Le style de la carte (couches, filtres, couleurs, épaisseurs du zoom 8 au
@@ -275,10 +275,12 @@ tranchées dans `docs/06-decisions-design.md`, « Écrans années 70 :
 décisions » ; les 4 suivantes (durée de l'arrivée, luminosité changée
 pendant le suivi, panneau des réglages sous 100 m, « Terminer » avant
 l'arrivée) dans le même document, section « Retouches : décisions ». Ce
-document fait foi. Le commentaire de `31b` ne décrit pas encore une de ces
-décisions : le panneau des réglages du suivi se ferme seul à moins de 100 m
-d'une direction. À compléter en phase 8b. « Sortie terminée » est dessiné
-dans `v1/60` depuis la phase 8a.
+document fait foi. Le commentaire de `31b` décrit depuis la phase 8b (16
+novembre 2026) la fermeture seule du panneau à moins de 100 m d'une
+direction. « Sortie terminée » est dessiné dans `v1/60` depuis la phase 8a.
+
+**Phase 8b (16 novembre 2026)** : deux questions ouvertes sur l'onglet Carte,
+avec ma recommandation, en haut de `v1/90-carte.html`.
 
 **Phase 8a (10 novembre 2026)** : huit questions ouvertes sur l'écran de
 suivi, chacune avec ma recommandation, en haut de `30-suivi-velo.html`.

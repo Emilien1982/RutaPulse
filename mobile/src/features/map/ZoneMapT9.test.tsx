@@ -28,6 +28,7 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       useImperativeHandle(props.ref, () => ({ easeTo: mockEaseTo }));
       return null;
     },
+    Images: () => null,
     Layer: (props: { id: string }) => {
       mockLayers[props.id] = props;
       return null;

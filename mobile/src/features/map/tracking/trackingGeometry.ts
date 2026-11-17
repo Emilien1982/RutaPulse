@@ -163,11 +163,8 @@ export function gapLine(
   return { ...EMPTY, features: [feature('path', [rider, target])] };
 }
 
-/** Distance on the ground (m) of one point of the screen at this zoom and latitude. */
-export function metersPerPoint(zoom: number, latitude: number): number {
-  // MapLibre: tiles of 512 points.
-  return (78271.517 * Math.cos((latitude * Math.PI) / 180)) / 2 ** zoom;
-}
+// Moved to core/position (shared with the dot of the map tab).
+export { metersPerPoint } from '@/core/position/userPuck';
 
 /**
  * The zoom `fitBounds` ends on: the box [west, south, east, north], turned
@@ -260,3 +257,34 @@ type PointFeature = {
   properties: Record<string, never>;
   geometry: { type: 'Point'; coordinates: LonLat };
 };
+
+type Padding = { top: number; bottom: number; left: number; right: number };
+
+/**
+ * The margins of the camera that follows the rider. The rider sits in the
+ * lower third of what is visible: the top margin is a third of the map
+ * without the panel (`inset`) that covers its bottom. The panel is never
+ * cut: the position must stay above it, even on a small screen.
+ */
+export function followPadding(height: number, inset: number): Padding {
+  const bottom = Math.max(0, Math.min(inset, height));
+  return {
+    top: Math.round((height - bottom) * 0.33),
+    bottom,
+    left: 0,
+    right: 0,
+  };
+}
+
+/**
+ * The margins of the view that shows the position and the target together.
+ * With a panel at the bottom: 40 above, the panel and 40 below. On a small
+ * map the bottom margin is cut, but the frame stays above the panel as far
+ * as it can.
+ */
+export function fitPadding(height: number, inset: number): Padding {
+  if (inset <= 0) return { top: 80, bottom: 80, left: 60, right: 60 };
+  const top = 40;
+  const bottom = Math.max(0, Math.min(inset + 40, height - top - 1));
+  return { top, bottom, left: 60, right: 60 };
+}

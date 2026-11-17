@@ -9,6 +9,7 @@ jest.mock('@/shared-data/settings/useSettings', () => ({
     data: mockWifiOnly === undefined ? undefined : { wifiOnly: mockWifiOnly },
   }),
   useSetWifiOnly: () => ({ mutate: mockMutate }),
+  useSetBrightness: () => ({ mutate: jest.fn() }),
 }));
 
 beforeEach(() => {

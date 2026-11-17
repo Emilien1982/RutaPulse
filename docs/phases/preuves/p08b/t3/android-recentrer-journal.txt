@@ -1,0 +1,8 @@
+est25: apres recentrer:
+ETAT: Recentrer sur ma position
+ETAT: hors de la zone
+IDENTIQUE a l'ouverture
+sud95: apres recentrer:
+ETAT: Recentrer sur ma position
+ETAT: hors de la zone
+IDENTIQUE a l'ouverture

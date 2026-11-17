@@ -1,0 +1,34 @@
+Running on iPhone 17 - iOS 26.5 - DAF21CEF-2D81-4ABE-9CEC-689BCF1A295D
+ > Flow p08b-luminosite-carte-ios
+Tap on "Réglages.*"... COMPLETED
+Assert that "Luminosité.*" is visible... COMPLETED
+Tap on ".*Automatique.*"... COMPLETED
+Take screenshot ios-p8b-c14-01-reglages-automatique... COMPLETED
+Tap on "Itinéraires.*"... COMPLETED
+Scrolling DOWN until "Itinéraire du 4 nov.*" is visible with speed 40, visibility percentage 100%, timeout 30000 ms, with centering disabled... COMPLETED
+Tap on "Itinéraire du 4 nov.*"... COMPLETED
+Assert that id: info-start is visible... COMPLETED
+Tap on id: info-start... COMPLETED
+Assert that id: tracking-panel is visible... COMPLETED
+Assert that id: tracking-gear is visible... COMPLETED
+Take screenshot ios-p8b-c14-02-suivi-roue-fermee... COMPLETED
+Tap on id: tracking-gear... COMPLETED
+Assert that id: tracking-settings-panel is visible... COMPLETED
+Assert that "Luminosité de l.écran.*" is visible... COMPLETED
+Take screenshot ios-p8b-c14-03-panneau-automatique... COMPLETED
+Tap on ".*Maximum.*"... COMPLETED
+Take screenshot ios-p8b-c14-04-panneau-maximum... COMPLETED
+Tap on id: tracking-settings-close... COMPLETED
+Assert that id: tracking-settings-panel is not visible... COMPLETED
+Tap on id: tracking-finish... COMPLETED
+Assert that "Terminer la sortie.*" is visible... COMPLETED
+Tap on point (68%,57%)... COMPLETED
+Assert that id: info-start is visible... COMPLETED
+Tap on point (10%,10%)... COMPLETED
+Tap on "Réglages.*"... COMPLETED
+Assert that "Luminosité.*" is visible... COMPLETED
+Assert that "Pendant le suivi.*" is visible... COMPLETED
+Take screenshot ios-p8b-c14-05-reglages-maximum... COMPLETED
+Tap on "Carte.*"... COMPLETED
+Assert that "La carte suit ma position.*" is visible... COMPLETED
+Take screenshot ios-p8b-c14-06-carte-suit-ma-position... COMPLETED

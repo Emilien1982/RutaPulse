@@ -29,6 +29,7 @@ jest.mock('@maplibre/maplibre-react-native', () => {
   return {
     Map: (props: { children: ReactNode }) => <View>{props.children}</View>,
     Camera: () => null,
+    Images: () => null,
     Layer: () => null,
     GeoJSONSource: () => null,
   };
@@ -138,9 +139,9 @@ describe('waiting for the GPS', () => {
     expect(mockPrevent?.enabled).toBe(true);
   });
 
-  it('has no gear wheel (phase 8b)', async () => {
+  it('shows the gear wheel of the settings (phase 8b, C9)', async () => {
     await open();
-    expect(screen.queryByTestId('tracking-settings')).toBeNull();
+    expect(screen.getByTestId('tracking-gear')).toBeOnTheScreen();
   });
 });
 

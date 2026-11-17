@@ -38,6 +38,7 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       return <View testID="map">{props.children}</View>;
     },
     Camera: () => null,
+    Images: () => null,
     Layer: () => null,
     GeoJSONSource: () => null,
   };

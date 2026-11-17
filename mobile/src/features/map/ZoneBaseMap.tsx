@@ -5,7 +5,7 @@ import {
   type MapProps,
   type MapRef,
 } from '@maplibre/maplibre-react-native';
-import { useMemo, type ReactNode, type Ref } from 'react';
+import { useMemo, type ComponentProps, type ReactNode, type Ref } from 'react';
 import { StyleSheet } from 'react-native';
 
 import type { Zone } from '@/core/zones/catalogue';
@@ -44,6 +44,8 @@ export function ZoneBaseMap({
   onRegionWillChange,
   onDidFinishLoadingMap,
   free,
+  trackUserLocation,
+  onTrackUserLocationChange,
   children,
 }: {
   zone: Zone;
@@ -60,6 +62,11 @@ export function ZoneBaseMap({
   /** The camera may leave the zone (the tracking follows the rider). */
   free?: boolean;
   onDidFinishLoadingMap?: MapProps['onDidFinishLoadingMap'];
+  /** The camera of MapLibre follows the position (the map tab). */
+  trackUserLocation?: ComponentProps<typeof Camera>['trackUserLocation'];
+  onTrackUserLocationChange?: ComponentProps<
+    typeof Camera
+  >['onTrackUserLocationChange'];
   children?: ReactNode;
 }) {
   const style = useMemo(
@@ -101,6 +108,8 @@ export function ZoneBaseMap({
         // A map opened on a box must be free to zoom out to the whole route.
         minZoom={fit || free ? 0 : MIN_ZOOM}
         maxZoom={MAX_ZOOM}
+        trackUserLocation={trackUserLocation}
+        onTrackUserLocationChange={onTrackUserLocationChange}
         maxBounds={fit || free ? undefined : [lonMin, latMin, lonMax, latMax]}
         initialViewState={
           fit ??

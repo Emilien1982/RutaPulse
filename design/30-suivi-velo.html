@@ -32,6 +32,11 @@
    - 8a : SANS ROUE DENTÉE. 8b : roue dentée sous la boussole (dessin de 368
      à 416, voir tokens.md, suivi.bouton-reglages) + panneau 31b.
 
+  PHASE 8b (16 novembre 2026, T1, designer) : la roue dentée est dessinée sur
+  tous les écrans (fermée). Elle ouvre le panneau 31b (31b-suivi-reglages.html).
+  Elle ne touche ni le panneau de guidage (qui s'arrête à 262), ni la position
+  (centre à 569), ni « Terminer » (644 à 708).
+
   Valeurs : design/tokens.md (section « États du suivi »). Carte : dessin
   simplifié en SVG, défini une fois (#fond-carte) et repris par chaque écran.
   Les chiffres sont des exemples ; la carte n'est pas à l'échelle exacte.
@@ -69,11 +74,14 @@ svg.carte *{vector-effect:non-scaling-stroke}
 svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointer-events:none}
 .position{position:absolute;width:40px;height:40px;margin:-20px 0 0 -20px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
 .position-sans-cap{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
-.halo{position:absolute;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;background:rgba(26,115,232,.16)}
+.halo{position:absolute;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;background:rgba(26,115,232,.16);border:1px solid rgba(26,115,232,.40)}
 .marqueur{position:absolute;width:32px;height:32px;margin:-16px 0 0 -16px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.35)}
 .marqueur.depart{background:var(--depart)}
 .marqueur.arrivee{background:var(--arrivee)}
 .boussole{position:absolute;right:16px;top:280px;width:64px;height:64px;border-radius:32px;background:var(--fond);border:1px solid var(--contour-flottant);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
+/* suivi.bouton-reglages (8b) : rond de 48 sous la boussole, même axe (centre à 48 du bord droit), dessin de 368 à 416, zone de toucher de 64 (::before) */
+.reglages{position:absolute;right:24px;top:368px;width:48px;height:48px;border-radius:24px;background:var(--fond);border:1px solid var(--contour-flottant);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
+.reglages::before{content:"";position:absolute;inset:-8px;border-radius:32px}
 /* Attribution courte (B1, T7 de la phase 8a) : « © OpenStreetMap » + « i », zone de toucher de 48 autour du « i ».
    Elle s'arrête vers x 125, loin de « Terminer » (x 234). */
 .attribution{position:absolute;left:8px;top:700px;display:flex;align-items:center;gap:4px;font-size:11px;color:#4A4A4A;background:rgba(255,255,255,.75);padding:1px 2px 1px 5px;border-radius:9px}
@@ -161,6 +169,9 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
   <!-- Boussole (la flèche nord garde son rouge de dessin #B3261E, ce n'est pas un texte) -->
   <symbol id="i-boussole" viewBox="0 0 36 36"><path d="M18 3 L24 18 L12 18 Z" fill="#B3261E"/><path d="M18 33 L24 18 L12 18 Z" fill="#4A4A4A"/><text x="18" y="15" font-size="8" font-weight="800" fill="#fff" text-anchor="middle" font-family="-apple-system,Roboto,sans-serif">N</text></symbol>
 
+  <!-- Roue dentée (pictogramme commun, tokens.md) : 26, couleur.texte -->
+  <symbol id="i-reglages" viewBox="0 0 24 24"><g fill="none" stroke="#111"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.2"/></g></symbol>
+
   <!-- Position : flèche de cap (marqueur.position, 40 en suivi) ; sans cap (marqueur.position-sans-cap) ; perdue (marqueur.position-perdue) -->
   <symbol id="i-position" viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="#1A73E8" stroke="#fff" stroke-width="3"/><path d="M20 8 L28.5 28 L20 23.5 L11.5 28 Z" fill="#fff"/></symbol>
   <symbol id="i-position-sans-cap" viewBox="0 0 30 30"><circle cx="15" cy="15" r="12.5" fill="#1A73E8" stroke="#fff" stroke-width="3"/></symbol>
@@ -197,7 +208,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
   <li>En attente du GPS.</li>
   <li>Départ loin du tracé.</li>
 </ol>
-<p><b>8a : sans roue dentée. 8b : roue dentée sous la boussole + panneau 31b.</b> Aucun écran de cette page ne montre la roue.</p>
+<p><b>8b (16 novembre 2026) : la roue dentée est sur tous les écrans</b>, sous la boussole ; elle ouvre le panneau 31b. Règles : note en bas de page, « Roue dentée et panneau des réglages ».</p>
 <p><b>Changé depuis le 21 octobre :</b> le D+ restant s'ajoute en bas (décision 3) ; « Terminer » flotte au-dessus du bandeau du bas, à droite, pour lui laisser la place.</p>
 
 <h3>Questions pour Émilien (avec ma recommandation)</h3>
@@ -215,7 +226,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 
 
 <!-- ===================== ÉCRAN 1 : suivi normal ===================== -->
-<div class="cartouche"><b>1. Suivi normal : direction à plus de 100 m</b><br>Panneau blanc. Distance en 72 (unité en 40), pictogramme de 124, consigne en 28 sur deux lignes au plus. Carte orientée dans le sens de la marche, zoom moyen (la direction est loin). Partie roulée en gris. En bas : « Reste » et « D+ restant ». « Terminer » flotte à droite au-dessus du bandeau. <i>8a</i> : pas de roue dentée sous la boussole.</div>
+<div class="cartouche"><b>1. Suivi normal : direction à plus de 100 m</b><br>Panneau blanc. Distance en 72 (unité en 40), pictogramme de 124, consigne en 28 sur deux lignes au plus. Carte orientée dans le sens de la marche, zoom moyen (la direction est loin). Partie roulée en gris. En bas : « Reste » et « D+ restant ». « Terminer » flotte à droite au-dessus du bandeau. <i>8b</i> : roue dentée sous la boussole ; elle ouvre le panneau 31b.</div>
 <div class="ecran">
 
 <div class="guidage" aria-label="Dans 170 mètres, tournez à gauche sur la piste">
@@ -243,6 +254,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 <svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
 
 <div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(101deg)"><use href="#i-boussole"/></svg></div>
+<div class="reglages" role="button" aria-expanded="false" aria-label="Réglages du suivi"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reglages"/></svg></div>
 
 <div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
@@ -284,6 +296,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 <svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
 
 <div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(110deg)"><use href="#i-boussole"/></svg></div>
+<div class="reglages" role="button" aria-expanded="false" aria-label="Réglages du suivi"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reglages"/></svg></div>
 
 <div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
@@ -330,6 +343,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 <svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
 
 <div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(157deg)"><use href="#i-boussole"/></svg></div>
+<div class="reglages" role="button" aria-expanded="false" aria-label="Réglages du suivi"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reglages"/></svg></div>
 
 <div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
@@ -389,6 +403,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 <svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
 
 <div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(110deg)"><use href="#i-boussole"/></svg></div>
+<div class="reglages" role="button" aria-expanded="false" aria-label="Réglages du suivi"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reglages"/></svg></div>
 
 <div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
@@ -433,6 +448,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 <svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
 
 <div class="boussole" role="button" aria-label="Carte orientée dans le sens de la marche ; toucher pour mettre le nord en haut"><svg width="36" height="36" style="transform:rotate(180deg)"><use href="#i-boussole"/></svg></div>
+<div class="reglages" role="button" aria-expanded="false" aria-label="Réglages du suivi"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reglages"/></svg></div>
 
 <div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
@@ -473,6 +489,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 <div class="halo" style="left:195px;top:569px"></div>
 <svg class="position" style="left:195px;top:569px" viewBox="0 0 40 40" aria-hidden="true"><use href="#i-position"/></svg>
 <div class="boussole" aria-hidden="true"><svg width="36" height="36" style="transform:rotate(101deg)"><use href="#i-boussole"/></svg></div>
+<div class="reglages" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reglages"/></svg></div>
 <div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" aria-hidden="true">Terminer</div>
 <div class="bas" aria-hidden="true">
@@ -515,6 +532,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 <div class="marqueur depart" style="left:195px;top:678px" aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12"><path d="M3 1.5 L10.5 6 L3 10.5 Z" fill="#fff"/></svg></div>
 
 <div class="boussole" role="button" aria-label="Nord en haut"><svg width="36" height="36"><use href="#i-boussole"/></svg></div>
+<div class="reglages" role="button" aria-expanded="false" aria-label="Réglages du suivi"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reglages"/></svg></div>
 
 <div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
@@ -561,6 +579,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 <svg class="position-sans-cap" style="left:191px;top:627px" viewBox="0 0 30 30" aria-hidden="true"><use href="#i-position-sans-cap"/></svg>
 
 <div class="boussole" role="button" aria-label="Nord en haut"><svg width="36" height="36"><use href="#i-boussole"/></svg></div>
+<div class="reglages" role="button" aria-expanded="false" aria-label="Réglages du suivi"><svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-reglages"/></svg></div>
 
 <div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 <div class="terminer" role="button">Terminer</div>
@@ -599,8 +618,9 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
   <li><b>Panneau du haut</b> : 262 de haut, toujours la même structure : pictogramme de 124, grande distance (72, unité 40), consigne (28, deux lignes au plus), ligne du dessous (<code>guidage.precision</code>, 20, en <code>couleur.texte</code>, une ligne). Ainsi l'écran ne saute pas d'un état à l'autre. <b>Quand une ligne du dessous s'affiche</b> (raison, « Signal GPS perdu »…), la consigne tient sur une ligne : on retire le type de voie (« Légèrement à droite » au lieu de « Légèrement à droite sur la piste »). Deux lignes de consigne et la ligne du dessous ne tiennent pas dans les 262 (décidé après la comparaison de T3, écart C4).</li>
   <li><b>Attribution</b> : version courte en bas à gauche de la carte, <q>© OpenStreetMap</q> puis un bouton <q>i</q> (rond de 16, zone de toucher de 48). Le « i » ouvre l'attribution complète dans la boîte native de MapLibre (<code>showAttribution()</code>), comme sur l'écran Infos (v1/20). Le suivi continue derrière. « Terminer » ne bouge pas (décidé après la comparaison de T3, écart B1).</li>
   <li><b>Carte</b> : de 262 à 724. Position au tiers du bas (centre à 569), pour voir loin devant.</li>
-  <li><b>Boussole</b> : 64, à 16 du bord droit, en haut de la carte. Toucher : nord en haut ; toucher encore : de nouveau dans le sens de la marche (comme Google Maps et Plans). <i>8b</i> : la roue dentée de 48 vient dessous.</li>
-  <li><b>« Terminer »</b> : 140 × 64, à 16 du bord droit et 16 au-dessus du bandeau du bas. Loin de la boussole et de la future roue dentée.</li>
+  <li><b>Boussole</b> : 64, à 16 du bord droit, en haut de la carte. Toucher : nord en haut ; toucher encore : de nouveau dans le sens de la marche (comme Google Maps et Plans).</li>
+  <li><b>Roue dentée</b> (8b) : rond de 48 sous la boussole, sur le même axe (centre à 48 du bord droit), dessin de 368 à 416, zone de toucher de 64 ; 16 entre sa zone de toucher et celle de la boussole. Voir « Roue dentée et panneau des réglages » plus bas.</li>
+  <li><b>« Terminer »</b> : 140 × 64, à 16 du bord droit et 16 au-dessus du bandeau du bas. Loin de la boussole et de la roue dentée.</li>
   <li><b>Bandeau du bas</b> : de 724 au bas de l'écran. Deux colonnes égales : <q>Reste</q> et <q>D+ restant</q> (20, <code>couleur.texte-2</code>), valeurs en 36.</li>
 </ul>
 
@@ -609,6 +629,16 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
   <li>Sur le tracé, la carte suit le cap du tracé au point placé, même à l'arrêt : elle ne repasse pas au nord à chaque pause (ADR 0021). Nord en haut et point sans flèche seulement avant le premier mouvement, ou à l'arrêt hors du tracé.</li>
   <li>Zoom moyen quand la direction est loin (écran 1), rapproché sous 100 m (écran 2). Écran 4 et 8 : la caméra s'éloigne juste assez pour montrer la position et la cible.</li>
   <li>Déplacer la carte à la main : la caméra revient seule sur la position après 10 secondes sans toucher. Pas de bouton de recentrage de plus.</li>
+</ul>
+
+<h3>Roue dentée et panneau des réglages (phase 8b)</h3>
+<ul>
+  <li><b>Dessin</b> (<code>suivi.bouton-reglages</code>) : fond <code>couleur.fond</code>, bord de 1 <code>couleur.contour-flottant</code>, <code>ombre.flottant</code>, roue dentée de 26 en <code>couleur.texte</code>. Panneau ouvert (<code>suivi.bouton-reglages-ouvert</code>) : fond et bord <code>couleur.texte</code>, roue blanche (31b).</li>
+  <li><b>Toujours là</b>, dans tous les états (écrans 1 à 5, 7, 8). Pendant la confirmation de « Terminer » (écran 6), elle est sous le voile de la boîte, comme le reste.</li>
+  <li><b>Toucher</b> : ouvre le panneau « Réglages du suivi » (31b). Retoucher la roue le ferme.</li>
+  <li><b>Ne cache pas le guidage</b> : la roue est sur la carte, sous le panneau du haut ; le panneau 31b monte du bas (haut à 452) et laisse le guidage visible et à jour.</li>
+  <li><b>Fermeture seule</b> : quand le panneau du haut passe au jaune (moins de 100 m d'une direction ou de l'arrivée), le panneau 31b se ferme (décision 3 des retouches, 21 octobre). S'il est ouvert alors que le panneau est déjà jaune, il reste ouvert pour cette direction-là : on l'a demandé exprès.</li>
+  <li><b>Lecteur d'écran</b> : <q>Réglages du suivi</q>, avec l'état replié ou déplié (<code>accessibilityState.expanded</code>).</li>
 </ul>
 
 <h3>GPS perdu en route</h3>
@@ -661,7 +691,7 @@ svg.surcouche{position:absolute;left:0;top:262px;width:390px;height:462px;pointe
 <p>Côté droit : le pictogramme de gauche retourné (miroir horizontal), consigne avec <q>à droite</q>. Rond-point : le chiffre change avec la sortie. Les icônes Material ou SF Symbols de même forme peuvent les remplacer, à trait aussi épais.</p>
 
 <h3>Hors périmètre (absent exprès)</h3>
-<p>Son, voix, vibration, alerte d'écart, chemin recalculé pour rejoindre le tracé, suivi téléphone verrouillé (V2). Roue dentée et panneau 31b : phase 8b.</p>
+<p>Son, voix, vibration, alerte d'écart, chemin recalculé pour rejoindre le tracé, suivi téléphone verrouillé (V2).</p>
 </div>
 
 </body>

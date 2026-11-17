@@ -1,0 +1,12 @@
+# iOS : après la fin du suivi, ouvrir Réglages : le choix fait dans le panneau doit y être.
+# (La fin du suivi a été faite par un premier essai de ce parcours ; voir LISEZMOI.)
+appId: fr.rutapulse.app
+---
+- swipe:
+    start: 1%,50%
+    end: 80%,50%
+- tapOn: 'Réglages.*'
+- extendedWaitUntil:
+    visible: 'Luminosité.*'
+    timeout: 10000
+- takeScreenshot: ios-10-reglages-automatique-apres-panneau

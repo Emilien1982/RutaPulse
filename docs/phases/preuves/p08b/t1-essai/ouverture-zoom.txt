@@ -1,0 +1,13 @@
+# Ouverture de l'ecran essai (Map seule, release): delai entre le montage JS et 'MAP loaded', par zoom d'ouverture
+android zoom=9: '+393ms', 'MAP loaded'
+android zoom=14: '+404ms', 'MAP loaded'
+android zoom=9: '+346ms', 'MAP loaded'
+android zoom=14: '+464ms', 'MAP loaded'
+android zoom=9: '+331ms', 'MAP loaded'
+android zoom=14: '+711ms', 'MAP loaded'
+ios zoom=9: '+154ms', 'MAP loaded'
+ios zoom=14: '+178ms', 'MAP loaded'
+ios zoom=9: '+154ms', 'MAP loaded'
+ios zoom=14: '+159ms', 'MAP loaded'
+ios zoom=9: '+158ms', 'MAP loaded'
+ios zoom=14: '+171ms', 'MAP loaded'

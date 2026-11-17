@@ -12,17 +12,22 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 import { t } from '@/core/i18n/t';
+import { puckFeature } from '@/core/position/userPuck';
 import { cameraBearing } from '@/core/tracking/placement';
 import { panelOf } from '@/core/tracking/trackingState';
 import type { TrackingSource } from '@/core/tracking/trackingLine';
 import type { Zone } from '@/core/zones/catalogue';
 import { mapColors, navColors, text } from '@/ui/theme';
 
+import { widthByZoom } from '../DraftLayers';
 import { MAX_ZOOM } from '../mapStyle';
+import { UserPuckLayers } from '../UserPuckLayers';
 import { ZoneBaseMap } from '../ZoneBaseMap';
 import {
   boundsZoom,
   drawnLine,
+  fitPadding,
+  followPadding,
   gapDots,
   GESTURE_PAUSE_MS,
   metersPerPoint,
@@ -66,12 +71,18 @@ export function TrackingMap({
   store,
   source,
   bottom,
+  side,
+  bottomInset = 0,
 }: {
   zone: Zone | null;
   store: TrackingStore['store'];
   source: TrackingSource;
   /** Laid over the map, bottom right (the "Terminer" button). */
   bottom: React.ReactNode;
+  /** Laid over the map, under the compass (the gear of the settings). */
+  side?: React.ReactNode;
+  /** Height of a panel laid over the bottom: the position stays above it. */
+  bottomInset?: number;
 }) {
   const camera = useRef<CameraRef>(null);
   const mapRef = useRef<MapRef>(null);
@@ -96,20 +107,19 @@ export function TrackingMap({
   const pieces = useMemo(() => ridePieces(drawn, shownM), [drawn, shownM]);
 
   const rider = riderPoint(placement);
-  const riderData = useMemo(
-    () => ({
-      type: 'Feature' as const,
-      properties: {},
-      geometry: { type: 'Point' as const, coordinates: rider ?? [0, 0] },
-    }),
-    [rider],
-  );
-  const riderCollection = useMemo(
-    () => ({
-      type: 'FeatureCollection' as const,
-      features: rider ? [riderData] : [],
-    }),
-    [rider, riderData],
+  // The dot: on the track, with the heading of the tracking (the track's, or
+  // the movement's) and the accuracy of the last position kept.
+  const accuracyM = useSelector(store, (s) => s.accuracyM);
+  const heading = cameraBearing(placement);
+  const puck = useMemo(
+    () =>
+      rider
+        ? puckFeature(
+            { longitude: rider[0], latitude: rider[1], accuracy: accuracyM },
+            heading,
+          )
+        : null,
+    [rider, accuracyM, heading],
   );
   // The dotted gap line: a dot every 10 points of the screen, at the zoom of
   // the map: the zoom our camera aims at, or the one of a gesture.
@@ -139,12 +149,7 @@ export function TrackingMap({
     if (!loaded || Date.now() < pausedUntil.current || height === 0) return;
     const plan = planCamera(source.line, placement, imminent, northUp);
     // The rider sits in the lower third: the top of the map is padded.
-    const padding = {
-      top: Math.round(height * 0.33),
-      bottom: 0,
-      left: 0,
-      right: 0,
-    };
+    const padding = followPadding(height, bottomInset);
     const setAimedZoom = (next: number) =>
       setZoom((before) => (Math.abs(before - next) > 0.05 ? next : before));
     if (plan.kind === 'follow') {
@@ -158,21 +163,21 @@ export function TrackingMap({
       });
     } else {
       const bearing = plan.kind === 'bounds' ? plan.bearing : 0;
-      const fitPadding = { top: 80, bottom: 80, left: 60, right: 60 };
+      const fitPad = fitPadding(height, bottomInset);
       if (width > 0) {
         setAimedZoom(
           boundsZoom(
             plan.bounds,
             bearing,
             { width, height },
-            fitPadding,
+            fitPad,
             zone ? MAX_ZOOM : undefined,
           ),
         );
       }
       camera.current?.fitBounds(plan.bounds, {
         bearing,
-        padding: fitPadding,
+        padding: fitPad,
         duration: 1000,
       });
     }
@@ -186,6 +191,7 @@ export function TrackingMap({
     resume,
     loaded,
     zone,
+    bottomInset,
   ]);
 
   useEffect(
@@ -221,8 +227,34 @@ export function TrackingMap({
     },
   };
 
+  // The dotted links to the points placed: first, so under the route; no
+  // `beforeId` (it breaks on iOS, see DraftLayers).
+  const links = useMemo(
+    () => ({
+      type: 'FeatureCollection' as const,
+      features: (source.links ?? []).map((coordinates) => ({
+        type: 'Feature' as const,
+        properties: {},
+        geometry: { type: 'LineString' as const, coordinates },
+      })),
+    }),
+    [source],
+  );
+
   const layers = (
     <>
+      <GeoJSONSource id="suivi-liaison" data={links}>
+        <Layer
+          id="suivi-liaison-ligne"
+          type="line"
+          layout={ROUND}
+          paint={{
+            'line-color': mapColors.routeLink,
+            'line-width': widthByZoom(3),
+            'line-dasharray': [0.1, 2.5],
+          }}
+        />
+      </GeoJSONSource>
       <GeoJSONSource id="suivi-fait" data={pieces.done}>
         <Layer
           id="suivi-fait-ligne"
@@ -291,20 +323,7 @@ export function TrackingMap({
           }}
         />
       </GeoJSONSource>
-      <GeoJSONSource id="suivi-position" data={riderCollection}>
-        <Layer
-          id="suivi-position-rond"
-          type="circle"
-          paint={{
-            'circle-radius': 14,
-            'circle-color': gpsLost
-              ? navColors.lostPosition
-              : mapColors.position,
-            'circle-stroke-width': 3,
-            'circle-stroke-color': mapColors.positionBorder,
-          }}
-        />
-      </GeoJSONSource>
+      <UserPuckLayers feature={puck} size="tracking" lost={gpsLost} />
     </>
   );
 
@@ -365,8 +384,12 @@ export function TrackingMap({
           rotation={northUp ? 0 : -(cameraBearing(placement) ?? 0)}
         />
       </Pressable>
+      {side}
       {/* Short attribution and the "i": the full one would go under "Terminer". */}
-      <View style={styles.attribution}>
+      <View
+        testID="tracking-attribution"
+        style={[styles.attribution, { bottom: 8 + bottomInset }]}
+      >
         <Text style={text.attribution} maxFontSizeMultiplier={1}>
           {t('info.attributionShort')}
         </Text>

@@ -1,0 +1,26 @@
+# iOS : démarrer le suivi de « Itinéraire du 4 nov. » (622 m), choix Maximum déjà gardé.
+appId: fr.rutapulse.app
+---
+- tapOn: 'Itinéraires.*'
+- scrollUntilVisible:
+    element: 'Itinéraire du 4 nov.*'
+    timeout: 30000
+- tapOn: 'Itinéraire du 4 nov.*'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- tapOn:
+    id: 'info-start'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-panel'
+    timeout: 20000
+- takeScreenshot: ios-05-suivi-roue-fermee
+- tapOn:
+    id: 'tracking-gear'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-settings-panel'
+    timeout: 5000
+- takeScreenshot: ios-06-panneau-ouvert

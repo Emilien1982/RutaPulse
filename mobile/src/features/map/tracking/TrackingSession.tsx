@@ -4,7 +4,7 @@
 import { useSelector } from '@tanstack/react-store';
 import { useKeepAwake } from 'expo-keep-awake';
 import { usePreventRemove, useRouter } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Alert,
   AppState,
@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 
 import { t } from '@/core/i18n/t';
+import type { BrightnessChoice } from '@/core/tracking/brightness';
 import { MIN_RIDE_M, rideDurationS } from '@/core/tracking/ride';
 import type { ClimbProfile } from '@/core/tracking/remaining';
 import { remainingClimbM } from '@/core/tracking/remaining';
@@ -29,6 +30,7 @@ import {
 import type { Zone } from '@/core/zones/catalogue';
 import { navColors } from '@/ui/theme';
 
+import { SettingsGear, TrackingSettingsPanel } from './TrackingSettingsPanel';
 import { GuidancePanel } from './GuidancePanel';
 import { RideSummary } from './RideSummary';
 import { TrackingFooter } from './TrackingFooter';
@@ -37,12 +39,22 @@ import { createTrackingStore, type TrackingStore } from './trackingStore';
 import { useDirections } from './useDirections';
 import { useGpsFixes } from './useGpsFixes';
 import { useRideAscent } from './useRideAscent';
+import { useTrackingBrightness } from './useTrackingBrightness';
+
+/** The kept brightness choice and the way to change it. */
+export type BrightnessSetting = {
+  choice: BrightnessChoice;
+  onChoose: (choice: BrightnessChoice) => void;
+};
+
+const NO_SETTING: BrightnessSetting = { choice: 'auto', onChoose: () => {} };
 
 export function TrackingSession({
   source,
   climb,
   zone,
   name,
+  brightness = NO_SETTING,
 }: {
   source: TrackingSource;
   /** The ascent along the route; null: unknown ("—"). */
@@ -51,6 +63,8 @@ export function TrackingSession({
   zone: Zone | null;
   /** The name of the route, shown on the end screen. */
   name?: string;
+  /** The brightness setting of the app (kept in settings.json). */
+  brightness?: BrightnessSetting;
 }) {
   const router = useRouter();
   const [{ store, dispatch }] = useState<TrackingStore>(() =>
@@ -58,6 +72,21 @@ export function TrackingSession({
   );
   const status = useSelector(store, (s) => s.status);
   const end = useSelector(store, (s) => s.end);
+  const imminent = useSelector(store, (s) => panelOf(s).imminent);
+  const waiting = useSelector(store, (s) => panelOf(s).kind === 'waiting');
+  const [settingsOpen, setSettingsOpen] = useState(false);
+
+  useTrackingBrightness(brightness.choice, status);
+
+  // The settings panel closes by itself when the guidance panel turns yellow.
+  // Opened while it is already yellow, it stays until the next direction.
+  // Waiting for the GPS does not count as "not yellow": a first position
+  // already at 100 m or less is not a passage to yellow.
+  const wasImminent = useRef(imminent || waiting);
+  useEffect(() => {
+    if (imminent && !wasImminent.current) setSettingsOpen(false);
+    wasImminent.current = imminent || waiting;
+  }, [imminent, waiting]);
 
   useDirections(source, dispatch);
   // The GPS is on while tracking: off in the background and after the end.
@@ -100,7 +129,11 @@ export function TrackingSession({
       { cancelable: true },
     );
   }, [dispatch]);
-  usePreventRemove(status !== 'ended', askFinish);
+  // The way back of Android closes the settings panel first.
+  usePreventRemove(
+    status !== 'ended',
+    settingsOpen ? () => setSettingsOpen(false) : askFinish,
+  );
 
   // Under 100 m ridden, no summary: back to the Infos screen.
   useEffect(() => {
@@ -132,6 +165,9 @@ export function TrackingSession({
       climb={climb}
       zone={zone}
       onFinish={askFinish}
+      brightness={brightness}
+      settingsOpen={settingsOpen}
+      onSettingsOpen={setSettingsOpen}
     />
   );
 }
@@ -170,12 +206,18 @@ function ActiveTracking({
   climb,
   zone,
   onFinish,
+  brightness,
+  settingsOpen,
+  onSettingsOpen,
 }: {
   store: TrackingStore['store'];
   source: TrackingSource;
   climb: ClimbProfile | null;
   zone: Zone | null;
   onFinish: () => void;
+  brightness: BrightnessSetting;
+  settingsOpen: boolean;
+  onSettingsOpen: (open: boolean) => void;
 }) {
   useKeepAwake('tracking');
   const panel = useSelector(store, panelOf, { compare: shallowEqual });
@@ -183,6 +225,9 @@ function ActiveTracking({
   const climbLeft = useSelector(store, (s) =>
     formatClimbLeft(remainingClimbM(climb, s.line, s.placement)),
   );
+  // The panel hides "Reste": the camera keeps the position above the panel.
+  const [panelHeight, setPanelHeight] = useState(0);
+  const closePanel = useCallback(() => onSettingsOpen(false), [onSettingsOpen]);
   return (
     <View style={styles.screen}>
       <GuidancePanel panel={panel} />
@@ -190,6 +235,13 @@ function ActiveTracking({
         zone={zone}
         store={store}
         source={source}
+        bottomInset={settingsOpen ? panelHeight : 0}
+        side={
+          <SettingsGear
+            open={settingsOpen}
+            onPress={() => onSettingsOpen(!settingsOpen)}
+          />
+        }
         bottom={
           <Pressable
             testID="tracking-finish"
@@ -203,7 +255,16 @@ function ActiveTracking({
           </Pressable>
         }
       />
-      <TrackingFooter remaining={remaining} climbLeft={climbLeft} />
+      {settingsOpen ? (
+        <TrackingSettingsPanel
+          choice={brightness.choice}
+          onChoose={brightness.onChoose}
+          onClose={closePanel}
+          onLayout={(e) => setPanelHeight(e.nativeEvent.layout.height)}
+        />
+      ) : (
+        <TrackingFooter remaining={remaining} climbLeft={climbLeft} />
+      )}
     </View>
   );
 }

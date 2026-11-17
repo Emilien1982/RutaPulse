@@ -7,6 +7,9 @@ export const fr = {
     'Téléchargez une zone pour voir les sentiers, même sans réseau.',
   'map.chooseZone': 'Choisir une zone',
   'map.recenter': 'Recentrer sur ma position',
+  'map.recenterFollowing': 'La carte suit ma position',
+  'map.recenterRefused': 'Position désactivée',
+  'map.recenterRefusedHint': "Touchez pour l'autoriser dans les réglages",
   'map.outsideZone': 'Vous êtes hors de la zone téléchargée',
   'map.locationOffTitle': 'Position désactivée',
   'map.locationOffText':
@@ -125,6 +128,13 @@ export const fr = {
   'settings.wifiOnly': 'Télécharger en Wi-Fi seulement',
   'settings.wifiOnlyHelp':
     'Sans Wi-Fi, les zones attendent. Une zone pèse environ 100 Mo.',
+  'settings.tracking': 'Pendant le suivi',
+  'settings.brightness': "Luminosité de l'écran",
+  'settings.brightnessAuto': 'Automatique',
+  'settings.brightnessMax': 'Maximum',
+  'settings.brightnessHelp':
+    '\u202F: plus lisible au soleil, mais la batterie baisse plus vite.',
+  'settings.brightnessAlso': 'Se change aussi pendant le suivi.',
   'zones.title': 'Zones hors ligne',
   'zones.sectionInstalled': 'Sur le téléphone',
   'zones.sectionAvailable': 'Disponibles',
@@ -392,6 +402,8 @@ export const fr = {
   'tracking.remaining': 'Reste',
   'tracking.climbLeft': 'D+ restant',
   'tracking.finish': 'Terminer',
+  'tracking.settings': 'Réglages du suivi',
+  'tracking.close': 'Fermer',
   'tracking.finishTitle': 'Terminer la sortie\u202F?',
   'tracking.finishText':
     "Le suivi s'arrête et le résumé de la sortie s'affiche.",

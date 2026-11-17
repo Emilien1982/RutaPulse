@@ -1,0 +1,15 @@
+# iOS : dans le panneau, choisir Automatique ; l'onglet Réglages doit le montrer.
+appId: fr.rutapulse.app
+---
+- tapOn:
+    id: 'tracking-gear'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-settings-panel'
+    timeout: 5000
+- tapOn: 'Automatique'
+- takeScreenshot: ios-08-panneau-automatique
+- tapOn:
+    id: 'tracking-settings-close'
+- tapOn:
+    id: 'tracking-finish'

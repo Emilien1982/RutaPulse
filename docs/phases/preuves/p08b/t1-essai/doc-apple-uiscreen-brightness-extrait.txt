@@ -1,0 +1,3 @@
+Source: https://developer.apple.com/documentation/uikit/uiscreen/brightness (donnees JSON https://developer.apple.com/tutorials/data/documentation/uikit/uiscreen/brightness.json), consultee le 16 novembre 2026
+The brightness level of the screen.
+This property is only supported on the main screen. The value of this property is a number between  and , inclusive, where  is the minimum brightness and  is the maximum brightness.Brightness changes remain in effect until the person locks their device, even if the person closes your app before then. The next time the person unlocks the device, the system restores the brightness setting to the original value in Settings or Control Center.In visionOS, setting this property has no effect.

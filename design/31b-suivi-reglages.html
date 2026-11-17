@@ -21,8 +21,20 @@
   - Fermer : bouton « Fermer », glisser le panneau vers le bas, ou retour
     d'Android. Retoucher la roue dentée le ferme aussi.
   - Roue dentée en noir tant que le panneau est ouvert : on voit d'où il vient.
-  - Même réglage que l'écran Réglages (v1/80-reglages.html) : le choix reste
-    pour les sorties suivantes. (Question ouverte, voir LISEZMOI.)
+  - Même réglage que l'écran Réglages (v1/80-reglages.html), mêmes mots :
+    « Luminosité de l'écran », « Automatique » / « Maximum », même phrase
+    d'explication. Changer l'un change l'autre ; le choix reste pour les
+    sorties suivantes (décision 2 des retouches, 21 octobre 2026).
+    « Automatique » par défaut.
+  - Le choix s'applique tout de suite, sans valider.
+  - Se ferme seul quand le panneau du haut passe au jaune (moins de 100 m
+    d'une direction ou de l'arrivée ; décision 3 des retouches). Ouvert alors
+    que le panneau est déjà jaune : il reste ouvert pour cette direction-là.
+  - Seule la luminosité en v1 (choix 4 du pilotage, phase 8b).
+  Phase 8b (16 novembre 2026, T1) : ce commentaire complété ; explication
+  alignée sur v1/80 ; attribution courte « © OpenStreetMap » + « i », comme
+  sur l'écran 30 (B1 de la phase 8a) ; libellé du bouton « Réglages du
+  suivi » avec son état déplié.
   Pas de rayures ni de crème ici (décision 7) : c'est un écran de navigation.
   Valeurs : design/tokens.md. Carte : la même que l'écran 30, décalée vers le
   haut ; dessin simplifié en SVG.
@@ -53,11 +65,14 @@ svg.carte{position:absolute;left:0;top:92px;width:390px;height:438px}
 svg.carte *{vector-effect:non-scaling-stroke}
 .courbes{opacity:.5}
 .position{position:absolute;left:175px;top:379px;width:40px;height:40px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
-.halo{position:absolute;left:165px;top:369px;width:60px;height:60px;border-radius:50%;background:rgba(26,115,232,.16)}
+.halo{position:absolute;left:165px;top:369px;width:60px;height:60px;border-radius:50%;background:rgba(26,115,232,.16);border:1px solid rgba(26,115,232,.40)}
 .boussole{position:absolute;right:16px;top:280px;width:64px;height:64px;border-radius:32px;background:var(--fond);border:1px solid var(--contour-flottant);box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
 .reglages{position:absolute;right:24px;top:368px;width:48px;height:48px;border-radius:24px;background:#111;border:1px solid #111;box-shadow:var(--ombre);display:flex;align-items:center;justify-content:center}
 .reglages::before{content:"";position:absolute;inset:-8px;border-radius:32px}
-.attribution{position:absolute;left:8px;top:430px;font-size:11px;color:#4A4A4A;background:rgba(255,255,255,.75);padding:1px 4px;border-radius:4px}
+/* Attribution courte (comme l'écran 30) : « © OpenStreetMap » + « i », zone de toucher de 48 autour du « i » */
+.attribution{position:absolute;left:8px;top:424px;display:flex;align-items:center;gap:4px;font-size:11px;color:#4A4A4A;background:rgba(255,255,255,.75);padding:1px 2px 1px 5px;border-radius:9px}
+.attribution i{position:relative;font-style:normal;width:16px;height:16px;border-radius:8px;border:1.5px solid #4A4A4A;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.attribution i::before{content:"";position:absolute;inset:-16px;border-radius:24px}
 
 /* Panneau des réglages du suivi */
 .panneau{position:absolute;left:0;right:0;top:452px;bottom:0;background:var(--fond);border-top:3px solid #111;border-radius:28px 28px 0 0;box-shadow:0 -2px 10px rgba(0,0,0,.18);padding:0 16px;z-index:12}
@@ -135,11 +150,11 @@ svg.carte *{vector-effect:non-scaling-stroke}
   <svg width="36" height="36" viewBox="0 0 36 36" style="transform:rotate(110deg)"><path d="M18 3 L24 18 L12 18 Z" fill="#B3261E"/><path d="M18 33 L24 18 L12 18 Z" fill="#4A4A4A"/><text x="18" y="15" font-size="8" font-weight="800" fill="#fff" text-anchor="middle" font-family="-apple-system,Roboto,sans-serif">N</text></svg>
 </div>
 
-<div class="reglages" role="button" aria-expanded="true" aria-label="Réglages du suivi, ouverts ; toucher pour fermer">
+<div class="reglages" role="button" aria-expanded="true" aria-label="Réglages du suivi">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" aria-hidden="true"><circle cx="12" cy="12" r="8.6" stroke-width="3.2" stroke-dasharray="3.4 3.35"/><circle cx="12" cy="12" r="6" stroke-width="3.2"/></svg>
 </div>
 
-<div class="attribution">© OpenStreetMap © OpenMapTiles © Mapterhorn © IGN</div>
+<div class="attribution">© OpenStreetMap <i role="button" aria-label="Afficher les attributions de la carte">i</i></div>
 
 <div class="panneau" role="dialog" aria-label="Réglages du suivi">
   <div class="poignee" aria-hidden="true"></div>
@@ -149,7 +164,7 @@ svg.carte *{vector-effect:non-scaling-stroke}
     <div role="radio" aria-checked="false">Automatique</div>
     <div class="choisi" role="radio" aria-checked="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor" stroke="none"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></svg>Maximum</div>
   </div>
-  <div class="explication">Plus lisible au soleil, mais la batterie baisse plus vite.</div>
+  <div class="explication"><b>Maximum</b> : plus lisible au soleil, mais la batterie baisse plus vite.</div>
   <div class="fermer" role="button">Fermer</div>
 </div>
 

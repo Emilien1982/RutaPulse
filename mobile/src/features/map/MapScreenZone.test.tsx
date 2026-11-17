@@ -31,10 +31,15 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       if (ref) ref.current = { easeTo: mockEaseTo };
       return null;
     },
+    Images: () => null,
     Layer: () => null,
-    GeoJSONSource: () => null,
-    UserLocation: () => <Text>blue dot</Text>,
-    useCurrentPosition: () => mockPosition,
+    // The dot of the user is the source "position", with a point.
+    GeoJSONSource: (props: { id: string; data: { type: string } }) =>
+      props.id === 'position' && props.data.type === 'Feature' ? (
+        <Text>blue dot</Text>
+      ) : null,
+    useCurrentPosition: (options?: { enabled?: boolean }) =>
+      options?.enabled ? mockPosition : undefined,
   };
 });
 jest.mock('expo-location', () => ({
@@ -141,12 +146,14 @@ describe('MapScreen with a ready zone', () => {
   });
 
   it('shows the blue dot only with the permission', async () => {
+    mockPosition = { coords: { longitude: 6.1844, latitude: 48.6921 } };
     await renderScreen();
     expect(screen.getByText('blue dot')).toBeTruthy();
   });
 
   it('shows no blue dot when the permission is refused', async () => {
     mockPermission = { granted: false };
+    mockPosition = { coords: { longitude: 6.1844, latitude: 48.6921 } };
     await renderScreen();
     expect(screen.queryByText('blue dot')).toBeNull();
   });

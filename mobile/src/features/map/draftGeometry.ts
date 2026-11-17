@@ -59,6 +59,8 @@ export function mainGeometry(
     } else if (state?.status === 'done' && state.result.shape.length > 1) {
       const { shape } = state.result;
       lines.push(line('path', shape));
+      // A leg kept from a trace has no link (ADR 0021, section 10.2).
+      if (state.trace) continue;
       for (const segment of linkSegments(leg.from, leg.to, shape)) {
         links.push(line('path', segment));
       }

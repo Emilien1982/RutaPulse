@@ -30,6 +30,7 @@ jest.mock('@maplibre/maplibre-react-native', () => {
       if (ref) ref.current = { easeTo: mockEaseTo };
       return null;
     },
+    Images: () => null,
     Layer: () => null,
     GeoJSONSource: () => null,
     UserLocation: () => <Text>blue dot</Text>,
@@ -81,8 +82,11 @@ const tree = () => (
     <MapScreen />
   </QueryClientProvider>
 );
+// The name of the button follows its state: refused, it says so (ADR 0021, 9.4).
 const locateButton = () =>
-  screen.getByRole('button', { name: 'Recentrer sur ma position' });
+  screen.getByRole('button', {
+    name: /Recentrer sur ma position|Position désactivée/,
+  });
 
 async function open() {
   const view = await render(tree());

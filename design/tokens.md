@@ -77,7 +77,8 @@ Retirés le 21 octobre 2026, car plus aucun écran ne les utilise (les écrans
 | `suivi.panneau-titre` | 24, graisse 800 | « Réglages du suivi » |
 
 La roue dentée et le panneau arrivent en phase 8b. En 8a, l'écran de suivi
-n'a pas de roue dentée.
+n'a pas de roue dentée. Depuis le 16 novembre 2026, la maquette 30 la montre
+sur tous ses écrans.
 
 ### États du suivi (écran 30, phase 8a)
 
@@ -399,12 +400,26 @@ passent par ces valeurs au zoom 15.
 
 | Jeton | Valeur |
 |---|---|
-| `marqueur.position` | Flèche de cap de 32 à l'arrêt, 40 en suivi, bord blanc de 3 |
+| `marqueur.position` | Rond `carte.position`, bord blanc de 3 : 32 en tout sur l'onglet Carte et la création (MapLibre : `circle-radius` 13, `circle-stroke-width` 3), 40 en suivi. Flèche de cap blanche **dans** le rond, qui tourne selon le cap (le nord reste en haut sur l'onglet Carte). Une seule image `fleche-cap` de 40 × 40, flèche `M20 8 L28.5 28 L20 23.5 L11.5 28 Z` : `icon-size` 0,8 sur l'onglet Carte (flèche de 13,6 × 16), 1 en suivi. Cap inconnu : même rond, sans flèche. Précisé le 16 novembre 2026 (phase 8b, maquette v1/90) |
+| `marqueur.position-halo` | Rond dont le rayon est la précision du GPS, exact (converti selon le zoom et la latitude, pas la formule fixe de MapLibre) ; remplissage `carte.position` à 16 %, bord de 1 `carte.position` à 40 %. Sous le rond : caché quand la précision est bonne, c'est voulu. Ajouté le 16 novembre 2026 (phase 8b) |
 | `marqueur.point` | Rond de 28, bord de 3, chiffre de 15 en gras |
 | `marqueur.point-deplace` | Rond de 40, chiffre de 18, halo de 8 (`carte.itineraire` à 22 %), ombre 0 6 12 noir à 35 %. Aspect du **point choisi** : il l'a pendant qu'on le glisse, et après, tant qu'il reste choisi (le point glissé devient le point choisi, phase 4). Précisé le 2 novembre 2026 (phase 5, passe iOS) |
 | `marqueur.point-discret` | Rond de 14 sans chiffre : fond `#FFFFFF`, bord de 3 `carte.itineraire` (MapLibre : `circle-radius` 4, `circle-stroke-width` 3). Remplace **tous** les `marqueur.point` quand la distance médiane à l'écran entre deux points voisins est sous 44 (28 + 16). Le départ, l'arrivée et le point choisi gardent leur marqueur. Ajouté le 9 novembre 2026 (phase 7 : 35 points sur un circuit de 35 km se chevauchaient, essai T1) |
 | `marqueur.depart-arrivee` | Rond de 32. Boucle (départ et arrivée au même endroit) : le départ est dessiné au-dessus |
 | `marqueur.depart-arrivee-vignette` | Rond de 16 (MapLibre : `circle-radius` 8), bord `#FFFFFF` de 2 (`circle-stroke-width` 2), fond `carte.depart` ou `carte.arrivee`, **sans pictogramme**. Petites cartes seulement (arche de l'écran 20) : un rond de 32 y cacherait un tracé de quelques km. Ajouté le 2 novembre 2026 (phase 5, T8) |
+
+## Bouton de recentrage (onglet Carte, création)
+
+Ajouté le 16 novembre 2026 (phase 8b, maquette `v1/90`, écrans 1 à 6).
+Rond de 48 (`cible.arret`), en haut à droite, à 16 du bord ; viseur de 24
+(cercle de 7, point de 2,5, quatre traits de 3, trait 2,3).
+
+| Jeton | Valeur | Usage |
+|---|---|---|
+| `hn.recentrer` | Fond `hn.creme-clair`, `hn.bord`, `hn.ombre`, viseur `hn.brun` | Au repos : la carte ne suit pas |
+| `hn.recentrer-suit` | Fond `hn.brun`, même bord, viseur `hn.creme` (12,3:1) | « Suit ma position » : la carte suit (onglet Carte seulement) |
+| `hn.recentrer-refuse` | Comme au repos ; viseur barré : barre de (4, 4) à (20, 20), `hn.brun` 2,3 sur un trait `hn.creme-clair` de 5 | Position refusée |
+| `hn.message-carte` | Fond `hn.creme-clair`, `hn.bord`, rayon 18, au moins 48 de haut, texte `texte.secondaire` centré en hauteur ; à 16 du bord gauche, 80 du bord droit, haut à 60 | « Vous êtes hors de la zone téléchargée » |
 
 ## Ombres
 

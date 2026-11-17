@@ -1,0 +1,100 @@
+# C14 (phase 8b), Android (emulator-5584, version release, mode avion) :
+# démarrer le suivi, ouvrir le panneau (roue dentée), choisir « Maximum »,
+# le retrouver dans l'onglet Réglages ; ouvrir l'onglet Carte et voir le
+# bouton « La carte suit ma position ».
+# Prérequis :
+#  - mode avion : adb -s emulator-5584 shell cmd connectivity airplane-mode enable
+#    (à remettre à la fin avec « disable ») ;
+#  - GPS du suivi : adb -s emulator-5584 emu geo fix 5.984049 48.830921
+#  - position de l'onglet Carte (l'émulateur n'envoie pas geo fix à l'onglet,
+#    voir docs/phases/preuves/p08b/t3/LISEZMOI.md) : fournisseur d'essai
+#    « fused », docs/phases/preuves/p08b/t3/a-mock.sh 48.830921 5.984049
+#    ET renvoyé une fois par seconde pendant le parcours (le fournisseur ne
+#    livre une position qu'à une demande déjà ouverte) :
+#    python3 -I docs/phases/preuves/p08b/t5/a-mock-rejeu.py docs/phases/preuves/p08b/t5/trace-fixe-depart-android.json 0 300 30
+# Pas de boucle ni de « repeat » : seulement des attentes (extendedWaitUntil).
+appId: fr.rutapulse.app
+---
+- launchApp:
+    clearState: false
+    stopApp: true
+- extendedWaitUntil:
+    visible:
+      id: 'new-route-button'
+    timeout: 30000
+# Point de départ connu : « Automatique » dans l'onglet Réglages.
+- tapOn: 'Réglages'
+- extendedWaitUntil:
+    visible: 'Luminosité.*'
+    timeout: 10000
+- tapOn: 'Automatique'
+- assertVisible:
+    text: 'Automatique'
+    checked: true
+- takeScreenshot: android-p8b-c14-01-reglages-automatique
+- tapOn: 'Itinéraires'
+- extendedWaitUntil:
+    visible: 'Petite Suisse Lorraine à VTT \(5\)'
+    timeout: 15000
+- tapOn: 'Petite Suisse Lorraine à VTT \(5\)'
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+- tapOn:
+    id: 'info-start'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-panel'
+    timeout: 20000
+- assertVisible:
+    id: 'tracking-gear'
+- takeScreenshot: android-p8b-c14-02-suivi-roue-fermee
+- tapOn:
+    id: 'tracking-gear'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-settings-panel'
+    timeout: 5000
+- assertVisible: 'Luminosité de l.écran'
+- takeScreenshot: android-p8b-c14-03-panneau-automatique
+- tapOn: 'Maximum'
+- assertVisible:
+    text: 'Maximum'
+    checked: true
+- takeScreenshot: android-p8b-c14-04-panneau-maximum
+- tapOn:
+    id: 'tracking-settings-close'
+- extendedWaitUntil:
+    notVisible:
+      id: 'tracking-settings-panel'
+    timeout: 5000
+- tapOn:
+    id: 'tracking-finish'
+- extendedWaitUntil:
+    visible: 'Terminer la sortie.*'
+    timeout: 10000
+- tapOn:
+    id: 'android:id/button1'
+# Aucun trajet parcouru : le suivi se ferme sans écran « Sortie terminée ».
+- extendedWaitUntil:
+    visible:
+      id: 'info-start'
+    timeout: 15000
+# Le choix est retrouvé dans l'onglet Réglages.
+- tapOn: 'Itinéraires'
+- tapOn: 'Réglages'
+- extendedWaitUntil:
+    visible: 'Luminosité.*'
+    timeout: 10000
+- assertVisible: 'Pendant le suivi'
+- assertVisible:
+    text: 'Maximum'
+    checked: true
+- takeScreenshot: android-p8b-c14-05-reglages-maximum
+# Onglet Carte : le bouton dit que la carte suit la position.
+- tapOn: 'Carte'
+- extendedWaitUntil:
+    visible: 'La carte suit ma position'
+    timeout: 30000
+- takeScreenshot: android-p8b-c14-06-carte-suit-ma-position

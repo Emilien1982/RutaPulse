@@ -1,0 +1,16 @@
+avant demarrer:   Display Brightness=0.3976378
+apres demarrer (Maximum):   Display Brightness=1.0
+panneau -> Automatique:   Display Brightness=0.3976378
+panneau -> Maximum:   Display Brightness=1.0
+suivi, Maximum:   Display Brightness=1.0
+arriere-plan (accueil):   Display Brightness=0.3976378
+retour au premier plan:   Display Brightness=1.0
+avant Terminer:   Display Brightness=1.0
+resume Sortie terminee:   Display Brightness=0.3976378
+2e suivi (choix Maximum gardé):   Display Brightness=1.0
+2e suivi, panneau -> Automatique:   Display Brightness=1.0
+2e suivi, panneau -> Automatique (apres course de la roue):   Display Brightness=0.3976378
+fin du suivi en Automatique:   Display Brightness=0.3976378
+3e suivi en Automatique:   Display Brightness=0.3976378
+
+# Note du testeur : la ligne « 2e suivi, panneau -> Automatique: 1.0 » est le cas de l'observation 1 du LISEZMOI : le panneau s'était fermé seul au premier point (déjà jaune), le toucher « Automatique » est tombé sur la carte. La ligne suivante (« apres course de la roue ») est la mesure valable.

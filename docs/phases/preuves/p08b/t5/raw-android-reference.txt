@@ -1,0 +1,7 @@
+reference run 1: 24428 24457 I ReactNativeJS: C13T5 MAP loaded +1022ms
+reference run 2: 24546 24574 I ReactNativeJS: C13T5 MAP loaded +1137ms
+reference run 3: 24668 24695 I ReactNativeJS: C13T5 MAP loaded +1021ms
+reference run 4: 24788 24817 I ReactNativeJS: C13T5 MAP loaded +1145ms
+reference run 5: 24913 24940 I ReactNativeJS: C13T5 MAP loaded +1247ms
+reference run 6: 25035 25063 I ReactNativeJS: C13T5 MAP loaded +1230ms
+reference run 7: 25158 25184 I ReactNativeJS: C13T5 MAP loaded +1130ms

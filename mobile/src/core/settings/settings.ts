@@ -1,17 +1,30 @@
-// App settings stored in settings.json: see ADR 0013, section 6.
+// App settings stored in settings.json: see ADR 0013, section 6, and
+// ADR 0021, section 8.5.
 
-export type Settings = { wifiOnly: boolean };
+import type { BrightnessChoice } from '@/core/tracking/brightness';
 
-export const defaultSettings: Settings = { wifiOnly: true };
+export type Settings = { wifiOnly: boolean; brightness: BrightnessChoice };
 
-/** Missing or unreadable file: default values. */
+export const defaultSettings: Settings = { wifiOnly: true, brightness: 'auto' };
+
+/**
+ * Missing or unreadable file: default values. Each field is read on its own:
+ * a missing or wrong one takes its default and does not clear the other.
+ */
 export function parseSettings(text: string | null): Settings {
   if (text === null) return defaultSettings;
   try {
     const value: unknown = JSON.parse(text);
     if (typeof value === 'object' && value !== null) {
-      const wifiOnly = (value as Record<string, unknown>).wifiOnly;
-      if (typeof wifiOnly === 'boolean') return { wifiOnly };
+      const { wifiOnly, brightness } = value as Record<string, unknown>;
+      return {
+        wifiOnly:
+          typeof wifiOnly === 'boolean' ? wifiOnly : defaultSettings.wifiOnly,
+        brightness:
+          brightness === 'auto' || brightness === 'max'
+            ? brightness
+            : defaultSettings.brightness,
+      };
     }
   } catch {
     // unreadable: fall through to the defaults

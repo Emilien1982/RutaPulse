@@ -1,0 +1,11 @@
+1 fixe, etat:
+Assert that "La carte suit ma position" is visible... COMPLETED
+Parsed 40 waypoints
+2 trace, etat:
+Assert that "La carte suit ma position" is visible... COMPLETED
+Swipe from (50%, 60%) to (50%, 40%) in 400 ms... COMPLETED
+3 apres glissement, etat repos:
+Assert that "Recentrer sur ma position" is visible... COMPLETED
+Tap on point (90%, 10%)... COMPLETED
+4 apres bouton, etat suit:
+Assert that "La carte suit ma position" is visible... COMPLETED

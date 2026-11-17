@@ -15,6 +15,13 @@ jest.mock('@modules/valhalla-route', () => ({
   },
 }));
 
+// The brightness of the screen (ADR 0021, section 8): no screen under Jest.
+jest.mock('expo-brightness', () => ({
+  getBrightnessAsync: jest.fn(() => Promise.resolve(0.5)),
+  setBrightnessAsync: jest.fn(() => Promise.resolve()),
+  restoreSystemBrightnessAsync: jest.fn(() => Promise.resolve()),
+}));
+
 // TanStack Query keeps one timer per query (`gcTime`: 5 minutes, 30 for the
 // legs and the infos). A live timer keeps Jest alive long after the last test
 // ("A worker process has failed to exit gracefully"). Its timers are made

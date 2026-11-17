@@ -1,0 +1,14 @@
+# iOS : pendant le suivi, ouvrir le panneau, choisir Automatique, fermer.
+appId: fr.rutapulse.app
+---
+- tapOn:
+    id: 'tracking-gear'
+- extendedWaitUntil:
+    visible:
+      id: 'tracking-settings-panel'
+    timeout: 5000
+- takeScreenshot: ios-06b-panneau-ouvert-en-route
+- tapOn: 'Automatique'
+- takeScreenshot: ios-08-panneau-automatique
+- tapOn:
+    id: 'tracking-settings-close'

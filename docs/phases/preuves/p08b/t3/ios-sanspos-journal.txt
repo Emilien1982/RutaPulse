@@ -1,0 +1,16 @@
+repos avant toucher ?
+Assert that "Recentrer sur ma position" is visible... FAILED
+Assertion is false: "Recentrer sur ma position" is visible
+Tap on point (90%, 10%)... COMPLETED
+apres toucher sans position: suit ?
+Assert that "La carte suit ma position" is visible... COMPLETED
+Swipe from (50%, 60%) to (50%, 40%) in 400 ms... COMPLETED
+apres glissement: repos ?
+Assert that "Recentrer sur ma position" is visible... COMPLETED
+suit ?
+Assert that "La carte suit ma position" is visible... FAILED
+Assertion is false: "La carte suit ma position" is visible
+apres 1re position: 
+Assert that "Recentrer sur ma position" is visible... COMPLETED
+Assert that "La carte suit ma position" is visible... FAILED
+Assertion is false: "La carte suit ma position" is visible

@@ -1,0 +1,328 @@
+/* eslint-disable */
+// THROWAWAY test screen for the phase 8b essay (T1). Not for production.
+import {
+  Camera,
+  GeoJSONSource,
+  Images,
+  Layer,
+  Map,
+  NativeUserLocation,
+  UserLocation,
+  type CameraRef,
+} from '@maplibre/maplibre-react-native';
+import * as Brightness from 'expo-brightness';
+import * as Location from 'expo-location';
+import { useLocalSearchParams } from 'expo-router';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { AppState, Platform, Pressable, Text, View } from 'react-native';
+
+import { zoneFileUri } from '@/shared-data/zones/zoneFileUri';
+import { useZoneInService } from '@/shared-data/zones/zoneInService';
+import { buildMapStyle } from '@/features/map/mapStyle';
+import { glyphsDirUri, useGlyphsReady } from '@/features/map/useGlyphsReady';
+
+const T0 = Date.now();
+const log = (...a: unknown[]) =>
+  console.log('E8B', `+${Date.now() - T0}ms`, ...a);
+
+async function readBrightness(tag: string) {
+  try {
+    const b = await Brightness.getBrightnessAsync();
+    const sys =
+      Platform.OS === 'android'
+        ? await Brightness.getSystemBrightnessAsync()
+        : null;
+    const using =
+      Platform.OS === 'android'
+        ? await Brightness.isUsingSystemBrightnessAsync()
+        : null;
+    log('BRIGHT', tag, 'get=', b, 'system=', sys, 'usingSystem=', using);
+  } catch (e) {
+    log('BRIGHT', tag, 'ERROR', String(e));
+  }
+}
+
+function bearing(a: [number, number], b: [number, number]) {
+  const r = Math.PI / 180;
+  const y = Math.sin((b[0] - a[0]) * r) * Math.cos(b[1] * r);
+  const x =
+    Math.cos(a[1] * r) * Math.sin(b[1] * r) -
+    Math.sin(a[1] * r) *
+      Math.cos(b[1] * r) *
+      Math.cos((b[0] - a[0]) * r);
+  return ((Math.atan2(y, x) / r) + 360) % 360;
+}
+
+export default function EssaiScreen() {
+  const params = useLocalSearchParams<{
+    puck?: string;
+    track?: string;
+    bright?: string;
+    zoom?: string;
+  }>();
+  const z0 = Number(params.zoom ?? 14);
+  const puck = params.puck ?? 'js'; // js | native | own
+  const trackMode = params.track ?? 'native'; // native | manual
+  const zone = useZoneInService();
+  const ready = useGlyphsReady();
+  const camera = useRef<CameraRef>(null);
+  const [following, setFollowing] = useState(true);
+  const followRef = useRef(true);
+  followRef.current = following;
+  const [info, setInfo] = useState('...');
+  const [own, setOwn] = useState<any>(null);
+  const last = useRef<[number, number] | null>(null);
+  const firstFix = useRef(false);
+  const before = useRef<number | null>(null);
+
+  const style = useMemo(
+    () =>
+      zone
+        ? buildMapStyle({
+            files: {
+              map: zoneFileUri(zone, 'map.pmtiles'),
+              terrain: zoneFileUri(zone, 'terrain.pmtiles'),
+              contours: zoneFileUri(zone, 'contours.pmtiles'),
+            },
+            glyphsDir: glyphsDirUri(),
+            bbox: zone.bbox,
+          })
+        : null,
+    [zone],
+  );
+
+  // Brightness sequence (point 1)
+  useEffect(() => {
+    log('MOUNT platform', Platform.OS);
+    const sub = AppState.addEventListener('change', (s) => {
+      log('APPSTATE', s);
+      void readBrightness('appstate-' + s);
+    });
+    if (params.bright) {
+      (async () => {
+        await readBrightness('1-start');
+        before.current = await Brightness.getBrightnessAsync();
+        await Brightness.setBrightnessAsync(1);
+        log('BRIGHT set 1 done');
+        await readBrightness('2-after-set-1');
+        await new Promise((r) => setTimeout(r, 4000));
+        await readBrightness('3-before-restore');
+        if (Platform.OS === 'android') await Brightness.restoreSystemBrightnessAsync();
+        else await Brightness.setBrightnessAsync(before.current ?? 0.5);
+        await readBrightness('4-after-restore');
+      })();
+    }
+    return () => sub.remove();
+  }, []);
+
+  // GPS
+  useEffect(() => {
+    let s: Location.LocationSubscription | undefined;
+    (async () => {
+      const p = await Location.requestForegroundPermissionsAsync();
+      log('PERM', p.status);
+      s = await Location.watchPositionAsync(
+        {
+          accuracy: Location.Accuracy.BestForNavigation,
+          timeInterval: 1000,
+          distanceInterval: 0,
+        },
+        (pos) => {
+          const c = pos.coords;
+          const cur: [number, number] = [c.longitude, c.latitude];
+          let h: number | null =
+            c.heading != null && c.heading >= 0 ? c.heading : null;
+          const prev = last.current;
+          let src = 'gps';
+          if (h == null && prev) {
+            const d =
+              Math.hypot(
+                (cur[0] - prev[0]) * 73000,
+                (cur[1] - prev[1]) * 111000,
+              );
+            if (d > 1) {
+              h = bearing(prev, cur);
+              src = 'bearing';
+            }
+          }
+          if (h == null) src = 'none';
+          if (!prev || Math.abs(cur[0] - prev[0]) + Math.abs(cur[1] - prev[1]) > 0)
+            last.current = cur;
+          log(
+            'POS',
+            cur[0].toFixed(5),
+            cur[1].toFixed(5),
+            'hdg=',
+            c.heading,
+            'acc=',
+            c.accuracy,
+            'speed=',
+            c.speed,
+            'used=',
+            h,
+            src,
+          );
+          setInfo(
+            `pos ${cur[1].toFixed(4)},${cur[0].toFixed(4)} hdg=${c.heading} acc=${c.accuracy}`,
+          );
+          const r0 = (c.accuracy ?? 10) / (78271.517 * Math.cos((c.latitude * Math.PI) / 180));
+          setOwn({
+            type: 'Feature',
+            geometry: { type: 'Point', coordinates: cur },
+            properties: h == null ? { r0 } : { r0, heading: h },
+          });
+          if (!firstFix.current) {
+            firstFix.current = true;
+            log('FIRSTFIX');
+          }
+          if (trackMode === 'manual' && followRef.current) {
+            camera.current?.easeTo({
+              center: cur,
+              zoom: z0,
+              duration: 900,
+            });
+          }
+        },
+      );
+    })();
+    return () => s?.remove();
+  }, []);
+
+  if (!zone || !ready || !style) {
+    return <View style={{ flex: 1, backgroundColor: '#eee' }} />;
+  }
+  const [w, s, e, n] = [zone.bbox.lonMin, zone.bbox.latMin, zone.bbox.lonMax, zone.bbox.latMax];
+  return (
+    <View style={{ flex: 1 }}>
+      <Map
+        style={{ flex: 1 }}
+        mapStyle={style}
+        attribution={false}
+        logo={false}
+        compass={false}
+        touchRotate={false}
+        touchPitch={false}
+        onDidFinishLoadingMap={() => log('MAP loaded')}
+        onRegionWillChange={(ev) =>
+          log('REGION will user=', ev.nativeEvent.userInteraction)
+        }
+        onRegionDidChange={(ev) => {
+          const x = ev.nativeEvent;
+          log('REGION did user=', x.userInteraction, 'center=', x.center, 'zoom=', x.zoom);
+          if (x.userInteraction && trackMode === 'manual') {
+            setFollowing(false);
+            log('FOLLOW off (manual, gesture)');
+          }
+        }}
+      >
+        <Camera
+          ref={camera}
+          initialViewState={{
+            center: [(w + e) / 2, (s + n) / 2],
+            zoom: z0,
+          }}
+          trackUserLocation={
+            trackMode === 'native' && following ? 'default' : undefined
+          }
+          onTrackUserLocationChange={(ev) => {
+            const m = ev.nativeEvent.trackUserLocation;
+            log('TRACKCHANGE', m);
+            if (!m) setFollowing(false);
+          }}
+        />
+        {puck === 'js' && <UserLocation accuracy heading animated={false} />}
+        {puck === 'native' && <NativeUserLocation mode="course" />}
+        {puck === 'own' && (
+          <>
+            <Images images={{ arrow: require('./arrow.png') }} />
+            <GeoJSONSource id="own" data={own ?? { type: 'FeatureCollection', features: [] }}>
+              <Layer
+                id="own-halo"
+                type="circle"
+                paint={{
+                  'circle-color': '#1A73E8',
+                  'circle-opacity': 0.2,
+                  'circle-radius': [
+                    'interpolate',
+                    ['exponential', 2],
+                    ['zoom'],
+                    0,
+                    ['get', 'r0'],
+                    22,
+                    ['*', ['get', 'r0'], 4194304],
+                  ],
+                }}
+              />
+              <Layer
+                id="own-arrow"
+                type="symbol"
+                filter={['has', 'heading']}
+                layout={{
+                  'icon-image': 'arrow',
+                  'icon-size': 0.9,
+                  'icon-rotate': ['get', 'heading'],
+                  'icon-rotation-alignment': 'map',
+                  'icon-allow-overlap': true,
+                  'icon-ignore-placement': true,
+                  'icon-anchor': 'center',
+                }}
+              />
+              <Layer
+                id="own-border"
+                type="circle"
+                paint={{ 'circle-radius': 9, 'circle-color': '#fff' }}
+              />
+              <Layer
+                id="own-dot"
+                type="circle"
+                paint={{ 'circle-radius': 6, 'circle-color': '#1A73E8' }}
+              />
+            </GeoJSONSource>
+          </>
+        )}
+      </Map>
+      <View
+        pointerEvents="box-none"
+        style={{ position: 'absolute', top: 120, left: 8, right: 8 }}
+      >
+        <Text style={{ backgroundColor: '#fffc', fontSize: 11 }}>
+          {`puck=${puck} track=${trackMode} follow=${following}\n${info}`}
+        </Text>
+        <View style={{ flexDirection: 'row', gap: 6, marginTop: 4 }}>
+          <Pressable
+            testID="btn-follow"
+            onPress={() => {
+              log('BUTTON follow');
+              setFollowing(true);
+            }}
+            style={{ backgroundColor: following ? '#6b4423' : '#ddd', padding: 10 }}
+          >
+            <Text style={{ color: following ? '#fff' : '#000' }}>SUIT</Text>
+          </Pressable>
+          <Pressable
+            testID="btn-max"
+            onPress={async () => {
+              before.current ??= await Brightness.getBrightnessAsync();
+              await Brightness.setBrightnessAsync(1);
+              await readBrightness('btn-max');
+            }}
+            style={{ backgroundColor: '#ddd', padding: 10 }}
+          >
+            <Text>MAX</Text>
+          </Pressable>
+          <Pressable
+            testID="btn-restore"
+            onPress={async () => {
+              if (Platform.OS === 'android') await Brightness.restoreSystemBrightnessAsync();
+              else await Brightness.setBrightnessAsync(before.current ?? 0.5);
+              await readBrightness('btn-restore');
+            }}
+            style={{ backgroundColor: '#ddd', padding: 10 }}
+          >
+            <Text>RENDRE</Text>
+          </Pressable>
+        </View>
+      </View>
+    </View>
+  );
+}

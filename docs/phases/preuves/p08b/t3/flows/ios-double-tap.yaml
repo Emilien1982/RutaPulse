@@ -1,0 +1,4 @@
+appId: fr.rutapulse.app
+---
+- doubleTapOn:
+    point: 50%, 45%

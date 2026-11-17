@@ -49,11 +49,8 @@ import {
   RouteSummarySheet,
   RouteTopBar,
 } from './RouteSheets';
-import {
-  RecenterButton,
-  UserPositionLayers,
-  useMapPosition,
-} from './MapPosition';
+import { RecenterButton, useMapPosition } from './MapPosition';
+import { UserPuckLayers } from './UserPuckLayers';
 import { useDragPreviewStore } from './useDragPreview';
 import { useLegInfos } from './useLegInfos';
 import { sameLegs, useLegResults } from './useLegResults';
@@ -261,7 +258,11 @@ function DraftView({ opening }: { opening?: OpeningView }) {
   const discrete =
     fromTrace &&
     (shownZoom === null || discreteMarkers(draft.points, shownZoom));
-  const { granted, recenter } = useMapPosition(zone, camera, zoom);
+  const { granted, answered, feature, recenter } = useMapPosition(
+    zone,
+    camera,
+    zoom,
+  );
   const trails = useTrails(zone);
   const [sheetHeight, setSheetHeight] = useState(0);
 
@@ -639,7 +640,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
           legs={legs}
           draggedId={draggedId}
         />
-        <UserPositionLayers granted={granted} />
+        <UserPuckLayers feature={feature} />
         <DraftMarkers
           points={draft.points}
           chosenId={chosenId}
@@ -656,7 +657,7 @@ function DraftView({ opening }: { opening?: OpeningView }) {
       </ZoneBaseMap>
 
       <RecenterButton
-        granted={granted}
+        state={answered && !granted ? 'refused' : 'rest'}
         top={barHeight + 64}
         onPress={recenter}
       />
