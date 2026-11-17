@@ -31,7 +31,7 @@
 - **Arrivée** : le panneau du haut prend la même distance que « Reste » ;
   sous 30 m, il dit seulement « Arrivée ».
 - `npm run verify` : 270 suites, **3 052 tests** réussis. `pytest` :
-  **280 tests** réussis (fabrique inchangée). CI : voir plus bas.
+  **280 tests** réussis (fabrique inchangée). CI verte (run plus bas).
 - Rien n'a ralenti : l'onglet Carte s'ouvre en 1108 ms sur Android (1137
   avant) et 110 ms sur iOS (118 avant).
 
@@ -65,11 +65,11 @@ Chaque dossier a son `LISEZMOI.md`.
 | C13 Rapidité | tenu ; temps par position mesuré en Node seulement | `p08b/t5/c13-ouverture-carte.txt` (onglet Carte, 7 ouvertures à froid par version) ; `p08b/t5/c13-depart-android-brut.txt` (départ de 1,75 à 1,89 s pour 34,9 km, adb compris) ; `c13-depart-ios-run1-commands.json` à `run3` (43 km, environ 1 s net) ; `p08b/t5/c13-banc-8a.txt` (1,0 ms au plus par position) |
 | C14 Maestro | tenu : Android en mode avion (37 étapes), iOS sans (32 étapes) | `p08b/t5/maestro-android-c14.txt`, `p08b/t5/maestro-ios-c14.txt` |
 | C15 verify, pytest, CI | tenu | `p08b/t5/verify-testeur.txt` (270 suites, 3 052 tests) ; `p08b/pytest.txt` (280 tests) ; run de la CI plus bas |
-| C16 Captures comparées | tenu ; aucun écart bloquant ; 6 écarts mineurs (M1 à M6) gardés pour plus tard | `design/comparaisons/p08b-t6-finitions.md` ; captures de `p08b/t5/`, `p08b/t4/`, `p08b/t3/` |
+| C16 Captures comparées | tenu ; aucun écart bloquant ; 6 écarts mineurs (M1 à M6) reportés en phase 10 | `design/comparaisons/p08b-t6-finitions.md` ; captures de `p08b/t5/`, `p08b/t4/`, `p08b/t3/` |
 
 ## Intégration continue
 
-À compléter après la poussée de la branche.
+Workflow « verify », run [44004427637](https://github.com/Emilien1982/RutaPulse/actions/runs/44004427637) sur le commit d4af60c : réussi (lu par l'API publique de GitHub le 17 novembre 2026).
 
 ## Écarts acceptés
 
@@ -80,21 +80,6 @@ GPS » qui ne ferme pas le panneau 31b ; marge du haut au-dessus du
 panneau ; permission accordée par la première demande ; point sous les
 marqueurs sur l'écran de création ; toucher avant la première position ;
 `TrackingSource.links` facultatif ; remède du § 11.2 non appliqué.
-
-## Écarts mineurs du designer, non corrigés (T6)
-
-Détail dans `design/comparaisons/p08b-t6-finitions.md`. Aucun ne trompe
-le cycliste ni ne contredit la spec.
-- **M1** : sur Android, le trait de liaison est fait de tirets, pas de
-  points ronds.
-- **M2** : le trait d'un point posé hors chemin finit sans repère.
-- **M3** : sur iOS, quand le GPS est perdu, le halo reste autour du rond
-  gris.
-- **M4** : le trait de liaison dépassé reste magenta.
-- **M5** : sur iOS, pendant « Recherche du GPS », le panneau 31b ouvert
-  fait trop dézoomer la carte. Cause supposée : la marge héritée par
-  `fitBounds` (hypothèse du § 11.2, non prouvée).
-- **M6** : sur iOS, un filet de 0,5 pt dans le sélecteur de Réglages.
 
 ## Incidents de la phase
 
@@ -119,6 +104,26 @@ le cycliste ni ne contredit la spec.
     précision réelle du halo ;
   - pincement à deux doigts pendant « suit » ;
   - temps par position dans Hermes (le moteur JavaScript de l'app) ;
-  - écarts mineurs M1 à M6 du designer, à trier avec le reste ;
+  - écarts mineurs du designer en T6, non corrigés (décision du pilotage
+    du 17 novembre ; détail dans `design/comparaisons/p08b-t6-finitions.md`).
+    Aucun ne trompe le cycliste ni ne contredit la spec :
+    - **M1** : sur Android, le trait de liaison est fait de tirets, pas de
+      points ronds (`p08b/t4/android-4-infos-liaison.png`,
+      `p08b/t4/android-6b-arrivee-150m-liaison-visible.png`,
+      `p08b/t5/android-suivi-1-en-route-fleche-halo-roue.png`) ;
+    - **M2** : le trait d'un point posé hors chemin finit sans repère
+      (`p08b/t4/ios-6-infos-liaison.png`, `p08b/t4/android-4-infos-liaison.png`) ;
+    - **M3** : sur iOS, quand le GPS est perdu, le halo reste autour du
+      rond gris (`p08b/t3/ios-suivi-3-gps-perdu-apres-d1.png`) ;
+    - **M4** : le trait de liaison dépassé reste magenta
+      (`p08b/t4/ios-8c-suivi-liaison-sous-trace-150m.png`,
+      `p08b/t4/android-6b-arrivee-150m-liaison-visible.png`) ;
+    - **M5** : sur iOS, pendant « Recherche du GPS », le panneau 31b ouvert
+      fait trop dézoomer la carte ; cause supposée : la marge héritée par
+      `fitBounds`, non prouvée (`p08b/t5/ios-p8b-c14-03-panneau-automatique.png`,
+      `p08b/t5/ios-p8b-c14-04-panneau-maximum.png`, à comparer avec
+      `p08b/t5/ios-p8b-c14-02-suivi-roue-fermee.png`) ;
+    - **M6** : sur iOS, un filet de 0,5 pt dans le sélecteur de Réglages
+      (`p08b/t5/ios-p8b-c14-01-reglages-automatique.png`) ;
   - panneau 31b avec le texte agrandi sur un petit écran (le simulateur
     iPhone SE du Mac est sous iOS 15.2, trop ancien pour l'app).
