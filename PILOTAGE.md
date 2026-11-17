@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-17 — Place du Mac : avec l'accord d'Émilien (« toutes sauf la récente »), 18 copies Time Machine locales effacées une par une ; la plus récente gardée. 13 → 45 Go libres.
 - 2026-11-17 — Nouvelle session de pilotage : `local_fabe586d-cffb-4098-8605-c5332290c5be` (passation après la phase 8b). C'est l'adresse à donner dans les briefs de phase.
 - 2026-11-17 — Phase 8b fusionnée dans main (bca7093) : luminosité pendant le suivi (onglet Réglages et panneau 31b, rendue à la fin et en arrière-plan), onglet Carte (flèche de cap, halo, recentrage à trois états, cadrage hors zone à 10 km), même point sur l'écran de suivi, trait de liaison sur Infos et pendant le suivi, distance d'arrivée alignée. 9 critères tenus, 4 avec réserve (luminosité iOS non visible sur simulateur ; flèche Android non vue ; léger tassement des pointillés pendant un recadrage iOS ; temps par position en Node seulement). Écarts M1 à M6 du designer reportés en phase 10. 3 052 tests, 280 pytest, CI verte (run 44004427637). ADR 0021 complété (§ 8 à 12).
 - 2026-11-16 — Phase 8b, T1 : complément de l'ADR 0021 (§ 8 à 12) et maquettes 90, 30 et 31b validés par Émilien, avec les recommandations : flèche de cap et halo aussi sur le point de l'écran de suivi ; hors zone à 10 km ou moins, « Recentrer » refait le cadrage position + bord. Écart iOS accepté : app fermée de force sur « Maximum », l'écran reste au maximum jusqu'au verrouillage.
@@ -116,7 +117,6 @@
 ## Décisions en attente
 
 - Spec et découpage de la phase 10, questions 1 (iPhone ?) et 2 (lieu de l'essai).
-- Copies Time Machine locales : toutes, ou toutes sauf la plus récente.
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
@@ -131,7 +131,7 @@
 
 ## Prochaine étape
 
-Spec de la phase 10 écrite ([p10-finition-test-interne.md](docs/phases/p10-finition-test-interne.md)), découpage proposé en 10a (premier essai réel, P) puis 10b (finitions, M), en attente de validation par Émilien. Avant le lancement : régler la place du Mac (13 Go libres, 12 copies Time Machine, accord d'Émilien).
+Spec de la phase 10 écrite ([p10-finition-test-interne.md](docs/phases/p10-finition-test-interne.md)), découpage proposé en 10a (premier essai réel, P) puis 10b (finitions, M), en attente de validation par Émilien.
 
 ## Passation du pilotage (17 novembre 2026)
 
