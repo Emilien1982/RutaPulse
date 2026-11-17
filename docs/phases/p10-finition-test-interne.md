@@ -1,7 +1,7 @@
 # Phase 10 — Finition et test interne
 
-> 17 novembre 2026. Spec de la session de pilotage, **à valider par
-> Émilien**. Réponses d'Émilien du 17 novembre : pas d'iPhone pour
+> 17 novembre 2026. Spec de la session de pilotage, **validée par
+> Émilien le 17 novembre** (découpage 10a / 10b et choix du pilotage). Réponses d'Émilien du 17 novembre : pas d'iPhone pour
 > l'instant, **l'essai réel se fait sur Android** ; zone Nancy pour
 > l'essai. Dernière phase de la v1 (la phase 9 est passée en V2 le
 > 10 novembre). Décision d'Émilien du 10 novembre : commencer par l'APK

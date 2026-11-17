@@ -28,6 +28,7 @@
 
 ## Décisions prises
 
+- 2026-11-17 — Spec de la phase 10 ([p10-finition-test-interne.md](docs/phases/p10-finition-test-interne.md)) validée par Émilien : découpage en 10a (premier essai réel, Android, P) puis 10b (finitions, M), avec les choix du pilotage. Phase 10a lancée le même jour.
 - 2026-11-17 — Phase 10 : pas d'iPhone, l'essai réel se fait sur Android, dans la zone Nancy. Créer une zone depuis le téléphone (sans passer par le Mac) : **V2**, décision d'Émilien (demande un petit service entre l'app et GitHub).
 - 2026-11-17 — Place du Mac : avec l'accord d'Émilien (« toutes sauf la récente »), 18 copies Time Machine locales effacées une par une ; la plus récente gardée. 13 → 45 Go libres.
 - 2026-11-17 — Nouvelle session de pilotage : `local_fabe586d-cffb-4098-8605-c5332290c5be` (passation après la phase 8b). C'est l'adresse à donner dans les briefs de phase.
@@ -117,7 +118,7 @@
 
 ## Décisions en attente
 
-- Spec et découpage de la phase 10 (Q1 et Q2 répondues : Android seul, zone Nancy).
+- Aucune.
 
 ## À vérifier sur un vrai téléphone (plus tard, en une fois)
 
@@ -132,7 +133,7 @@
 
 ## Prochaine étape
 
-Spec de la phase 10 écrite ([p10-finition-test-interne.md](docs/phases/p10-finition-test-interne.md)), découpage proposé en 10a (premier essai réel, P) puis 10b (finitions, M), en attente de validation par Émilien.
+Phase 10a en cours (session de phase en worktree). Ensuite : essai terrain d'Émilien sur Android, puis spec de la 10b.
 
 ## Passation du pilotage (17 novembre 2026)
 
